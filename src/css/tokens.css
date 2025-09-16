@@ -1,0 +1,25 @@
+/* Цвета/шрифты из исходника */
+:root{
+  --page-width:1440px;
+  --container-x:48px;
+  --grid-columns:12;
+  --grid-gap:16px;
+
+  --color-bg:#fff;
+  --color-text:#000;
+  --color-accent:#000;
+  --color-muted:rgba(0,0,0,0.7);
+  
+  --font-ui:"Pragmatica Extended",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font-pragmatica:"Pragmatica",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font-size-root:16px;
+  --line-height-root:1.25;
+  
+  --spacing-xs:8px;
+  --spacing-sm:16px;
+  --spacing-md:24px;
+  --spacing-lg:48px;
+  --spacing-xl:120px;
+  
+  --color-black:#000;
+}

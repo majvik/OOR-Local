@@ -1,0 +1,732 @@
+/* Компоненты OOR */
+
+/* Media Cover */
+.oor-media-cover{
+  position:relative;
+  overflow:hidden;
+}
+
+.oor-media-cover img,
+.oor-media-cover video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* Typography */
+.h1{font-family:var(--font-ui);font-size:112px;line-height:100%;font-weight:300;letter-spacing:-10.08px;text-transform:uppercase;margin:0;color:var(--color-text)}
+.h2{font-family:var(--font-ui);font-size:64px;line-height:100%;font-weight:300;letter-spacing:-2.56px;text-transform:uppercase;margin:0;color:var(--color-text)}
+.h3{font-family:var(--font-ui);font-size:48px;line-height:100%;font-weight:300;letter-spacing:-1.92px;text-transform:uppercase;margin:0;color:var(--color-text)}
+.h4{font-family:var(--font-ui);font-size:32px;line-height:116%;font-weight:300;letter-spacing:-1.28px;margin:0;color:var(--color-text)}
+.h5{font-family:var(--font-ui);font-size:24px;line-height:120%;font-weight:300;letter-spacing:-0.96px;margin:0;color:var(--color-text)}
+.h6{font-family:var(--font-ui);font-size:20px;line-height:120%;font-weight:300;letter-spacing:-0.8px;margin:0;color:var(--color-text)}
+.p{font-family:var(--font-ui);font-size:16px;line-height:140%;font-weight:300;letter-spacing:-0.64px;margin:0;color:var(--color-text)}
+.p-sm{font-family:var(--font-ui);font-size:14px;line-height:140%;font-weight:300;letter-spacing:-0.56px;margin:0;color:var(--color-text)}
+.p-xs{font-family:var(--font-pragmatica);font-size:12px;font-weight:400;line-height:normal;letter-spacing:-0.24px;text-transform:uppercase;margin:0;color:var(--color-black)}
+
+/* Buttons */
+.oor-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 24px;
+  background:transparent;
+  border:1px solid var(--color-accent);
+  color:var(--color-text);
+  font-family:var(--font-ui);
+  font-size:var(--font-size-root);
+  line-height:var(--line-height-root);
+  font-weight:300;
+  letter-spacing:-0.64px;
+  text-decoration:none;
+  cursor:pointer;
+  transition:opacity 0.2s ease;
+}
+
+.oor-btn:hover{
+  opacity:0.7;
+}
+
+/* Navigation */
+.oor-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.oor-logo{
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+}
+
+.oor-nav-menu{
+  display:flex;
+  align-items:center;
+  gap:var(--spacing-lg);
+}
+
+.oor-nav-list{
+  display:flex;
+  list-style:none;
+  margin:0;
+  padding:0;
+  gap:var(--spacing-md);
+}
+
+.oor-nav-list li{
+  display:flex;
+  align-items:center;
+  gap:var(--spacing-xs);
+}
+
+.oor-nav-link{
+  color:var(--color-text);
+  text-decoration:none;
+  font-family:var(--font-ui);
+  font-size:var(--font-size-root);
+  line-height:var(--line-height-root);
+  font-weight:300;
+  letter-spacing:-0.64px;
+}
+
+.oor-nav-list span{
+  color:var(--color-muted);
+}
+
+/* Header */
+.oor-header{
+  display:flex;
+  padding:var(--spacing-md) var(--container-x);
+  justify-content:space-between;
+  align-items:center;
+  align-self:stretch;
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:transparent;
+  mix-blend-mode:difference;
+}
+
+.oor-logo{
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+}
+
+.oor-logo img{
+  mix-blend-mode:difference;
+}
+
+.oor-header-right{
+  display:flex;
+  align-items:center;
+  gap:80px;
+}
+
+.oor-nav{
+  display:flex;
+  align-items:center;
+  gap:var(--spacing-xs);
+}
+
+.oor-nav-list{
+  display:flex;
+  list-style:none;
+  margin:0;
+  padding:0;
+  gap:var(--spacing-xs);
+}
+
+.oor-nav-list li{
+  display:flex;
+  align-items:center;
+  gap:var(--spacing-xs);
+}
+
+.oor-nav-link{
+  color:white;
+  text-align:center;
+  font-family:var(--font-pragmatica);
+  font-size:12px;
+  font-weight:400;
+  line-height:normal;
+  letter-spacing:-0.24px;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:text-decoration 0.2s ease;
+}
+
+.oor-nav-link:hover{
+  text-decoration:underline;
+}
+
+.oor-nav-link--active{
+  color:white;
+  text-align:center;
+  font-family:var(--font-pragmatica);
+  font-size:12px;
+  font-weight:400;
+  line-height:normal;
+  letter-spacing:-0.24px;
+  text-transform:uppercase;
+  text-decoration:none;
+}
+
+.oor-nav-link--active::before{
+  content:"[";
+}
+
+.oor-nav-link--active::after{
+  content:"]";
+}
+
+.oor-nav-list span{
+  color:white;
+  font-family:var(--font-pragmatica);
+  font-size:12px;
+  font-weight:400;
+  line-height:normal;
+  letter-spacing:-0.24px;
+  text-transform:uppercase;
+}
+
+.oor-btn-small{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+}
+
+.oor-btn-small-text{
+  color:white;
+  text-align:center;
+  font-family:var(--font-pragmatica);
+  font-size:12px;
+  font-weight:400;
+  line-height:normal;
+  letter-spacing:-0.24px;
+  text-transform:uppercase;
+  transition:text-decoration 0.2s ease;
+}
+
+.oor-btn-small:hover .oor-btn-small-text{
+  text-decoration:underline;
+}
+
+.oor-btn-small img{
+  transition:transform 0.3s ease;
+  filter:invert(1);
+}
+
+.oor-btn-small:hover img{
+  transform:rotate(180deg);
+}
+
+/* HERO Section */
+.oor-section-hero{
+  background-color:var(--color-bg);
+  color:var(--color-text);
+  position:relative;
+}
+
+.oor-hero-title-block{
+  padding-top:120px;
+  align-items:baseline;
+}
+
+.oor-hero-title{
+  color:var(--color-black);
+  font-family:var(--font-ui);
+  font-size:112px;
+  font-style:normal;
+  font-weight:300;
+  line-height:100%;
+  letter-spacing:-10.08px;
+  text-transform:uppercase;
+  margin:0;
+}
+
+.oor-hero-year{
+  color:var(--color-black);
+  text-align:right;
+  font-family:var(--font-ui);
+  font-size:16px;
+  font-style:normal;
+  font-weight:300;
+  line-height:normal;
+  letter-spacing:-0.32px;
+  display:block;
+}
+
+.oor-hero-main{
+  padding:480px 0 218px 0;
+  background-color:var(--color-bg);
+  position:relative;
+}
+
+/* Hero Video фон */
+.oor-hero-main::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("/public/assets/hero-bg.png") center/cover no-repeat;
+  z-index:1;
+}
+
+/* Hero Video элемент */
+.oor-hero-video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:1;
+}
+
+/* Черный оверлей поверх видео, но под текстом */
+.oor-hero-main::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-color:rgba(0,0,0,0.5);
+  z-index:2;
+}
+
+/* Кликабельный оверлей для открытия полноэкранного видео */
+.oor-hero-video-overlay{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  cursor:pointer;
+  background:transparent;
+}
+
+/* Hero Content */
+.oor-hero-content{
+  position:relative;
+  z-index:4;
+  align-items:flex-start;
+  gap:10px;
+}
+
+/* Полноэкранное видео */
+.oor-fullscreen-video{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background:black;
+  z-index:99999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.oor-fullscreen-video.active{
+  display:flex;
+}
+
+/* Дополнительные правила для полноэкранного режима */
+.oor-fullscreen-video.active{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  z-index:99999;
+  background:black;
+}
+
+.oor-fullscreen-video-element{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+}
+
+.oor-fullscreen-close{
+  position:absolute;
+  top:48px;
+  right:48px;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  z-index:100000;
+  transition:transform 0.3s ease;
+  width:34px;
+  height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.oor-fullscreen-close img{
+  transition:transform 0.3s ease;
+  width:17px;
+  height:17px;
+}
+
+.oor-fullscreen-close:hover img{
+  transform:rotate(180deg) scale(1.2);
+}
+
+/* Состояние когда полноэкранное видео открыто - поворачиваем на 45° для крестика */
+.oor-fullscreen-close.active img{
+  transform:rotate(45deg) scale(2);
+}
+
+/* Hover эффект когда видео открыто - дополнительный поворот */
+.oor-fullscreen-close.active:hover img{
+  transform:rotate(225deg) scale(2.2);
+}
+
+/* Plus иконки позиционируются относительно секции */
+.oor-hero-plus-top-left,
+.oor-hero-plus-top-right,
+.oor-hero-plus-bottom-left,
+.oor-hero-plus-bottom-right{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:absolute;
+  z-index:5;
+  cursor:pointer;
+  transition:transform 0.3s ease;
+}
+
+/* Магнетизм для кнопок и навигации */
+.oor-fullscreen-close,
+.oor-btn-small,
+.oor-nav-link,
+.oor-logo,
+.oor-social-icon,
+.oor-hero-video-overlay{
+  transition:transform 0.2s ease-out;
+}
+
+.oor-fullscreen-close:hover,
+.oor-btn-small:hover,
+.oor-nav-link:hover,
+.oor-logo:hover,
+.oor-social-icon:hover,
+.oor-hero-video-overlay:hover{
+  transform:translate(var(--mouse-x, 0), var(--mouse-y, 0));
+}
+
+.oor-hero-plus-top-right:hover img{
+  transform:rotate(180deg);
+}
+
+/* Магнетизм для plus иконок - отдельно от hover эффектов */
+.oor-hero-plus-top-left,
+.oor-hero-plus-top-right,
+.oor-hero-plus-bottom-left,
+.oor-hero-plus-bottom-right{
+  transition:transform 0.2s ease-out;
+}
+
+.oor-hero-plus-top-left:hover,
+.oor-hero-plus-top-right:hover,
+.oor-hero-plus-bottom-left:hover,
+.oor-hero-plus-bottom-right:hover{
+  transform:translate(var(--mouse-x, 0), var(--mouse-y, 0));
+}
+
+.oor-hero-plus-top-left{
+  right:694px;
+  top:80px;
+}
+
+.oor-hero-plus-top-right{
+  right:48px;
+  top:80px;
+}
+
+.oor-hero-plus-bottom-left{
+  right:694px;
+  bottom:80px;
+}
+
+.oor-hero-plus-bottom-right{
+  right:48px;
+  bottom:80px;
+}
+
+/* Hero Text */
+.oor-hero-text{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:48px;
+  align-self:stretch;
+}
+
+/* Description */
+.oor-hero-description{
+  align-self:stretch;
+}
+
+.oor-hero-description-grid{
+  align-items:center;
+}
+
+.oor-hero-description-title{
+  color:white;
+  font-family:var(--font-ui);
+  font-size:64px;
+  font-style:normal;
+  font-weight:300;
+  line-height:100%;
+  letter-spacing:-2.56px;
+  text-transform:uppercase;
+  margin:0;
+}
+
+/* Social Icons */
+.oor-social-icons{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:16px;
+}
+
+.oor-social-icon{
+  opacity:0.7;
+  transition:opacity 0.2s ease, transform 0.2s ease-out;
+  cursor:pointer;
+}
+
+.oor-social-icon:hover{
+  opacity:1;
+}
+
+/* Benefits */
+.oor-hero-benefits{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  align-self:stretch;
+}
+
+.oor-benefit-item{
+  color:white;
+  font-family:var(--font-ui);
+  font-size:16px;
+  font-style:normal;
+  font-weight:300;
+  line-height:120%;
+  letter-spacing:-0.64px;
+}
+
+/* Line разделители в Benefits */
+.oor-hero-benefits img{
+  width:1px;
+  height:16px;
+  opacity:0.7;
+}
+
+/* Preloader */
+.oor-preloader{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background:white;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 0.5s ease, visibility 0.5s ease;
+  overflow:hidden;
+}
+
+html.preloader-active,
+body.preloader-active{
+  overflow:hidden;
+  width:100vw;
+  height:100vh;
+  margin:0;
+  padding:0;
+  position:fixed;
+  top:0;
+  left:0;
+}
+
+.oor-preloader.hidden{
+  opacity:0;
+  visibility:hidden;
+}
+
+.oor-preloader-content{
+  text-align:center;
+  position:relative;
+}
+
+.oor-preloader-progress{
+  color:var(--color-black);
+  font-family:var(--font-ui);
+  font-size:112px;
+  font-style:normal;
+  font-weight:300;
+  line-height:100%;
+  letter-spacing:-10.08px;
+  text-transform:uppercase;
+}
+
+.oor-hero-subtitle{
+  font-family:var(--font-ui);
+  font-size:64px;
+  line-height:100%;
+  font-weight:300;
+  letter-spacing:-2.56px;
+  text-transform:uppercase;
+  margin:0 0 var(--spacing-lg) 0;
+  color:var(--color-text);
+}
+
+.oor-hero-social{
+  display:flex;
+  align-items:center;
+  gap:var(--spacing-sm);
+}
+
+.oor-hero-social svg{
+  opacity:0.7;
+}
+
+.oor-hero-tags{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  align-self:stretch;
+  flex-direction:row;
+}
+
+.oor-hero-tag{
+  font-family:var(--font-ui);
+  font-size:var(--font-size-root);
+  line-height:120%;
+  font-weight:300;
+  letter-spacing:-0.64px;
+  color:var(--color-text);
+}
+
+/* ===== MUSICAL ASSOCIATION SECTION ===== */
+.oor-musical-association {
+  background: #FFF;
+  min-height: 100vh;
+  padding-left: 48px;
+}
+
+.oor-musical-association-left {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  padding: 0;
+  margin: 0;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+}
+
+.oor-musical-association-right {
+  display: flex;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  gap: 10px;
+  background-image: url('/public/assets/musical-association.png');
+  background-size: cover;
+  background-position: left center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.oor-section-number {
+  color: var(--Black, #000);
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Pragmatica Extended";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 14.4px */
+  letter-spacing: -0.24px;
+  text-transform: uppercase;
+}
+
+.oor-musical-association-title {
+  color: var(--Black, #000);
+  font-family: "Pragmatica Extended";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 116%; /* 37.12px */
+  letter-spacing: -1.28px;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: calc(5 * (100% / 6)); /* Ширина 5 колонок из 6 */
+  width: 100%;
+}
+
+.oor-line-divider {
+  width: 18px;
+  height: 0;
+}
+
+.oor-line-divider img {
+  width: 18px;
+  height: 1px;
+}
+
+.oor-musical-association-text {
+  color: var(--Black, #000);
+  font-family: Pragmatica;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  margin: 0;
+  max-width: calc(4 * (100% / 6)); /* Ширина 4 колонки из 6 */
+  width: 100%;
+}
+
+.oor-musical-association-icon {
+  display: flex;
+  width: 156px;
+  height: 567px;
+  padding-left: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.oor-musical-association-icon svg {
+  width: 156px;
+  height: 567px;
+}
+
+.oor-musical-association-plus {
+  position: absolute;
+  right: 48px;
+  bottom: 80px;
+  width: 17px;
+  height: 17px;
+  z-index: 10;
+}
+
+.oor-musical-association-plus img {
+  width: 17px;
+  height: 17px;
+  mix-blend-mode: difference;
+}
