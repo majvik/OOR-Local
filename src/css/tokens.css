@@ -22,4 +22,8 @@
   --spacing-xl:120px;
   
   --color-black:#000;
+  
+  /* Viewport Units (for zoom support) */
+  --vh: 1vh;
+  --vw: 1vw;
 }
