@@ -266,8 +266,6 @@
   padding:480px 0 218px 0;
   background-color:var(--color-bg);
   position:relative;
-  min-height: 100vh;
-  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 /* Hero Video фон */
@@ -624,7 +622,6 @@ body.preloader-active{
 .oor-musical-association {
   background: #FFF;
   min-height: 100vh;
-  min-height: calc(var(--vh, 1vh) * 100);
   padding-left: 48px;
 }
 
@@ -642,7 +639,6 @@ body.preloader-active{
 .oor-musical-association-right {
   display: flex;
   height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
   padding: 0;
   margin: 0;
   align-items: center;
