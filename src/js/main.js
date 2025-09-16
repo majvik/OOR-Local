@@ -400,7 +400,9 @@ function initMagneticElements() {
     .oor-btn-small,
     .oor-nav-link,
     .oor-logo,
-    .oor-social-icon
+    .oor-social-icon,
+    .oor-manifesto-button,
+    .oor-become-artist-button
   `);
 
   magneticElements.forEach(element => {

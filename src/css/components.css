@@ -730,3 +730,237 @@ body.preloader-active{
   height: 17px;
   mix-blend-mode: difference;
 }
+
+/* ===== CHALLENGE TO THE USUAL SECTION ===== */
+.oor-challenge-section {
+  padding: 80px 48px;
+  background: #000;
+  position: relative;
+}
+
+.oor-challenge-section-number {
+  color: var(--White, #FFF);
+  text-align: center;
+  font-family: "Pragmatica Extended";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 14.4px */
+  letter-spacing: -0.48px;
+  position: absolute;
+  right: 565px;
+  top: 80px;
+}
+
+.oor-challenge-line {
+  position: absolute;
+  right: 48px;
+  top: 80px;
+  width: 18px;
+  height: 0;
+}
+
+.oor-challenge-line svg {
+  width: 18px;
+  height: 2px;
+}
+
+.oor-challenge-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+}
+
+.oor-challenge-title {
+  color: var(--White, #FFF);
+  font-family: "Pragmatica Extended";
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 48px */
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  align-self: stretch;
+  margin: 0;
+}
+
+.oor-manifesto-button {
+  display: flex;
+  padding-top: 8px;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.70);
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+  width: 80%;
+}
+
+.oor-manifesto-text {
+  color: var(--White, #FFF);
+  font-family: "Pragmatica Extended";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 19.2px */
+  letter-spacing: -0.64px;
+}
+
+.oor-manifesto-icon {
+  width: 32px;
+  height: 32px;
+  aspect-ratio: 1/1;
+}
+
+.oor-manifesto-icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.oor-challenge-media {
+  display: grid;
+  grid-template-columns: 2fr 3fr 3fr;
+  gap: 80px;
+  margin-top: 80px;
+  align-items: end;
+}
+
+.oor-without-fear {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.oor-without-fear-text {
+  color: var(--White, #FFF);
+  font-family: "Pragmatica Extended";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 140%; /* 19.6px */
+  align-self: stretch;
+  margin: 0;
+  opacity: 0.4;
+}
+
+.oor-without-fear-image {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.oor-without-fear-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 260/290;
+  object-fit: cover;
+}
+
+.oor-quality-strength {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  justify-self: end;
+}
+
+.oor-become-artist-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+  align-self: stretch;
+}
+
+.oor-quality-title {
+  color: var(--White, #FFF);
+  font-family: "Pragmatica Extended";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 116%; /* 37.12px */
+  letter-spacing: -1.28px;
+  text-transform: uppercase;
+  align-self: stretch;
+  margin: 0;
+  opacity: 0.4;
+}
+
+.oor-become-artist-button {
+  display: flex;
+  padding-top: 8px;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.70);
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+  width: 80%;
+}
+
+.oor-become-artist-text {
+  color: var(--White, #FFF);
+  font-family: "Pragmatica Extended";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 19.2px */
+  letter-spacing: -0.64px;
+}
+
+.oor-become-artist-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  aspect-ratio: 1/1;
+}
+
+.oor-become-artist-icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.oor-quality-strength-images {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.oor-quality-img-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.oor-quality-img-container:first-child {
+  flex: 1.6; /* 349/215 ≈ 1.6 */
+}
+
+.oor-quality-img-container:last-child {
+  flex: 1;
+}
+
+.oor-quality-strength-images img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.oor-quality-strength-images img:first-child {
+  aspect-ratio: 349/290;
+}
+
+.oor-quality-strength-images img:last-child {
+  aspect-ratio: 215/290;
+}
