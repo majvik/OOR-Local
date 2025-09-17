@@ -1833,6 +1833,23 @@ body.preloader-active{
   text-underline-position: from-font;
 }
 
+/* Desktop only styles for slider overlay */
+@media (min-width: 769px) {
+  .overlay-top {
+    padding-left: 48px;
+    padding-top: 80px;
+  }
+  
+  .overlay-center {
+    padding-left: 48px;
+  }
+  
+  .overlay-bottom {
+    padding-left: 48px;
+    padding-bottom: 80px;
+  }
+}
+
 .slide-meta-top {
   overflow: hidden;
   color: var(--Color-Base---black, #000);
