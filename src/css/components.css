@@ -1659,75 +1659,31 @@ body.preloader-active{
   grid-column: 3;
 }
 
-.oor-merch-accordion {
-  display: flex;
-  height: 500px;
+/* Merch Images Grid */
+.oor-merch-images-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
   padding: 120px 48px 0 48px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  position: relative;
+  width: 100%;
   box-sizing: border-box;
 }
 
-.oor-merch-item {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  flex: 1;
-  transition: flex 400ms ease;
+.oor-merch-image-item {
+  width: 100%;
+  height: 500px;
   overflow: hidden;
-  position: relative;
-  margin-right: 16px;
-  cursor: pointer;
+  border-radius: 0;
 }
 
-.oor-merch-item:last-child {
-  margin-right: 0;
+.oor-merch-image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.oor-merch-item:hover {
-  flex: 3;
-}
 
-.oor-merch-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-
-.oor-merch-item:hover .oor-merch-overlay {
-  opacity: 1;
-}
-
-.oor-merch-overlay-inner {
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
-.oor-merch-item-1 {
-  background-image: url('/public/assets/merch-1.png');
-}
-
-.oor-merch-item-2 {
-  background-image: url('/public/assets/merch-2.png');
-}
-
-.oor-merch-item-3 {
-  background-image: url('/public/assets/merch-3.png');
-}
-
-.oor-merch-item-4 {
-  background-image: url('/public/assets/merch-4.png');
-}
 
 .oor-merch-move {
   display: flex;
