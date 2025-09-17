@@ -1846,6 +1846,7 @@ body.preloader-active{
   text-transform: uppercase;
   align-self: stretch;
   text-decoration: none;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
@@ -1906,6 +1907,7 @@ body.preloader-active{
   text-underline-position: from-font;
   text-transform: uppercase;
   text-decoration: none;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
@@ -1969,6 +1971,7 @@ body.preloader-active{
   text-transform: uppercase;
   text-decoration: none;
   opacity: 0.3;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
