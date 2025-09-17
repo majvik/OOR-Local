@@ -1570,3 +1570,144 @@ body.preloader-active{
   height: 17px;
   filter: brightness(0);
 }
+
+/* Merch Section */
+.oor-merch-section {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.oor-merch-text {
+  display: grid;
+  grid-template-columns: 3fr 2fr 7fr;
+  padding: 120px 48px 0 48px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.oor-merch-move {
+  grid-column: 1;
+}
+
+.oor-merch-content {
+  grid-column: 3;
+}
+
+.oor-merch-images {
+  display: grid;
+  grid-template-columns: 3fr 9fr;
+  gap: 80px;
+  padding: 120px 0 0 48px;
+  align-items: stretch;
+}
+
+.oor-merch-move {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1 0 0;
+}
+
+.oor-merch-counter {
+  color: #000;
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Pragmatica Extended";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 14.4px */
+  letter-spacing: -0.48px;
+}
+
+.oor-merch-line-2 {
+  display: flex;
+  align-items: center;
+}
+
+.oor-merch-line-2 img {
+  width: 18px;
+  height: 1px;
+  filter: brightness(0);
+}
+
+.oor-merch-title {
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 64px */
+  letter-spacing: -4.48px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.oor-merch-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  position: relative;
+}
+
+.oor-merch-plus-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.oor-merch-plus-icon img {
+  width: 17px;
+  height: 17px;
+  filter: brightness(0);
+}
+
+.oor-merch-description {
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 140%; /* 19.6px */
+  letter-spacing: -0.56px;
+  margin: 0;
+  padding-top: 80px;
+  width: calc(5 * (100% / 7));
+}
+
+.oor-merch-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.oor-merch-button {
+  display: flex;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #000;
+  font-family: "Pragmatica";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 12px */
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid #000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+}
+
+.oor-merch-button:hover {
+  background: #000;
+  color: #FFF;
+}
