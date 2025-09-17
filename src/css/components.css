@@ -1189,3 +1189,89 @@ body.preloader-active{
   opacity: 0.6;
   margin: 0;
 }
+
+/* ===== OUT OF TALK SECTION ===== */
+.oor-out-of-talk-section {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.oor-out-of-talk-text {
+  display: flex;
+  padding: 80px 48px 0 48px;
+  align-items: center;
+  align-self: stretch;
+}
+
+.oor-out-of-talk-media {
+  display: flex;
+  padding: 120px 0 0 48px;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.oor-out-of-talk-title {
+  display: flex;
+  width: calc(5 * (100% / 12));
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  flex-shrink: 0;
+}
+
+.oor-out-of-talk-heading {
+  align-self: stretch;
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 48px */
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.oor-out-of-talk-description {
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 140%; /* 19.6px */
+  letter-spacing: -0.28px;
+  margin: 0;
+}
+
+.oor-out-of-talk-counter {
+  color: #000;
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Pragmatica Extended";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 14.4px */
+  letter-spacing: -0.48px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oor-out-of-talk-plus {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.oor-out-of-talk-plus img {
+  width: 17px;
+  height: 17px;
+  filter: brightness(0);
+}
