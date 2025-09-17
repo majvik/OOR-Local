@@ -66,7 +66,7 @@
         
         <div class="oor-hero-main">
             <!-- Hero Video фон -->
-            <video class="oor-hero-video" autoplay muted loop playsinline preload="metadata" poster="/public/assets/video-cover.webp">
+            <video class="oor-hero-video" autoplay muted loop playsinline preload="metadata" poster="/public/assets/video-cover.avif">
                 <source src="/public/assets/OUTOFREC_reel_v4_nologo.webm" type="video/webm">
                 <source src="/public/assets/OUTOFREC_reel_v4_nologo.mp4" type="video/mp4">
                 <!-- Fallback для браузеров без поддержки видео -->
@@ -269,12 +269,17 @@
                     <div class="oor-without-fear-images">
                         <div class="oor-without-fear-image">
                             <picture>
+                                <source srcset="/public/assets/without-fear-of-unpopularity.avif" type="image/avif">
                                 <source srcset="/public/assets/without-fear-of-unpopularity.webp" type="image/webp">
                                 <img src="/public/assets/without-fear-of-unpopularity.png" alt="Without Fear Of Unpopularity" width="260" height="290">
                             </picture>
-                        </div>
+        </div>
                         <div class="oor-without-fear-image-2">
-                            <img src="/public/assets/without-fear-of-unpopularity.png" alt="Without Fear Of Unpopularity 2" width="260" height="260">
+                            <picture>
+                                <source srcset="/public/assets/without-fear-of-unpopularity.avif" type="image/avif">
+                                <source srcset="/public/assets/without-fear-of-unpopularity.webp" type="image/webp">
+                                <img src="/public/assets/without-fear-of-unpopularity.png" alt="Without Fear Of Unpopularity 2" width="260" height="260">
+                            </picture>
                         </div>
                     </div>
                 </div>
@@ -312,12 +317,14 @@
                     <div class="oor-quality-strength-images">
                         <div class="oor-quality-img-container">
                             <picture>
+                                <source srcset="/public/assets/quality-strength-img-1.avif" type="image/avif">
                                 <source srcset="/public/assets/quality-strength-img-1.webp" type="image/webp">
                                 <img src="/public/assets/quality-strength-img-1.png" alt="Quality Strength 1">
                             </picture>
           </div>
                         <div class="oor-quality-img-container">
                             <picture>
+                                <source srcset="/public/assets/quality-strength-img-2.avif" type="image/avif">
                                 <source srcset="/public/assets/quality-strength-img-2.webp" type="image/webp">
                                 <img src="/public/assets/quality-strength-img-2.png" alt="Quality Strength 2">
                             </picture>
@@ -349,6 +356,7 @@
                 <!-- Challenge Studio Image - 4 колонки минус 8px (слева) -->
                 <div class="oor-challenge-studio-image">
                     <picture>
+                        <source srcset="/public/assets/challenge-studio.avif" type="image/avif">
                         <source srcset="/public/assets/challenge-studio.webp" type="image/webp">
                         <img src="/public/assets/challenge-studio.png" alt="Challenge Studio">
                     </picture>
@@ -386,6 +394,7 @@
                 <!-- Good Works Image -->
                 <div class="oor-challenge-2-good-works-image">
                     <picture>
+                        <source srcset="/public/assets/good-works.avif" type="image/avif">
                         <source srcset="/public/assets/good-works.webp" type="image/webp">
                         <img src="/public/assets/good-works.png" alt="Good Works">
                     </picture>
@@ -451,6 +460,7 @@
                 <!-- Image 3 (теперь первое) -->
                 <div class="oor-out-of-talk-image-3">
                     <picture>
+                        <source srcset="/public/assets/out-of-talk-3.avif" type="image/avif">
                         <source srcset="/public/assets/out-of-talk-3.webp" type="image/webp">
                         <img src="/public/assets/out-of-talk-3.png" alt="Out of Talk 3">
                     </picture>
@@ -459,6 +469,7 @@
                 <!-- Image 1 (теперь второе) -->
                 <div class="oor-out-of-talk-image-1">
                     <picture>
+                        <source srcset="/public/assets/out-of-talk-1.avif" type="image/avif">
                         <source srcset="/public/assets/out-of-talk-1.webp" type="image/webp">
                         <img src="/public/assets/out-of-talk-1.png" alt="Out of Talk 1">
                     </picture>
@@ -469,6 +480,7 @@
                 <!-- Image 2 (теперь третье) -->
                 <div class="oor-out-of-talk-image-2">
                     <picture>
+                        <source srcset="/public/assets/out-of-talk-2.avif" type="image/avif">
                         <source srcset="/public/assets/out-of-talk-2.webp" type="image/webp">
                         <img src="/public/assets/out-of-talk-2.png" alt="Out of Talk 2">
                     </picture>
@@ -503,6 +515,7 @@
                 <!-- Event 1 -->
                 <div class="oor-events-poster-1">
                     <picture>
+                        <source srcset="/public/assets/event-1.avif" type="image/avif">
                         <source srcset="/public/assets/event-1.webp" type="image/webp">
                         <img src="/public/assets/event-1.png" alt="Event 1">
                     </picture>
@@ -512,6 +525,7 @@
                 <!-- Event 2 -->
                 <div class="oor-events-poster-2">
                     <picture>
+                        <source srcset="/public/assets/event-2.avif" type="image/avif">
                         <source srcset="/public/assets/event-2.webp" type="image/webp">
                         <img src="/public/assets/event-2.png" alt="Event 2">
                     </picture>
@@ -532,6 +546,7 @@
                 <!-- Event 3 Image -->
                 <div class="oor-events-photo-image">
                     <picture>
+                        <source srcset="/public/assets/event-3.avif" type="image/avif">
                         <source srcset="/public/assets/event-3.webp" type="image/webp">
                         <img src="/public/assets/event-3.png" alt="Event 3">
                     </picture>
@@ -688,7 +703,7 @@
     <!-- OOR JavaScript -->
     <!-- Полноэкранное видео -->
     <div class="oor-fullscreen-video" id="fullscreen-video">
-        <video class="oor-fullscreen-video-element" controls poster="/public/assets/video-cover.webp">
+        <video class="oor-fullscreen-video-element" controls poster="/public/assets/video-cover.avif">
             <source src="/public/assets/OUTOFREC_reel_v4_nologo-large.webm" type="video/webm">
             <source src="/public/assets/OUTOFREC_reel_v4_nologo-large.mp4" type="video/mp4">
         </video>

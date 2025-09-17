@@ -289,7 +289,7 @@
 
 /* Стили для заглушки видео */
 .oor-hero-video[poster] {
-  background-image: url('/public/assets/video-cover.png');
+  background-image: url('/public/assets/video-cover.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -360,7 +360,7 @@
 
 /* Стили для заглушки полноэкранного видео */
 .oor-fullscreen-video-element[poster] {
-  background-image: url('/public/assets/video-cover.png');
+  background-image: url('/public/assets/video-cover.avif');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
