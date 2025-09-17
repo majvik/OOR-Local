@@ -1609,7 +1609,7 @@ body.preloader-active{
 
 .oor-merch-text {
   display: grid;
-  grid-template-columns: 3fr 2fr 7fr;
+  grid-template-columns: 3fr 2fr 5fr;
   padding: 120px 48px 0 48px;
   align-items: stretch;
   width: 100%;
