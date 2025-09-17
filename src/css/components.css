@@ -1610,13 +1610,11 @@ body.preloader-active{
   background-position: center;
   background-repeat: no-repeat;
   flex: 1;
-  transition: flex 400ms ease, transform 200ms ease;
-  border-radius: 8px;
+  transition: flex 400ms ease;
   overflow: hidden;
   position: relative;
   margin-right: 16px;
   cursor: pointer;
-  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
 }
 
 .oor-merch-item:last-child {
