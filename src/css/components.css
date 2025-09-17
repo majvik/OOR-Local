@@ -1802,20 +1802,59 @@ body.preloader-active{
   color: #FFF;
 }
 
-/* Slider Placeholder Section */
-.oor-slider-placeholder {
-  width: 100vw;
-  position: relative;
-  overflow: hidden;
-  margin-left: calc(50% - 50vw);
+
+/* Slider Section */
+.overlay-top,
+.slider-heading {
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 116%; /* 37.12px */
+  letter-spacing: -1.28px;
+  text-transform: uppercase;
 }
 
-.oor-slider-image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  object-position: center;
-  display: block;
+.overlay-bottom,
+.slider-all-link {
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 19.2px */
+  letter-spacing: -0.64px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+}
+
+.slide-meta-top {
+  overflow: hidden;
+  color: var(--Color-Base---black, #000);
+  text-overflow: ellipsis;
+  font-family: var(--font-family-extended, "Pragmatica Extended");
+  font-size: 12px;
+  font-style: normal;
+  font-weight: var(--font-weight-light, 300);
+  line-height: var(--font-leading-5, 20px); /* 166.667% */
+  letter-spacing: var(--font-tracking-normal, 0);
+}
+
+.artist-name {
+  overflow: hidden;
+  color: var(--Color-Base---black, #000);
+  text-overflow: ellipsis;
+  font-family: var(--font-family-extended, "Pragmatica Extended");
+  font-size: 14px;
+  font-style: normal;
+  font-weight: var(--font-weight-light, 300);
+  line-height: var(--font-leading-5, 20px); /* 142.857% */
+  letter-spacing: var(--font-tracking-normal, 0);
 }
 
 /* Footer Section */
