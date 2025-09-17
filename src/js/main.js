@@ -409,7 +409,8 @@ function initMagneticElements() {
     .oor-events-sold-out,
     .oor-events-buy-ticket,
     .oor-events-photo-link,
-    .oor-merch-button
+    .oor-merch-button,
+    .oor-merch-item
   `);
 
   magneticElements.forEach(element => {
