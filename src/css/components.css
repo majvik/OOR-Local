@@ -877,6 +877,32 @@ body.preloader-active{
   width: 100%;
 }
 
+/* Without Fear Images Container - горизонтальное расположение */
+.oor-without-fear-images {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+}
+
+.oor-without-fear-image-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  left: calc(100% + var(--grid-gap)); /* Выступает за границы контейнера */
+  top: 0;
+  width: calc(2 * (100% / 12) + var(--grid-gap)); /* Ширина 2 колонок плюс gap */
+}
+
+.oor-without-fear-image-2 img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1/1; /* Квадратное изображение */
+  object-fit: cover;
+}
+
 .oor-quality-strength {
   display: flex;
   flex-direction: column;
