@@ -1659,27 +1659,31 @@ body.preloader-active{
   grid-column: 3;
 }
 
-/* Merch Images Grid */
+/* Merch Images Flex */
 .oor-merch-images-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
   padding: 120px 48px 0 48px;
   width: 100%;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.oor-merch-images-wrapper {
+  display: flex;
+  gap: 16px;
+  width: fit-content;
 }
 
 .oor-merch-image-item {
-  width: 100%;
-  height: 500px;
+  height: auto;
   overflow: hidden;
   border-radius: 0;
 }
 
 .oor-merch-image-item img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 
