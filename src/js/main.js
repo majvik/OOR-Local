@@ -402,7 +402,9 @@ function initMagneticElements() {
     .oor-logo,
     .oor-social-icon,
     .oor-manifesto-button,
-    .oor-become-artist-button
+    .oor-become-artist-button,
+    .oor-challenge-2-music-icon,
+    .oor-challenge-2-good-works-icon
   `);
 
   magneticElements.forEach(element => {

@@ -964,3 +964,228 @@ body.preloader-active{
 .oor-quality-strength-images img:last-child {
   aspect-ratio: 215/290;
 }
+
+/* ===== CHALLENGE TO THE USUAL 2 SECTION ===== */
+.oor-challenge-2-section {
+  background: #000;
+  padding: 160px 48px 80px 48px;
+  position: relative;
+}
+
+.oor-challenge-2-counter {
+  color: var(--White, #FFF);
+  text-align: center;
+  font-family: "Pragmatica Extended";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 14.4px */
+  letter-spacing: -0.24px;
+  position: absolute;
+  left: 48px;
+  top: 80px;
+}
+
+.oor-challenge-2-plus-1 {
+  position: absolute;
+  right: 48px;
+  top: 80px;
+  width: 17px;
+  height: 17px;
+  mix-blend-mode: difference;
+}
+
+.oor-challenge-2-plus-1 img {
+  width: 17px;
+  height: 17px;
+}
+
+.oor-challenge-2-plus-2 {
+  position: absolute;
+  right: 48px;
+  bottom: 80px;
+  width: 17px;
+  height: 17px;
+  mix-blend-mode: difference;
+}
+
+.oor-challenge-2-plus-2 img {
+  width: 17px;
+  height: 17px;
+}
+
+.oor-challenge-2-left {
+  display: grid;
+  grid-template-columns: 4fr 3fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.oor-challenge-studio-image {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.oor-challenge-studio-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.oor-challenge-2-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.oor-challenge-2-studio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.oor-challenge-2-music-game {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.oor-challenge-2-studio-title {
+  color: var(--White, #FFF);
+  font-family: "Pragmatica Extended";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 116%; /* 46.4px */
+  letter-spacing: -1.6px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.oor-challenge-2-studio-text {
+  color: #FFF;
+  font-family: "Pragmatica Extended";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 140%; /* 19.6px */
+  letter-spacing: -0.56px;
+  opacity: 0.6;
+  margin: 0 0 48px 0;
+}
+
+.oor-challenge-2-music-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+  opacity: 0.6;
+}
+
+.oor-challenge-2-music-icon:hover {
+  opacity: 1;
+}
+
+.oor-challenge-2-music-icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.oor-challenge-2-music-text {
+  color: #4F4F4F;
+  font-family: "Pragmatica Extended";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 130%; /* 31.2px */
+  letter-spacing: -0.96px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.oor-challenge-2-good-works {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.oor-challenge-2-good-works-image {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.oor-challenge-2-good-works-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.oor-challenge-2-good-works-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  align-self: stretch;
+}
+
+.oor-challenge-2-good-works-header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+}
+
+.oor-challenge-2-good-works-title {
+  color: var(--White, #FFF);
+  font-family: "Pragmatica Extended";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 116%; /* 37.12px */
+  letter-spacing: -1.28px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.oor-challenge-2-good-works-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+  opacity: 0.6;
+}
+
+.oor-challenge-2-good-works-icon:hover {
+  opacity: 1;
+}
+
+.oor-challenge-2-good-works-icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.oor-challenge-2-good-works-description {
+  color: var(--White, #FFF);
+  font-family: "Pragmatica Extended";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 140%; /* 19.6px */
+  opacity: 0.6;
+  margin: 0;
+}
