@@ -13,6 +13,7 @@ window.addEventListener('load', function() {
   initHeroVideo();
   initFullscreenVideo();
   initMagneticElements();
+  initOrphanControl();
 });
 
 // Preloader с реальной загрузкой
@@ -451,5 +452,58 @@ function initMagneticElements() {
     // Применяем смещение через CSS переменные
     element.style.setProperty('--mouse-x', `${offsetX}px`);
     element.style.setProperty('--mouse-y', `${offsetY}px`);
+  }
+}
+
+// Контроль висячих строк (orphans)
+function initOrphanControl() {
+  // Селекторы для текстовых элементов, где нужно контролировать висячие строки
+  const textSelectors = [
+    'p',
+    '.oor-musical-association-text',
+    '.oor-challenge-title',
+    '.oor-without-fear-text',
+    '.oor-quality-title',
+    '.oor-out-of-talk-description',
+    '.oor-events-description',
+    '.oor-merch-description'
+  ];
+  
+  textSelectors.forEach(selector => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(element => {
+      preventOrphans(element);
+    });
+  });
+}
+
+// Функция для предотвращения висячих строк
+function preventOrphans(element) {
+  if (!element || !element.textContent) return;
+  
+  const text = element.textContent.trim();
+  const words = text.split(/\s+/);
+  
+  // Если слов меньше 2, не обрабатываем
+  if (words.length < 2) return;
+  
+  // Если последнее слово короткое (до 4 символов), связываем с предыдущим
+  const lastWord = words[words.length - 1];
+  if (lastWord.length <= 4) {
+    // Заменяем последний пробел на неразрывный пробел
+    const newText = text.replace(/\s+$/, '\u00A0');
+    element.textContent = newText;
+    console.log('Orphan control applied:', element.className, '->', newText);
+  }
+  
+  // Дополнительная проверка: если последние два слова короткие, связываем их
+  if (words.length >= 2) {
+    const lastTwoWords = words.slice(-2);
+    if (lastTwoWords.every(word => word.length <= 4)) {
+      const textWithoutLastTwo = words.slice(0, -2).join(' ');
+      const lastTwoJoined = lastTwoWords.join('\u00A0');
+      element.textContent = textWithoutLastTwo + ' ' + lastTwoJoined;
+      console.log('Orphan control applied (two words):', element.className, '->', textWithoutLastTwo + ' ' + lastTwoJoined);
+    }
   }
 }
