@@ -66,10 +66,10 @@
         
         <div class="oor-hero-main">
             <!-- Hero Video фон -->
-            <video class="oor-hero-video" autoplay muted loop playsinline preload="metadata">
+            <video class="oor-hero-video" autoplay muted loop playsinline preload="metadata" poster="/public/assets/video-cover.png">
                 <source src="/public/assets/OUTOFREC_reel_v4_nologo.mp4" type="video/mp4">
                 <!-- Fallback для браузеров без поддержки видео -->
-                <div style="position:absolute;inset:0;background:url('/public/assets/hero-bg.png') center/cover no-repeat;"></div>
+                <div style="position:absolute;inset:0;background:url('/public/assets/video-cover.png') center/cover no-repeat;"></div>
             </video>
             
             <!-- Кликабельный оверлей для открытия полноэкранного видео -->
@@ -654,7 +654,7 @@
     <!-- OOR JavaScript -->
     <!-- Полноэкранное видео -->
     <div class="oor-fullscreen-video" id="fullscreen-video">
-        <video class="oor-fullscreen-video-element" controls>
+        <video class="oor-fullscreen-video-element" controls poster="/public/assets/video-cover.png">
             <source src="/public/assets/OUTOFREC_reel_v4_nologo-large.mp4" type="video/mp4">
         </video>
         <button class="oor-fullscreen-close" id="fullscreen-close">

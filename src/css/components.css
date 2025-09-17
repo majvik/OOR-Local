@@ -287,6 +287,14 @@
   z-index:1;
 }
 
+/* Стили для заглушки видео */
+.oor-hero-video[poster] {
+  background-image: url('/public/assets/video-cover.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 /* Черный оверлей поверх видео, но под текстом */
 .oor-hero-main::after{
   content:"";
@@ -348,6 +356,14 @@
   width:auto;
   height:auto;
   object-fit:contain;
+}
+
+/* Стили для заглушки полноэкранного видео */
+.oor-fullscreen-video-element[poster] {
+  background-image: url('/public/assets/video-cover.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .oor-fullscreen-close{
