@@ -195,7 +195,7 @@
 .oor-btn-small{
   display:flex;
   align-items:center;
-  gap:11px;
+  gap:4px;
   background:transparent;
   border:none;
   cursor:pointer;
@@ -219,7 +219,6 @@
 
 .oor-btn-small img{
   transition:transform 0.3s ease;
-  filter:invert(1);
 }
 
 .oor-btn-small:hover img{
