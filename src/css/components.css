@@ -749,8 +749,8 @@ body.preloader-active{
   line-height: 120%; /* 14.4px */
   letter-spacing: -0.48px;
   position: absolute;
-  right: 565px;
-  top: 80px;
+  left: 0;
+  top: -276px;
 }
 
 .oor-challenge-line {
@@ -879,6 +879,7 @@ body.preloader-active{
   align-items: flex-start;
   gap: 26px;
   align-self: stretch;
+  position: relative;
 }
 
 .oor-quality-title {
@@ -1272,6 +1273,10 @@ body.preloader-active{
   width: 100%;
 }
 
+.oor-out-of-talk-image-1 {
+  position: relative;
+}
+
 .oor-out-of-talk-image-1 img,
 .oor-out-of-talk-image-2 img,
 .oor-out-of-talk-image-3 img {
@@ -1327,10 +1332,9 @@ body.preloader-active{
   font-weight: 300;
   line-height: 120%; /* 14.4px */
   letter-spacing: -0.48px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  right: 0;
+  top: -256px;
 }
 
 .oor-out-of-talk-plus {
@@ -1557,10 +1561,9 @@ body.preloader-active{
   font-weight: 300;
   line-height: 120%; /* 14.4px */
   letter-spacing: -0.48px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  right: 0;
+  top: -196px;
 }
 
 .oor-events-plus {
