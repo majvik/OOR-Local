@@ -669,8 +669,6 @@ body.preloader-active{
 .oor-section-number {
   color: var(--Black, #000);
   text-align: center;
-  leading-trim: both;
-  text-edge: cap;
   font-family: "Pragmatica Extended";
   font-size: 12px;
   font-style: normal;
@@ -1385,8 +1383,6 @@ body.preloader-active{
 .oor-out-of-talk-counter {
   color: #000;
   text-align: center;
-  leading-trim: both;
-  text-edge: cap;
   font-family: "Pragmatica Extended";
   font-size: 12px;
   font-style: normal;
@@ -1614,8 +1610,6 @@ body.preloader-active{
 .oor-events-counter {
   color: #000;
   text-align: center;
-  leading-trim: both;
-  text-edge: cap;
   font-family: "Pragmatica Extended";
   font-size: 12px;
   font-style: normal;
@@ -1746,8 +1740,6 @@ body.preloader-active{
 .oor-merch-counter {
   color: #000;
   text-align: center;
-  leading-trim: both;
-  text-edge: cap;
   font-family: "Pragmatica Extended";
   font-size: 12px;
   font-style: normal;
@@ -2099,8 +2091,6 @@ body.preloader-active{
 .oor-footer-copyright {
   color: #FFF;
   text-align: right;
-  leading-trim: both;
-  text-edge: cap;
   font-family: "Pragmatica Extended";
   font-size: 64px;
   font-style: normal;
