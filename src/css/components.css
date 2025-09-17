@@ -1578,6 +1578,7 @@ body.preloader-active{
   width: 100%;
   flex-direction: column;
   align-items: flex-start;
+  overflow-x: hidden;
 }
 
 .oor-merch-text {
@@ -1604,7 +1605,6 @@ body.preloader-active{
   margin-left: calc(50% - 50vw);
   position: relative;
   box-sizing: border-box;
-  overflow-x: hidden;
 }
 
 .oor-merch-item {
