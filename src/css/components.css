@@ -1,5 +1,6 @@
 /* Компоненты OOR */
 
+
 /* Media Cover */
 .oor-media-cover{
   position:relative;
@@ -1600,9 +1601,10 @@ body.preloader-active{
   height: 500px;
   padding: 120px 48px 0 48px;
   width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  margin-left: calc(50% - 50vw);
   position: relative;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .oor-merch-item {
