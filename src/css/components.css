@@ -826,8 +826,8 @@ body.preloader-active{
 
 .oor-challenge-media {
   display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
-  gap: 80px;
+  grid-template-columns: 2fr 2fr 3fr;
+  gap: 0px;
   margin-top: 80px;
   align-items: end;
 }
@@ -871,6 +871,7 @@ body.preloader-active{
   align-items: flex-start;
   gap: 32px;
   justify-self: end;
+  margin-left: 0px;
 }
 
 .oor-become-artist-top {
@@ -944,6 +945,8 @@ body.preloader-active{
 .oor-quality-img-container {
   flex: 1;
   min-width: 0;
+  height: 340px;
+  overflow: hidden;
 }
 
 .oor-quality-img-container:first-child {
@@ -956,17 +959,11 @@ body.preloader-active{
 
 .oor-quality-strength-images img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.oor-quality-strength-images img:first-child {
-  aspect-ratio: 349/290;
-}
-
-.oor-quality-strength-images img:last-child {
-  aspect-ratio: 215/290;
-}
 
 /* ===== CHALLENGE TO THE USUAL 2 SECTION ===== */
 .oor-challenge-2-section {
