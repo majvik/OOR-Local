@@ -1796,18 +1796,194 @@ body.preloader-active{
   display: block;
 }
 
-/* Footer Placeholder Section */
-.oor-footer-placeholder {
-  width: 100vw;
-  position: relative;
-  overflow: hidden;
-  margin-left: calc(50% - 50vw);
+/* Footer Section */
+.oor-footer {
+  display: flex;
+  width: 100%;
+  padding: 120px 48px 40px 48px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 120px;
+  background: #000;
 }
 
-.oor-footer-image {
+.oor-footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  align-self: stretch;
+}
+
+.oor-footer-content-left {
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 72px;
+}
+
+.oor-footer-logo {
+  align-self: stretch;
+}
+
+.oor-footer-logo-image {
   width: 100%;
   height: auto;
-  object-fit: cover;
-  object-position: center;
   display: block;
+}
+
+.oor-footer-email {
+  color: #FFF;
+  font-family: "Pragmatica Extended";
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 64px */
+  letter-spacing: -2.56px;
+  text-transform: uppercase;
+  align-self: stretch;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.oor-footer-email:hover {
+  color: #FA4144;
+}
+
+.oor-footer-links {
+  display: flex;
+  width: fit-content;
+  padding-bottom: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 80px;
+}
+
+.oor-footer-links-top {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 12px;
+  align-self: stretch;
+}
+
+.oor-footer-nav-title {
+  color: #FFF;
+  font-family: "Pragmatica";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.28px;
+  text-transform: uppercase;
+  opacity: 0.3;
+  margin: 0;
+}
+
+.oor-footer-links-top-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.oor-footer-link {
+  color: #FFF;
+  font-family: "Pragmatica";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.oor-footer-link:hover {
+  color: #FA4144;
+}
+
+.oor-footer-links-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.oor-footer-social-title {
+  color: #FFF;
+  font-family: "Pragmatica";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.28px;
+  text-transform: uppercase;
+  opacity: 0.3;
+  margin: 0;
+}
+
+.oor-footer-links-bottom-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.oor-footer-privacy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+
+.oor-footer-privacy-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.oor-footer-privacy-link {
+  color: #FFF;
+  font-family: "Pragmatica";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.24px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  text-transform: uppercase;
+  text-decoration: none;
+  opacity: 0.3;
+  transition: color 0.3s ease;
+}
+
+.oor-footer-privacy-link:hover {
+  color: #FA4144;
+}
+
+.oor-footer-copyright {
+  color: #FFF;
+  text-align: right;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Pragmatica Extended";
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 64px */
+  letter-spacing: -4.48px;
+  text-transform: uppercase;
+  opacity: 0.1;
 }
