@@ -404,7 +404,8 @@ function initMagneticElements() {
     .oor-manifesto-button,
     .oor-become-artist-button,
     .oor-challenge-2-music-icon,
-    .oor-challenge-2-good-works-icon
+    .oor-challenge-2-good-works-icon,
+    .oor-out-of-talk-link
   `);
 
   magneticElements.forEach(element => {

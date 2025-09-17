@@ -1205,12 +1205,78 @@ body.preloader-active{
 }
 
 .oor-out-of-talk-media {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3fr 9fr;
+  gap: 80px;
   padding: 120px 0 0 48px;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
   align-self: stretch;
 }
+
+.oor-out-of-talk-move {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1 0 0;
+}
+
+.oor-out-of-talk-line-1,
+.oor-out-of-talk-line-2 {
+  display: flex;
+  align-items: center;
+}
+
+.oor-out-of-talk-line-1 img,
+.oor-out-of-talk-line-2 img {
+  width: 18px;
+  height: 1px;
+  filter: brightness(0);
+}
+
+.oor-out-of-talk-link {
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 19.2px */
+  letter-spacing: -0.64px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  transition: text-decoration 0.2s ease, transform 0.2s ease-out;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+}
+
+.oor-out-of-talk-link:hover {
+  text-decoration: none;
+}
+
+.oor-out-of-talk-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.oor-out-of-talk-image-1,
+.oor-out-of-talk-image-2,
+.oor-out-of-talk-image-3 {
+  width: 100%;
+}
+
+.oor-out-of-talk-image-1 img,
+.oor-out-of-talk-image-2 img,
+.oor-out-of-talk-image-3 img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 
 .oor-out-of-talk-title {
   display: flex;
