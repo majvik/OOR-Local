@@ -685,6 +685,7 @@ body.preloader-active{
 .oor-line-divider img {
   width: 18px;
   height: 1px;
+  filter: brightness(0);
 }
 
 .oor-musical-association-text {
@@ -762,6 +763,7 @@ body.preloader-active{
 .oor-challenge-line svg {
   width: 18px;
   height: 2px;
+  filter: brightness(0);
 }
 
 .oor-challenge-text {
@@ -1200,7 +1202,7 @@ body.preloader-active{
 .oor-out-of-talk-text {
   display: flex;
   padding: 80px 48px 0 48px;
-  align-items: center;
+  align-items: flex-start;
   align-self: stretch;
 }
 
@@ -1336,6 +1338,234 @@ body.preloader-active{
 }
 
 .oor-out-of-talk-plus img {
+  width: 17px;
+  height: 17px;
+  filter: brightness(0);
+}
+
+/* Events Section */
+.oor-events-section {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 120px;
+}
+
+.oor-events-text {
+  display: flex;
+  padding: 80px 48px 0 48px;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.oor-events-media {
+  display: grid;
+  grid-template-columns: 7fr 2fr 3fr;
+  padding: 80px 48px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.oor-events-posters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.oor-events-poster-1,
+.oor-events-poster-2 {
+  width: 100%;
+  position: relative;
+}
+
+.oor-events-poster-1 img,
+.oor-events-poster-2 img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.oor-events-sold-out {
+  display: inline-flex;
+  padding: 12px;
+  align-items: center;
+  gap: 4px;
+  color: #FFF;
+  text-align: center;
+  font-family: "Pragmatica";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  text-transform: uppercase;
+  background: #000;
+  border: none;
+  cursor: not-allowed;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  transition: all 0.3s ease;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+}
+
+.oor-events-sold-out:hover {
+  background: #FFF;
+  color: #000;
+}
+
+.oor-events-sold-out:active {
+  animation: shake 1.2s ease-in-out;
+  --mouse-x: 0px !important;
+  --mouse-y: 0px !important;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) translateX(0); }
+  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% { transform: translate(0, 0) translateX(-8px); }
+  10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90% { transform: translate(0, 0) translateX(8px); }
+}
+
+.oor-events-buy-ticket {
+  display: inline-flex;
+  padding: 12px;
+  align-items: center;
+  gap: 4px;
+  color: #000;
+  text-align: center;
+  font-family: "Pragmatica";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  text-transform: uppercase;
+  background: #FFF;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  transition: all 0.3s ease;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+}
+
+.oor-events-buy-ticket:hover {
+  background: #000;
+  color: #FFF;
+}
+
+.oor-events-buy-ticket img {
+  width: 18px;
+  height: 1px;
+  filter: brightness(0);
+}
+
+.oor-events-buy-ticket:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.oor-events-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.oor-events-photo-image {
+  width: 100%;
+}
+
+.oor-events-photo-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.oor-events-photo-link {
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 19.2px */
+  letter-spacing: -0.64px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  transition: all 0.3s ease;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+}
+
+.oor-events-photo-link:hover {
+  text-decoration: none;
+}
+
+
+.oor-events-title {
+  display: flex;
+  width: calc(5 * (100% / 12));
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.oor-events-heading {
+  align-self: stretch;
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 48px */
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.oor-events-description {
+  color: #000;
+  font-family: "Pragmatica Extended";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 140%; /* 19.6px */
+  letter-spacing: -0.28px;
+  margin: 0;
+}
+
+.oor-events-counter {
+  color: #000;
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Pragmatica Extended";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 14.4px */
+  letter-spacing: -0.48px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oor-events-plus {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.oor-events-plus img {
   width: 17px;
   height: 17px;
   filter: brightness(0);
