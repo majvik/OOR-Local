@@ -405,10 +405,8 @@ function initMagneticElements() {
     .oor-become-artist-button,
     .oor-challenge-2-music-icon,
     .oor-challenge-2-good-works-icon,
-    .oor-out-of-talk-link,
     .oor-events-sold-out,
     .oor-events-buy-ticket,
-    .oor-events-photo-link,
     .oor-merch-button
   `);
 

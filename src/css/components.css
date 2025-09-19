@@ -41,6 +41,14 @@
 .rolling-button .tn-atom:hover .block:first-child .letter{transform:translateY(-100%)}
 .rolling-button .tn-atom:hover .block:last-child .letter{transform:translateY(0%)}
 
+/* Подчеркивание для первого блока у целевых ссылок */
+.overlay-bottom.rolling-button .tn-atom .block:first-child,
+.slider-all-link.rolling-button .tn-atom .block:first-child,
+.oor-out-of-talk-link.rolling-button .tn-atom .block:first-child,
+.oor-events-photo-link.rolling-button .tn-atom .block:first-child {
+  text-decoration: underline;
+}
+
 /* Fallback: показать текст, если JS не инициализировал блоки */
 .rolling-button .tn-atom:not(:has(.block)){
   height:auto;
@@ -1305,14 +1313,8 @@ body.preloader-active{
   font-weight: 300;
   line-height: 120%; /* 19.2px */
   letter-spacing: -0.040rem;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
-  transition: text-decoration 0.2s ease, transform 0.2s ease-out;
-  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+  text-decoration: none;
+  transition: none;
 }
 
 .oor-out-of-talk-link:hover {
@@ -1559,14 +1561,8 @@ body.preloader-active{
   font-weight: 300;
   line-height: 120%; /* 19.2px */
   letter-spacing: -0.040rem;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
-  transition: all 0.3s ease;
-  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0));
+  text-decoration: none;
+  transition: none;
 }
 
 .oor-events-photo-link:hover {
@@ -1823,12 +1819,8 @@ body.preloader-active{
   font-weight: 300;
   line-height: 120%; /* 19.2px */
   letter-spacing: -0.040rem;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: none;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
+  text-decoration: none;
+  transition: none;
 }
 
 /* Desktop only styles for slider overlay */
@@ -1921,7 +1913,7 @@ body.preloader-active{
   align-self: stretch;
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: none;
 }
 
 .oor-footer-email:hover {
@@ -1973,16 +1965,10 @@ body.preloader-active{
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.015rem;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
-  text-transform: uppercase;
   text-decoration: none;
+  text-transform: uppercase;
+  transition: none;
   cursor: pointer;
-  transition: color 0.3s ease;
 }
 
 .oor-footer-link:hover {
@@ -2036,17 +2022,11 @@ body.preloader-active{
   font-weight: 400;
   line-height: normal;
   letter-spacing: 0.015rem;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
-  text-transform: uppercase;
   text-decoration: none;
+  text-transform: uppercase;
+  transition: none;
   opacity: 0.3;
   cursor: pointer;
-  transition: color 0.3s ease;
 }
 
 .oor-footer-privacy-link:hover {
