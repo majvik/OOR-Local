@@ -16,15 +16,15 @@
 }
 
 /* Typography */
-.h1{font-family:var(--font-ui);font-size:112px;line-height:100%;font-weight:300;letter-spacing:-10.08px;text-transform:uppercase;margin:0;color:var(--color-text)}
-.h2{font-family:var(--font-ui);font-size:64px;line-height:100%;font-weight:300;letter-spacing:-2.56px;text-transform:uppercase;margin:0;color:var(--color-text)}
-.h3{font-family:var(--font-ui);font-size:48px;line-height:100%;font-weight:300;letter-spacing:-1.92px;text-transform:uppercase;margin:0;color:var(--color-text)}
-.h4{font-family:var(--font-ui);font-size:32px;line-height:116%;font-weight:300;letter-spacing:-1.28px;margin:0;color:var(--color-text)}
-.h5{font-family:var(--font-ui);font-size:24px;line-height:120%;font-weight:300;letter-spacing:-0.96px;margin:0;color:var(--color-text)}
-.h6{font-family:var(--font-ui);font-size:20px;line-height:120%;font-weight:300;letter-spacing:-0.8px;margin:0;color:var(--color-text)}
-.p{font-family:var(--font-ui);font-size:16px;line-height:140%;font-weight:300;letter-spacing:-0.64px;margin:0;color:var(--color-text)}
-.p-sm{font-family:var(--font-ui);font-size:14px;line-height:140%;font-weight:300;letter-spacing:-0.56px;margin:0;color:var(--color-text)}
-.p-xs{font-family:var(--font-pragmatica);font-size:12px;font-weight:400;line-height:normal;letter-spacing:-0.24px;text-transform:uppercase;margin:0;color:var(--color-black)}
+.h1{font-family:var(--font-ui);font-size: 7.000rem;line-height:100%;font-weight:300;letter-spacing: -0.630rem;text-transform:uppercase;margin:0;color:var(--color-text)}
+.h2{font-family:var(--font-ui);font-size: 4.000rem;line-height:100%;font-weight:300;letter-spacing: -0.160rem;text-transform:uppercase;margin:0;color:var(--color-text)}
+.h3{font-family:var(--font-ui);font-size: 3.000rem;line-height:100%;font-weight:300;letter-spacing: -0.120rem;text-transform:uppercase;margin:0;color:var(--color-text)}
+.h4{font-family:var(--font-ui);font-size: 2.000rem;line-height:116%;font-weight:300;letter-spacing: -0.080rem;margin:0;color:var(--color-text)}
+.h5{font-family:var(--font-ui);font-size: 1.500rem;line-height:120%;font-weight:300;letter-spacing: -0.060rem;margin:0;color:var(--color-text)}
+.h6{font-family:var(--font-ui);font-size: 1.250rem;line-height:120%;font-weight:300;letter-spacing: -0.050rem;margin:0;color:var(--color-text)}
+.p{font-family:var(--font-ui);font-size: 1.000rem;line-height:140%;font-weight:300;letter-spacing: -0.040rem;margin:0;color:var(--color-text)}
+.p-sm{font-family:var(--font-ui);font-size: 0.875rem;line-height:140%;font-weight:300;letter-spacing: -0.035rem;margin:0;color:var(--color-text)}
+.p-xs{font-family:var(--font-pragmatica);font-size: 0.750rem;font-weight:400;line-height:normal;letter-spacing: -0.015rem;text-transform:uppercase;margin:0;color:var(--color-black)}
 
 /* Buttons */
 .oor-btn{
@@ -39,7 +39,7 @@
   font-size:var(--font-size-root);
   line-height:var(--line-height-root);
   font-weight:300;
-  letter-spacing:-0.64px;
+  letter-spacing: -0.040rem;
   text-decoration:none;
   cursor:pointer;
   transition:opacity 0.2s ease;
@@ -89,7 +89,7 @@
   font-size:var(--font-size-root);
   line-height:var(--line-height-root);
   font-weight:300;
-  letter-spacing:-0.64px;
+  letter-spacing: -0.040rem;
 }
 
 .oor-nav-list span{
@@ -150,10 +150,10 @@
   color:white;
   text-align:center;
   font-family:var(--font-pragmatica);
-  font-size:12px;
+  font-size: 0.750rem;
   font-weight:400;
   line-height:normal;
-  letter-spacing:-0.24px;
+  letter-spacing: -0.015rem;
   text-transform:uppercase;
   text-decoration:none;
   transition:text-decoration 0.2s ease;
@@ -167,10 +167,10 @@
   color:white;
   text-align:center;
   font-family:var(--font-pragmatica);
-  font-size:12px;
+  font-size: 0.750rem;
   font-weight:400;
   line-height:normal;
-  letter-spacing:-0.24px;
+  letter-spacing: -0.015rem;
   text-transform:uppercase;
   text-decoration:none;
 }
@@ -186,10 +186,10 @@
 .oor-nav-list span{
   color:white;
   font-family:var(--font-pragmatica);
-  font-size:12px;
+  font-size: 0.750rem;
   font-weight:400;
   line-height:normal;
-  letter-spacing:-0.24px;
+  letter-spacing: -0.015rem;
   text-transform:uppercase;
 }
 
@@ -206,10 +206,10 @@
   color:white;
   text-align:center;
   font-family:var(--font-pragmatica);
-  font-size:12px;
+  font-size: 0.750rem;
   font-weight:400;
   line-height:normal;
-  letter-spacing:-0.24px;
+  letter-spacing: -0.015rem;
   text-transform:uppercase;
   transition:text-decoration 0.2s ease;
 }
@@ -241,11 +241,11 @@
 .oor-hero-title{
   color:var(--color-black);
   font-family:var(--font-ui);
-  font-size:112px;
+  font-size: 7.000rem;
   font-style:normal;
   font-weight:300;
   line-height:100%;
-  letter-spacing:-10.08px;
+  letter-spacing: -0.630rem;
   text-transform:uppercase;
   margin:0;
 }
@@ -254,11 +254,11 @@
   color:var(--color-black);
   text-align:right;
   font-family:var(--font-ui);
-  font-size:16px;
+  font-size: 1.000rem;
   font-style:normal;
   font-weight:300;
   line-height:normal;
-  letter-spacing:-0.32px;
+  letter-spacing: -0.020rem;
   display:block;
 }
 
@@ -495,11 +495,11 @@
 .oor-hero-description-title{
   color:white;
   font-family:var(--font-ui);
-  font-size:64px;
+  font-size: 4.000rem;
   font-style:normal;
   font-weight:300;
   line-height:100%;
-  letter-spacing:-2.56px;
+  letter-spacing: -0.160rem;
   text-transform:uppercase;
   margin:0;
 }
@@ -533,11 +533,11 @@
 .oor-benefit-item{
   color:white;
   font-family:var(--font-ui);
-  font-size:16px;
+  font-size: 1.000rem;
   font-style:normal;
   font-weight:300;
   line-height:120%;
-  letter-spacing:-0.64px;
+  letter-spacing: -0.040rem;
 }
 
 /* Line разделители в Benefits */
@@ -588,20 +588,20 @@ body.preloader-active{
 .oor-preloader-progress{
   color:var(--color-black);
   font-family:var(--font-ui);
-  font-size:112px;
+  font-size: 7.000rem;
   font-style:normal;
   font-weight:300;
   line-height:100%;
-  letter-spacing:-10.08px;
+  letter-spacing: -0.630rem;
   text-transform:uppercase;
 }
 
 .oor-hero-subtitle{
   font-family:var(--font-ui);
-  font-size:64px;
+  font-size: 4.000rem;
   line-height:100%;
   font-weight:300;
-  letter-spacing:-2.56px;
+  letter-spacing: -0.160rem;
   text-transform:uppercase;
   margin:0 0 var(--spacing-lg) 0;
   color:var(--color-text);
@@ -630,7 +630,7 @@ body.preloader-active{
   font-size:var(--font-size-root);
   line-height:120%;
   font-weight:300;
-  letter-spacing:-0.64px;
+  letter-spacing: -0.040rem;
   color:var(--color-text);
 }
 
@@ -670,22 +670,22 @@ body.preloader-active{
   color: var(--Black, #000);
   text-align: center;
   font-family: "Pragmatica Extended";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 300;
   line-height: 120%; /* 14.4px */
-  letter-spacing: -0.24px;
+  letter-spacing: -0.015rem;
   text-transform: uppercase;
 }
 
 .oor-musical-association-title {
   color: var(--Black, #000);
   font-family: "Pragmatica Extended";
-  font-size: 32px;
+  font-size: 2.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 116%; /* 37.12px */
-  letter-spacing: -1.28px;
+  letter-spacing: -0.080rem;
   text-transform: uppercase;
   margin: 0;
   max-width: calc(5 * (100% / 6)); /* Ширина 5 колонок из 6 */
@@ -706,7 +706,7 @@ body.preloader-active{
 .oor-musical-association-text {
   color: var(--Black, #000);
   font-family: "Pragmatica Extended";
-  font-size: 16px;
+  font-size: 1.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 150%;
@@ -790,11 +790,11 @@ body.preloader-active{
     align-self: stretch;
     color: var(--White, #FFF);
     font-family: "Pragmatica Extended";
-    font-size: 48px;
+    font-size: 3.000rem;
     font-style: normal;
     font-weight: 300;
     line-height: 100%;
-    letter-spacing: -1.92px;
+    letter-spacing: -0.120rem;
     text-transform: uppercase;
 }
 
@@ -815,18 +815,18 @@ body.preloader-active{
 .oor-manifesto-text {
     color: var(--White, #FFF);
     font-family: "Pragmatica Extended";
-    font-size: 16px;
+    font-size: 1.000rem;
     font-style: normal;
     font-weight: 300;
     line-height: 120%;
-    letter-spacing: -0.64px;
+    letter-spacing: -0.040rem;
 }
 
 .oor-without-fear-text {
     align-self: stretch;
     color: var(--White, #FFF);
     font-family: "Pragmatica Extended";
-    font-size: 14px;
+    font-size: 0.875rem;
     font-style: normal;
     font-weight: 300;
     line-height: 140%;
@@ -836,11 +836,11 @@ body.preloader-active{
 .oor-without-fear-text p {
     color: var(--White, #FFF);
     font-family: "Pragmatica Extended";
-    font-size: 16px;
+    font-size: 1.000rem;
     font-style: normal;
     font-weight: 300;
     line-height: 120%;
-    letter-spacing: -0.64px;
+    letter-spacing: -0.040rem;
 }
 
 .oor-without-fear-images {
@@ -881,11 +881,11 @@ body.preloader-active{
     color: var(--White, #FFF);
     text-align: center;
     font-family: "Pragmatica Extended";
-    font-size: 12px;
+    font-size: 0.750rem;
     font-style: normal;
     font-weight: 300;
     line-height: 120%;
-    letter-spacing: -0.48px;
+    letter-spacing: -0.030rem;
 }
 
 .oor-quality-line-divider {
@@ -918,11 +918,11 @@ body.preloader-active{
 .oor-become-artist-text {
     color: var(--White, #FFF);
     font-family: "Pragmatica Extended";
-    font-size: 16px;
+    font-size: 1.000rem;
     font-style: normal;
     font-weight: 300;
     line-height: 120%;
-    letter-spacing: -0.64px;
+    letter-spacing: -0.040rem;
 }
 
 .oor-quality-content {
@@ -960,19 +960,17 @@ body.preloader-active{
     object-fit: cover;
 }
 
-.oor-become-artist-container {
-    /* Ширина будет задана через JavaScript */
-}
+/* .oor-become-artist-container - ширина задается через JavaScript */
 
 .oor-quality-title {
     align-self: stretch;
     color: var(--White, #FFF);
     font-family: "Pragmatica Extended";
-    font-size: 32px;
+    font-size: 2.000rem;
     font-style: normal;
     font-weight: 300;
     line-height: 116%;
-    letter-spacing: -1.28px;
+    letter-spacing: -0.080rem;
     text-transform: uppercase;
     opacity: 0.4;
 }
@@ -988,11 +986,11 @@ body.preloader-active{
   color: var(--White, #FFF);
   text-align: center;
   font-family: "Pragmatica Extended";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 300;
   line-height: 120%; /* 14.4px */
-  letter-spacing: -0.24px;
+  letter-spacing: -0.015rem;
   position: absolute;
   left: 48px;
   top: 80px;
@@ -1078,11 +1076,11 @@ body.preloader-active{
 .oor-challenge-2-studio-title {
   color: var(--White, #FFF);
   font-family: "Pragmatica Extended";
-  font-size: 40px;
+  font-size: 2.500rem;
   font-style: normal;
   font-weight: 300;
   line-height: 116%; /* 46.4px */
-  letter-spacing: -1.6px;
+  letter-spacing: -0.100rem;
   text-transform: uppercase;
   margin: 0;
 }
@@ -1090,11 +1088,11 @@ body.preloader-active{
 .oor-challenge-2-studio-text {
   color: #FFF;
   font-family: "Pragmatica Extended";
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: 300;
   line-height: 140%; /* 19.6px */
-  letter-spacing: -0.56px;
+  letter-spacing: -0.035rem;
   opacity: 0.6;
   margin: 0 0 48px 0;
 }
@@ -1121,11 +1119,11 @@ body.preloader-active{
 .oor-challenge-2-music-text {
   color: #4F4F4F;
   font-family: "Pragmatica Extended";
-  font-size: 24px;
+  font-size: 1.500rem;
   font-style: normal;
   font-weight: 300;
   line-height: 130%; /* 31.2px */
-  letter-spacing: -0.96px;
+  letter-spacing: -0.060rem;
   text-transform: uppercase;
   margin: 0;
 }
@@ -1170,11 +1168,11 @@ body.preloader-active{
 .oor-challenge-2-good-works-title {
   color: var(--White, #FFF);
   font-family: "Pragmatica Extended";
-  font-size: 32px;
+  font-size: 2.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 116%; /* 37.12px */
-  letter-spacing: -1.28px;
+  letter-spacing: -0.080rem;
   text-transform: uppercase;
   margin: 0;
 }
@@ -1201,7 +1199,7 @@ body.preloader-active{
 .oor-challenge-2-good-works-description {
   color: var(--White, #FFF);
   font-family: "Pragmatica Extended";
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: 300;
   line-height: 140%; /* 19.6px */
@@ -1257,11 +1255,11 @@ body.preloader-active{
 .oor-out-of-talk-link {
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 16px;
+  font-size: 1.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 120%; /* 19.2px */
-  letter-spacing: -0.64px;
+  letter-spacing: -0.040rem;
   text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: auto;
@@ -1315,11 +1313,11 @@ body.preloader-active{
   align-self: stretch;
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 48px;
+  font-size: 3.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 100%; /* 48px */
-  letter-spacing: -1.92px;
+  letter-spacing: -0.120rem;
   text-transform: uppercase;
   margin: 0;
 }
@@ -1327,11 +1325,11 @@ body.preloader-active{
 .oor-out-of-talk-description {
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: 300;
   line-height: 140%; /* 19.6px */
-  letter-spacing: -0.28px;
+  letter-spacing: -0.018rem;
   margin: 0;
   width: 100%;
   padding-right: 80px;
@@ -1341,11 +1339,11 @@ body.preloader-active{
   color: #000;
   text-align: center;
   font-family: "Pragmatica Extended";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 300;
   line-height: 120%; /* 14.4px */
-  letter-spacing: -0.48px;
+  letter-spacing: -0.030rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -1418,11 +1416,11 @@ body.preloader-active{
   color: #FFF;
   text-align: center;
   font-family: "Pragmatica";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.24px;
+  letter-spacing: -0.015rem;
   text-transform: uppercase;
   background: #000;
   border: none;
@@ -1459,11 +1457,11 @@ body.preloader-active{
   color: #000;
   text-align: center;
   font-family: "Pragmatica";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.24px;
+  letter-spacing: -0.015rem;
   text-transform: uppercase;
   background: #FFF;
   border: none;
@@ -1511,11 +1509,11 @@ body.preloader-active{
 .oor-events-photo-link {
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 16px;
+  font-size: 1.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 120%; /* 19.2px */
-  letter-spacing: -0.64px;
+  letter-spacing: -0.040rem;
   text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: auto;
@@ -1543,11 +1541,11 @@ body.preloader-active{
   align-self: stretch;
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 48px;
+  font-size: 3.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 100%; /* 48px */
-  letter-spacing: -1.92px;
+  letter-spacing: -0.120rem;
   text-transform: uppercase;
   margin: 0;
 }
@@ -1555,11 +1553,11 @@ body.preloader-active{
 .oor-events-description {
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: 300;
   line-height: 140%; /* 19.6px */
-  letter-spacing: -0.28px;
+  letter-spacing: -0.018rem;
   margin: 0;
   width: 100%;
   padding-right: 80px;
@@ -1569,11 +1567,11 @@ body.preloader-active{
   color: #000;
   text-align: center;
   font-family: "Pragmatica Extended";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 300;
   line-height: 120%; /* 14.4px */
-  letter-spacing: -0.48px;
+  letter-spacing: -0.030rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -1661,11 +1659,11 @@ body.preloader-active{
   color: #000;
   text-align: center;
   font-family: "Pragmatica Extended";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 300;
   line-height: 120%; /* 14.4px */
-  letter-spacing: -0.48px;
+  letter-spacing: -0.030rem;
 }
 
 .oor-merch-line-2 {
@@ -1682,12 +1680,12 @@ body.preloader-active{
 .oor-merch-title {
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 64px;
+  font-size: 4.000rem;
   font-style: normal;
   font-weight: 300;
   padding: 80px 0;
   line-height: 100%; /* 64px */
-  letter-spacing: -4.48px;
+  letter-spacing: -0.280rem;
   text-transform: uppercase;
   margin: 0;
 }
@@ -1715,11 +1713,11 @@ body.preloader-active{
 .oor-merch-description {
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 24px;
+  font-size: 1.500rem;
   font-style: normal;
   font-weight: 300;
   line-height: 140%; /* 19.6px */
-  letter-spacing: -0.56px;
+  letter-spacing: -0.035rem;
   margin: 0;
   padding-top: 80px;
   width: calc(5 * (100% / 7));
@@ -1740,7 +1738,7 @@ body.preloader-active{
   gap: 10px;
   color: #000;
   font-family: "Pragmatica";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 400;
   line-height: 100%; /* 12px */
@@ -1763,11 +1761,11 @@ body.preloader-active{
 .slider-heading {
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 32px;
+  font-size: 2.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 116%; /* 37.12px */
-  letter-spacing: -1.28px;
+  letter-spacing: -0.080rem;
   text-transform: uppercase;
 }
 
@@ -1775,11 +1773,11 @@ body.preloader-active{
 .slider-all-link {
   color: #000;
   font-family: "Pragmatica Extended";
-  font-size: 16px;
+  font-size: 1.000rem;
   font-style: normal;
   font-weight: 300;
   line-height: 120%; /* 19.2px */
-  letter-spacing: -0.64px;
+  letter-spacing: -0.040rem;
   text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: none;
@@ -1811,10 +1809,10 @@ body.preloader-active{
   color: var(--Color-Base---black, #000);
   text-overflow: ellipsis;
   font-family: var(--font-family-extended, "Pragmatica Extended");
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: var(--font-weight-light, 300);
-  line-height: var(--font-leading-5, 20px); /* 166.667% */
+  line-height: var(--font-leading-5, 1.25rem); /* 166.667% */
   letter-spacing: var(--font-tracking-normal, 0);
 }
 
@@ -1823,10 +1821,10 @@ body.preloader-active{
   color: var(--Color-Base---black, #000);
   text-overflow: ellipsis;
   font-family: var(--font-family-extended, "Pragmatica Extended");
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: var(--font-weight-light, 300);
-  line-height: var(--font-leading-5, 20px); /* 142.857% */
+  line-height: var(--font-leading-5, 1.25rem); /* 142.857% */
   letter-spacing: var(--font-tracking-normal, 0);
 }
 
@@ -1869,11 +1867,11 @@ body.preloader-active{
 .oor-footer-email {
   color: #FFF;
   font-family: "Pragmatica Extended";
-  font-size: 64px;
+  font-size: 4.000rem;
   font-style: normal;
   font-weight: 400;
   line-height: 100%; /* 64px */
-  letter-spacing: -2.56px;
+  letter-spacing: -0.160rem;
   text-transform: uppercase;
   align-self: stretch;
   text-decoration: none;
@@ -1906,11 +1904,11 @@ body.preloader-active{
 .oor-footer-nav-title {
   color: #FFF;
   font-family: "Pragmatica";
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: 0.28px;
+  letter-spacing: 0.018rem;
   text-transform: uppercase;
   opacity: 0.3;
   margin: 0;
@@ -1925,11 +1923,11 @@ body.preloader-active{
 .oor-footer-link {
   color: #FFF;
   font-family: "Pragmatica";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.24px;
+  letter-spacing: -0.015rem;
   text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: auto;
@@ -1956,11 +1954,11 @@ body.preloader-active{
 .oor-footer-social-title {
   color: #FFF;
   font-family: "Pragmatica";
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: 0.28px;
+  letter-spacing: 0.018rem;
   text-transform: uppercase;
   opacity: 0.3;
   margin: 0;
@@ -1988,11 +1986,11 @@ body.preloader-active{
 .oor-footer-privacy-link {
   color: #FFF;
   font-family: "Pragmatica";
-  font-size: 12px;
+  font-size: 0.750rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: 0.24px;
+  letter-spacing: 0.015rem;
   text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: auto;
@@ -2014,11 +2012,11 @@ body.preloader-active{
   color: #FFF;
   text-align: right;
   font-family: "Pragmatica Extended";
-  font-size: 64px;
+  font-size: 4.000rem;
   font-style: normal;
   font-weight: 400;
   line-height: 100%; /* 64px */
-  letter-spacing: -4.48px;
+  letter-spacing: -0.280rem;
   text-transform: uppercase;
   opacity: 0.1;
 }
