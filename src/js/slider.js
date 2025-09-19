@@ -229,9 +229,13 @@ document.addEventListener('wheel', (e) => {
   }
 
   // --- ОБЫЧНАЯ ЗОНА - ПЛАВНЫЙ ПОДЪЕЗД ---
+  // Раньше здесь вызывался preventDefault(), что могло блокировать вертикальный скролл
+  // на некоторых продакшн-развертываниях (например, Netlify) при первом входе на страницу.
+  // Сохраняем короткий lock (для защиты от инерции), но не отменяем дефолтное поведение
+  // колеса, пока не начат реальный подъезд/доводка к секции.
   if (nearTop || nearBottom || intersectingWide || vis >= CAPTURE_ON_VIS) {
-    wheelLockUntil = now + 100; // короткая блокировка колеса (чтобы инерция не убежала)
-    e.preventDefault(); // не останавливаем всплытие события
+    wheelLockUntil = now + 100; // короткая блокировка только для внутренних обработчиков слайдера
+    // не вызываем e.preventDefault() здесь — позволяем странице скроллиться
   }
 }, { passive: false, capture: true });
 // ===== КОНЕЦ РАННЕГО ЗАХВАТА КОЛЕСА =====
@@ -692,14 +696,15 @@ function setupWheel(){
       const nearTop      = Math.abs(rect.top) <= NEAR_PX;                    // секция близко к верхнему краю
       const nearBottom   = Math.abs(rect.bottom - vh) <= NEAR_PX;           // секция близко к нижнему краю
 
-      // --- АКТИВАЦИЯ ПОДХОДА К СЕКЦИИ ---
-      if ((towards && (vis >= CAPTURE_ON_VIS || nearTop || nearBottom || intersecting)) &&
-          (Date.now() - lastExitTs) >= EXIT_PASS_MS) {
-        e.preventDefault();
-        const align = dy > 0 ? 'start' : 'end'; // определяем выравнивание по направлению
-        approachToSection(align);                // запускаем плавный подход (всегда заметная анимация)
-        return;
-      }
+  // --- АКТИВАЦИЯ ПОДХОДА К СЕКЦИИ ---
+  if ((towards && (vis >= CAPTURE_ON_VIS || nearTop || nearBottom || intersecting)) &&
+      (Date.now() - lastExitTs) >= EXIT_PASS_MS) {
+    // Не блокируем колесо до момента, когда реально начнем подъезд — 
+    // пусть страница сможет прокручиваться, если условия изменятся на следующем кадре
+    const align = dy > 0 ? 'start' : 'end'; // определяем выравнивание по направлению
+    approachToSection(align);                // запускаем плавный подход (всегда заметная анимация)
+    return;
+  }
 
       // --- АКТИВАЦИЯ РЕЖИМА СЛАЙДЕРА ---
       if (vis >= ACTIVATE_WHEN_VISIBLE &&
@@ -915,7 +920,10 @@ function setupWheel(){
   };
 
   // Добавляем обработчик
-  sliderSection?.addEventListener('wheel', wheelHandler, { passive: false }); // важно: passive: false для preventDefault()
+  // Делаем обработчик passive:true на этапе NORMAL, чтобы не рисковать блокировкой 
+  // вертикального скролла в продакшн-окружениях. Внутри, когда нужно блокировать, 
+  // мы вызываем preventDefault() только в ACTIVE режиме и на узких участках/автодотяге.
+  sliderSection?.addEventListener('wheel', wheelHandler, { passive: true });
 }
 
 function clearWheel() {
