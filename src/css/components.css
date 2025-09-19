@@ -1,3 +1,59 @@
+/* Скрыть скролл для всех страниц */
+html {
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+body {
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Скрыть скроллбар для Webkit браузеров (Chrome, Safari, Edge) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Кастомный декоративный скроллбар */
+.custom-scrollbar {
+  position: fixed;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: calc(100vh - 8px);
+  background: transparent;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.custom-scrollbar.visible {
+  opacity: 0.6;
+}
+
+.custom-scrollbar-track {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  background: transparent;
+}
+
+.custom-scrollbar-thumb {
+  position: absolute;
+  right: 0;
+  width: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
 .rolling-button .tn-atom{
   line-height:1.2;
   height:1.4em; /* чуть больше, чтобы не резать буквы */
