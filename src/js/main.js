@@ -3,6 +3,8 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Инициализация прелоадера
   initPreloader();
+  // Страховка: гарантированно снимаем любые блокировки скролла
+  installScrollUnlockWatchdog();
 });
 
 // Инициализация после загрузки
@@ -21,7 +23,16 @@ function initPreloader() {
   const preloader = document.getElementById('preloader');
   const percentElement = document.getElementById('preloader-percent');
   
-  if (!preloader || !percentElement) return;
+  if (!preloader || !percentElement) {
+    // Если прелоадер отсутствует — гарантированно снимаем блокировки
+    try {
+      document.documentElement.classList.remove('preloader-active');
+      document.body.classList.remove('preloader-active');
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    } catch(_) {}
+    return;
+  }
 
   // Блокируем скролл страницы
   document.documentElement.classList.add('preloader-active');
@@ -91,6 +102,9 @@ function initPreloader() {
     preloader.classList.add('hidden');
     document.documentElement.classList.remove('preloader-active');
     document.body.classList.remove('preloader-active');
+    // На всякий случай сбрасываем инлайновые стили блокировки
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
     
     // Удаляем прелоадер из DOM после анимации
     setTimeout(() => {
@@ -227,6 +241,13 @@ function initPreloader() {
       console.warn('Preloader timeout, forcing completion');
       loadedResources = totalResources;
       updateProgress();
+      // Дополнительно снимаем все блокировки — страховка для продакшна
+      try {
+        document.documentElement.classList.remove('preloader-active');
+        document.body.classList.remove('preloader-active');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      } catch(_) {}
     }
   }, 5000);
   
@@ -392,6 +413,50 @@ function initFullscreenVideo() {
     
     console.log('Fullscreen video: Закрыто');
   }
+}
+
+// Глобальная страховка от зависшей блокировки скролла (Netlify кейс)
+function installScrollUnlockWatchdog() {
+  let unlockedOnce = false;
+
+  function unlockScroll(reason) {
+    if (unlockedOnce) return;
+    unlockedOnce = true;
+    try {
+      document.documentElement.classList.remove('preloader-active');
+      document.body.classList.remove('preloader-active');
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    } catch(_) {}
+    // На случай включенного Lenis — гарантируем запуск
+    try { window.lenis?.start?.(); } catch(_) {}
+    // Удаляем слушатели, чтобы не держать ссылки
+    window.removeEventListener('load', onLoadUnlock);
+    document.removeEventListener('visibilitychange', onVisibility);
+    document.removeEventListener('pointerdown', onFirstInteract, { capture: true });
+    document.removeEventListener('wheel', onFirstInteract, { capture: true });
+    document.removeEventListener('keydown', onFirstInteract, { capture: true });
+  }
+
+  function onLoadUnlock(){
+    // Даем время Netlify подгрузить ассеты, затем снимаем блокировки
+    setTimeout(() => unlockScroll('load-timeout'), 1200);
+  }
+
+  function onVisibility(){
+    if (!document.hidden) setTimeout(() => unlockScroll('visibility'), 600);
+  }
+
+  function onFirstInteract(){
+    unlockScroll('first-interaction');
+  }
+
+  // Подстраховываемся по нескольким событиям
+  window.addEventListener('load', onLoadUnlock, { once: true });
+  document.addEventListener('visibilitychange', onVisibility);
+  document.addEventListener('pointerdown', onFirstInteract, { capture: true, once: true });
+  document.addEventListener('wheel', onFirstInteract, { capture: true, once: true });
+  document.addEventListener('keydown', onFirstInteract, { capture: true, once: true });
 }
 
 // Магнетизм для кликабельных элементов
