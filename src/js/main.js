@@ -399,7 +399,6 @@ function initMagneticElements() {
   const magneticElements = document.querySelectorAll(`
     .oor-fullscreen-close,
     .oor-btn-small,
-    .oor-nav-link,
     .oor-logo,
     .oor-social-icon,
     .oor-manifesto-button,
