@@ -17,6 +17,11 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+/* Lenis: безопасные минимальные стили, не блокирующие вертикальную прокрутку */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-stopped { overflow: hidden; }
+
 /* Кастомный декоративный скроллбар */
 .custom-scrollbar {
   position: fixed;

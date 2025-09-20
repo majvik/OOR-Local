@@ -28,7 +28,6 @@ window.addEventListener('load', function() {
       document.body.style.overflow = 'auto';
       document.documentElement.style.overflowY = 'auto';
       document.body.style.overflowY = 'auto';
-      window.lenis?.stop?.();
     }
   } catch(_) {}
 });
@@ -126,6 +125,14 @@ function initPreloader() {
       preloader.remove();
       // Загружаем и инициализируем Lenis ПОСЛЕ полного удаления прелоадера
       try {
+        const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
+        if (DISABLE_LENIS) {
+          if (window.location.search.includes('debug')) {
+            console.log('[Lenis] disabled by query param');
+          }
+          return;
+        }
+
         const s = document.createElement('script');
         s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
         s.async = true;
@@ -145,6 +152,9 @@ function initPreloader() {
                 touchMultiplier: 2,
                 infinite: false
               });
+              if (window.location.search.includes('debug')) {
+                try { console.log('[Lenis] init after preloader', { limit: window.lenis && window.lenis.limit }); } catch(_) {}
+              }
             }
           } catch(e) { console.warn('Lenis init error', e); }
         };
@@ -469,8 +479,6 @@ function installScrollUnlockWatchdog() {
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
     } catch(_) {}
-    // На случай включенного Lenis — гарантируем запуск
-    try { window.lenis?.start?.(); } catch(_) {}
     // Удаляем слушатели, чтобы не держать ссылки
     window.removeEventListener('load', onLoadUnlock);
     document.removeEventListener('visibilitychange', onVisibility);
@@ -648,8 +656,6 @@ function installScrollDiagnostics() {
         document.body.style.overflow = 'auto';
         document.documentElement.style.overflowY = 'auto';
         document.body.style.overflowY = 'auto';
-        // На случай если Lenis остановлен
-        window.lenis?.start?.();
       } catch (e) { console.warn(e); }
       logStyles('forceUnlockScroll');
     };

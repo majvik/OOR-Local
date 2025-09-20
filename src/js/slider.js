@@ -13,61 +13,7 @@ const $$in = (sel) => WSLS_ROOT.querySelectorAll(sel);
 const DEBUG = (typeof window !== 'undefined') && window.location && window.location.search.includes('debug');
 function debugLog(scope, ...args){ if (DEBUG) { try { console.log(`[Slider:${scope}]`, ...args); } catch(_) {} } }
 
-// Gate: disable Lenis by query param if needed for diagnostics
-const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
-
-function isPreloaderActive(){
-  try {
-    return document.documentElement.classList.contains('preloader-active') || document.body.classList.contains('preloader-active');
-  } catch(_) { return false; }
-}
-
-function initLenisIfReady(){
-  if (DISABLE_LENIS) { debugLog('lenis', 'disabled by query param'); return; }
-  if (!window.Lenis) { debugLog('lenis', 'Lenis library not found'); return; }
-  if (window.lenis) { debugLog('lenis', 'already initialized'); return; }
-  if (isPreloaderActive()) { debugLog('lenis', 'preloader active, postpone'); return; }
-
-  try {
-    window.lenis = new window.Lenis({
-      smoothWheel: true,
-      smoothTouch: false,
-      normalizeWheel: true,
-      lerp: 0.09,
-      wheelMultiplier: 1.0,
-      duration: 1.0,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      touchMultiplier: 2,
-      infinite: false
-    });
-    debugLog('lenis', 'initialized');
-    // Optional debug: observe lenis scroll
-    try { window.lenis.on?.('scroll', (e) => { if (DEBUG && Math.random() < 0.03) debugLog('lenis-scroll', { scroll: Math.round(e.scroll), limit: Math.round(e.limit), velocity: Number(e.velocity?.toFixed?.(2) || e.velocity) }); }); } catch(_) {}
-  } catch(e) {
-    console.warn('Lenis init failed', e);
-  }
-}
-
-function scheduleLenisInit(){
-  if (DISABLE_LENIS) { debugLog('lenis', 'schedule skipped (disabled)'); return; }
-  if (window.lenis) { debugLog('lenis', 'already initialized'); return; }
-  if (!isPreloaderActive()) { initLenisIfReady(); return; }
-
-  // Wait until preloader unlocks
-  try {
-    const mo = new MutationObserver(() => {
-      if (!isPreloaderActive()) { mo.disconnect(); initLenisIfReady(); }
-    });
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  } catch(_) {}
-
-  // Fallbacks
-  window.addEventListener('load', () => setTimeout(initLenisIfReady, 100), { once: true });
-  setTimeout(initLenisIfReady, 6000);
-}
+// Lenis: init lives in main.js after preloader removal; this file only uses lenis.raf()
 
 // tiny helper: check if an event occurred inside the component
 function isInsideSliderEvent(e){
