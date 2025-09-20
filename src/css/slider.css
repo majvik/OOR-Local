@@ -178,6 +178,25 @@ html{
   overflow: hidden;
   margin-bottom: 8px; /* отступ снизу для Artist name */
 }
+
+/* Стили для slide-media как ссылки */
+a.slide-media {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+a.slide-media:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Скрываем курсор на мобильных устройствах */
+@media (max-width: 768px) {
+  a.slide-media.text-cuberto-cursor-2 {
+    pointer-events: none;
+  }
+}
 #wsls .slide-media img{
   width: 100%;
   height: 100%;

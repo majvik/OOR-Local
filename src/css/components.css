@@ -860,6 +860,21 @@ body.preloader-active{
   mix-blend-mode: difference;
 }
 
+/* ===== CURSOR LINKS STYLES ===== */
+/* Убираем стандартные стили ссылок для элементов с курсором (только для изображений) */
+a.text-cuberto-cursor-1:not([href^="mailto:"]),
+a.text-cuberto-cursor-2:not([href^="mailto:"]) {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+a.text-cuberto-cursor-1:not([href^="mailto:"]):hover,
+a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* ===== CHALLENGE TO THE USUAL SECTION ===== */
 .oor-challenge-section {
     display: flex;
