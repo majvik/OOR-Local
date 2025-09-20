@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
   initPreloader();
   // Страховка: гарантированно снимаем любые блокировки скролла
   installScrollUnlockWatchdog();
+  // Диагностика блокировок скролла (включается при ?debug)
+  installScrollDiagnostics();
 });
 
 // Инициализация после загрузки
@@ -16,6 +18,19 @@ window.addEventListener('load', function() {
   initFullscreenVideo();
   initMagneticElements();
   initOrphanControl();
+  // Диагностика: если ?nolenis — убедимся, что любые блокировки сняты
+  try {
+    const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
+    if (DISABLE_LENIS) {
+      document.documentElement.classList.remove('preloader-active');
+      document.body.classList.remove('preloader-active');
+      document.documentElement.style.overflow = 'auto';
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflowY = 'auto';
+      document.body.style.overflowY = 'auto';
+      window.lenis?.stop?.();
+    }
+  } catch(_) {}
 });
 
 // Preloader с реальной загрузкой
@@ -537,6 +552,85 @@ function initOrphanControl() {
       preventOrphans(element);
     });
   });
+}
+
+// === Диагностика блокировок скролла (активна только с ?debug) ===
+function installScrollDiagnostics() {
+  try {
+    const DEBUG = (typeof window !== 'undefined') && window.location && window.location.search.includes('debug');
+    if (!DEBUG) return;
+
+    function logStyles(tag) {
+      const htmlCS = getComputedStyle(document.documentElement);
+      const bodyCS = getComputedStyle(document.body);
+      const info = {
+        tag,
+        html: {
+          overflow: htmlCS.overflow,
+          overflowY: htmlCS.overflowY,
+          position: htmlCS.position,
+          height: htmlCS.height
+        },
+        body: {
+          overflow: bodyCS.overflow,
+          overflowY: bodyCS.overflowY,
+          position: bodyCS.position,
+          height: bodyCS.height
+        },
+        classes: {
+          html: Array.from(document.documentElement.classList),
+          body: Array.from(document.body.classList)
+        },
+        sizes: {
+          innerHeight: window.innerHeight,
+          scrollHeight: document.documentElement.scrollHeight,
+          clientHeight: document.documentElement.clientHeight,
+          pageYOffset: window.pageYOffset
+        }
+      };
+      console.log('[ScrollDiag]', info);
+    }
+
+    function canScrollCheck(tag) {
+      const before = window.pageYOffset;
+      window.scrollTo(0, before + 2);
+      setTimeout(() => {
+        const after = window.pageYOffset;
+        console.log('[ScrollDiag] canScrollCheck', { tag, moved: after !== before, before, after });
+      }, 50);
+    }
+
+    // Логи на ключевых этапах
+    logStyles('DOMContentLoaded');
+    setTimeout(() => logStyles('t+300ms'), 300);
+    setTimeout(() => logStyles('t+1200ms'), 1200);
+    setTimeout(() => logStyles('t+3000ms'), 3000);
+    setTimeout(() => canScrollCheck('t+1200ms'), 1200);
+
+    // Глобальные ловушки событий для диагностики
+    window.addEventListener('load', () => logStyles('load'));
+    document.addEventListener('wheel', () => logStyles('wheel'), { passive: true });
+    window.addEventListener('resize', () => logStyles('resize'));
+
+    // Экстренная разблокировка из консоли
+    window.forceUnlockScroll = () => {
+      console.warn('[ScrollDiag] forceUnlockScroll invoked');
+      try {
+        document.documentElement.classList.remove('preloader-active');
+        document.body.classList.remove('preloader-active');
+        document.documentElement.style.overflow = 'auto';
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.overflowY = 'auto';
+        document.body.style.overflowY = 'auto';
+        // На случай если Lenis остановлен
+        window.lenis?.start?.();
+      } catch (e) { console.warn(e); }
+      logStyles('forceUnlockScroll');
+    };
+
+  } catch (e) {
+    console.warn('installScrollDiagnostics error', e);
+  }
 }
 
 // Функция для предотвращения висячих строк

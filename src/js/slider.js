@@ -9,6 +9,66 @@ const WSLS_ROOT = (function(){
 const $in = (sel) => WSLS_ROOT.querySelector(sel);
 const $$in = (sel) => WSLS_ROOT.querySelectorAll(sel);
 
+// Debug helper
+const DEBUG = (typeof window !== 'undefined') && window.location && window.location.search.includes('debug');
+function debugLog(scope, ...args){ if (DEBUG) { try { console.log(`[Slider:${scope}]`, ...args); } catch(_) {} } }
+
+// Gate: disable Lenis by query param if needed for diagnostics
+const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
+
+function isPreloaderActive(){
+  try {
+    return document.documentElement.classList.contains('preloader-active') || document.body.classList.contains('preloader-active');
+  } catch(_) { return false; }
+}
+
+function initLenisIfReady(){
+  if (DISABLE_LENIS) { debugLog('lenis', 'disabled by query param'); return; }
+  if (!window.Lenis) { debugLog('lenis', 'Lenis library not found'); return; }
+  if (window.lenis) { debugLog('lenis', 'already initialized'); return; }
+  if (isPreloaderActive()) { debugLog('lenis', 'preloader active, postpone'); return; }
+
+  try {
+    window.lenis = new window.Lenis({
+      smoothWheel: true,
+      smoothTouch: false,
+      normalizeWheel: true,
+      lerp: 0.09,
+      wheelMultiplier: 1.0,
+      duration: 1.0,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      touchMultiplier: 2,
+      infinite: false
+    });
+    debugLog('lenis', 'initialized');
+    // Optional debug: observe lenis scroll
+    try { window.lenis.on?.('scroll', (e) => { if (DEBUG && Math.random() < 0.03) debugLog('lenis-scroll', { scroll: Math.round(e.scroll), limit: Math.round(e.limit), velocity: Number(e.velocity?.toFixed?.(2) || e.velocity) }); }); } catch(_) {}
+  } catch(e) {
+    console.warn('Lenis init failed', e);
+  }
+}
+
+function scheduleLenisInit(){
+  if (DISABLE_LENIS) { debugLog('lenis', 'schedule skipped (disabled)'); return; }
+  if (window.lenis) { debugLog('lenis', 'already initialized'); return; }
+  if (!isPreloaderActive()) { initLenisIfReady(); return; }
+
+  // Wait until preloader unlocks
+  try {
+    const mo = new MutationObserver(() => {
+      if (!isPreloaderActive()) { mo.disconnect(); initLenisIfReady(); }
+    });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  } catch(_) {}
+
+  // Fallbacks
+  window.addEventListener('load', () => setTimeout(initLenisIfReady, 100), { once: true });
+  setTimeout(initLenisIfReady, 6000);
+}
+
 // tiny helper: check if an event occurred inside the component
 function isInsideSliderEvent(e){
   const path = e.composedPath ? e.composedPath() : [];
@@ -126,6 +186,12 @@ let lastMetaActiveIndex = -1; // кэш последнего активного 
 let pageState = STATE.NORMAL; // текущее состояние: обычная страница или активен слайдер
 let lastExitTs = 0;           // время последнего выхода из слайдера
 
+// Флаг реального взаимодействия пользователя (скролл/колесо/тач)
+let userInteractedVertically = false;
+window.addEventListener('scroll', () => { userInteractedVertically = true; }, { passive: true, once: true });
+document.addEventListener('wheel', () => { userInteractedVertically = true; }, { passive: true, once: true, capture: true });
+document.addEventListener('touchstart', () => { userInteractedVertically = true; }, { passive: true, once: true });
+
 // === ГОРИЗОНТАЛЬНОЕ ПОЛОЖЕНИЕ СЛАЙДЕРА ===
 let target = 0;    // целевая позиция слайдера (куда хотим попасть)
 let current = 0;   // текущая позиция слайдера (где сейчас находимся)
@@ -185,12 +251,12 @@ document.addEventListener('wheel', (e) => {
 
   // --- МЯГКИЙ ПОВТОРНЫЙ ВХОД ПО НАПРАВЛЕНИЮ (обходит защиту и задержку) ---
   const softAlign = softReenterAlign(dy, rect, vh);
+  debugLog('wheel-early', { dy, softAlign, rectTop: rect.top, rectBottom: rect.bottom, vh, vis: vis });
   if (softAlign) {
     reenterGuard = null;             // немедленно отключаем защиту от повторного входа
     lastExitTs = 0;                  // сбрасываем задержку перед повторным захватом
     wheelLockUntil = now + 360;
-    e.preventDefault();
-    e.stopImmediatePropagation();
+    // не блокируем колесо на ранней фазе — просто инициируем подъезд
     approachToSection(softAlign);
     return;
   }
@@ -200,8 +266,8 @@ document.addEventListener('wheel', (e) => {
   if (now - lastExitTs < EXIT_PASS_MS) return;      // проверяем задержку после выхода
 
   if (isSettling || now < wheelLockUntil || approachInFlight) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
+    debugLog('wheel-early-skip', { isSettling, wheelLockUntil, approachInFlight });
+    // не блокируем стандартную прокрутку здесь
     return;
   }
 
@@ -222,8 +288,7 @@ document.addEventListener('wheel', (e) => {
   // --- ОЧЕНЬ БЛИЗКО К СЕКЦИИ - ЖЕСТКАЯ ДОВОДКА ---
   if (nearTopTight || nearBottomTight) {
     wheelLockUntil = now + 360;
-    e.preventDefault();
-    e.stopImmediatePropagation();
+    debugLog('settle-zone', { nearTopTight, nearBottomTight });
     if (!isSettling) settleToSection(approachingDown ? 'start' : 'end');
     return;
   }
@@ -236,30 +301,18 @@ document.addEventListener('wheel', (e) => {
   if (nearTop || nearBottom || intersectingWide || vis >= CAPTURE_ON_VIS) {
     wheelLockUntil = now + 100; // короткая блокировка только для внутренних обработчиков слайдера
     // не вызываем e.preventDefault() здесь — позволяем странице скроллиться
+    debugLog('soft-approach-ready', { nearTop, nearBottom, intersectingWide, vis });
   }
-}, { passive: false, capture: true });
+}, { passive: true, capture: true });
 // ===== КОНЕЦ РАННЕГО ЗАХВАТА КОЛЕСА =====
 
 // === ИНИЦИАЛИЗАЦИЯ СЛАЙДЕРА ===
 function boot() {
   disableStaticSnapCSS(); // отключаем CSS snap-скролл
+  debugLog('boot', { isMobile, sliderExists: !!sliderSection, rect: sliderSection && sliderSection.getBoundingClientRect ? sliderSection.getBoundingClientRect() : null });
 
   // --- НАСТРОЙКА LENIS (ПЛАВНЫЙ СКРОЛЛ) ---
-  if (window.Lenis && !window.lenis) {
-    window.lenis = new window.Lenis({
-      smoothWheel: true,        // плавное колесо мыши
-      smoothTouch: false,       // отключаем плавность касания (используем свою)
-      normalizeWheel: true,     // нормализация колеса мыши
-      lerp: 0.09,               // плавность анимации (0.09 = очень плавно)
-      wheelMultiplier: 1.0,     // множитель колеса мыши
-      duration: 1.0,            // длительность анимации
-      easing: (t) => 1 - Math.pow(1 - t, 3), // плавность: easeOutCubic
-      orientation: 'vertical',   // ориентация скролла
-      gestureOrientation: 'vertical', // ориентация жестов
-      touchMultiplier: 2,       // множитель касания
-      infinite: false            // бесконечный скролл отключен
-    });
-  }
+  scheduleLenisInit();
 
   initSlider();              // инициализация слайдера
   setupIOApproachFallback(); // настройка fallback для Intersection Observer
@@ -418,12 +471,13 @@ function isLastSlide() {
   return getCurrentSlideIndex() === slides.length - 1;
 }
 
-function pauseLenis(){ window.lenis?.stop?.(); }
-function resumeLenis(){ window.lenis?.start?.(); }
+function pauseLenis(){ debugLog('lenis', 'stop'); window.lenis?.stop?.(); }
+function resumeLenis(){ debugLog('lenis', 'start'); window.lenis?.start?.(); }
 
 function setOverscrollContain(on){
   const el = document.scrollingElement || document.documentElement;
   el.style.overscrollBehaviorY = on ? 'contain' : '';
+  debugLog('overscroll', on ? 'contain' : '');
 }
 
 function isReenterBlocked() {
@@ -499,6 +553,7 @@ function setState(next){
   if (pageState === next) return;
   
   pageState = next;
+  debugLog('state', `${pageState} -> ${next}`);
   if (next === STATE.ACTIVE) {
     setOverscrollContain(true);   // ← блокируем overscroll (резиновый эффект)
     pauseLenis();
@@ -702,6 +757,7 @@ function setupWheel(){
     // Не блокируем колесо до момента, когда реально начнем подъезд — 
     // пусть страница сможет прокручиваться, если условия изменятся на следующем кадре
     const align = dy > 0 ? 'start' : 'end'; // определяем выравнивание по направлению
+    debugLog('approach', { align, towards, vis, nearTop, nearBottom, intersecting });
     approachToSection(align);                // запускаем плавный подход (всегда заметная анимация)
     return;
   }
@@ -711,7 +767,7 @@ function setupWheel(){
           (Date.now() - lastExitTs) >= EXIT_PASS_MS) { // защиту уже проверили выше
         // активируем слайдер только когда реально движемся к секции
         const towards = (dy > 0 && rect.top > 0) || (dy < 0 && rect.bottom < vh);
-        if (towards) setState(STATE.ACTIVE);
+        if (towards) { debugLog('activate', { towards, vis }); setState(STATE.ACTIVE); }
       }
 
       return; // не блокируем страницу, если секция еще далеко
@@ -920,10 +976,9 @@ function setupWheel(){
   };
 
   // Добавляем обработчик
-  // Делаем обработчик passive:true на этапе NORMAL, чтобы не рисковать блокировкой 
-  // вертикального скролла в продакшн-окружениях. Внутри, когда нужно блокировать, 
-  // мы вызываем preventDefault() только в ACTIVE режиме и на узких участках/автодотяге.
-  sliderSection?.addEventListener('wheel', wheelHandler, { passive: true });
+  // Делаем обработчик passive:false, так как в ACTIVE режиме нам нужно вызывать preventDefault().
+  // В NORMAL режиме мы НЕ вызываем preventDefault, поэтому вертикальный скролл не блокируется.
+  sliderSection?.addEventListener('wheel', wheelHandler, { passive: false });
 }
 
 function clearWheel() {
@@ -1140,6 +1195,8 @@ function setupIOApproachFallback(){
       if (pageState !== STATE.NORMAL) continue;
       if (approachInFlight) continue;
       if (Date.now() - lastExitTs < EXIT_PASS_MS) continue;
+      // ВАЖНО: не активируем подъезд на проде до реального взаимодействия пользователя вертикальным скроллом
+      if (!userInteractedVertically) continue;
       if (isReenterBlocked()) return;
       
       // НЕ активируем автоматический захват на мобильных устройствах
@@ -1150,11 +1207,15 @@ function setupIOApproachFallback(){
       const dir = (nowScrollY > lastScrollY) ? 'down' : (nowScrollY < lastScrollY ? 'up' : 'down');
       lastScrollY = nowScrollY;
 
+      debugLog('io', { vis, rectTop: rect.top, rectBottom: rect.bottom, dir });
+
       if (vis >= 0.5) {
         const align = (dir === 'down') ? 'start' : 'end';
+        debugLog('io-approach', { align });
         approachToSection(align);
       } else if (Math.abs(rect.top) <= NEAR_PX) {
         const align = rect.top >= 0 ? 'start' : 'end';
+        debugLog('io-near', { align });
         approachToSection(align);
       }
     }
@@ -1168,6 +1229,7 @@ function setupIOApproachFallback(){
 function startLoop(){
   function tick(ts){
     if (window.lenis?.raf) window.lenis.raf(ts); // синхронизируем с Lenis если доступен
+    if (DEBUG && Math.random() < 0.02) debugLog('tick', { pageState, current: Math.round(current), target: Math.round(target), maxScroll: Math.round(maxScroll), isMobile, isDragging, approachInFlight, autoSnap: autoSnap && autoSnap.active });
 
     // === ПЛАВНОСТЬ У КРАЕВ + АВТОДОТЯГ ДО 100% КОГДА ≥95% ===
     const stepPx = isMobile ? getMobileStep() : getDesktopStep(); // размер шага слайдера
