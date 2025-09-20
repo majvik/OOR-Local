@@ -30,10 +30,10 @@ html.lenis { height: auto; }
   width: 8px;
   height: calc(100vh - 8px);
   background: transparent;
-  z-index: 9999;
+  z-index: var(--z-scrollbar);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-base);
 }
 
 .custom-scrollbar.visible {
@@ -750,7 +750,7 @@ body.preloader-active{
 
 /* ===== MUSICAL ASSOCIATION SECTION ===== */
 .oor-musical-association {
-  background: #FFF;
+  background: var(--color-white);
   min-height: 100vh;
   padding-left: 48px;
 }
@@ -1215,7 +1215,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-challenge-2-studio-text {
-  color: #FFF;
+  color: var(--color-white);
   font-family: "Pragmatica Extended";
   font-size: 0.875rem;
   font-style: normal;
@@ -1246,7 +1246,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-challenge-2-music-text {
-  color: #4F4F4F;
+  color: var(--color-gray);
   font-family: "Pragmatica Extended";
   font-size: 1.500rem;
   font-style: normal;
@@ -1536,7 +1536,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   padding: 12px;
   align-items: center;
   gap: 4px;
-  color: #FFF;
+  color: var(--color-white);
   text-align: center;
   font-family: "Pragmatica";
   font-size: 0.750rem;
@@ -1556,7 +1556,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-events-sold-out:hover {
-  background: #FFF;
+  background: var(--color-white);
   color: #000;
 }
 
@@ -1586,7 +1586,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   line-height: normal;
   letter-spacing: -0.015rem;
   text-transform: uppercase;
-  background: #FFF;
+  background: var(--color-white);
   border: none;
   cursor: pointer;
   position: absolute;
@@ -1598,7 +1598,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-events-buy-ticket:hover {
   background: #000;
-  color: #FFF;
+  color: var(--color-white);
 }
 
 .oor-events-buy-ticket img {
@@ -1869,7 +1869,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-merch-button:hover {
   background: #000;
-  color: #FFF;
+  color: var(--color-white);
 }
 
 
@@ -1978,7 +1978,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-footer-email {
-  color: #FFF;
+  color: var(--color-white);
   font-family: "Pragmatica Extended";
   font-size: 4.000rem;
   font-style: normal;
@@ -2015,7 +2015,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-footer-nav-title {
-  color: #FFF;
+  color: var(--color-white);
   font-family: "Pragmatica";
   font-size: 0.875rem;
   font-style: normal;
@@ -2034,7 +2034,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-footer-link {
-  color: #FFF;
+  color: var(--color-white);
   font-family: "Pragmatica";
   font-size: 0.750rem;
   font-style: normal;
@@ -2059,7 +2059,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-footer-social-title {
-  color: #FFF;
+  color: var(--color-white);
   font-family: "Pragmatica";
   font-size: 0.875rem;
   font-style: normal;
@@ -2091,7 +2091,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-footer-privacy-link {
-  color: #FFF;
+  color: var(--color-white);
   font-family: "Pragmatica";
   font-size: 0.750rem;
   font-style: normal;
@@ -2110,7 +2110,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-footer-copyright {
-  color: #FFF;
+  color: var(--color-white);
   text-align: right;
   font-family: "Pragmatica Extended";
   font-size: 4.000rem;

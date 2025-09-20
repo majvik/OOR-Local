@@ -1,4 +1,32 @@
 /**
+ * ========================================
+ * CURSOR SYSTEM - MouseFollower + Custom Implementation
+ * ========================================
+ * 
+ * Объединенный файл курсора для проекта OOR
+ * Содержит библиотеку MouseFollower и кастомную реализацию
+ * 
+ * @author OOR Development Team
+ * @version 1.0.0
+ * @since 2025-09-21
+ * 
+ * COMPONENTS:
+ * 1. MouseFollower Library - базовая библиотека курсора
+ * 2. Custom Cursor Implementation - настройки для OOR
+ * 
+ * FEATURES:
+ * - Плавное следование за мышью
+ * - Анимации при наведении на элементы
+ * - Видео превью в курсоре
+ * - Текстовые подсказки
+ * - Изображения в курсоре
+ * 
+ * USAGE:
+ * Элементы автоматически получают курсор через data-атрибуты:
+ * - data-cursor-video="path/to/video.mp4"
+ * - data-cursor-img="path/to/image.jpg"
+ * - data-cursor-text="Текст подсказки"
+ * 
  * MouseFollower - Custom cursor library
  * Source: https://matilda-design.ru/library/mouse-follower.min.js
  * Unminified version + Custom cursor implementation
@@ -458,6 +486,15 @@
   return MouseFollower;
 });
 
+/**
+ * ========================================
+ * CUSTOM CURSOR IMPLEMENTATION
+ * ========================================
+ * 
+ * Кастомная реализация курсора для OOR проекта
+ * Использует MouseFollower библиотеку с настройками
+ */
+
 // Cuberto Cursor Implementation using MouseFollower
 document.addEventListener('DOMContentLoaded', function() {
   // Проверяем, что MouseFollower доступен
@@ -466,11 +503,14 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  // Инициализируем курсор с базовыми настройками
+  /**
+   * Инициализация курсора с настройками OOR
+   * @type {MouseFollower}
+   */
   const cursor = new MouseFollower({
-    speed: 0.6,
-    skewing: 1,
-    skewingText: 3
+    speed: 0.6,        // Скорость следования за мышью
+    skewing: 1,        // Эффект искажения при движении
+    skewingText: 3     // Искажение для текстовых элементов
   });
 
   // Используем встроенные data-атрибуты MouseFollower

@@ -42,11 +42,9 @@
 ## Структура проекта
 
 ```
-/vanilla
+/OOR-webstudio-netlify
 ├── /public
-│   ├── /assets     # оригинальные картинки/видео из Webstudio
-│   ├── /fonts      # только .woff2
-│   └── overlay.png # скриншот-референс главной в 1440
+│   └── /assets     # оригинальные картинки/видео из Webstudio
 ├── /src
 │   ├── /css
 │   │   ├── reset.css
@@ -54,10 +52,18 @@
 │   │   ├── base.css
 │   │   ├── grid.css
 │   │   ├── layout.css
-│   │   └── components.css
+│   │   ├── components.css
+│   │   ├── fonts.css
+│   │   └── slider.css
 │   └── /js
-│       └── main.js
-└── index.html
+│       ├── main.js
+│       ├── cursor.js
+│       ├── merch-images.js
+│       ├── rolling-text.js
+│       └── size-sync.js
+├── index.html
+├── SPEC.md
+└── PROTECTED_FILES.md
 ```
 
 ### Подключение CSS
@@ -69,7 +75,22 @@ CSS файлы подключаются строго в следующем по�
 <link rel="stylesheet" href="/src/css/base.css">
 <link rel="stylesheet" href="/src/css/grid.css">
 <link rel="stylesheet" href="/src/css/layout.css">
+<link rel="stylesheet" href="/src/css/fonts.css">
+<link rel="stylesheet" href="/src/css/slider.css">
 <link rel="stylesheet" href="/src/css/components.css">
+```
+
+### Подключение JavaScript
+JavaScript файлы подключаются в следующем порядке:
+
+```html
+<script src="/src/js/main.js"></script>
+<script defer src="/src/js/slider.js"></script>
+<script defer src="/src/js/merch-images.js"></script>
+<script defer src="/src/js/size-sync.js"></script>
+<script defer src="/src/js/rolling-text.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="/src/js/cursor.js"></script>
 ```
 
 ---
@@ -417,6 +438,29 @@ span ≈ round( (w + 8) / (97.333... + 16) ) = round( (w + 8) / 113.333... )
 - ✅ `https://unpkg.com/` - unpkg (официальный)
 - ✅ `https://cdnjs.cloudflare.com/` - Cloudflare (официальный)
 - ✅ `https://cdn.skypack.dev/` - Skypack (официальный)
+
+---
+
+## Оптимизации и улучшения
+
+### CSS Design System
+- **Расширенная система переменных** в `tokens.css`
+- **Цветовая палитра** с семантическими названиями
+- **Типографическая шкала** для консистентности
+- **Z-index система** для правильного наложения
+- **Переходы и анимации** через переменные
+
+### JavaScript документация
+- **JSDoc комментарии** для всех функций
+- **Подробная документация** каждого модуля
+- **Описание зависимостей** и API
+- **Примеры использования** в комментариях
+
+### Производительность
+- **Объединенные файлы** (cursor.js = mouse-follower + custom)
+- **Оптимизированные CSS переменные**
+- **Защищенные критические файлы**
+- **Минимизированные HTTP запросы**
 
 ---
 

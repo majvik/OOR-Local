@@ -1,4 +1,29 @@
-// Merch images dynamic sizing script
+/**
+ * ========================================
+ * MERCH IMAGES DYNAMIC SIZING
+ * ========================================
+ * 
+ * Скрипт для динамического изменения размеров изображений мерча
+ * Обеспечивает равномерное распределение изображений в сетке
+ * 
+ * @author OOR Development Team
+ * @version 1.0.0
+ * @since 2025-09-21
+ * 
+ * FEATURES:
+ * - Автоматический расчет размеров изображений
+ * - Равномерное распределение в сетке
+ * - Адаптивность под размер контейнера
+ * - Оптимизация для разных разрешений
+ * 
+ * USAGE:
+ * Автоматически выполняется при загрузке страницы и изменении размера окна
+ */
+/**
+ * Динамически изменяет размеры изображений мерча для равномерного распределения
+ * @function resizeMerchImages
+ * @returns {void}
+ */
 function resizeMerchImages() {
     const grid = document.querySelector('.oor-merch-images-grid');
     const wrapper = document.querySelector('.oor-merch-images-wrapper');
