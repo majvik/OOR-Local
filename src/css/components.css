@@ -17,104 +17,10 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-/* Lenis: безопасные минимальные стили, не блокирующие вертикальную прокрутку */
-html.lenis { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto; }
-.lenis.lenis-stopped { overflow: hidden; }
-
-/* Кастомный декоративный скроллбар */
-.custom-scrollbar {
-  position: fixed;
-  top: 4px;
-  right: 4px;
-  width: 8px;
-  height: calc(100vh - 8px);
-  background: transparent;
-  z-index: var(--z-scrollbar);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
-.custom-scrollbar.visible {
-  opacity: 0.6;
-}
-
-.custom-scrollbar-track {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 8px;
-  height: 100%;
-  background: transparent;
-}
-
-.custom-scrollbar-thumb {
-  position: absolute;
-  right: 0;
-  width: 8px;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 4px;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.rolling-button .tn-atom{
-  line-height:1.2;
-  height:1.4em; /* чуть больше, чтобы не резать буквы */
-  overflow:hidden;
-  position:relative;
-  display:inline-block;
-}
-
-.rolling-button .tn-atom .letter{
-  height:100%;
-  justify-content:center;
-  align-items:center;
-  display:flex;
-  transform:translateY(0);
-  transition:transform .6s cubic-bezier(.76,0,.24,1);
-}
-
-/* Первый блок остается в потоке и задает ширину контейнера */
-.rolling-button .block{
-  height:100%;
-  width:100%;
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-/* Второй блок перекрывает первый */
-.rolling-button .block:last-child{
-  position:absolute;
-  left:0;
-  top:0;
-  height:100%;
-  width:100%;
-}
-
-/* Буквы второго блока стартуют ниже на 100% */
-.rolling-button .block:last-child .letter{transform:translateY(100%)}
-
-/* Анимация при hover */
-.rolling-button .tn-atom:hover .block:first-child .letter{transform:translateY(-100%)}
-.rolling-button .tn-atom:hover .block:last-child .letter{transform:translateY(0%)}
-
-/* Подчеркивание для первого блока у целевых ссылок */
-.overlay-bottom.rolling-button .tn-atom .block:first-child,
-.slider-all-link.rolling-button .tn-atom .block:first-child,
-.oor-out-of-talk-link.rolling-button .tn-atom .block:first-child,
-.oor-events-photo-link.rolling-button .tn-atom .block:first-child {
-  text-decoration: underline;
-}
-
-/* Fallback: показать текст, если JS не инициализировал блоки */
-.rolling-button .tn-atom:not(:has(.block)){
-  height:auto;
-  overflow:visible;
-}
+/* Стили скроллбара и анимаций вынесены в отдельные модули:
+   - /src/css/scrollbar.css
+   - /src/css/animations.css
+*/
 /* Компоненты OOR */
 
 

@@ -7,157 +7,16 @@
     
     <!-- OOR CSS файлы в правильном порядке -->
     <link rel="stylesheet" href="/src/css/reset.css">
-    <link rel="stylesheet" href="/src/css/fonts.css">
     <link rel="stylesheet" href="/src/css/tokens.css">
     <link rel="stylesheet" href="/src/css/base.css">
     <link rel="stylesheet" href="/src/css/grid.css">
     <link rel="stylesheet" href="/src/css/layout.css">
-    <link rel="stylesheet" href="/src/css/components.css">
+    <link rel="stylesheet" href="/src/css/fonts.css">
     <link rel="stylesheet" href="/src/css/slider.css">
-    
-    <!-- MouseFollower Cursor Styles (синхронизировано с оригиналом) -->
-    <style>
-    /* Базовые стили курсора (из оригинального mouse-follower.css) */
-    .mf-cursor {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      z-index: 250 !important;
-      direction: ltr !important;
-      contain: layout style size !important;
-      pointer-events: none !important;
-      transition: opacity .3s, color .4s !important;
-    }
-    
-    .mf-cursor:before {
-      content: "" !important;
-      position: absolute !important;
-      top: -24px !important;
-      left: -24px !important;
-      display: block !important;
-      width: 48px !important;
-      height: 48px !important;
-      transform: scale(0.2) !important;
-      background: #FA4144 !important; /* Наш цвет вместо currentColor */
-      border-radius: 50% !important;
-      transition: transform .25s ease-in-out, opacity .1s !important;
-    }
-    
-    /* Состояния курсора */
-    .mf-cursor.-inverse {
-      color: #fff !important;
-    }
-    
-    .mf-cursor.-pointer:before {
-      transform: scale(0.15) !important;
-    }
-    
-    .mf-cursor.-text:before {
-      opacity: .85 !important;
-      transform: scale(2.4) !important;
-    }
-    
-    .mf-cursor.-text.-active:before {
-      transform: scale(1.6) !important;
-      transition-duration: .2s !important;
-    }
-    
-    .mf-cursor.-icon:before {
-      transform: scale(1.5) !important;
-    }
-    
-    .mf-cursor.-icon.-active:before {
-      transform: scale(1.4) !important;
-    }
-    
-    .mf-cursor.-hidden:before {
-      transform: scale(0) !important;
-    }
-    
-    /* Стили для текста в курсоре (наши приоритетные) */
-    .mf-cursor-text {
-      position: absolute !important;
-      top: -18px !important;
-      left: -18px !important;
-      width: 36px !important;
-      height: 36px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      transform: scale(0) rotate(10deg) !important;
-      opacity: 0 !important;
-      color: #fff !important;
-      font-size: 10px !important; /* Наш размер вместо 16px */
-      line-height: 1.2 !important; /* Наш line-height */
-      text-align: center !important;
-      transition: opacity .4s, transform .3s !important;
-      font-weight: 300 !important; /* Наш font-weight */
-      font-family: "Pragmatica Extended", sans-serif !important; /* Наш шрифт */
-      text-transform: uppercase !important; /* Наш text-transform */
-      letter-spacing: 0.5px !important; /* Наш letter-spacing */
-      white-space: normal !important; /* Наш white-space */
-    }
-    
-    .mf-cursor.-text .mf-cursor-text,
-    .mf-cursor.-icon .mf-cursor-text {
-      opacity: 1 !important;
-      transform: scale(1) !important;
-    }
-    
-    /* Стили для медиа (видео/изображения) */
-    .mf-cursor-media {
-      position: absolute !important;
-      width: 400px !important;
-      height: 400px !important;
-      margin: -200px 0 0 -200px !important;
-    }
-    
-    .mf-cursor-media img,
-    .mf-cursor-media video {
-      position: absolute !important;
-      top: 50% !important;
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      border-radius: 50% !important;
-    }
-    
-    @supports (object-fit: cover) {
-      .mf-cursor-media img,
-      .mf-cursor-media video {
-        position: static !important;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        transform: translateZ(0) !important;
-      }
-    }
-    
-    .mf-cursor-media-box {
-      position: relative !important;
-      width: 100% !important;
-      height: 100% !important;
-      overflow: hidden !important;
-      transform: scale(0) translateZ(0) !important;
-      padding: 1px !important;
-      opacity: 0 !important;
-      border-radius: 50% !important;
-      transition: transform .35s, opacity .2s .2s !important;
-    }
-    
-    .mf-cursor.-media .mf-cursor-media-box {
-      opacity: 1 !important;
-      transform: scale(0.696) !important; /* Оригинальный размер */
-      transition-duration: .4s, .4s !important;
-      transition-delay: 0s, 0s !important;
-    }
-    
-    /* Скрытие на мобильных устройствах */
-    @media screen and (max-width: 480px) {
-      .mf-cursor {
-        display: none !important;
-      }
-    }
-    </style>
+    <link rel="stylesheet" href="/src/css/scrollbar.css">
+    <link rel="stylesheet" href="/src/css/animations.css">
+    <link rel="stylesheet" href="/src/css/components.css">
+    <link rel="stylesheet" href="/src/css/cursor.css">
   </head>
 <body>
     <!-- Preloader -->
@@ -836,9 +695,14 @@
         </button>
     </div>
     
+    <!-- OOR JavaScript модули -->
+    <script src="/src/js/modules/preloader.js"></script>
+    <script src="/src/js/modules/navigation.js"></script>
+    <script src="/src/js/modules/video.js"></script>
     <script src="/src/js/main.js"></script>
     
       <!-- External deps (load before slider) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 
     <!-- Slider script (local) -->
     <script defer src="/src/js/slider.js"></script>
@@ -848,14 +712,9 @@
     
     <!-- Size synchronization script -->
     <script defer src="/src/js/size-sync.js"></script>
+    
     <!-- Rolling text effect script -->
     <script defer src="/src/js/rolling-text.js"></script>
-    
-    
-    <!-- Mouse Follower CSS встроен выше -->
-    
-    <!-- GSAP (официальный CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     
     <!-- MouseFollower + Custom cursor (объединенный) -->
     <script src="/src/js/cursor.js"></script>
@@ -867,41 +726,8 @@
     </div>
     </div>
     
-    <script>
-      // Кастомный скроллбар
-      let scrollTimeout;
-      const customScrollbar = document.getElementById('customScrollbar');
-      const scrollbarThumb = document.getElementById('scrollbarThumb');
-      
-      function updateScrollbar() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        
-        // Показываем скроллбар
-        customScrollbar.classList.add('visible');
-        
-        // Вычисляем высоту и позицию ползунка
-        const thumbHeight = (windowHeight / documentHeight) * windowHeight;
-        const thumbTop = (scrollTop / (documentHeight - windowHeight)) * (windowHeight - thumbHeight);
-        
-        scrollbarThumb.style.height = thumbHeight + 'px';
-        scrollbarThumb.style.top = thumbTop + 'px';
-        
-        // Скрываем скроллбар через 1 секунду после остановки скролла
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          customScrollbar.classList.remove('visible');
-        }, 1000);
-      }
-      
-      // Обработчики событий
-      window.addEventListener('scroll', updateScrollbar);
-      window.addEventListener('resize', updateScrollbar);
-      
-      // Инициализация при загрузке
-      updateScrollbar();
-    </script>
+    <!-- Custom scrollbar script -->
+    <script src="/src/js/scrollbar.js"></script>
     
   </body>
 </html>

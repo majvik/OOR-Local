@@ -1,0 +1,71 @@
+/**
+ * ========================================
+ * ANIMATIONS AND TRANSITIONS
+ * ========================================
+ * 
+ * Анимации и переходы для OOR проекта
+ * Вынесены из components.css для модульности
+ * 
+ * @author OOR Development Team
+ * @version 1.0.0
+ * @since 2025-09-21
+ */
+
+/* Rolling button animation */
+.rolling-button .tn-atom {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.rolling-button .tn-atom .letter {
+  display: inline-block;
+  transform: translateY(0%);
+  transition: transform var(--transition-base);
+}
+
+.rolling-button .block {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.rolling-button .block:last-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rolling-button .block:last-child .letter {
+  transform: translateY(100%);
+}
+
+.rolling-button .tn-atom:hover .block:first-child .letter {
+  transform: translateY(-100%);
+}
+
+.rolling-button .tn-atom:hover .block:last-child .letter {
+  transform: translateY(0%);
+}
+
+/* Special rolling button variants */
+.overlay-bottom.rolling-button .tn-atom .block:first-child,
+.slider-all-link.rolling-button .tn-atom .block:first-child,
+.oor-out-of-talk-link.rolling-button .tn-atom .block:first-child,
+.oor-events-photo-link.rolling-button .tn-atom .block:first-child {
+  color: var(--color-white);
+}
+
+.rolling-button .tn-atom:not(:has(.block)) {
+  transition: color var(--transition-base);
+}
+
+/* Media cover utility */
+.oor-media-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
