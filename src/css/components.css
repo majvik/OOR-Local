@@ -2121,3 +2121,32 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   text-transform: uppercase;
   opacity: 0.1;
 }
+
+/* UPPERCASE стили для заголовков */
+.oor-hero-description-title {
+  text-transform: uppercase;
+}
+
+.overlay-top {
+  text-transform: uppercase;
+}
+
+.slider-heading {
+  text-transform: uppercase;
+}
+
+.oor-out-of-talk-heading {
+  text-transform: uppercase;
+}
+
+.oor-challenge-title {
+  text-transform: uppercase;
+}
+
+.oor-musical-association-title {
+  text-transform: uppercase;
+}
+
+.oor-challenge-2-music-text {
+  text-transform: uppercase;
+}
