@@ -310,9 +310,7 @@ document.addEventListener('wheel', (e) => {
 function boot() {
   disableStaticSnapCSS(); // отключаем CSS snap-скролл
   debugLog('boot', { isMobile, sliderExists: !!sliderSection, rect: sliderSection && sliderSection.getBoundingClientRect ? sliderSection.getBoundingClientRect() : null });
-
-  // --- НАСТРОЙКА LENIS (ПЛАВНЫЙ СКРОЛЛ) ---
-  scheduleLenisInit();
+  // Lenis инициализируется после скрытия прелоадера (в main.js)
 
   initSlider();              // инициализация слайдера
   setupIOApproachFallback(); // настройка fallback для Intersection Observer

@@ -124,6 +124,32 @@ function initPreloader() {
     // Удаляем прелоадер из DOM после анимации
     setTimeout(() => {
       preloader.remove();
+      // Загружаем и инициализируем Lenis ПОСЛЕ полного удаления прелоадера
+      try {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
+        s.async = true;
+        s.onload = () => {
+          try {
+            if (window.Lenis && !window.lenis) {
+              window.lenis = new window.Lenis({
+                smoothWheel: true,
+                smoothTouch: false,
+                normalizeWheel: true,
+                lerp: 0.09,
+                wheelMultiplier: 1.0,
+                duration: 1.0,
+                easing: (t) => 1 - Math.pow(1 - t, 3),
+                orientation: 'vertical',
+                gestureOrientation: 'vertical',
+                touchMultiplier: 2,
+                infinite: false
+              });
+            }
+          } catch(e) { console.warn('Lenis init error', e); }
+        };
+        document.head.appendChild(s);
+      } catch(e) { console.warn('Lenis load error', e); }
     }, 500);
   }
 
