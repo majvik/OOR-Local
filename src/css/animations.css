@@ -18,6 +18,7 @@
   overflow: hidden;
   position: relative;
   display: inline-block;
+  justify-content: center;
 }
 
 .rolling-button .tn-atom .letter {

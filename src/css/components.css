@@ -195,13 +195,15 @@ body::-webkit-scrollbar {
 
 .oor-nav-link--active::before{
   content:"[";
-  vertical-align: top;
+  display: inline;
+  vertical-align: baseline;
   line-height: 1.4em;
 }
 
 .oor-nav-link--active::after{
   content:"]";
-  vertical-align: top;
+  display: inline;
+  vertical-align: baseline;
   line-height: 1.4em;
 }
 
@@ -210,9 +212,49 @@ body::-webkit-scrollbar {
   font-family:var(--font-pragmatica);
   font-size: 0.750rem;
   font-weight:400;
-  line-height:normal;
+  line-height: 1.4em;
   letter-spacing: -0.015rem;
   text-transform:uppercase;
+  display: flex;
+  align-items: center;
+}
+
+/* Выравнивание tn-atom в навигации */
+.oor-nav-item .tn-atom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.4em;
+  vertical-align: middle;
+}
+
+/* WordPress-совместимые классы для активных пунктов меню */
+.oor-nav-link--active,
+.current-menu-item .oor-nav-link,
+.current_page_item .oor-nav-link,
+.current-menu-ancestor .oor-nav-link {
+  /* WordPress автоматически добавит эти классы */
+}
+
+/* Скобки для всех активных состояний */
+.oor-nav-link--active::before,
+.current-menu-item .oor-nav-link::before,
+.current_page_item .oor-nav-link::before,
+.current-menu-ancestor .oor-nav-link::before {
+  content:"[";
+  display: inline;
+  vertical-align: baseline;
+  line-height: 1.4em;
+}
+
+.oor-nav-link--active::after,
+.current-menu-item .oor-nav-link::after,
+.current_page_item .oor-nav-link::after,
+.current-menu-ancestor .oor-nav-link::after {
+  content:"]";
+  display: inline;
+  vertical-align: baseline;
+  line-height: 1.4em;
 }
 
 .oor-btn-small{
@@ -240,12 +282,23 @@ body::-webkit-scrollbar {
   text-decoration:underline;
 }
 
-.oor-btn-small img{
-  transition:transform 0.3s ease;
+.oor-btn-small-icon {
+  width: 17px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.oor-btn-small:hover img{
-  transform:rotate(180deg);
+.oor-btn-small-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.oor-btn-small:hover .oor-btn-small-icon img {
+  transform: rotate(180deg);
 }
 
 /* HERO Section */
