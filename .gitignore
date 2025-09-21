@@ -50,3 +50,7 @@ temp/
 
 # Always Works Guide (internal documentation)
 ALWAYS_WORKS_GUIDE.md
+
+# Документация (локальные изменения)
+docs_backup_*.tar.gz
+docs_backup_*/
