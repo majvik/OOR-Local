@@ -418,7 +418,15 @@
       this.mediaVideo.src = src;
       this.mediaVideo.load();
     }
-    this.mediaVideo.play();
+    
+    // Безопасный play() с обработкой ошибок
+    this.mediaVideo.play().catch(error => {
+      // Игнорируем ошибки play() - это нормально для курсора
+      if (error.name !== 'AbortError') {
+        console.warn('[OOR] Video play error (ignored):', error.message);
+      }
+    });
+    
     this.setMedia(this.mediaVideo);
   };
 
@@ -496,10 +504,16 @@
  */
 
 // Cuberto Cursor Implementation using MouseFollower
-document.addEventListener('DOMContentLoaded', function() {
+function initCursor() {
   // Проверяем, что MouseFollower доступен
   if (typeof MouseFollower === 'undefined') {
-    console.error('MouseFollower not loaded');
+    console.error('[OOR] MouseFollower not loaded - cursor disabled');
+    return;
+  }
+
+  // Проверяем, что GSAP доступен
+  if (typeof gsap === 'undefined') {
+    console.error('[OOR] GSAP not loaded - cursor animations disabled');
     return;
   }
 
@@ -560,4 +574,26 @@ document.addEventListener('DOMContentLoaded', function() {
       el.setAttribute('data-cursor-text', 'Стать артистом');
     }
   });
+}
+
+// Инициализация курсора после загрузки всех зависимостей
+document.addEventListener('DOMContentLoaded', function() {
+  // Ждем загрузки GSAP
+  if (typeof gsap !== 'undefined') {
+    initCursor();
+  } else {
+    // Если GSAP еще не загружен, ждем его
+    const checkGSAP = setInterval(() => {
+      if (typeof gsap !== 'undefined') {
+        clearInterval(checkGSAP);
+        initCursor();
+      }
+    }, 100);
+    
+    // Таймаут на случай, если GSAP так и не загрузится
+    setTimeout(() => {
+      clearInterval(checkGSAP);
+      console.warn('[OOR] GSAP timeout - cursor may not work properly');
+    }, 5000);
+  }
 });

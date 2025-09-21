@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/src/css/grid.css">
     <link rel="stylesheet" href="/src/css/layout.css">
     <link rel="stylesheet" href="/src/css/fonts.css">
+    <link rel="stylesheet" href="/src/css/utilities.css">
     <link rel="stylesheet" href="/src/css/slider.css">
     <link rel="stylesheet" href="/src/css/scrollbar.css">
     <link rel="stylesheet" href="/src/css/animations.css">
@@ -697,14 +698,15 @@
         </button>
     </div>
     
+    <!-- External deps (load first) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    
     <!-- OOR JavaScript модули -->
+    <script src="/src/js/modules/error-handler.js"></script>
     <script src="/src/js/modules/preloader.js"></script>
     <script src="/src/js/modules/navigation.js"></script>
     <script src="/src/js/modules/video.js"></script>
     <script src="/src/js/main.js"></script>
-    
-      <!-- External deps (load before slider) -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 
     <!-- Slider script (local) -->
     <script defer src="/src/js/slider.js"></script>

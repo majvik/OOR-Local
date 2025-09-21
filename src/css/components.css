@@ -1,8 +1,12 @@
-/* Скрыть скролл для всех страниц */
+/* Скрыть скролл для всех страниц - используем утилитарные классы */
 html {
   overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 body {
@@ -11,10 +15,8 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
 }
 
-/* Скрыть скроллбар для Webkit браузеров (Chrome, Safari, Edge) */
-html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Safari, Edge */
 }
 
 /* Стили скроллбара и анимаций вынесены в отдельные модули:

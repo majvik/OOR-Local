@@ -30,25 +30,63 @@
  * Выполняется сразу после загрузки HTML структуры
  */
 document.addEventListener('DOMContentLoaded', function() {
-  // Инициализация прелоадера
-  initPreloader();
-  // Страховка: гарантированно снимаем любые блокировки скролла
-  installScrollUnlockWatchdog();
-  // Диагностика блокировок скролла (включается при ?debug)
-  installScrollDiagnostics();
+  // Проверяем загрузку GSAP
+  if (typeof gsap === 'undefined') {
+    console.error('[OOR] GSAP not loaded - some animations may not work');
+    // Загружаем GSAP локально как fallback
+    loadGSAPFallback();
+  }
+
+  // Безопасная инициализация с обработкой ошибок
+  try {
+    // Инициализация прелоадера
+    initPreloader();
+    // Страховка: гарантированно снимаем любые блокировки скролла
+    installScrollUnlockWatchdog();
+    // Диагностика блокировок скролла (включается при ?debug)
+    installScrollDiagnostics();
+  } catch (error) {
+    console.error('[OOR] DOMContentLoaded error:', error);
+    // Гарантированно снимаем блокировки при ошибке
+    document.documentElement.classList.remove('preloader-active');
+    document.body.classList.remove('preloader-active');
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
+  }
 });
+
+/**
+ * Загружает GSAP локально как fallback
+ */
+function loadGSAPFallback() {
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js';
+  script.onload = function() {
+    console.log('[OOR] GSAP loaded from fallback');
+    // Перезапускаем инициализацию после загрузки GSAP
+    if (typeof initPreloader === 'function') {
+      initPreloader();
+    }
+  };
+  script.onerror = function() {
+    console.error('[OOR] Failed to load GSAP fallback');
+  };
+  document.head.appendChild(script);
+}
 
 // Инициализация после загрузки
 window.addEventListener('load', function() {
-  // Инициализация компонентов
-  initNavigation();
-  initDynamicYear();
-  initHeroVideo();
-  initFullscreenVideo();
-  initMagneticElements();
-  initOrphanControl();
-  // Диагностика: если ?nolenis — убедимся, что любые блокировки сняты
+  // Безопасная инициализация компонентов с обработкой ошибок
   try {
+    // Инициализация компонентов
+    initNavigation();
+    initDynamicYear();
+    initHeroVideo();
+    initFullscreenVideo();
+    initMagneticElements();
+    initOrphanControl();
+    
+    // Диагностика: если ?nolenis — убедимся, что любые блокировки сняты
     const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
     if (DISABLE_LENIS) {
       document.documentElement.classList.remove('preloader-active');
@@ -58,7 +96,14 @@ window.addEventListener('load', function() {
       document.documentElement.style.overflowY = 'auto';
       document.body.style.overflowY = 'auto';
     }
-  } catch(_) {}
+  } catch (error) {
+    console.error('[OOR] Window load error:', error);
+    // Гарантированно снимаем блокировки при ошибке
+    document.documentElement.classList.remove('preloader-active');
+    document.body.classList.remove('preloader-active');
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
+  }
 });
 
 // Preloader с реальной загрузкой
