@@ -584,6 +584,12 @@ function installScrollUnlockWatchdog() {
 
 // Магнетизм для кликабельных элементов
 function initMagneticElements() {
+  // Отключаем магнетизм на мобильных устройствах (≤1024px с запасом)
+  if (window.innerWidth <= 1024) {
+    console.log('[OOR] Magnetic elements disabled on mobile devices (width ≤1024px)');
+    return;
+  }
+  
   const magneticElements = document.querySelectorAll(`
     .oor-fullscreen-close,
     .oor-btn-small,

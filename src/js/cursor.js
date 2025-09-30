@@ -505,6 +505,12 @@
 
 // Cuberto Cursor Implementation using MouseFollower
 function initCursor() {
+  // Отключаем курсор на мобильных устройствах (≤1024px с запасом)
+  if (window.innerWidth <= 1024) {
+    console.log('[OOR] Cursor disabled on mobile devices (width ≤1024px)');
+    return;
+  }
+  
   // Проверяем, что MouseFollower доступен
   if (typeof MouseFollower === 'undefined') {
     console.error('[OOR] MouseFollower not loaded - cursor disabled');
