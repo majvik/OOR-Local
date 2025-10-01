@@ -37,6 +37,11 @@ const EXIT_PASS_MS         = 1300;  // задержка перед повтор�
 const EXIT_WHEEL_LOCK_MS  = 1300;  // время блокировки колеса мыши после выхода из слайдера
 const ACTIVATE_WHEN_VISIBLE= 0.995; // активируем слайдер когда секция видна на 99.5%
 
+// === ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ ПОВЕДЕНИЕМ НА РАЗНЫХ РАЗРЕШЕНИЯХ ===
+function shouldDisableSliderScrollCapture() {
+  return window.innerWidth < 1440;
+}
+
 
 // === НАСТРОЙКИ ГОРИЗОНТАЛЬНОЙ АНИМАЦИИ ===
 const H_EASE = 0.06;           // плавность движения слайдера (чем меньше, тем плавнее)
@@ -199,6 +204,10 @@ document.addEventListener('wheel', (e) => {
   const softAlign = softReenterAlign(dy, rect, vh);
   debugLog('wheel-early', { dy, softAlign, rectTop: rect.top, rectBottom: rect.bottom, vh, vis: vis });
   if (softAlign) {
+    // На разрешениях < 1440px не переключаем на горизонтальный скролл
+    if (shouldDisableSliderScrollCapture()) {
+      return;
+    }
     reenterGuard = null;             // немедленно отключаем защиту от повторного входа
     lastExitTs = 0;                  // сбрасываем задержку перед повторным захватом
     wheelLockUntil = now + 360;
@@ -499,8 +508,11 @@ function setState(next){
   pageState = next;
   debugLog('state', `${pageState} -> ${next}`);
   if (next === STATE.ACTIVE) {
-    setOverscrollContain(true);   // ← блокируем overscroll (резиновый эффект)
-    pauseLenis();
+    // На разрешениях < 1440px не блокируем скролл страницы
+    if (!shouldDisableSliderScrollCapture()) {
+      setOverscrollContain(true);   // ← блокируем overscroll (резиновый эффект)
+      pauseLenis();
+    }
     // При активации слайдера сразу показываем метаданные первого слайда
     if (!isMobile) {
       setMetaActive(0);
@@ -508,7 +520,9 @@ function setState(next){
   } else {
     lastExitTs = Date.now();
     // оставим contain включённым — выключим его после EXIT_PASS_MS в forceExit/smoothExit
-    resumeLenis();
+    if (!shouldDisableSliderScrollCapture()) {
+      resumeLenis();
+    }
     // При деактивации скрываем все метаданные
     if (!isMobile) {
       setMetaActive(-1);
@@ -607,6 +621,12 @@ function settleToSection(align /* 'start' | 'end' */) {
 // === МЯГКИЙ ПОДЪЕЗД — ВСЕГДА requestAnimationFrame, фиксированное время ===
 function approachToSection(align /* 'start' | 'end' */) {
   if (!sliderSection || approachInFlight) return;
+  
+  // На разрешениях < 1440px не переключаем на горизонтальный скролл
+  if (shouldDisableSliderScrollCapture()) {
+    return;
+  }
+  
   approachInFlight = true;
 
   let lenisStopped = false;
@@ -643,7 +663,17 @@ function approachToSection(align /* 'start' | 'end' */) {
     if (lenisStopped) window.lenis?.start?.();
 
     const { vis } = visibilityInfo();
-    if (vis >= ACTIVATE_WHEN_VISIBLE) setState(STATE.ACTIVE);
+    if (vis >= ACTIVATE_WHEN_VISIBLE) {
+      // На разрешениях < 1440px активируем слайдер без блокировки скролла
+      if (shouldDisableSliderScrollCapture()) {
+        pageState = STATE.ACTIVE;
+        if (!isMobile) {
+          setMetaActive(0);
+        }
+      } else {
+        setState(STATE.ACTIVE);
+      }
+    }
   })(startT);
 }
 
@@ -678,6 +708,10 @@ function setupWheel(){
       // --- МЯГКИЙ ПОВТОРНЫЙ ВХОД (ОБХОДИТ ВСЕ ЗАДЕРЖКИ) ---
       const softAlign2 = softReenterAlign(dy, rect, vh);
       if (softAlign2) {
+        // На разрешениях < 1440px не переключаем на горизонтальный скролл
+        if (shouldDisableSliderScrollCapture()) {
+          return;
+        }
         reenterGuard = null;    // отключаем защиту от повторного входа
         lastExitTs = 0;         // сбрасываем задержку после выхода
         e.preventDefault();
@@ -698,6 +732,10 @@ function setupWheel(){
   // --- АКТИВАЦИЯ ПОДХОДА К СЕКЦИИ ---
   if ((towards && (vis >= CAPTURE_ON_VIS || nearTop || nearBottom || intersecting)) &&
       (Date.now() - lastExitTs) >= EXIT_PASS_MS) {
+    // На разрешениях < 1440px не переключаем на горизонтальный скролл
+    if (shouldDisableSliderScrollCapture()) {
+      return;
+    }
     // Не блокируем колесо до момента, когда реально начнем подъезд — 
     // пусть страница сможет прокручиваться, если условия изменятся на следующем кадре
     const align = dy > 0 ? 'start' : 'end'; // определяем выравнивание по направлению
@@ -711,7 +749,18 @@ function setupWheel(){
           (Date.now() - lastExitTs) >= EXIT_PASS_MS) { // защиту уже проверили выше
         // активируем слайдер только когда реально движемся к секции
         const towards = (dy > 0 && rect.top > 0) || (dy < 0 && rect.bottom < vh);
-        if (towards) { debugLog('activate', { towards, vis }); setState(STATE.ACTIVE); }
+        if (towards) { 
+          debugLog('activate', { towards, vis }); 
+          // На разрешениях < 1440px активируем слайдер без блокировки скролла
+          if (shouldDisableSliderScrollCapture()) {
+            pageState = STATE.ACTIVE;
+            if (!isMobile) {
+              setMetaActive(0);
+            }
+          } else {
+            setState(STATE.ACTIVE);
+          }
+        }
       }
 
       return; // не блокируем страницу, если секция еще далеко
@@ -914,7 +963,10 @@ function setupWheel(){
         }
       }
 
-      e.preventDefault(); // блокируем стандартный скролл страницы
+      // На разрешениях < 1440px не блокируем скролл страницы
+      if (!shouldDisableSliderScrollCapture()) {
+        e.preventDefault(); // блокируем стандартный скролл страницы
+      }
       handleWheelHorizontal(planned, isTP); // обрабатываем горизонтальное движение слайдера
     }
   };
@@ -955,8 +1007,19 @@ function setupDesktopDrag(){
     const { vis } = visibilityInfo();
     if (pageState !== STATE.ACTIVE) {
       const canEnter = vis >= DRAG_VIS_TO_ENTER && (Date.now() - lastExitTs) > EXIT_PASS_MS;
-      if (canEnter) setState(STATE.ACTIVE);
-      else return;
+      if (canEnter) {
+        // На разрешениях < 1440px активируем слайдер без блокировки скролла
+        if (shouldDisableSliderScrollCapture()) {
+          pageState = STATE.ACTIVE;
+          if (!isMobile) {
+            setMetaActive(0);
+          }
+        } else {
+          setState(STATE.ACTIVE);
+        }
+      } else {
+        return;
+      }
     }
 
     isDragging = true; dragMoved = false; dragLocked = false;
@@ -980,7 +1043,10 @@ function setupDesktopDrag(){
     }
 
     target = clamp(dragStartTarget - dx, 0, maxScroll);
-    e.preventDefault();
+    // На разрешениях < 1440px не блокируем скролл страницы
+    if (!shouldDisableSliderScrollCapture()) {
+      e.preventDefault();
+    }
   };
 
   const endDrag = (e) => {
@@ -1156,11 +1222,17 @@ function setupIOApproachFallback(){
       if (vis >= 0.5) {
         const align = (dir === 'down') ? 'start' : 'end';
         debugLog('io-approach', { align });
-        approachToSection(align);
+        // На разрешениях < 1440px не переключаем на горизонтальный скролл
+        if (!shouldDisableSliderScrollCapture()) {
+          approachToSection(align);
+        }
       } else if (Math.abs(rect.top) <= NEAR_PX) {
         const align = rect.top >= 0 ? 'start' : 'end';
         debugLog('io-near', { align });
-        approachToSection(align);
+        // На разрешениях < 1440px не переключаем на горизонтальный скролл
+        if (!shouldDisableSliderScrollCapture()) {
+          approachToSection(align);
+        }
       }
     }
   }, { root: null, rootMargin: "0px", threshold: [0, 0.25, 0.5, 0.75, 1] });
@@ -1520,7 +1592,15 @@ window.addEventListener('resize', () => {
           setTimeout(() => {
             const { vis } = visibilityInfo();
             if (vis >= ACTIVATE_WHEN_VISIBLE) {
-              setState(STATE.ACTIVE);
+              // На разрешениях < 1440px активируем слайдер без блокировки скролла
+              if (shouldDisableSliderScrollCapture()) {
+                pageState = STATE.ACTIVE;
+                if (!isMobile) {
+                  setMetaActive(0);
+                }
+              } else {
+                setState(STATE.ACTIVE);
+              }
             }
           }, 100);
         }
