@@ -19,15 +19,7 @@ class MobileMenu {
       return;
     }
     
-    this.createOverlay();
     this.bindEvents();
-  }
-  
-  createOverlay() {
-    // Создаем оверлей для мобильного меню
-    this.overlay = document.createElement('div');
-    this.overlay.className = 'oor-mobile-menu-overlay';
-    document.body.appendChild(this.overlay);
   }
   
   bindEvents() {
@@ -41,10 +33,6 @@ class MobileMenu {
       this.closeMenu();
     });
     
-    // Закрытие по клику на оверлей
-    this.overlay.addEventListener('click', () => {
-      this.closeMenu();
-    });
     
     // Закрытие по Escape
     document.addEventListener('keydown', (e) => {
@@ -66,7 +54,6 @@ class MobileMenu {
     
     this.isOpen = true;
     this.mobileMenu.classList.add('active');
-    this.overlay.classList.add('active');
     
     // Блокируем скролл страницы
     document.body.style.overflow = 'hidden';
@@ -85,13 +72,12 @@ class MobileMenu {
     
     this.isOpen = false;
     this.mobileMenu.classList.remove('active');
-    this.overlay.classList.remove('active');
     
     // Разблокируем скролл страницы
     document.body.style.overflow = '';
     
     // Анимация исчезновения
-    this.mobileMenu.style.right = window.innerWidth <= 768 ? '-100%' : '-360px';
+    this.mobileMenu.style.right = window.innerWidth <= 425 ? '-100%' : '-360px';
     
     // Уведомляем другие компоненты о закрытии меню
     window.dispatchEvent(new CustomEvent('mobileMenuClose'));
@@ -111,9 +97,7 @@ class MobileMenu {
   }
   
   destroy() {
-    if (this.overlay && this.overlay.parentNode) {
-      this.overlay.parentNode.removeChild(this.overlay);
-    }
+    // Очистка при необходимости
   }
 }
 

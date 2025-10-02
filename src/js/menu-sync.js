@@ -107,9 +107,9 @@ class MenuSync {
     mobileLinks.forEach(link => {
       const linkMenuItem = link.getAttribute('data-menu-item');
       if (linkMenuItem === menuItem) {
-        link.classList.add('active');
+        link.classList.add('oor-mobile-menu-link--active');
       } else {
-        link.classList.remove('active');
+        link.classList.remove('oor-mobile-menu-link--active');
       }
     });
   }
