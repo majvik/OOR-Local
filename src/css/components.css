@@ -2387,6 +2387,13 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   }
 }
 
+/* Стили для экранов меньше 1440px - уменьшаем font-size для merch description */
+@media (max-width: 1439px) {
+  .oor-merch-description {
+    font-size: 1.250rem; /* Уменьшаем с 1.500rem до 1.250rem */
+  }
+}
+
 /* Десктопные стили - скрываем бургер, показываем обычное меню */
 @media (min-width: 1025px) {
   .oor-burger-menu {
