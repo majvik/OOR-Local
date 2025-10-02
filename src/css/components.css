@@ -235,7 +235,7 @@ body::-webkit-scrollbar {
 .current-menu-item .oor-nav-link,
 .current_page_item .oor-nav-link,
 .current-menu-ancestor .oor-nav-link {
-  /* WordPress автоматически добавит эти классы */
+  color: var(--color-accent);
 }
 
 /* Скобки для всех активных состояний */
@@ -2081,6 +2081,74 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   letter-spacing: -0.280rem;
   text-transform: uppercase;
   opacity: 0.1;
+}
+
+/* Мобильная адаптация футера */
+@media (max-width: 1024px) {
+  .oor-footer {
+    padding: 60px 24px 20px 24px;
+    gap: 60px;
+  }
+  
+  .oor-footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 120px;
+  }
+  
+  .oor-footer-content-left {
+    width: 100%;
+    gap: 40px;
+  }
+  
+  .oor-footer-logo {
+    width: fit-content;
+  }
+  
+  .oor-footer-logo-image {
+    width: auto;
+    height: auto;
+  }
+  
+  .oor-footer-links {
+    width: 100%;
+    gap: 40px;
+  }
+  
+  .oor-footer-links-top-group {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  
+  .oor-footer-links-bottom-group {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  
+  .oor-footer-privacy {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .oor-footer-privacy-left {
+    flex-direction: row;
+    gap: 24px;
+  }
+  
+  .oor-footer-copyright {
+    text-align: left;
+    font-size: 2.5rem;
+  }
+  
+  /* Hero секция - выравниваем year по низу title с отступом 8px */
+  .oor-hero-title-block {
+    align-items: flex-end;
+  }
+  
+  .oor-hero-year {
+    margin-bottom: 16px;
+  }
 }
 
 /* UPPERCASE стили для заголовков */
