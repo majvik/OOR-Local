@@ -256,8 +256,8 @@ a.slide-media:hover {
     padding-left: var(--mobile-gap);  /* отступ слева = межслайдовому отступу */
     padding-right: 0;                 /* справа оставляем превью второго слайда */
     gap: 0; /* избегаем глюков gap при transform на iOS */
-    /* Разрешаем вертикальную прокрутку браузером, горизонталь обрабатываем жестом */
-    touch-action: pan-y;
+    /* Разрешаем и вертикальную, и горизонтальную прокрутку для touch событий */
+    touch-action: pan-x pan-y;
     align-items: flex-start;          /* контент прижат к верху */
     height: auto;
   }

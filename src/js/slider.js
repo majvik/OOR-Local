@@ -286,22 +286,26 @@ function initSlider() {
   console.log(`[SLIDER DEBUG] initSlider: isMobile=${isMobile}, width=${window.innerWidth}`);
   updateMaxScroll();           // обновляем максимальную прокрутку слайдера
   
-  if (!isMobile) {
-    console.log(`[SLIDER DEBUG] initSlider: Setting up desktop handlers`);
-    // Только для десктопа: настройка колеса мыши и перетаскивания
+  if (isMobile) {
+    console.log(`[SLIDER DEBUG] initSlider: Setting up mobile handlers (≤768px)`);
+    // Для мобильных: настройка touch событий + drag для совместимости
+    setupMobileTouch();
+    setupDesktopDrag(); // Добавляем drag для совместимости с респонзивом
+    
+    // На мобильном убеждаемся, что все метаданные видны
+    slides.forEach(s => s.classList.remove('meta-active'));
+  } else {
+    console.log(`[SLIDER DEBUG] initSlider: Setting up desktop handlers (>768px)`);
+    // Для всех не-мобильных устройств: настройка колеса мыши и перетаскивания
     setupWheel();
     setupDesktopDrag();
     if (sliderWrapper) sliderWrapper.style.cursor = 'grab';
     
     // Принудительно скрываем все метаданные при инициализации на десктопе
     setMetaActive(-1);
-  } else {
-    console.log(`[SLIDER DEBUG] initSlider: Setting up mobile handlers`);
-    // Только для мобильных: настройка touch событий
-    setupMobileTouch();
     
-    // На мобильном убеждаемся, что все метаданные видны
-    slides.forEach(s => s.classList.remove('meta-active'));
+    // Настраиваем touch события для всех разрешений для респонзивности
+    setupMobileTouch();
   }
   
   injectSlideMeta();           // добавляем метаданные к слайдам
@@ -693,16 +697,26 @@ function approachToSection(align /* 'start' | 'end' */) {
 var wheelHandler = null;
 
 function setupWheel(){
-  if (isMobile) return; // пропускаем на мобильных устройствах
+  if (isMobile) return;
+  console.log(`[SLIDER DEBUG] setupWheel: Setting up wheel handler (width: ${window.innerWidth})`); // пропускаем на мобильных устройствах
   
   // Очищаем предыдущий обработчик если он есть
   clearWheel();
 
   wheelHandler = (e) => {
+    console.log(`[SLIDER DEBUG] wheelHandler: deltaY=${e.deltaY}, pageState=${pageState}, isMobile=${isMobile}, width=${window.innerWidth}`);
+    
+    // На разрешениях < 1440px не обрабатываем wheel события вообще
+    if (shouldDisableSliderScrollCapture()) {
+      console.log(`[SLIDER DEBUG] wheelHandler: Disabled on < 1440px, returning`);
+      return;
+    }
+    
     const now = performance.now();
 
     // --- БЛОКИРОВКА КОЛЕСА ВО ВРЕМЯ АНИМАЦИЙ ---
     if (isSettling || approachInFlight || now < wheelLockUntil) {
+      console.log(`[SLIDER DEBUG] wheelHandler: Blocked during animation - isSettling=${isSettling}, approachInFlight=${approachInFlight}, wheelLockUntil=${wheelLockUntil}`);
       e.preventDefault();
       return;
     }
@@ -1008,6 +1022,7 @@ var desktopDragHandlers = [];
 
 function setupDesktopDrag(){
   if (!sliderWrapper) return; // выходим если нет обертки слайдера
+  console.log(`[SLIDER DEBUG] setupDesktopDrag: Setting up drag handlers (width: ${window.innerWidth})`);
   
   // Очищаем предыдущие обработчики если они есть
   clearDesktopDrag();
@@ -1019,8 +1034,10 @@ function setupDesktopDrag(){
 
     const { vis } = visibilityInfo();
     if (pageState !== STATE.ACTIVE) {
-      const canEnter = vis >= DRAG_VIS_TO_ENTER && (Date.now() - lastExitTs) > EXIT_PASS_MS;
-      console.log(`[SLIDER DEBUG] pointerDownHandler: canEnter=${canEnter}, vis=${vis}, lastExitTs=${Date.now() - lastExitTs}`);
+      // На разрешениях < 1440px снижаем требования к видимости для активации
+      const minVis = shouldDisableSliderScrollCapture() ? 0.5 : DRAG_VIS_TO_ENTER;
+      const canEnter = vis >= minVis && (Date.now() - lastExitTs) > EXIT_PASS_MS;
+      console.log(`[SLIDER DEBUG] pointerDownHandler: canEnter=${canEnter}, vis=${vis}, minVis=${minVis}, lastExitTs=${Date.now() - lastExitTs}`);
       if (canEnter) {
         // На разрешениях < 1440px активируем слайдер без блокировки скролла
         if (shouldDisableSliderScrollCapture()) {
@@ -1039,7 +1056,9 @@ function setupDesktopDrag(){
       }
     }
 
-    isDragging = true; dragMoved = false; dragLocked = false;
+    isDragging = true; dragMoved = false; 
+    // Не сбрасываем dragLocked при новом pointerDown - сохраняем состояние
+    if (!dragLocked) dragLocked = false;
     dragStartX = e.clientX; dragStartY = e.clientY; dragStartTarget = target;
 
     try { sliderWrapper.setPointerCapture(e.pointerId); } catch(_) {}
@@ -1049,14 +1068,29 @@ function setupDesktopDrag(){
   };
 
   const pointerMoveHandler = (e) => {
-    if (!isDragging) return;
+    if (!isDragging) {
+      console.log(`[SLIDER DEBUG] pointerMoveHandler: Not dragging, returning`);
+      return;
+    }
     const dx = e.clientX - dragStartX;
     const dy = e.clientY - dragStartY;
-    if (!dragMoved && Math.abs(dx) >= DRAG_MIN_DELTA_PX) dragMoved = true;
+    console.log(`[SLIDER DEBUG] pointerMoveHandler: dx=${dx}, dy=${dy}, isDragging=${isDragging}, dragLocked=${dragLocked}, DRAG_MIN_DELTA_PX=${DRAG_MIN_DELTA_PX}`);
+    
+    if (!dragMoved && Math.abs(dx) >= DRAG_MIN_DELTA_PX) {
+      dragMoved = true;
+      console.log(`[SLIDER DEBUG] pointerMoveHandler: Drag moved set to true`);
+    }
 
     if (!dragLocked) {
-      if (Math.abs(dx) > DRAG_AXIS_LOCK_K * Math.abs(dy)) dragLocked = true;
-      else return;
+      const axisCheck = Math.abs(dx) > DRAG_AXIS_LOCK_K * Math.abs(dy);
+      console.log(`[SLIDER DEBUG] pointerMoveHandler: Axis check - absDx=${Math.abs(dx)}, absDy=${Math.abs(dy)}, DRAG_AXIS_LOCK_K=${DRAG_AXIS_LOCK_K}, axisCheck=${axisCheck}`);
+      if (axisCheck) {
+        dragLocked = true;
+        console.log(`[SLIDER DEBUG] pointerMoveHandler: Drag locked horizontally`);
+      } else {
+        console.log(`[SLIDER DEBUG] pointerMoveHandler: Not horizontal enough, returning`);
+        return;
+      }
     }
 
     target = clamp(dragStartTarget - dx, 0, maxScroll);
@@ -1067,6 +1101,7 @@ function setupDesktopDrag(){
   };
 
   const endDrag = (e) => {
+    console.log(`[SLIDER DEBUG] endDrag: isDragging=${isDragging}, dragMoved=${dragMoved}, dragLocked=${dragLocked}`);
     if (!isDragging) return;
     isDragging = false;
 
@@ -1124,13 +1159,28 @@ function clearDesktopDrag() {
 var mobileTouchHandlers = [];
 
 function setupMobileTouch(){
-  if (!sliderWrapper) return;
+  if (!sliderWrapper) {
+    console.log(`[SLIDER DEBUG] setupMobileTouch: sliderWrapper not found!`);
+    return;
+  }
+  console.log(`[SLIDER DEBUG] setupMobileTouch: Setting up touch handlers (width: ${window.innerWidth})`);
+  console.log(`[SLIDER DEBUG] setupMobileTouch: sliderWrapper found:`, sliderWrapper);
+  console.log(`[SLIDER DEBUG] setupMobileTouch: Environment check - isInIframe: ${window !== window.top}, userAgent: ${navigator.userAgent}`);
   
   // Очищаем предыдущие обработчики если они есть
   clearMobileTouch();
 
   const touchStartHandler = (e) => {
-    console.log(`[SLIDER DEBUG] touchStartHandler: touches=${e.touches.length}, width=${window.innerWidth}`);
+    console.log(`[SLIDER DEBUG] touchStartHandler: touches=${e.touches.length}, width=${window.innerWidth}, isMobile=${isMobile}`);
+    
+    // Если уже идет drag, не обрабатываем touch
+    if (isDragging) {
+      console.log(`[SLIDER DEBUG] touchStartHandler: Drag in progress, skipping touch`);
+      return;
+    }
+    
+    console.log(`[SLIDER DEBUG] touchStartHandler: Processing touch event`);
+    
     // Отменяем авто-дотяг если он активен
     if (autoSnap && autoSnap.active) cancelAutoSnap();
     
@@ -1148,6 +1198,14 @@ function setupMobileTouch(){
   };
 
   const touchMoveHandler = (e) => {
+    // Если уже идет drag, не обрабатываем touch
+    if (isDragging) {
+      console.log(`[SLIDER DEBUG] touchMoveHandler: Drag in progress, skipping touch`);
+      return;
+    }
+    
+    console.log(`[SLIDER DEBUG] touchMoveHandler: Processing touch move`);
+    
     const t = e.touches[0];
     const dx = t.clientX - tStartX;
     const dy = t.clientY - tStartY;
@@ -1177,8 +1235,18 @@ function setupMobileTouch(){
   };
 
   const touchEndHandler = () => {
+    // Если уже идет drag, не обрабатываем touch
+    if (isDragging) {
+      console.log(`[SLIDER DEBUG] touchEndHandler: Drag in progress, skipping touch`);
+      return;
+    }
+    
+    console.log(`[SLIDER DEBUG] touchEndHandler: Processing touch end, touchHoriz=${touchHoriz}, hasHorizontalSwipe=${hasHorizontalSwipe}, width=${window.innerWidth}`);
     // Only act when a horizontal swipe occurred; otherwise, preserve vertical scroll behavior
-    if (!touchHoriz || !hasHorizontalSwipe) return;
+    if (!touchHoriz || !hasHorizontalSwipe) {
+      console.log(`[SLIDER DEBUG] touchEndHandler: Not horizontal swipe, returning`);
+      return;
+    }
     
     // Снаппим к ближайшему слайду
     const step = getMobileStep();
@@ -1192,6 +1260,7 @@ function setupMobileTouch(){
   sliderWrapper.addEventListener('touchstart', touchStartHandler, { passive: true });
   sliderWrapper.addEventListener('touchmove', touchMoveHandler, { passive: true });
   sliderWrapper.addEventListener('touchend', touchEndHandler);
+  
 
   // Сохраняем ссылки для последующего удаления
   mobileTouchHandlers = [
@@ -1462,8 +1531,12 @@ window.addEventListener('resize', () => {
     isMobile = isMobileDevice(); // обновляем определение мобильного устройства
     console.log(`[SLIDER DEBUG] resize timeout: wasMobile=${wasMobile}, isMobile=${isMobile}, width=${window.innerWidth}`);
     
-    // Если изменился тип устройства, полностью перестраиваем логику
-    if (wasMobile !== isMobile) {
+    // Если изменился тип устройства или разрешение, перестраиваем логику
+    const currentWidth = window.innerWidth;
+    const wasTablet = !wasMobile && currentWidth < 1440;
+    const isTablet = !isMobile && currentWidth < 1440;
+    
+    if (wasMobile !== isMobile || wasTablet !== isTablet) {
       // Сначала очищаем все существующие обработчики
       if (wasMobile) {
         // Переключаемся с мобильного на десктоп
@@ -1630,6 +1703,36 @@ window.addEventListener('resize', () => {
         
         // Всегда сбрасываем блокировку скролла при переключении на мобильный режим
         setOverscrollContain(false);
+      }
+      
+      // Дополнительная логика для планшетов (768px < width < 1440px)
+      if (isTablet) {
+        console.log(`[SLIDER DEBUG] resize: Setting up tablet handlers with both drag and touch`);
+        // Очищаем все обработчики
+        clearWheel();
+        clearDesktopDrag();
+        clearMobileTouch();
+        
+        // Настраиваем все типы событий для планшетов (для респонзивности)
+        setupWheel();
+        setupDesktopDrag();
+        setupMobileTouch();
+        
+        if (sliderWrapper) {
+          sliderWrapper.style.cursor = 'grab';
+        }
+        
+        // Настраиваем метаданные
+        if (pageState === STATE.ACTIVE) {
+          const idx = getCurrentSlideIndex();
+          setMetaActive(Math.max(0, Math.min(idx, slides.length - 1)));
+        } else {
+          setMetaActive(-1);
+        }
+        
+        // Обновляем визуальные эффекты
+        updateSlideFX();
+        updateSlideMetaVisibility();
       }
     }
     
