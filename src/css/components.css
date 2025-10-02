@@ -719,18 +719,20 @@ body.preloader-active{
 .oor-musical-association-left {
   display: flex;
   flex-direction: column;
-  gap: 80px;
-  padding: 0;
+  gap: 40px;
+  padding: 40px 0;
   margin: 0;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: space-between;
   text-align: left;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .oor-musical-association-right {
   display: flex;
   height: 100vh;
-  padding: 0;
+  padding: 40px 0;
   margin: 0;
   align-items: center;
   gap: 10px;
@@ -739,6 +741,7 @@ body.preloader-active{
   background-position: left center;
   background-repeat: no-repeat;
   position: relative;
+  box-sizing: border-box;
 }
 
 .oor-section-number {
@@ -809,7 +812,7 @@ body.preloader-active{
 .oor-musical-association-plus {
   position: absolute;
   right: 48px;
-  bottom: 80px;
+  bottom: 40px;
   width: 17px;
   height: 17px;
   z-index: 10;
