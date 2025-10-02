@@ -288,8 +288,9 @@ function initSlider() {
   
   if (isMobile) {
     console.log(`[SLIDER DEBUG] initSlider: Setting up mobile handlers (≤768px)`);
-    // Для мобильных: только touch события
+    // Для мобильных: touch + drag для совместимости
     setupMobileTouch();
+    setupDesktopDrag();
     
     // На мобильном убеждаемся, что все метаданные видны
     slides.forEach(s => s.classList.remove('meta-active'));
@@ -303,11 +304,8 @@ function initSlider() {
     // Принудительно скрываем все метаданные при инициализации на десктопе
     setMetaActive(-1);
     
-    // Настраиваем touch события только для планшетов (768px < width < 1440px)
-    if (window.innerWidth < 1440) {
-      console.log(`[SLIDER DEBUG] initSlider: Setting up tablet touch handlers`);
-      setupMobileTouch();
-    }
+    // Настраиваем touch события для всех разрешений для респонзивности
+    setupMobileTouch();
   }
   
   injectSlideMeta();           // добавляем метаданные к слайдам
@@ -1181,10 +1179,10 @@ function setupMobileTouch(){
       return;
     }
     
-    // На десктопах (≥1440px) не обрабатываем touch события
+    // На десктопах (≥1440px) приоритет у drag событий
     if (!isMobile && window.innerWidth >= 1440) {
-      console.log(`[SLIDER DEBUG] touchStartHandler: Skipping touch on desktop (≥1440px)`);
-      return;
+      console.log(`[SLIDER DEBUG] touchStartHandler: Desktop detected, drag has priority`);
+      // Не возвращаемся сразу, но даем приоритет drag событиям
     }
     
     console.log(`[SLIDER DEBUG] touchStartHandler: Processing touch event`);
@@ -1212,10 +1210,10 @@ function setupMobileTouch(){
       return;
     }
     
-    // На десктопах (≥1440px) не обрабатываем touch события
+    // На десктопах (≥1440px) приоритет у drag событий
     if (!isMobile && window.innerWidth >= 1440) {
-      console.log(`[SLIDER DEBUG] touchMoveHandler: Skipping touch on desktop (≥1440px)`);
-      return;
+      console.log(`[SLIDER DEBUG] touchMoveHandler: Desktop detected, drag has priority`);
+      // Не возвращаемся сразу, но даем приоритет drag событиям
     }
     
     console.log(`[SLIDER DEBUG] touchMoveHandler: Processing touch move`);
@@ -1255,10 +1253,10 @@ function setupMobileTouch(){
       return;
     }
     
-    // На десктопах (≥1440px) не обрабатываем touch события
+    // На десктопах (≥1440px) приоритет у drag событий
     if (!isMobile && window.innerWidth >= 1440) {
-      console.log(`[SLIDER DEBUG] touchEndHandler: Skipping touch on desktop (≥1440px)`);
-      return;
+      console.log(`[SLIDER DEBUG] touchEndHandler: Desktop detected, drag has priority`);
+      // Не возвращаемся сразу, но даем приоритет drag событиям
     }
     
     console.log(`[SLIDER DEBUG] touchEndHandler: Processing touch end, touchHoriz=${touchHoriz}, hasHorizontalSwipe=${hasHorizontalSwipe}, width=${window.innerWidth}`);
@@ -1745,13 +1743,8 @@ window.addEventListener('resize', () => {
       
       // Дополнительная логика для планшетов (768px < width < 1440px)
       if (isTablet) {
-        console.log(`[SLIDER DEBUG] resize: Setting up tablet handlers with drag and touch`);
-        // Очищаем все обработчики
-        clearWheel();
-        clearDesktopDrag();
-        clearMobileTouch();
-        
-        // Настраиваем только нужные события для планшетов
+        console.log(`[SLIDER DEBUG] resize: Setting up tablet handlers with all events`);
+        // Настраиваем все события для планшетов (для респонзивности)
         setupWheel();
         setupDesktopDrag();
         setupMobileTouch();
