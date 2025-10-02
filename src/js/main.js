@@ -177,7 +177,7 @@ function initPreloader() {
     progress = Math.round((actualProgress / totalResources) * 100);
     percentElement.textContent = progress;
 
-    console.log(`Preloader: ${loadedResources}/${totalResources} (${progress}%)`);
+    // console.log(`Preloader: ${loadedResources}/${totalResources} (${progress}%)`);
 
     if (loadedResources >= totalResources) {
       // Завершаем прелоадер сразу при достижении 100%
@@ -755,7 +755,7 @@ function preventOrphans(element) {
     // Заменяем последний пробел на неразрывный пробел
     const newText = text.replace(/\s+$/, '\u00A0');
     element.textContent = newText;
-    console.log('Orphan control applied:', element.className, '->', newText);
+    // console.log('Orphan control applied:', element.className, '->', newText);
   }
   
   // Дополнительная проверка: если последние два слова короткие, связываем их
@@ -765,7 +765,7 @@ function preventOrphans(element) {
       const textWithoutLastTwo = words.slice(0, -2).join(' ');
       const lastTwoJoined = lastTwoWords.join('\u00A0');
       element.textContent = textWithoutLastTwo + ' ' + lastTwoJoined;
-      console.log('Orphan control applied (two words):', element.className, '->', textWithoutLastTwo + ' ' + lastTwoJoined);
+      // console.log('Orphan control applied (two words):', element.className, '->', textWithoutLastTwo + ' ' + lastTwoJoined);
     }
   }
 }
