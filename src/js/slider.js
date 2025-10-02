@@ -39,7 +39,9 @@ const ACTIVATE_WHEN_VISIBLE= 0.995; // активируем слайдер ко�
 
 // === ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ ПОВЕДЕНИЕМ НА РАЗНЫХ РАЗРЕШЕНИЯХ ===
 function shouldDisableSliderScrollCapture() {
-  return window.innerWidth < 1440;
+  const result = window.innerWidth < 1440;
+  console.log(`[SLIDER DEBUG] shouldDisableSliderScrollCapture: ${result} (width: ${window.innerWidth})`);
+  return result;
 }
 
 
@@ -281,9 +283,11 @@ if (document.readyState === 'loading') {
 function disableStaticSnapCSS() { /* noop in embed */ }
 
 function initSlider() {
+  console.log(`[SLIDER DEBUG] initSlider: isMobile=${isMobile}, width=${window.innerWidth}`);
   updateMaxScroll();           // обновляем максимальную прокрутку слайдера
   
   if (!isMobile) {
+    console.log(`[SLIDER DEBUG] initSlider: Setting up desktop handlers`);
     // Только для десктопа: настройка колеса мыши и перетаскивания
     setupWheel();
     setupDesktopDrag();
@@ -292,6 +296,7 @@ function initSlider() {
     // Принудительно скрываем все метаданные при инициализации на десктопе
     setMetaActive(-1);
   } else {
+    console.log(`[SLIDER DEBUG] initSlider: Setting up mobile handlers`);
     // Только для мобильных: настройка touch событий
     setupMobileTouch();
     
@@ -505,13 +510,17 @@ function cancelAutoSnap(){ autoSnap.active = false; }
 function setState(next){
   if (pageState === next) return;
   
+  console.log(`[SLIDER DEBUG] setState: ${pageState} -> ${next} (width: ${window.innerWidth})`);
   pageState = next;
   debugLog('state', `${pageState} -> ${next}`);
   if (next === STATE.ACTIVE) {
     // На разрешениях < 1440px не блокируем скролл страницы
     if (!shouldDisableSliderScrollCapture()) {
+      console.log(`[SLIDER DEBUG] setState: Blocking scroll (width: ${window.innerWidth})`);
       setOverscrollContain(true);   // ← блокируем overscroll (резиновый эффект)
       pauseLenis();
+    } else {
+      console.log(`[SLIDER DEBUG] setState: NOT blocking scroll (width: ${window.innerWidth})`);
     }
     // При активации слайдера сразу показываем метаданные первого слайда
     if (!isMobile) {
@@ -521,7 +530,10 @@ function setState(next){
     lastExitTs = Date.now();
     // оставим contain включённым — выключим его после EXIT_PASS_MS в forceExit/smoothExit
     if (!shouldDisableSliderScrollCapture()) {
+      console.log(`[SLIDER DEBUG] setState: Resuming Lenis (width: ${window.innerWidth})`);
       resumeLenis();
+    } else {
+      console.log(`[SLIDER DEBUG] setState: NOT resuming Lenis (width: ${window.innerWidth})`);
     }
     // При деактивации скрываем все метаданные
     if (!isMobile) {
@@ -1001,23 +1013,28 @@ function setupDesktopDrag(){
   clearDesktopDrag();
 
   const pointerDownHandler = (e) => {
+    console.log(`[SLIDER DEBUG] pointerDownHandler: button=${e.button}, pageState=${pageState}, width=${window.innerWidth}`);
     if (e.button !== 0) return;
     if (autoSnap.active) cancelAutoSnap();
 
     const { vis } = visibilityInfo();
     if (pageState !== STATE.ACTIVE) {
       const canEnter = vis >= DRAG_VIS_TO_ENTER && (Date.now() - lastExitTs) > EXIT_PASS_MS;
+      console.log(`[SLIDER DEBUG] pointerDownHandler: canEnter=${canEnter}, vis=${vis}, lastExitTs=${Date.now() - lastExitTs}`);
       if (canEnter) {
         // На разрешениях < 1440px активируем слайдер без блокировки скролла
         if (shouldDisableSliderScrollCapture()) {
+          console.log(`[SLIDER DEBUG] pointerDownHandler: Activating slider without scroll blocking`);
           pageState = STATE.ACTIVE;
           if (!isMobile) {
             setMetaActive(0);
           }
         } else {
+          console.log(`[SLIDER DEBUG] pointerDownHandler: Activating slider with scroll blocking`);
           setState(STATE.ACTIVE);
         }
       } else {
+        console.log(`[SLIDER DEBUG] pointerDownHandler: Cannot enter, returning`);
         return;
       }
     }
@@ -1113,6 +1130,7 @@ function setupMobileTouch(){
   clearMobileTouch();
 
   const touchStartHandler = (e) => {
+    console.log(`[SLIDER DEBUG] touchStartHandler: touches=${e.touches.length}, width=${window.innerWidth}`);
     // Отменяем авто-дотяг если он активен
     if (autoSnap && autoSnap.active) cancelAutoSnap();
     
@@ -1139,7 +1157,10 @@ function setupMobileTouch(){
     const absDy = Math.abs(dy);
     const horizontalDominant = absDx > absDy && absDx > 8;
 
+    console.log(`[SLIDER DEBUG] touchMoveHandler: dx=${dx}, dy=${dy}, absDx=${absDx}, absDy=${absDy}, horizontalDominant=${horizontalDominant}`);
+
     if (!horizontalDominant) {
+      console.log(`[SLIDER DEBUG] touchMoveHandler: Not horizontal dominant, returning`);
       return; // let the browser handle vertical scrolling naturally
     }
 
@@ -1433,11 +1454,13 @@ function hydrateImageAspectRatios(){
 // === ОБРАБОТКА ИЗМЕНЕНИЯ РАЗМЕРА ОКНА ===
 let resizeTimeout;
 window.addEventListener('resize', () => {
+  console.log(`[SLIDER DEBUG] resize: width=${window.innerWidth}, isMobile=${isMobile}`);
   // Debounce resize события для оптимизации производительности
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
     const wasMobile = isMobile;
     isMobile = isMobileDevice(); // обновляем определение мобильного устройства
+    console.log(`[SLIDER DEBUG] resize timeout: wasMobile=${wasMobile}, isMobile=${isMobile}, width=${window.innerWidth}`);
     
     // Если изменился тип устройства, полностью перестраиваем логику
     if (wasMobile !== isMobile) {
