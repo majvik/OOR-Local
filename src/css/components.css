@@ -446,7 +446,7 @@ body::-webkit-scrollbar {
 .oor-fullscreen-close{
   position:absolute;
   top:48px;
-  right:48px;
+  right:var(--container-x);
   background:transparent;
   border:none;
   cursor:pointer;
@@ -535,7 +535,7 @@ body::-webkit-scrollbar {
 }
 
 .oor-hero-plus-top-right{
-  right:48px;
+  right:var(--container-x);
   top:80px;
 }
 
@@ -545,7 +545,7 @@ body::-webkit-scrollbar {
 }
 
 .oor-hero-plus-bottom-right{
-  right:48px;
+  right:var(--container-x);
   bottom:80px;
 }
 
@@ -713,7 +713,7 @@ body.preloader-active{
 .oor-musical-association {
   background: var(--color-white);
   min-height: 100vh;
-  padding-left: 48px;
+  padding-left: var(--container-x);
 }
 
 .oor-musical-association-left {
@@ -811,7 +811,7 @@ body.preloader-active{
 
 .oor-musical-association-plus {
   position: absolute;
-  right: 48px;
+  right: var(--container-x);
   bottom: 40px;
   width: 17px;
   height: 17px;
@@ -843,7 +843,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 .oor-challenge-section {
     display: flex;
     width: 100%;
-    padding: 80px 48px;
+    padding: 80px var(--container-x);
     align-items: center;
     background: #000;
     gap: 0;
@@ -1071,7 +1071,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 /* ===== CHALLENGE TO THE USUAL 2 SECTION ===== */
 .oor-challenge-2-section {
   background: #000;
-  padding: 160px 48px 104px 48px;
+  padding: 160px var(--container-x) 104px var(--container-x);
   position: relative;
 }
 
@@ -1091,7 +1091,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-challenge-2-plus-1 {
   position: absolute;
-  right: 48px;
+  right: var(--container-x);
   top: 80px;
   width: 17px;
   height: 17px;
@@ -1105,7 +1105,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-challenge-2-plus-2 {
   position: absolute;
-  right: 48px;
+  right: var(--container-x);
   bottom: 80px;
   width: 17px;
   height: 17px;
@@ -1310,7 +1310,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-out-of-talk-text {
   display: flex;
-  padding: 80px 48px 0 48px;
+  padding: 80px var(--container-x) 0 var(--container-x);
   align-items: flex-start;
   align-self: stretch;
 }
@@ -1319,7 +1319,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   display: grid;
   grid-template-columns: 3fr 9fr;
   gap: 80px;
-  padding: 120px 0 0 48px;
+  padding: 120px 0 0 var(--container-x);
   align-items: stretch;
   align-self: stretch;
 }
@@ -1461,7 +1461,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-events-text {
   display: flex;
-  padding: 80px 48px 0 48px;
+  padding: 80px var(--container-x) 0 var(--container-x);
   align-items: flex-start;
   align-self: stretch;
 }
@@ -1469,7 +1469,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 .oor-events-media {
   display: grid;
   grid-template-columns: 7fr 2fr 3fr;
-  padding: 80px 48px;
+  padding: 80px var(--container-x);
   align-items: stretch;
   width: 100%;
 }
@@ -1685,7 +1685,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 .oor-merch-text {
   display: grid;
   grid-template-columns: 3fr 2fr 5fr;
-  padding: 120px 48px 0 48px;
+  padding: 120px var(--container-x) 0 var(--container-x);
   align-items: stretch;
   width: 100%;
 }
@@ -1700,7 +1700,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 /* Merch Images Flex */
 .oor-merch-images-grid {
-  padding: 120px 48px 0 48px;
+  padding: 120px var(--container-x) 0 var(--container-x);
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -1866,16 +1866,16 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 /* Desktop only styles for slider overlay */
 @media (min-width: 769px) {
   .overlay-top {
-    padding-left: 48px;
+    padding-left: var(--container-x);
     padding-top: 80px;
   }
   
   .overlay-center {
-    padding-left: 48px;
+    padding-left: var(--container-x);
   }
   
   .overlay-bottom {
-    padding-left: 48px;
+    padding-left: var(--container-x);
     padding-bottom: 80px;
   }
 }
@@ -1909,7 +1909,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 .oor-footer {
   display: flex;
   width: 100%;
-  padding: 120px 48px 40px 48px;
+  padding: 120px var(--container-x) 40px var(--container-x);
   flex-direction: column;
   align-items: flex-start;
   gap: 120px;
@@ -2089,7 +2089,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 /* Мобильная адаптация футера */
 @media (max-width: 1024px) {
   .oor-footer {
-    padding: 60px 24px 20px 24px;
+    padding: 60px var(--container-x) 20px var(--container-x);
     gap: 60px;
   }
   
@@ -2163,8 +2163,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   }
   
   /* Показываем бургер-меню */
-  .oor-burger-menu {
-    display: flex;
+  .oor-header .oor-burger-menu {
+    display: flex !important;
   }
   
   /* Отключаем mix-blend-mode: difference на мобилке */
@@ -2175,6 +2175,21 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   .oor-logo img {
     mix-blend-mode: normal !important;
     filter: brightness(0) !important;
+  }
+}
+
+/* Десктопные стили - скрываем бургер, показываем обычное меню */
+@media (min-width: 1025px) {
+  .oor-header .oor-burger-menu {
+    display: none !important;
+  }
+  
+  .oor-nav {
+    display: block;
+  }
+  
+  .oor-btn-small {
+    display: flex;
   }
 }
 
@@ -2209,7 +2224,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 /* Стили для бургер-меню */
 .oor-header .oor-burger-menu {
-  display: flex;
+  display: flex; /* По умолчанию показан */
   background: none;
   border: none;
   cursor: pointer;
@@ -2219,12 +2234,12 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   width: 40px;
   height: 40px;
   position: relative;
+  transform: translateX(16px) translateZ(0); /* Принудительный отступ вправо + GPU ускорение */
   transition: all 0.3s ease;
   /* Создаем новый контекст наложения */
   mix-blend-mode: normal;
   isolation: isolate;
   will-change: transform;
-  transform: translateZ(0);
   z-index: 999;
 }
 
@@ -2260,7 +2275,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   cursor: pointer;
   position: absolute;
   top: 24px;
-  right: 40px;
+  right: calc(var(--container-x) - 16px); /* Принудительный отступ влево на 16px */
   z-index: 10001;
   width: 48px;
   height: 48px;
@@ -2342,7 +2357,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: -0.01rem;
-  padding: 16px 24px;
+  padding: 16px var(--container-x);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -2394,17 +2409,69 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   }
 }
 
-/* Десктопные стили - скрываем бургер, показываем обычное меню */
-@media (min-width: 1025px) {
-  .oor-burger-menu {
-    display: none;
+/* Адаптивные стили для мобильных устройств (768px и ниже) */
+@media (max-width: 768px) {
+  /* Уменьшаем базовый размер шрифта для мобильных */
+  html {
+    font-size: 14px; /* Уменьшаем с 16px по умолчанию до 14px */
   }
   
-  .oor-nav {
-    display: block;
+  .oor-musical-association {
+    padding-left: var(--container-x);
   }
   
-  .oor-btn-small {
-    display: flex;
+  .oor-challenge-section {
+    padding: 80px var(--container-x);
+  }
+  
+  .oor-challenge-2-section {
+    padding: 160px var(--container-x) 104px var(--container-x);
+  }
+  
+  .oor-out-of-talk-text {
+    padding: 80px var(--container-x) 0 var(--container-x);
+  }
+  
+  .oor-out-of-talk-media {
+    padding: 120px 0 0 var(--container-x);
+  }
+  
+  .oor-events-text {
+    padding: 80px var(--container-x) 0 var(--container-x);
+  }
+  
+  .oor-events-media {
+    padding: 80px var(--container-x);
+  }
+  
+  .oor-merch-text {
+    padding: 120px var(--container-x) 0 var(--container-x);
+  }
+  
+  .oor-merch-images-grid {
+    padding: 120px var(--container-x) 0 var(--container-x);
+  }
+  
+  /* Plus иконки - позиционирование для мобильных */
+  .oor-hero-plus-top-left {
+    left: 24px;
+    right: auto;
+  }
+  
+  .oor-hero-plus-bottom-left {
+    left: 24px;
+    right: auto;
+  }
+  
+  .oor-challenge-2-counter {
+    left: 24px;
+  }
+  
+  .oor-hero-description-title {
+    font-size: 3.000rem;
+  }
+  
+  .oor-merch-description {
+    width: auto;
   }
 }
