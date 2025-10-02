@@ -2179,3 +2179,208 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 .oor-challenge-2-music-text {
   text-transform: uppercase;
 }
+
+/* ===== МОБИЛЬНОЕ МЕНЮ И САЙДБАР ===== */
+
+/* Бургер-меню (скрыто по умолчанию) */
+.oor-burger-menu {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 1001;
+}
+
+.oor-burger-icon {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0);
+}
+
+/* Мобильное меню (сайдбар) */
+.oor-mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -360px;
+  width: 360px;
+  height: 100vh;
+  background: var(--color-bg);
+  z-index: 1000;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.oor-mobile-menu.active {
+  right: 0;
+}
+
+/* Кнопка закрытия */
+.oor-close-icon {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 1002;
+}
+
+.oor-close-icon img {
+  width: 48px;
+  height: 48px;
+  filter: brightness(0);
+}
+
+/* Контент мобильного меню */
+.oor-mobile-menu-content {
+  padding: 120px 40px 40px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Основные пункты меню */
+.oor-mobile-menu-main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.oor-mobile-menu-link {
+  color: var(--color-text);
+  text-decoration: none;
+  font-family: var(--font-pragmatica);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.040rem;
+  transition: color 0.2s ease;
+}
+
+.oor-mobile-menu-link:hover {
+  color: var(--color-accent);
+}
+
+.oor-mobile-menu-link.active {
+  color: var(--color-accent);
+}
+
+/* Кнопка "Стать артистом" в мобильном меню */
+.oor-mobile-menu-bottom {
+  margin-top: auto;
+  padding-top: 40px;
+}
+
+.oor-mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 24px;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-pragmatica);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.020rem;
+  transition: all 0.2s ease;
+}
+
+.oor-mobile-menu-btn:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+}
+
+.oor-mobile-menu-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.oor-mobile-menu-btn-icon img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+
+/* Оверлей для мобильного меню */
+.oor-mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.oor-mobile-menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 1024px) {
+  /* Скрываем десктопное меню на планшетах и мобильных */
+  .oor-nav {
+    display: none;
+  }
+  
+  .oor-btn-small {
+    display: none;
+  }
+  
+  /* Показываем бургер-меню */
+  .oor-burger-menu {
+    display: flex;
+  }
+  
+  /* Отключаем mix-blend-mode: difference на мобилке */
+  .oor-header {
+    mix-blend-mode: normal !important;
+  }
+  
+  .oor-logo img {
+    mix-blend-mode: normal !important;
+    filter: brightness(0) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Уменьшаем ширину сайдбара на маленьких экранах */
+  .oor-mobile-menu {
+    width: 100%;
+    right: -100%;
+  }
+  
+  .oor-mobile-menu-content {
+    padding: 100px 24px 24px;
+  }
+  
+  .oor-close-icon {
+    top: 24px;
+    right: 24px;
+  }
+  
+  .oor-close-icon img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .oor-mobile-menu-link {
+    font-size: 1.25rem;
+  }
+}

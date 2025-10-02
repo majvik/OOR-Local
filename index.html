@@ -37,22 +37,57 @@
         <div class="oor-header-right">
             <nav class="oor-nav">
                 <div class="oor-nav-list" role="navigation" aria-label="Main">
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button oor-nav-link--active"><span class="tn-atom">Main</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button"><span class="tn-atom">Студия</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button"><span class="tn-atom">Dawgs</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button"><span class="tn-atom">Подкаст</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button"><span class="tn-atom">События</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button"><span class="tn-atom">мерч</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button"><span class="tn-atom">Контакты</span></a></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="main"><span class="tn-atom">Main</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="studio"><span class="tn-atom">Студия</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="dawgs"><span class="tn-atom">Dawgs</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="podcast"><span class="tn-atom">Подкаст</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="events"><span class="tn-atom">События</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="merch"><span class="tn-atom">мерч</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="contacts"><span class="tn-atom">Контакты</span></a></div>
               </div>
             </nav>
             
-            <button class="oor-btn-small">
+            <button class="oor-btn-small" data-action="become-artist">
                 <span class="oor-btn-small-text">Стать артистом</span>
                 <span class="oor-btn-small-icon">
                     <img src="/public/assets/plus-small.svg" alt="">
                 </span>
             </button>
+            
+            <!-- Бургер-меню для мобильных устройств -->
+            <button class="oor-burger-menu" id="burger-menu" aria-label="Открыть меню">
+                <img src="/public/assets/burger-icon.svg" alt="" class="oor-burger-icon">
+            </button>
+          </div>
+          
+          <!-- Мобильное меню (сайдбар) -->
+          <div class="oor-mobile-menu" id="mobile-menu">
+              <button class="oor-close-icon" id="close-menu" aria-label="Закрыть меню">
+                  <img src="/public/assets/close-icon.svg" alt="">
+              </button>
+              <div class="oor-mobile-menu-content">
+                  <!-- Основные пункты меню -->
+                  <div class="oor-mobile-menu-main">
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="main">Main</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="studio">Студия</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="dawgs">Dawgs</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="podcast">Подкаст</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="events">События</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="merch">мерч</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="contacts">Контакты</a>
+                  </div>
+                  
+                  <!-- Кнопка "Стать артистом" -->
+                  <div class="oor-mobile-menu-bottom">
+                      <button class="oor-mobile-menu-btn" data-action="become-artist">
+                          <span class="oor-mobile-menu-btn-text">Стать артистом</span>
+                          <span class="oor-mobile-menu-btn-icon">
+                              <img src="/public/assets/plus-small.svg" alt="">
+                          </span>
+                      </button>
+                  </div>
+              </div>
+          </div>
           </div>
     </header>
 
@@ -706,6 +741,8 @@
     <script src="/src/js/modules/preloader.js"></script>
     <script src="/src/js/modules/navigation.js"></script>
     <script src="/src/js/modules/video.js"></script>
+    <script src="/src/js/mobile-menu.js"></script>
+    <script src="/src/js/menu-sync.js"></script>
     <script src="/src/js/main.js"></script>
 
     <!-- Slider script (local) -->
