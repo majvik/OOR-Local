@@ -288,9 +288,8 @@ function initSlider() {
   
   if (isMobile) {
     console.log(`[SLIDER DEBUG] initSlider: Setting up mobile handlers (≤768px)`);
-    // Для мобильных: настройка touch событий + drag для совместимости
+    // Для мобильных: только touch события
     setupMobileTouch();
-    setupDesktopDrag(); // Добавляем drag для совместимости с респонзивом
     
     // На мобильном убеждаемся, что все метаданные видны
     slides.forEach(s => s.classList.remove('meta-active'));
@@ -304,8 +303,11 @@ function initSlider() {
     // Принудительно скрываем все метаданные при инициализации на десктопе
     setMetaActive(-1);
     
-    // Настраиваем touch события для всех разрешений для респонзивности
-    setupMobileTouch();
+    // Настраиваем touch события только для планшетов (768px < width < 1440px)
+    if (window.innerWidth < 1440) {
+      console.log(`[SLIDER DEBUG] initSlider: Setting up tablet touch handlers`);
+      setupMobileTouch();
+    }
   }
   
   injectSlideMeta();           // добавляем метаданные к слайдам
@@ -1179,6 +1181,12 @@ function setupMobileTouch(){
       return;
     }
     
+    // На десктопах (≥1440px) не обрабатываем touch события
+    if (!isMobile && window.innerWidth >= 1440) {
+      console.log(`[SLIDER DEBUG] touchStartHandler: Skipping touch on desktop (≥1440px)`);
+      return;
+    }
+    
     console.log(`[SLIDER DEBUG] touchStartHandler: Processing touch event`);
     
     // Отменяем авто-дотяг если он активен
@@ -1201,6 +1209,12 @@ function setupMobileTouch(){
     // Если уже идет drag, не обрабатываем touch
     if (isDragging) {
       console.log(`[SLIDER DEBUG] touchMoveHandler: Drag in progress, skipping touch`);
+      return;
+    }
+    
+    // На десктопах (≥1440px) не обрабатываем touch события
+    if (!isMobile && window.innerWidth >= 1440) {
+      console.log(`[SLIDER DEBUG] touchMoveHandler: Skipping touch on desktop (≥1440px)`);
       return;
     }
     
@@ -1238,6 +1252,12 @@ function setupMobileTouch(){
     // Если уже идет drag, не обрабатываем touch
     if (isDragging) {
       console.log(`[SLIDER DEBUG] touchEndHandler: Drag in progress, skipping touch`);
+      return;
+    }
+    
+    // На десктопах (≥1440px) не обрабатываем touch события
+    if (!isMobile && window.innerWidth >= 1440) {
+      console.log(`[SLIDER DEBUG] touchEndHandler: Skipping touch on desktop (≥1440px)`);
       return;
     }
     
@@ -1537,10 +1557,21 @@ window.addEventListener('resize', () => {
     const isTablet = !isMobile && currentWidth < 1440;
     
     if (wasMobile !== isMobile || wasTablet !== isTablet) {
+      // ВАЖНО: Принудительно очищаем ВСЕ обработчики при любом изменении
+      console.log(`[SLIDER DEBUG] resize: Clearing all handlers before reconfiguration`);
+      clearWheel();
+      clearDesktopDrag();
+      clearMobileTouch();
+      
       // Сначала очищаем все существующие обработчики
       if (wasMobile) {
         // Переключаемся с мобильного на десктоп
         clearMobileTouch(); // очищаем touch обработчики
+        
+        // ВАЖНО: Сбрасываем блокировку скролла при переходе на десктоп
+        console.log(`[SLIDER DEBUG] resize: Resuming Lenis on desktop transition`);
+        resumeLenis();
+        setOverscrollContain(false);
         
         // Принудительно очищаем все возможные обработчики
         if (sliderWrapper) {
@@ -1562,10 +1593,17 @@ window.addEventListener('resize', () => {
         setupWheel();
         setupDesktopDrag();
         
-        // Применяем логику активного слайда для десктопа
+        // Сбрасываем состояние слайдера при переходе на десктоп
         if (pageState === STATE.ACTIVE) {
-          const idx = getCurrentSlideIndex();
-          setMetaActive(Math.max(0, Math.min(idx, slides.length - 1)));
+          console.log(`[SLIDER DEBUG] resize: Resetting slider state on desktop transition`);
+          setState(STATE.NORMAL);
+          // Затем активируем заново если нужно
+          setTimeout(() => {
+            const { vis } = visibilityInfo();
+            if (vis >= ACTIVATE_WHEN_VISIBLE) {
+              setState(STATE.ACTIVE);
+            }
+          }, 100);
         } else {
           setMetaActive(-1);
         }
@@ -1707,13 +1745,13 @@ window.addEventListener('resize', () => {
       
       // Дополнительная логика для планшетов (768px < width < 1440px)
       if (isTablet) {
-        console.log(`[SLIDER DEBUG] resize: Setting up tablet handlers with both drag and touch`);
+        console.log(`[SLIDER DEBUG] resize: Setting up tablet handlers with drag and touch`);
         // Очищаем все обработчики
         clearWheel();
         clearDesktopDrag();
         clearMobileTouch();
         
-        // Настраиваем все типы событий для планшетов (для респонзивности)
+        // Настраиваем только нужные события для планшетов
         setupWheel();
         setupDesktopDrag();
         setupMobileTouch();
