@@ -504,10 +504,17 @@
  */
 
 // Cuberto Cursor Implementation using MouseFollower
+let cursorInstance = null;
+
 function initCursor() {
   // Отключаем курсор на мобильных устройствах (≤1024px с запасом)
   if (window.innerWidth <= 1024) {
     console.log('[OOR] Cursor disabled on mobile devices (width ≤1024px)');
+    // Если курсор уже был инициализирован, уничтожаем его
+    if (cursorInstance) {
+      cursorInstance.destroy();
+      cursorInstance = null;
+    }
     return;
   }
   
@@ -523,11 +530,17 @@ function initCursor() {
     return;
   }
 
+  // Если курсор уже существует, уничтожаем его
+  if (cursorInstance) {
+    cursorInstance.destroy();
+    cursorInstance = null;
+  }
+
   /**
    * Инициализация курсора с настройками OOR
    * @type {MouseFollower}
    */
-  const cursor = new MouseFollower({
+  cursorInstance = new MouseFollower({
     speed: 0.6,        // Скорость следования за мышью
     skewing: 1,        // Эффект искажения при движении
     skewingText: 3     // Искажение для текстовых элементов
@@ -602,4 +615,14 @@ document.addEventListener('DOMContentLoaded', function() {
       console.warn('[OOR] GSAP timeout - cursor may not work properly');
     }, 5000);
   }
+
+  // Обработчик изменения размера окна для курсора
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      console.log('[OOR] Cursor resize handler: width=' + window.innerWidth);
+      initCursor(); // Переинициализируем курсор при изменении размера
+    }, 150); // Задержка для оптимизации производительности
+  });
 });
