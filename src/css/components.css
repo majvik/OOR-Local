@@ -2467,6 +2467,15 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     flex-direction: column;
     gap: 16px;
   }
+
+  /* Глобальная сетка: на мобиле в колонку */
+  .oor-grid {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+  }
 }
 
 /* Стили для экранов меньше 1440px - уменьшаем font-size для merch description */
