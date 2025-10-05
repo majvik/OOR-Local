@@ -492,6 +492,8 @@ function initRetinaSupport() {
     for (const img of imgs) {
       const src = img.getAttribute('src');
       if (!src) continue;
+      // Skip video-cover files (no 2x versions available)
+      if (/video-cover/i.test(src)) continue;
       const hi = build2xUrl(src);
       if (!hi) continue;
       // eslint-disable-next-line no-await-in-loop
@@ -535,6 +537,8 @@ function initRetinaSupport() {
       if (/image-set\(/i.test(bg)) continue;
       if (/,/.test(bg)) continue; // multiple backgrounds not handled
       if (/gradient\(/i.test(bg)) continue;
+      // Skip video-cover files (no 2x versions available)
+      if (/video-cover/i.test(bg)) continue;
       const match = /url\(("|')?(.*?)("|')?\)/.exec(bg);
       if (!match || !match[2]) continue;
       const url = match[2];
