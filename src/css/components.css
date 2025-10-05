@@ -2447,6 +2447,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   .oor-merch-text {
     grid-template-columns: 1fr;
     padding: 120px var(--container-x) 0 var(--container-x);
+    display: flex;
+    flex-direction: column;
   }
 
   /* Hero main: мобильные отступы */
@@ -2513,6 +2515,85 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   .oor-challenge-section {
     flex-direction: column;
     gap: 80px;
+  }
+
+  /* Good Works image — отступ сверху */
+  .oor-challenge-2-good-works-image {
+    margin-top: 64px;
+  }
+
+  /* Out of Talk: заголовок на всю ширину */
+  .oor-out-of-talk-title {
+    width: 100%;
+  }
+
+  /* Out of Talk: скрываем декоративные линии */
+  .oor-out-of-talk-line-1,
+  .oor-out-of-talk-line-2 {
+    display: none;
+  }
+
+  /* Out of Talk link: как "Все артисты" на мобиле, со стрелкой */
+  .oor-out-of-talk-link {
+    display: inline-block;
+    margin: 0 16px 0 16px;
+    text-transform: uppercase;
+    position: relative;
+    line-height: 24px;
+    margin: 0;
+  }
+
+  .oor-out-of-talk-link::after {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 17 17' fill='none'%3E%3Cpath d='M11.7909 11.0826L13.6659 9.20837H2.125V8.50004H13.6659L11.7909 6.62579L12.2917 6.125L15.0216 8.85421L12.2917 11.5841L11.7909 11.0826Z' fill='black'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+  }
+
+  .oor-out-of-talk-description {
+    padding-right: 0;
+  }
+
+  .oor-out-of-talk-link {
+    margin: 0;
+  }
+
+  .oor-events-title {
+    width: 100%;
+  }
+
+  .oor-events-photo-link {
+    display: inline-block;
+    margin: 0 16px 0 16px;
+    text-transform: uppercase;
+    position: relative;
+    line-height: 24px;
+    margin: 0;
+  }
+
+  .oor-events-photo-link::after {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 17 17' fill='none'%3E%3Cpath d='M11.7909 11.0826L13.6659 9.20837H2.125V8.50004H13.6659L11.7909 6.62579L12.2917 6.125L15.0216 8.85421L12.2917 11.5841L11.7909 11.0826Z' fill='black'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+  }
+
+  .oor-merch-images-grid {
+    padding: 120px var(--container-x) 0 var(--container-x);
+  }
+
+  .oor-merch-images-wrapper {
+    flex-direction: column;
   }
 }
 
@@ -2613,5 +2694,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
   .oor-challenge-2-good-works-description {
     font-size: 0.875rem;
+  }
+  .oor-footer-email {
+    font-size: 3.000rem;
   }
 }

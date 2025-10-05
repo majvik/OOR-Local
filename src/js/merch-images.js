@@ -25,6 +25,16 @@
  * @returns {void}
  */
 function resizeMerchImages() {
+    // Disable dynamic sizing on very small screens (425px and below)
+    if (window.innerWidth <= 425) {
+        const imageEls = document.querySelectorAll('.oor-merch-image-item img');
+        imageEls.forEach(img => {
+            img.style.width = '100%';
+            img.style.height = 'auto';
+        });
+        return;
+    }
+
     const grid = document.querySelector('.oor-merch-images-grid');
     const wrapper = document.querySelector('.oor-merch-images-wrapper');
     const imageItems = document.querySelectorAll('.oor-merch-image-item');
