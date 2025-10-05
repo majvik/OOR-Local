@@ -803,6 +803,8 @@ body.preloader-active{
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+  z-index: 1;
+  mix-blend-mode: difference;
 }
 
 .oor-musical-association-icon svg {
