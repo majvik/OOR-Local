@@ -721,6 +721,7 @@ body.preloader-active{
   flex-direction: column;
   gap: 40px;
   padding: 40px 0;
+  padding-bottom: 40px;
   margin: 0;
   align-items: flex-start;
   justify-content: space-between;
@@ -1878,6 +1879,11 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     padding-left: var(--container-x);
     padding-bottom: 80px;
   }
+
+  /* Musical Association: tablet/desktop bottom padding */
+  .oor-musical-association-left {
+    padding-bottom: 40px;
+  }
 }
 
 
@@ -2191,6 +2197,11 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   .oor-btn-small {
     display: flex;
   }
+
+  /* Musical Association: desktop-only larger bottom padding */
+  .oor-musical-association-left {
+    padding-bottom: 96px;
+  }
 }
 
 /* UPPERCASE стили для заголовков */
@@ -2392,6 +2403,9 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 /* Адаптация для больших телефонов (≥425px) */
 @media (max-width: 425px) {
+  .oor-hero-main {
+    padding: 380px 0 160px 0;
+  }
   .oor-mobile-menu {
     width: 100%;
     right: -100%;
@@ -2451,10 +2465,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     flex-direction: column;
   }
 
-  /* Hero main: мобильные отступы */
-  .oor-hero-main {
-    padding: 120px 0 80px 0;
-  }
+  
 
   /* Hero: крупный заголовок на мобиле */
   .oor-hero-title {

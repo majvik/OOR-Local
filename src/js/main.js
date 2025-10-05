@@ -5,7 +5,6 @@ function initMaskedHeadingsReveal() {
   const headingSelectors = [
     '.oor-hero-title',
     '.oor-hero-description-title',
-    '.oor-musical-association-title',
     '.oor-challenge-title',
     '.oor-challenge-2-studio-title',
     '.oor-challenge-2-good-works-title',
@@ -39,7 +38,7 @@ function initMaskedHeadingsReveal() {
     // начальные стили содержимого
     inner.style.transform = 'translate3d(0, 120%, 0)';
     inner.style.opacity = '0';
-    inner.style.transition = 'transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease';
+    inner.style.transition = 'transform 900ms cubic-bezier(0.84, 0.00, 0.16, 1), opacity 900ms ease';
     inner.style.willChange = 'transform, opacity';
   });
 
@@ -567,6 +566,13 @@ function initParallaxImages() {
     if (img.closest('#wsls')) return false;
     if (img.closest('.oor-merch-images-grid')) return false;
     if (img.closest('.oor-events-posters')) return false;
+    // Явные отключения для конкретных контейнеров/изображений
+    if (img.closest('.oor-without-fear-image-2')) return false;
+    if (img.closest('.oor-quality-img-container-2')) return false;
+    if (img.closest('.oor-challenge-2-good-works-image')) return false;
+    if (img.closest('.oor-out-of-talk-image-1')) return false;
+    if (img.closest('.oor-out-of-talk-image-2')) return false;
+    if (img.closest('.oor-out-of-talk-image-3')) return false;
     // Явное отключение
     if (img.classList.contains('no-parallax')) return false;
     return true;
@@ -590,7 +596,7 @@ function initParallaxImages() {
     layer.style.backgroundPosition = cs.backgroundPosition || 'center';
     layer.style.willChange = 'transform';
     const initScaleAttr = parseFloat(el.getAttribute('data-parallax-scale'));
-    const initScale = Number.isFinite(initScaleAttr) ? initScaleAttr : 1.1;
+    const initScale = Number.isFinite(initScaleAttr) ? initScaleAttr : 'calc(100% + 30%)';
     layer.setAttribute('data-parallax-scale', String(initScale));
     layer.setAttribute('data-parallax-speed', el.getAttribute('data-parallax-speed') || '');
     layer.setAttribute('data-parallax-max', el.getAttribute('data-parallax-max') || '');
@@ -624,10 +630,40 @@ function initParallaxImages() {
     img.style.transformOrigin = 'center center';
     img.style.transformStyle = 'preserve-3d';
     img.style.backfaceVisibility = 'hidden';
-    // Начальное увеличение, чтобы избежать "просветов" при смещении
-    const initScaleAttr = parseFloat(img.getAttribute('data-parallax-scale'));
-    const initScale = Number.isFinite(initScaleAttr) ? initScaleAttr : 1.1;
-    img.style.transform = `translate3d(0,0,0) scale(${initScale})`;
+    // Специфичные настройки параллакса для определенных контейнеров
+    if (img.closest('.oor-without-fear-image')) {
+      img.setAttribute('data-parallax-max', '32');
+    }
+    if (img.closest('.oor-quality-img-container-1')) {
+      img.setAttribute('data-parallax-max', '64');
+    }
+    
+    // Рассчитываем и замораживаем scale для заполнения контейнера
+    const calculateAndFreezeScale = () => {
+      const container = img.closest('.oor-parallax-wrap') || img.parentElement;
+      const containerRect = container.getBoundingClientRect();
+      const imgRect = img.getBoundingClientRect();
+      const parallaxMax = parseFloat(img.getAttribute('data-parallax-max')) || 64;
+      const reserve = 24; // запас в пикселях
+      
+      // Рассчитываем нужный scale для заполнения контейнера + параллакс + запас
+      const neededWidth = containerRect.width + parallaxMax + reserve;
+      const neededHeight = containerRect.height + parallaxMax + reserve;
+      
+      const scaleX = neededWidth / imgRect.width;
+      const scaleY = neededHeight / imgRect.height;
+      
+      // Берем больший scale, чтобы изображение точно заполнило контейнер
+      return Math.max(scaleX, scaleY);
+    };
+    
+    // Рассчитываем и замораживаем начальный scale
+    const frozenScale = calculateAndFreezeScale();
+    img.setAttribute('data-frozen-scale', frozenScale.toString());
+    img.style.transform = `translate3d(0,0,0) scale(${frozenScale})`;
+    
+    // Сохраняем функцию для пересчета при ресайзе
+    img._recalculateScale = calculateAndFreezeScale;
   });
 
   const observed = new Set();
@@ -656,19 +692,26 @@ function initParallaxImages() {
   function frame() {
     const vh = getVH();
     inView.forEach(node => {
-      const speedAttr = parseFloat(node.getAttribute('data-parallax-speed'));
       const maxAttr = parseFloat(node.getAttribute('data-parallax-max'));
-      const speed = Number.isFinite(speedAttr) ? speedAttr : 0.15; // коэффициент
-      const maxShift = Number.isFinite(maxAttr) ? maxAttr : 48;    // пиксели
+      const maxShift = Number.isFinite(maxAttr) ? maxAttr : 64;    // пиксели
 
       const rect = node.getBoundingClientRect();
       const centerY = rect.top + rect.height / 2;
-      const delta = centerY - vh / 2;
-      let shift = Math.max(-maxShift, Math.min(maxShift, delta * speed));
+      // Нормализуем: -1 у верхнего края, +1 у нижнего края, 0 в центре
+      const norm = (centerY - vh / 2) / (vh / 2);
+      let shift = Math.max(-1, Math.min(1, norm)) * maxShift;
       // Слегка квантуем изменение, чтобы избежать субпиксельного дрожания
       shift = Math.round(shift * 2) / 2; // шаг 0.5px
-      const baseScaleAttr = parseFloat(node.getAttribute('data-parallax-scale'));
-      const baseScale = Number.isFinite(baseScaleAttr) ? baseScaleAttr : 1.1;
+      // Используем замороженный scale или fallback
+      let baseScale;
+      const frozenScale = parseFloat(node.getAttribute('data-frozen-scale'));
+      if (Number.isFinite(frozenScale)) {
+        baseScale = frozenScale;
+      } else {
+        const baseScaleAttr = parseFloat(node.getAttribute('data-parallax-scale'));
+        baseScale = Number.isFinite(baseScaleAttr) ? baseScaleAttr : 1.3;
+      }
+      
       const last = lastShiftMap.get(node);
       if (last === undefined || Math.abs(shift - last) >= 0.5) {
         node.style.transform = `translate3d(0, ${shift.toFixed(2)}px, 0) scale(${baseScale})`;
@@ -688,7 +731,19 @@ function initParallaxImages() {
   start();
 
   const onResize = () => {
-    if (window.innerWidth <= 425) stop(); else if (rafId == null) start();
+    if (window.innerWidth <= 425) {
+      stop();
+    } else {
+      // Пересчитываем и замораживаем новый scale для всех изображений при ресайзе
+      candidates.forEach(img => {
+        if (img._recalculateScale) {
+          const newScale = img._recalculateScale();
+          img.setAttribute('data-frozen-scale', newScale.toString());
+          img.style.transform = `translate3d(0,0,0) scale(${newScale})`;
+        }
+      });
+      if (rafId == null) start();
+    }
   };
   window.addEventListener('resize', onResize);
   window.addEventListener('orientationchange', onResize);
@@ -1042,7 +1097,6 @@ function initMagneticElements() {
   const magneticElements = document.querySelectorAll(`
     .oor-fullscreen-close,
     .oor-btn-small,
-    .oor-logo,
     .oor-social-icon,
     .oor-manifesto-button,
     .oor-become-artist-button,
