@@ -21,6 +21,18 @@ class SizeSync {
 
     // Выполнить синхронизацию для всех задач
     sync() {
+        // Disable size sync for screens 768px and below
+        if (window.innerWidth <= 768) {
+            this.syncTasks.forEach(task => {
+                const targetElement = document.querySelector(task.targetSelector);
+                if (targetElement) {
+                    if (task.syncWidth) targetElement.style.width = '';
+                    if (task.syncHeight) targetElement.style.height = '';
+                }
+            });
+            return;
+        }
+
         this.syncTasks.forEach(task => {
             const sourceElement = document.querySelector(task.sourceSelector);
             const targetElement = document.querySelector(task.targetSelector);

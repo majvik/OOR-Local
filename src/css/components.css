@@ -2475,8 +2475,29 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     width: auto;
   }
   
-  /* Навигация: фиксируем межстрочный интервал для элементов Tilda на мобильных */
   .oor-nav-item .tn-atom {
-    line-height: 24px;
+    line-height: 24px !important;
+  }
+
+  .oor-quality-title {
+    font-size: 1.4rem;
+  }
+
+  .oor-become-artist-container .oor-become-artist-button {
+    width: 100%;
+  }
+
+  .oor-challenge-2-good-works-header {
+    flex-wrap: wrap;
+  }
+
+  .oor-challenge-2-good-works-icon {
+    flex-basis: 100%;
+    justify-content: flex-start;
+    margin-top: 16px;
+  }
+
+  .oor-challenge-2-good-works-description {
+    font-size: 0.875rem;
   }
 }
