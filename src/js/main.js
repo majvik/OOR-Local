@@ -1,3 +1,69 @@
+// Масочный reveal для заголовков (слайд снизу вверх из клипа)
+function initMaskedHeadingsReveal() {
+  if (window.innerWidth <= 1024) return;
+
+  const headingSelectors = [
+    '.oor-hero-title',
+    '.oor-hero-description-title',
+    '.oor-musical-association-title',
+    '.oor-challenge-title',
+    '.oor-challenge-2-studio-title',
+    '.oor-challenge-2-good-works-title',
+    '.oor-out-of-talk-heading',
+    '.oor-events-heading',
+    '.oor-merch-title'
+  ];
+  const headings = headingSelectors.flatMap(sel => Array.from(document.querySelectorAll(sel)));
+  if (headings.length === 0) return;
+
+  // Оборачиваем текст в маску
+  headings.forEach(h => {
+    if (h.closest('.oor-heading-mask')) return;
+    const mask = document.createElement('span');
+    mask.className = 'oor-heading-mask';
+    // Блочная маска, чтобы корректно охватывать многострочные заголовки
+    mask.style.display = 'block';
+    mask.style.overflow = 'hidden';
+    mask.style.verticalAlign = 'bottom';
+    // переносим детей: сначала в mask, затем в внутренний контейнер, чтобы анимировать весь текст целиком
+    while (h.firstChild) mask.appendChild(h.firstChild);
+    h.appendChild(mask);
+
+    const inner = document.createElement('span');
+    inner.className = 'oor-heading-inner';
+    inner.style.display = 'inline-block';
+    // перемещаем ВСЕ узлы mask во внутренний контейнер
+    while (mask.firstChild) inner.appendChild(mask.firstChild);
+    mask.appendChild(inner);
+
+    // начальные стили содержимого
+    inner.style.transform = 'translate3d(0, 120%, 0)';
+    inner.style.opacity = '0';
+    inner.style.transition = 'transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease';
+    inner.style.willChange = 'transform, opacity';
+  });
+
+  const io = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const h = entry.target;
+        const mask = h.querySelector('.oor-heading-mask');
+        const inner = mask && mask.querySelector('.oor-heading-inner');
+        if (inner) {
+          inner.style.transform = 'translate3d(0, 0, 0)';
+          inner.style.opacity = '1';
+          setTimeout(() => { try { inner.style.willChange = ''; } catch(_) {} }, 1000);
+        }
+        observer.unobserve(h);
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+
+  // Старт наблюдения с небольшим кадром задержки
+  requestAnimationFrame(() => {
+    headings.forEach(h => io.observe(h));
+  });
+}
 /**
  * ========================================
  * OOR PROJECT - MAIN JAVASCRIPT
@@ -85,6 +151,10 @@ window.addEventListener('load', function() {
     initFullscreenVideo();
     initMagneticElements();
     initOrphanControl();
+    initRetinaSupport();
+    initParallaxImages();
+    initRevealOnScroll();
+    initMaskedHeadingsReveal();
     
     // Диагностика: если ?nolenis — убедимся, что любые блокировки сняты
     const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
@@ -383,6 +453,385 @@ function initPreloader() {
       hidePreloader();
     }
   }, 500);
+}
+
+// Retina (2x) support for <img> and background layers
+function initRetinaSupport() {
+  // Apply only on high-DPR screens
+  const isHighDPR = (typeof window !== 'undefined') && (window.devicePixelRatio && window.devicePixelRatio >= 2);
+  if (!isHighDPR) return;
+
+  // Helper: build @2x url from a given url like /path/name.ext -> /path/name@2x.ext
+  function build2xUrl(url) {
+    try {
+      const qIndex = url.indexOf('?');
+      const base = qIndex >= 0 ? url.slice(0, qIndex) : url;
+      const query = qIndex >= 0 ? url.slice(qIndex) : '';
+      const dot = base.lastIndexOf('.');
+      if (dot <= 0) return null;
+      return base.slice(0, dot) + '@2x' + base.slice(dot) + query;
+    } catch (_) { return null; }
+  }
+
+  // Helper: test if an image exists (loadable)
+  function imageExists(url) {
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  }
+
+  // Upgrade <img> without srcset/picture to use 2x if available
+  (async () => {
+    const imgs = Array.from(document.querySelectorAll('img'))
+      .filter(img => !img.closest('picture'))
+      .filter(img => !/\.svg($|\?)/i.test(img.src))
+      .filter(img => !img.hasAttribute('srcset'));
+
+    for (const img of imgs) {
+      const src = img.getAttribute('src');
+      if (!src) continue;
+      const hi = build2xUrl(src);
+      if (!hi) continue;
+      // eslint-disable-next-line no-await-in-loop
+      const ok = await imageExists(hi);
+      if (ok) {
+        img.setAttribute('srcset', `${src} 1x, ${hi} 2x`);
+      }
+    }
+  })();
+
+  // Upgrade background layers created for parallax (.oor-parallax-bg)
+  (async () => {
+    const layers = Array.from(document.querySelectorAll('.oor-parallax-bg'));
+    for (const layer of layers) {
+      const bg = getComputedStyle(layer).backgroundImage; // e.g., url("/path/image.png")
+      const match = /url\(("|')?(.*?)("|')?\)/.exec(bg || '');
+      if (!match || !match[2]) continue;
+      const url = match[2];
+      if (/\.svg($|\?)/i.test(url)) continue;
+      const hi = build2xUrl(url);
+      if (!hi) continue;
+      // eslint-disable-next-line no-await-in-loop
+      const ok = await imageExists(hi);
+      if (ok) {
+        // Prefer CSS image-set for crisp rendering
+        layer.style.backgroundImage = `image-set(url(${url}) 1x, url(${hi}) 2x)`;
+      }
+    }
+  })();
+
+  // Upgrade ALL elements with a single URL background-image (site-wide)
+  (async () => {
+    const all = Array.from(document.querySelectorAll('*'));
+    for (const el of all) {
+      // Skip parallax bg (already processed)
+      if (el.classList && el.classList.contains('oor-parallax-bg')) continue;
+      const cs = getComputedStyle(el);
+      const bg = cs.backgroundImage;
+      if (!bg || bg === 'none') continue;
+      // Skip already set image-set or multiple backgrounds / gradients
+      if (/image-set\(/i.test(bg)) continue;
+      if (/,/.test(bg)) continue; // multiple backgrounds not handled
+      if (/gradient\(/i.test(bg)) continue;
+      const match = /url\(("|')?(.*?)("|')?\)/.exec(bg);
+      if (!match || !match[2]) continue;
+      const url = match[2];
+      if (/\.svg($|\?)/i.test(url)) continue;
+      const hi = build2xUrl(url);
+      if (!hi) continue;
+      // eslint-disable-next-line no-await-in-loop
+      const ok = await imageExists(hi);
+      if (ok) {
+        el.style.backgroundImage = `image-set(url(${url}) 1x, url(${hi}) 2x)`;
+      }
+    }
+  })();
+}
+
+// Параллакс: двигаем ТОЛЬКО изображение внутри фиксированного контейнера
+function initParallaxImages() {
+  // Производительность: отключаем на очень маленьких экранах
+  if (window.innerWidth <= 425) return;
+
+  // Селектор кандидатов: все <img>, кроме исключений
+  const allImages = Array.from(document.querySelectorAll('img'));
+  const candidates = allImages.filter(img => {
+    // Исключаем любые SVG: встроенные <svg> мы не выбираем; но также исключим src оканчивающиеся на .svg
+    const src = (img.getAttribute('src') || '').toLowerCase();
+    const isSvg = src.endsWith('.svg');
+    if (isSvg) return false;
+    // Исключаем изображения внутри слайдера и других зон
+    if (img.closest('#wsls')) return false;
+    if (img.closest('.oor-merch-images-grid')) return false;
+    if (img.closest('.oor-events-posters')) return false;
+    // Явное отключение
+    if (img.classList.contains('no-parallax')) return false;
+    return true;
+  });
+
+  // Поддержка параллакса для блоков с фоном (.oor-musical-association-right)
+  const bgTargets = [];
+  document.querySelectorAll('.oor-musical-association-right').forEach(el => {
+    const cs = getComputedStyle(el);
+    if (!cs.backgroundImage || cs.backgroundImage === 'none') return;
+    if (el.querySelector('.oor-parallax-bg')) return;
+    if (!el.style.position) el.style.position = 'relative';
+    if (!el.style.overflow) el.style.overflow = 'hidden';
+    const layer = document.createElement('div');
+    layer.className = 'oor-parallax-bg';
+    layer.style.position = 'absolute';
+    layer.style.inset = '0';
+    layer.style.backgroundImage = cs.backgroundImage;
+    layer.style.backgroundSize = cs.backgroundSize || 'cover';
+    layer.style.backgroundRepeat = cs.backgroundRepeat || 'no-repeat';
+    layer.style.backgroundPosition = cs.backgroundPosition || 'center';
+    layer.style.willChange = 'transform';
+    const initScaleAttr = parseFloat(el.getAttribute('data-parallax-scale'));
+    const initScale = Number.isFinite(initScaleAttr) ? initScaleAttr : 1.1;
+    layer.setAttribute('data-parallax-scale', String(initScale));
+    layer.setAttribute('data-parallax-speed', el.getAttribute('data-parallax-speed') || '');
+    layer.setAttribute('data-parallax-max', el.getAttribute('data-parallax-max') || '');
+    layer.style.transform = `translate3d(0,0,0) scale(${initScale})`;
+    // Убираем фон у контейнера, переносим в слой
+    el.style.backgroundImage = 'none';
+    el.appendChild(layer);
+    bgTargets.push(layer);
+  });
+
+  if (candidates.length === 0 && bgTargets.length === 0) return;
+
+  // Оборачиваем изображение в контейнер, чтобы блок занимал фиксированное место
+  candidates.forEach(img => {
+    if (img.closest('.oor-parallax-wrap')) return; // уже обернуто
+    const wrap = document.createElement('div');
+    wrap.className = 'oor-parallax-wrap';
+    wrap.style.position = 'relative';
+    wrap.style.overflow = 'hidden';
+    wrap.style.display = 'block';
+    wrap.style.width = img.style.width || ''; // уважаем заданные стили
+    wrap.style.height = '';
+    // Снижаем мерцание за счет изоляции перерисовки
+    wrap.style.contain = 'paint';
+    // Вставляем перед изображением и переносим img внутрь
+    img.parentNode.insertBefore(wrap, img);
+    wrap.appendChild(img);
+    // Уточняем стили изображения
+    img.style.display = 'block';
+    img.style.willChange = 'transform';
+    img.style.transformOrigin = 'center center';
+    img.style.transformStyle = 'preserve-3d';
+    img.style.backfaceVisibility = 'hidden';
+    // Начальное увеличение, чтобы избежать "просветов" при смещении
+    const initScaleAttr = parseFloat(img.getAttribute('data-parallax-scale'));
+    const initScale = Number.isFinite(initScaleAttr) ? initScaleAttr : 1.1;
+    img.style.transform = `translate3d(0,0,0) scale(${initScale})`;
+  });
+
+  const observed = new Set();
+  const inView = new Set();
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const node = entry.target;
+      if (entry.isIntersecting) {
+        inView.add(node);
+      } else {
+        inView.delete(node);
+        // Не сбрасываем мгновенно transform, чтобы избежать "прыжков" на границе видимости
+        // node.style.transform = '';
+        // node.style.willChange = '';
+      }
+    });
+  }, { root: null, rootMargin: '100px 0px', threshold: [0, 0.1, 0.5, 1] });
+
+  candidates.forEach(img => { if (!observed.has(img)) { io.observe(img); observed.add(img); } });
+  bgTargets.forEach(layer => { if (!observed.has(layer)) { io.observe(layer); observed.add(layer); } });
+
+  const getVH = () => window.innerHeight || document.documentElement.clientHeight;
+  let rafId = null;
+  const lastShiftMap = new WeakMap();
+
+  function frame() {
+    const vh = getVH();
+    inView.forEach(node => {
+      const speedAttr = parseFloat(node.getAttribute('data-parallax-speed'));
+      const maxAttr = parseFloat(node.getAttribute('data-parallax-max'));
+      const speed = Number.isFinite(speedAttr) ? speedAttr : 0.15; // коэффициент
+      const maxShift = Number.isFinite(maxAttr) ? maxAttr : 48;    // пиксели
+
+      const rect = node.getBoundingClientRect();
+      const centerY = rect.top + rect.height / 2;
+      const delta = centerY - vh / 2;
+      let shift = Math.max(-maxShift, Math.min(maxShift, delta * speed));
+      // Слегка квантуем изменение, чтобы избежать субпиксельного дрожания
+      shift = Math.round(shift * 2) / 2; // шаг 0.5px
+      const baseScaleAttr = parseFloat(node.getAttribute('data-parallax-scale'));
+      const baseScale = Number.isFinite(baseScaleAttr) ? baseScaleAttr : 1.1;
+      const last = lastShiftMap.get(node);
+      if (last === undefined || Math.abs(shift - last) >= 0.5) {
+        node.style.transform = `translate3d(0, ${shift.toFixed(2)}px, 0) scale(${baseScale})`;
+        lastShiftMap.set(node, shift);
+      }
+    });
+    rafId = requestAnimationFrame(frame);
+  }
+
+  function start() { if (rafId == null) rafId = requestAnimationFrame(frame); }
+  function stop() {
+    if (rafId != null) cancelAnimationFrame(rafId);
+    rafId = null;
+    inView.forEach(node => { node.style.transform = ''; /* оставляем will-change для плавности */ });
+  }
+
+  start();
+
+  const onResize = () => {
+    if (window.innerWidth <= 425) stop(); else if (rafId == null) start();
+  };
+  window.addEventListener('resize', onResize);
+  window.addEventListener('orientationchange', onResize);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
+}
+
+// Мягкое "подъезжание" блоков на десктопе
+function initRevealOnScroll() {
+  // Только десктоп (чтобы не мешать мобильной производительности)
+  if (window.innerWidth <= 1024) return;
+
+  // Крупные контейнеры секций, без мелких вложенных элементов
+  const selectors = [
+    '.oor-hero-content',
+    '.oor-musical-association-left',
+    '.oor-musical-association-right',
+    '.oor-challenge-left',
+    '.oor-challenge-right',
+    '.oor-challenge-2-left',
+    '.oor-challenge-2-good-works',
+    '.oor-out-of-talk-text',
+    '.oor-out-of-talk-media',
+    '.oor-events-text',
+    '.oor-events-media',
+    '.oor-merch-text',
+    '.oor-merch-images-grid'
+  ];
+
+  let nodes = selectors
+    .flatMap(sel => Array.from(document.querySelectorAll(sel)))
+    .filter(el => !el.classList.contains('no-reveal'));
+
+  if (nodes.length === 0) return;
+
+  // Дополнительно: элементы изображений мерча, которые должны подъезжать по очереди
+  const merchItems = Array.from(document.querySelectorAll('.oor-merch-images-wrapper .oor-merch-image-item'));
+  // Если есть элементы мерча, не анимируем контейнер .oor-merch-images-grid, чтобы не дублировать эффекты
+  if (merchItems.length > 0) {
+    nodes = nodes.filter(el => !el.matches('.oor-merch-images-grid'));
+  }
+
+  // Начальные стили (ниже и прозрачнее, как у референса: больше дистанция и плавнее)
+  nodes.forEach(el => {
+    el.style.opacity = '0';
+    // Появление строго по вертикали, без смещения по X
+    el.style.transform = 'translate3d(0, 120px, 0)';
+    el.style.transformOrigin = '';
+    // более плавные тайминги
+    el.style.transition = 'opacity 800ms ease, transform 1200ms cubic-bezier(0.22, 1, 0.36, 1)';
+    el.style.willChange = 'opacity, transform';
+  });
+
+  // Инициализация начальных стилей и стаггера для мерча (по одному элементу с интервалом)
+  const MERCH_STAGGER_MS = 140;
+  merchItems.forEach((el, idx) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translate3d(0, 120px, 0)';
+    el.style.transition = `opacity 800ms ease ${idx * MERCH_STAGGER_MS}ms, transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) ${idx * MERCH_STAGGER_MS}ms`;
+    el.style.willChange = 'opacity, transform';
+  });
+
+  // Стагер для двухколоночных секций: левая раньше, правая чуть позже
+  const staggerPairs = [
+    ['.oor-musical-association-left', '.oor-musical-association-right'],
+    ['.oor-challenge-left', '.oor-challenge-right'],
+    ['.oor-challenge-2-left', '.oor-challenge-2-good-works'],
+    ['.oor-events-text', '.oor-events-media']
+  ];
+  const STAGGER_DELAY_MS = 200;
+  staggerPairs.forEach(([firstSel, secondSel]) => {
+    const first = document.querySelector(firstSel);
+    const second = document.querySelector(secondSel);
+    if (first) first.style.transitionDelay = '0ms';
+    if (second) second.style.transitionDelay = `${STAGGER_DELAY_MS}ms`;
+  });
+
+  // Флаг активации: запускаем анимации только после первого взаимодействия/скролла
+  let activated = false;
+
+  // Наблюдатель видимости
+  const io = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (!activated) return; // игнорируем авто-триггер на загрузке
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        el.style.opacity = '1';
+        el.style.transform = 'translate3d(0, 0, 0)';
+        // После анимации очистим will-change, чтобы не держать слои постоянно
+        setTimeout(() => { try { el.style.willChange = ''; } catch(_) {} }, 800);
+        observer.unobserve(el);
+      }
+    });
+  }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+  // Даем браузеру применить initial-стили и начинаем наблюдение (без немедленного старта)
+  requestAnimationFrame(() => {
+    // принудительная раскладка
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    document.body && document.body.offsetHeight;
+
+    setTimeout(() => {
+      nodes.forEach(el => io.observe(el));
+      merchItems.forEach(el => io.observe(el));
+    }, 50);
+  });
+
+  // Первое взаимодействие активирует анимации
+  const activate = () => {
+    if (activated) return;
+    activated = true;
+    // После активации проверим уже видимые элементы
+    const all = nodes.concat(merchItems);
+    all.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top < vh * 0.9 && rect.bottom > 0) {
+        el.style.opacity = '1';
+        el.style.transform = 'translate3d(0, 0, 0)';
+        setTimeout(() => { try { el.style.willChange = ''; } catch(_) {} }, 800);
+        io.unobserve(el);
+      }
+    });
+    window.removeEventListener('scroll', activate, { capture: false });
+    window.removeEventListener('wheel', activate, { capture: false });
+    window.removeEventListener('touchstart', activate, { capture: false });
+  };
+  window.addEventListener('scroll', activate, { passive: true });
+  window.addEventListener('wheel', activate, { passive: true });
+  window.addEventListener('touchstart', activate, { passive: true });
+
+  // При ресайзе: если ушли в мобильный — снимаем эффекты
+  const onResize = () => {
+    if (window.innerWidth <= 1024) {
+      nodes.forEach(el => {
+        el.style.opacity = '';
+        el.style.transform = '';
+        el.style.transition = '';
+        el.style.willChange = '';
+        el.style.transitionDelay = '';
+      });
+    }
+  };
+  window.addEventListener('resize', onResize);
 }
 
 // Навигация
