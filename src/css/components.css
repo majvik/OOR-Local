@@ -2400,6 +2400,54 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   .oor-mobile-menu.active {
     right: 0;
   }
+
+  /* Скрыть счетчики и декоративные плюс-элементы */
+  .oor-challenge-2-counter,
+  .oor-out-of-talk-counter,
+  .oor-events-counter,
+  .oor-merch-counter,
+  .oor-hero-plus-top-left,
+  .oor-hero-plus-top-right,
+  .oor-hero-plus-bottom-left,
+  .oor-hero-plus-bottom-right,
+  .oor-musical-association-plus,
+  .oor-challenge-2-plus-1,
+  .oor-challenge-2-plus-2,
+  .oor-out-of-talk-plus,
+  .oor-events-plus,
+  .oor-merch-plus-icon {
+    display: none !important;
+  }
+
+  /* Переносим колонки в строки — одна колонка во всю ширину */
+  .oor-challenge-2-left {
+    grid-template-columns: 1fr;
+  }
+
+  .oor-out-of-talk-media {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 120px var(--container-x) 0 var(--container-x);
+  }
+
+  .oor-out-of-talk-images {
+    grid-template-columns: 1fr;
+  }
+
+  .oor-events-media {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 80px var(--container-x);
+  }
+
+  .oor-events-posters {
+    grid-template-columns: 1fr;
+  }
+
+  .oor-merch-text {
+    grid-template-columns: 1fr;
+    padding: 120px var(--container-x) 0 var(--container-x);
+  }
 }
 
 /* Стили для экранов меньше 1440px - уменьшаем font-size для merch description */
