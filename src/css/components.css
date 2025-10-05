@@ -2474,4 +2474,9 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   .oor-merch-description {
     width: auto;
   }
+  
+  /* Навигация: фиксируем межстрочный интервал для элементов Tilda на мобильных */
+  .oor-nav-item .tn-atom {
+    line-height: 24px;
+  }
 }
