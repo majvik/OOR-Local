@@ -642,25 +642,57 @@ function initParallaxImages() {
     const calculateAndFreezeScale = () => {
       const container = img.closest('.oor-parallax-wrap') || img.parentElement;
       const containerRect = container.getBoundingClientRect();
-      const imgRect = img.getBoundingClientRect();
       const parallaxMax = parseFloat(img.getAttribute('data-parallax-max')) || 64;
-      const reserve = 24; // запас в пикселях
+      const customScale = parseFloat(img.getAttribute('data-parallax-scale'));
       
-      // Рассчитываем нужный scale для заполнения контейнера + параллакс + запас
-      const neededWidth = containerRect.width + parallaxMax + reserve;
-      const neededHeight = containerRect.height + parallaxMax + reserve;
+      // Если задан кастомный scale, используем его
+      if (Number.isFinite(customScale)) {
+        return Promise.resolve(customScale);
+      }
       
-      const scaleX = neededWidth / imgRect.width;
-      const scaleY = neededHeight / imgRect.height;
+      // Запас должен покрывать максимальное смещение параллакса + дополнительный буфер
+      const reserve = Math.max(parallaxMax + 32, 80); // минимум 80px запас
       
-      // Берем больший scale, чтобы изображение точно заполнило контейнер
-      return Math.max(scaleX, scaleY);
+      // Ждем загрузки изображения для получения естественных размеров
+      return new Promise((resolve) => {
+        if (img.complete && img.naturalWidth > 0) {
+          // Изображение уже загружено
+          const naturalWidth = img.naturalWidth;
+          const naturalHeight = img.naturalHeight;
+          
+          // Рассчитываем scale для полного заполнения контейнера + запас для параллакса
+          const neededWidth = containerRect.width + reserve;
+          const neededHeight = containerRect.height + reserve;
+          
+          const scaleX = neededWidth / naturalWidth;
+          const scaleY = neededHeight / naturalHeight;
+          
+          // Берем больший scale, но минимум 1.0 (естественный размер)
+          resolve(Math.max(scaleX, scaleY, 1.0));
+        } else {
+          // Ждем загрузки изображения
+          img.onload = () => {
+            const naturalWidth = img.naturalWidth;
+            const naturalHeight = img.naturalHeight;
+            
+            const neededWidth = containerRect.width + reserve;
+            const neededHeight = containerRect.height + reserve;
+            
+            const scaleX = neededWidth / naturalWidth;
+            const scaleY = neededHeight / naturalHeight;
+            
+            // Берем больший scale, но минимум 1.0 (естественный размер)
+            resolve(Math.max(scaleX, scaleY, 1.0));
+          };
+        }
+      });
     };
     
     // Рассчитываем и замораживаем начальный scale
-    const frozenScale = calculateAndFreezeScale();
-    img.setAttribute('data-frozen-scale', frozenScale.toString());
-    img.style.transform = `translate3d(0,0,0) scale(${frozenScale})`;
+    calculateAndFreezeScale().then(frozenScale => {
+      img.setAttribute('data-frozen-scale', frozenScale.toString());
+      img.style.transform = `translate3d(0,0,0) scale(${frozenScale})`;
+    });
     
     // Сохраняем функцию для пересчета при ресайзе
     img._recalculateScale = calculateAndFreezeScale;
@@ -697,8 +729,10 @@ function initParallaxImages() {
 
       const rect = node.getBoundingClientRect();
       const centerY = rect.top + rect.height / 2;
-      // Нормализуем: -1 у верхнего края, +1 у нижнего края, 0 в центре
-      const norm = (centerY - vh / 2) / (vh / 2);
+      
+      // Параллакс начинается как только изображение появляется в viewport
+      // -1 когда изображение только появилось сверху, +1 когда полностью ушло вниз
+      const norm = (centerY - vh) / vh;
       let shift = Math.max(-1, Math.min(1, norm)) * maxShift;
       // Слегка квантуем изменение, чтобы избежать субпиксельного дрожания
       shift = Math.round(shift * 2) / 2; // шаг 0.5px
@@ -737,9 +771,10 @@ function initParallaxImages() {
       // Пересчитываем и замораживаем новый scale для всех изображений при ресайзе
       candidates.forEach(img => {
         if (img._recalculateScale) {
-          const newScale = img._recalculateScale();
-          img.setAttribute('data-frozen-scale', newScale.toString());
-          img.style.transform = `translate3d(0,0,0) scale(${newScale})`;
+          img._recalculateScale().then(newScale => {
+            img.setAttribute('data-frozen-scale', newScale.toString());
+            img.style.transform = `translate3d(0,0,0) scale(${newScale})`;
+          });
         }
       });
       if (rafId == null) start();
