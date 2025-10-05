@@ -2448,6 +2448,25 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     grid-template-columns: 1fr;
     padding: 120px var(--container-x) 0 var(--container-x);
   }
+
+  /* Hero: крупный заголовок на мобиле */
+  .oor-hero-title {
+    font-size: 5.000rem;
+  }
+
+  /* Утилита: 10 колонок превращаем в вертикальный стек с отступами */
+  .oor-col-10 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Описание Hero: вертикальный стек с отступами */
+  .oor-hero-description-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 }
 
 /* Стили для экранов меньше 1440px - уменьшаем font-size для merch description */

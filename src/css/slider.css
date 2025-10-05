@@ -330,3 +330,13 @@ a.slide-media:hover {
     visibility: visible !important;
   }
 }
+
+/* Мобильные правки для очень маленьких экранов (425px и ниже) */
+@media (max-width: 425px){
+  #wsls .slider-section{
+    height: auto !important;
+    min-height: 0 !important;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
