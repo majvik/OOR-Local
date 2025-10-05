@@ -2449,6 +2449,11 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     padding: 120px var(--container-x) 0 var(--container-x);
   }
 
+  /* Hero main: мобильные отступы */
+  .oor-hero-main {
+    padding: 120px 0 80px 0;
+  }
+
   /* Hero: крупный заголовок на мобиле */
   .oor-hero-title {
     font-size: 5.000rem;
@@ -2475,6 +2480,39 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     align-content: flex-start;
     align-items: flex-start;
     gap: 16px;
+  }
+
+  /* Скрыть номер секции на маленьких экранах */
+  .oor-section-number {
+    display: none;
+  }
+
+  /* Musical Association: левая колонка — авто-высота, элементы на 100% ширины */
+  .oor-musical-association-left {
+    height: auto;
+  }
+
+  .oor-musical-association-left > * {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Musical Association: правая колонка — фон занимает всё, внутренние отступы 16px */
+  .oor-musical-association-right {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 16px;
+    box-sizing: border-box;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  /* Challenge section: на мобиле в колонку с большим отступом между блоками */
+  .oor-challenge-section {
+    flex-direction: column;
+    gap: 80px;
   }
 }
 

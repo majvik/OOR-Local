@@ -336,7 +336,8 @@ a.slide-media:hover {
   #wsls .slider-section{
     height: auto !important;
     min-height: 0 !important;
-    padding-left: 16px;
-    padding-right: 16px;
   }
+  #wsls .slider-heading { display: block; margin: 0 16px 0 16px; }
+  #wsls .slider-all-link { display: inline-block; margin: 0 16px 0 16px; }
+  #wsls .slider-wrapper { padding-left: 16px; }
 }
