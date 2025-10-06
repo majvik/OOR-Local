@@ -2514,9 +2514,10 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
   /* Musical Association: правая колонка — фон занимает всё, внутренние отступы 16px */
   .oor-musical-association-right {
-    width: 100%;
+    width: calc(100% - 16px); /* Отступ только справа 16px */
     height: auto;
     min-height: 0;
+    margin: 0 0 16px 0; /* Отступ только снизу 16px */
     padding: 16px;
     box-sizing: border-box;
     background-position: center;
