@@ -9,9 +9,13 @@ const WSLS_ROOT = (function(){
 const $in = (sel) => WSLS_ROOT.querySelector(sel);
 const $$in = (sel) => WSLS_ROOT.querySelectorAll(sel);
 
-// Debug helper
-const DEBUG = (typeof window !== 'undefined') && window.location && window.location.search.includes('debug');
-function debugLog(scope, ...args){ if (DEBUG) { try { console.log(`[Slider:${scope}]`, ...args); } catch(_) {} } }
+// Debug helper - только для разработки
+const DEBUG_SLIDER = (typeof window !== 'undefined') && window.location && window.location.search.includes('debug');
+function debugLog(scope, ...args){ 
+  if (DEBUG_SLIDER) { 
+    try { console.log(`[Slider:${scope}]`, ...args); } catch(_) {} 
+  } 
+}
 
 // Lenis: init lives in main.js after preloader removal; this file only uses lenis.raf()
 
@@ -39,9 +43,7 @@ const ACTIVATE_WHEN_VISIBLE= 0.995; // активируем слайдер ко�
 
 // === ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ ПОВЕДЕНИЕМ НА РАЗНЫХ РАЗРЕШЕНИЯХ ===
 function shouldDisableSliderScrollCapture() {
-  const result = window.innerWidth < 1440;
-  console.log(`[SLIDER DEBUG] shouldDisableSliderScrollCapture: ${result} (width: ${window.innerWidth})`);
-  return result;
+  return window.innerWidth < 1440;
 }
 
 
@@ -119,6 +121,12 @@ const DRAG_VIS_TO_ENTER = 0.98; // минимальная видимость с�
 const DRAG_MIN_DELTA_PX = 4;    // минимальное движение мыши для начала перетаскивания (в пикселях)
 const DRAG_AXIS_LOCK_K  = 1.25; // коэффициент блокировки оси (1.25 = блокируем при движении в 1.25 раза больше по одной оси)
 
+// === НАСТРОЙКИ DRAG-VS-CLICK ПАТТЕРНА ===
+const DRAG_THRESHOLD = 3; // порог для определения драга vs клика (оптимальный для тачпада)
+const DRAG_THRESHOLD_IMG = 3; // специальный порог для изображений (такой же, как для фона)
+const HOLD_DRAG_TIME = 120; // время зажатия в мс, после которого это считается драгом
+const DRAG_SENSITIVITY = 1.6; // коэффициент чувствительности драга (больше = более плавный)
+
 // === ЭЛЕМЕНТЫ СЛАЙДЕРА В DOM ===
 const sliderSection = $in('.slider-section'); // основная секция слайдера
 const sliderTrack = $in('.slider-track');   // дорожка со слайдами
@@ -154,6 +162,18 @@ let maxScroll = 0; // максимальная прокрутка (длина в
 let isDragging = false;        // активно ли перетаскивание
 let dragStartX = 0, dragStartY = 0, dragStartTarget = 0; // начальные координаты и позиция
 let dragMoved = false, dragLocked = false;                // было ли движение и заблокирована ли ось
+
+// === ПЕРЕМЕННЫЕ DRAG-VS-CLICK ПАТТЕРНА ===
+let dragVsClickState = {
+  isDown: false,           // активно ли взаимодействие
+  startX: 0,              // начальная X координата
+  scrollLeftStart: 0,     // начальная позиция прокрутки
+  movedEnough: false,     // превышен ли порог драга
+  threshold: DRAG_THRESHOLD, // порог для определения драга
+  accumulatedDx: 0, // накопленное движение для лучшей работы на изображениях
+  startTime: 0, // время начала зажатия
+  holdTimeout: null // таймер для определения длительного зажатия
+};
 
 // === ПЕРЕМЕННЫЕ КАСАНИЯ (МОБИЛЬНЫЕ УСТРОЙСТВА) ===
 let tStartX = 0, tStartY = 0, tStartTarget = 0, touchHoriz = false; // начальные координаты касания и направление
@@ -204,7 +224,6 @@ document.addEventListener('wheel', (e) => {
 
   // --- МЯГКИЙ ПОВТОРНЫЙ ВХОД ПО НАПРАВЛЕНИЮ (обходит защиту и задержку) ---
   const softAlign = softReenterAlign(dy, rect, vh);
-  debugLog('wheel-early', { dy, softAlign, rectTop: rect.top, rectBottom: rect.bottom, vh, vis: vis });
   if (softAlign) {
     // На разрешениях < 1440px не переключаем на горизонтальный скролл
     if (shouldDisableSliderScrollCapture()) {
@@ -223,7 +242,6 @@ document.addEventListener('wheel', (e) => {
   if (now - lastExitTs < EXIT_PASS_MS) return;      // проверяем задержку после выхода
 
   if (isSettling || now < wheelLockUntil || approachInFlight) {
-    debugLog('wheel-early-skip', { isSettling, wheelLockUntil, approachInFlight });
     // не блокируем стандартную прокрутку здесь
     return;
   }
@@ -245,7 +263,6 @@ document.addEventListener('wheel', (e) => {
   // --- ОЧЕНЬ БЛИЗКО К СЕКЦИИ - ЖЕСТКАЯ ДОВОДКА ---
   if (nearTopTight || nearBottomTight) {
     wheelLockUntil = now + 360;
-    debugLog('settle-zone', { nearTopTight, nearBottomTight });
     if (!isSettling) settleToSection(approachingDown ? 'start' : 'end');
     return;
   }
@@ -258,7 +275,6 @@ document.addEventListener('wheel', (e) => {
   if (nearTop || nearBottom || intersectingWide || vis >= CAPTURE_ON_VIS) {
     wheelLockUntil = now + 100; // короткая блокировка только для внутренних обработчиков слайдера
     // не вызываем e.preventDefault() здесь — позволяем странице скроллиться
-    debugLog('soft-approach-ready', { nearTop, nearBottom, intersectingWide, vis });
   }
 }, { passive: true, capture: true });
 // ===== КОНЕЦ РАННЕГО ЗАХВАТА КОЛЕСА =====
@@ -266,7 +282,6 @@ document.addEventListener('wheel', (e) => {
 // === ИНИЦИАЛИЗАЦИЯ СЛАЙДЕРА ===
 function boot() {
   disableStaticSnapCSS(); // отключаем CSS snap-скролл
-  debugLog('boot', { isMobile, sliderExists: !!sliderSection, rect: sliderSection && sliderSection.getBoundingClientRect ? sliderSection.getBoundingClientRect() : null });
   // Lenis инициализируется после скрытия прелоадера (в main.js)
 
   initSlider();              // инициализация слайдера
@@ -283,30 +298,27 @@ if (document.readyState === 'loading') {
 function disableStaticSnapCSS() { /* noop in embed */ }
 
 function initSlider() {
-  console.log(`[SLIDER DEBUG] initSlider: isMobile=${isMobile}, width=${window.innerWidth}`);
   updateMaxScroll();           // обновляем максимальную прокрутку слайдера
   
+  // Упрощенная логика: используем drag-vs-click для всех разрешений
+  setupDragVsClick();
+  if (sliderWrapper) sliderWrapper.style.cursor = 'default';
+  
+  // Настраиваем wheel только для десктопа
+  if (window.innerWidth > 768) {
+    setupWheel();
+  }
+  
+  // На мобильных убеждаемся, что все метаданные видны
   if (isMobile) {
-    console.log(`[SLIDER DEBUG] initSlider: Setting up mobile handlers (≤768px)`);
-    // Для мобильных: touch + drag для совместимости
-    setupMobileTouch();
-    setupDesktopDrag();
-    
-    // На мобильном убеждаемся, что все метаданные видны
     slides.forEach(s => s.classList.remove('meta-active'));
   } else {
-    console.log(`[SLIDER DEBUG] initSlider: Setting up desktop handlers (>768px)`);
-    // Для всех не-мобильных устройств: настройка колеса мыши и перетаскивания
-    setupWheel();
-    setupDesktopDrag();
-    if (sliderWrapper) sliderWrapper.style.cursor = 'grab';
-    
     // Принудительно скрываем все метаданные при инициализации на десктопе
     setMetaActive(-1);
-    
-    // Настраиваем touch события для всех разрешений для респонзивности
-    setupMobileTouch();
   }
+  
+  // Настраиваем touch события для всех разрешений для респонзивности
+  setupMobileTouch();
   
   injectSlideMeta();           // добавляем метаданные к слайдам
   hydrateImageAspectRatios();  // устанавливаем правильные пропорции изображений
@@ -433,13 +445,12 @@ function isLastSlide() {
   return getCurrentSlideIndex() === slides.length - 1;
 }
 
-function pauseLenis(){ debugLog('lenis', 'stop'); window.lenis?.stop?.(); }
-function resumeLenis(){ debugLog('lenis', 'start'); window.lenis?.start?.(); }
+function pauseLenis(){ window.lenis?.stop?.(); }
+function resumeLenis(){ window.lenis?.start?.(); }
 
 function setOverscrollContain(on){
   const el = document.scrollingElement || document.documentElement;
   el.style.overscrollBehaviorY = on ? 'contain' : '';
-  debugLog('overscroll', on ? 'contain' : '');
 }
 
 function isReenterBlocked() {
@@ -514,17 +525,13 @@ function cancelAutoSnap(){ autoSnap.active = false; }
 function setState(next){
   if (pageState === next) return;
   
-  console.log(`[SLIDER DEBUG] setState: ${pageState} -> ${next} (width: ${window.innerWidth})`);
   pageState = next;
-  debugLog('state', `${pageState} -> ${next}`);
   if (next === STATE.ACTIVE) {
     // На разрешениях < 1440px не блокируем скролл страницы
     if (!shouldDisableSliderScrollCapture()) {
-      console.log(`[SLIDER DEBUG] setState: Blocking scroll (width: ${window.innerWidth})`);
       setOverscrollContain(true);   // ← блокируем overscroll (резиновый эффект)
       pauseLenis();
     } else {
-      console.log(`[SLIDER DEBUG] setState: NOT blocking scroll (width: ${window.innerWidth})`);
     }
     // При активации слайдера сразу показываем метаданные первого слайда
     if (!isMobile) {
@@ -534,10 +541,8 @@ function setState(next){
     lastExitTs = Date.now();
     // оставим contain включённым — выключим его после EXIT_PASS_MS в forceExit/smoothExit
     if (!shouldDisableSliderScrollCapture()) {
-      console.log(`[SLIDER DEBUG] setState: Resuming Lenis (width: ${window.innerWidth})`);
       resumeLenis();
     } else {
-      console.log(`[SLIDER DEBUG] setState: NOT resuming Lenis (width: ${window.innerWidth})`);
     }
     // При деактивации скрываем все метаданные
     if (!isMobile) {
@@ -698,17 +703,14 @@ var wheelHandler = null;
 
 function setupWheel(){
   if (isMobile) return;
-  console.log(`[SLIDER DEBUG] setupWheel: Setting up wheel handler (width: ${window.innerWidth})`); // пропускаем на мобильных устройствах
   
   // Очищаем предыдущий обработчик если он есть
   clearWheel();
 
   wheelHandler = (e) => {
-    console.log(`[SLIDER DEBUG] wheelHandler: deltaY=${e.deltaY}, pageState=${pageState}, isMobile=${isMobile}, width=${window.innerWidth}`);
     
     // На разрешениях < 1440px не обрабатываем wheel события вообще
     if (shouldDisableSliderScrollCapture()) {
-      console.log(`[SLIDER DEBUG] wheelHandler: Disabled on < 1440px, returning`);
       return;
     }
     
@@ -716,7 +718,6 @@ function setupWheel(){
 
     // --- БЛОКИРОВКА КОЛЕСА ВО ВРЕМЯ АНИМАЦИЙ ---
     if (isSettling || approachInFlight || now < wheelLockUntil) {
-      console.log(`[SLIDER DEBUG] wheelHandler: Blocked during animation - isSettling=${isSettling}, approachInFlight=${approachInFlight}, wheelLockUntil=${wheelLockUntil}`);
       e.preventDefault();
       return;
     }
@@ -765,7 +766,6 @@ function setupWheel(){
     // Не блокируем колесо до момента, когда реально начнем подъезд — 
     // пусть страница сможет прокручиваться, если условия изменятся на следующем кадре
     const align = dy > 0 ? 'start' : 'end'; // определяем выравнивание по направлению
-    debugLog('approach', { align, towards, vis, nearTop, nearBottom, intersecting });
     approachToSection(align);                // запускаем плавный подход (всегда заметная анимация)
     return;
   }
@@ -776,7 +776,6 @@ function setupWheel(){
         // активируем слайдер только когда реально движемся к секции
         const towards = (dy > 0 && rect.top > 0) || (dy < 0 && rect.bottom < vh);
         if (towards) { 
-          debugLog('activate', { towards, vis }); 
           // На разрешениях < 1440px активируем слайдер без блокировки скролла
           if (shouldDisableSliderScrollCapture()) {
             pageState = STATE.ACTIVE;
@@ -1022,13 +1021,17 @@ var desktopDragHandlers = [];
 
 function setupDesktopDrag(){
   if (!sliderWrapper) return; // выходим если нет обертки слайдера
-  console.log(`[SLIDER DEBUG] setupDesktopDrag: Setting up drag handlers (width: ${window.innerWidth})`);
+  
+  // НЕ настраиваем desktop drag для разрешений ≤ 768px - там работает drag-vs-click
+  if (window.innerWidth <= 768) {
+    return;
+  }
+  
   
   // Очищаем предыдущие обработчики если они есть
   clearDesktopDrag();
 
   const pointerDownHandler = (e) => {
-    console.log(`[SLIDER DEBUG] pointerDownHandler: button=${e.button}, pageState=${pageState}, width=${window.innerWidth}`);
     if (e.button !== 0) return;
     if (autoSnap.active) cancelAutoSnap();
 
@@ -1037,21 +1040,17 @@ function setupDesktopDrag(){
       // На разрешениях < 1440px снижаем требования к видимости для активации
       const minVis = shouldDisableSliderScrollCapture() ? 0.5 : DRAG_VIS_TO_ENTER;
       const canEnter = vis >= minVis && (Date.now() - lastExitTs) > EXIT_PASS_MS;
-      console.log(`[SLIDER DEBUG] pointerDownHandler: canEnter=${canEnter}, vis=${vis}, minVis=${minVis}, lastExitTs=${Date.now() - lastExitTs}`);
       if (canEnter) {
         // На разрешениях < 1440px активируем слайдер без блокировки скролла
         if (shouldDisableSliderScrollCapture()) {
-          console.log(`[SLIDER DEBUG] pointerDownHandler: Activating slider without scroll blocking`);
           pageState = STATE.ACTIVE;
           if (!isMobile) {
             setMetaActive(0);
           }
         } else {
-          console.log(`[SLIDER DEBUG] pointerDownHandler: Activating slider with scroll blocking`);
           setState(STATE.ACTIVE);
         }
       } else {
-        console.log(`[SLIDER DEBUG] pointerDownHandler: Cannot enter, returning`);
         return;
       }
     }
@@ -1061,7 +1060,7 @@ function setupDesktopDrag(){
     if (!dragLocked) dragLocked = false;
     dragStartX = e.clientX; dragStartY = e.clientY; dragStartTarget = target;
 
-    try { sliderWrapper.setPointerCapture(e.pointerId); } catch(_) {}
+    // НЕ используем setPointerCapture - он блокирует клики
     WSLS_ROOT.classList.add('grabbing');
     sliderWrapper.style.cursor = 'grabbing';
     WSLS_ROOT.style.userSelect = 'none';
@@ -1069,26 +1068,20 @@ function setupDesktopDrag(){
 
   const pointerMoveHandler = (e) => {
     if (!isDragging) {
-      console.log(`[SLIDER DEBUG] pointerMoveHandler: Not dragging, returning`);
       return;
     }
     const dx = e.clientX - dragStartX;
     const dy = e.clientY - dragStartY;
-    console.log(`[SLIDER DEBUG] pointerMoveHandler: dx=${dx}, dy=${dy}, isDragging=${isDragging}, dragLocked=${dragLocked}, DRAG_MIN_DELTA_PX=${DRAG_MIN_DELTA_PX}`);
     
     if (!dragMoved && Math.abs(dx) >= DRAG_MIN_DELTA_PX) {
       dragMoved = true;
-      console.log(`[SLIDER DEBUG] pointerMoveHandler: Drag moved set to true`);
     }
 
     if (!dragLocked) {
       const axisCheck = Math.abs(dx) > DRAG_AXIS_LOCK_K * Math.abs(dy);
-      console.log(`[SLIDER DEBUG] pointerMoveHandler: Axis check - absDx=${Math.abs(dx)}, absDy=${Math.abs(dy)}, DRAG_AXIS_LOCK_K=${DRAG_AXIS_LOCK_K}, axisCheck=${axisCheck}`);
       if (axisCheck) {
         dragLocked = true;
-        console.log(`[SLIDER DEBUG] pointerMoveHandler: Drag locked horizontally`);
       } else {
-        console.log(`[SLIDER DEBUG] pointerMoveHandler: Not horizontal enough, returning`);
         return;
       }
     }
@@ -1101,13 +1094,12 @@ function setupDesktopDrag(){
   };
 
   const endDrag = (e) => {
-    console.log(`[SLIDER DEBUG] endDrag: isDragging=${isDragging}, dragMoved=${dragMoved}, dragLocked=${dragLocked}`);
     if (!isDragging) return;
     isDragging = false;
 
-    try { sliderWrapper.releasePointerCapture && sliderWrapper.releasePointerCapture(e && e.pointerId); } catch(_) {}
+    // НЕ используем releasePointerCapture - он блокирует клики
     WSLS_ROOT.classList.remove('grabbing');
-    sliderWrapper.style.cursor = 'grab';
+    sliderWrapper.style.cursor = 'default';
     WSLS_ROOT.style.userSelect = '';
 
     if (dragMoved) {
@@ -1123,12 +1115,30 @@ function setupDesktopDrag(){
   const pointerCancelHandler = (e) => endDrag(e);
   const pointerLeaveHandler = (e) => { if (isDragging) endDrag(e); };
 
-  // Добавляем обработчики
+  // Добавляем обработчики на контейнер
   sliderWrapper.addEventListener('pointerdown', pointerDownHandler);
   sliderWrapper.addEventListener('pointermove', pointerMoveHandler);
   sliderWrapper.addEventListener('pointerup', pointerUpHandler);
   sliderWrapper.addEventListener('pointercancel', pointerCancelHandler);
   sliderWrapper.addEventListener('pointerleave', pointerLeaveHandler);
+
+  // Добавляем обработчики на все изображения и ссылки в слайдере
+  const slideImages = sliderWrapper.querySelectorAll('img');
+  const slideLinks = sliderWrapper.querySelectorAll('a');
+  
+  slideImages.forEach(img => {
+    img.addEventListener('pointerdown', pointerDownHandler);
+    img.addEventListener('pointermove', pointerMoveHandler);
+    img.addEventListener('pointerup', pointerUpHandler);
+    img.addEventListener('pointercancel', pointerCancelHandler);
+  });
+  
+  slideLinks.forEach(link => {
+    link.addEventListener('pointerdown', pointerDownHandler);
+    link.addEventListener('pointermove', pointerMoveHandler);
+    link.addEventListener('pointerup', pointerUpHandler);
+    link.addEventListener('pointercancel', pointerCancelHandler);
+  });
 
   // Сохраняем ссылки для последующего удаления
   desktopDragHandlers = [
@@ -1138,6 +1148,26 @@ function setupDesktopDrag(){
     { element: sliderWrapper, event: 'pointercancel', handler: pointerCancelHandler },
     { element: sliderWrapper, event: 'pointerleave', handler: pointerLeaveHandler }
   ];
+  
+  // Добавляем обработчики для изображений
+  slideImages.forEach(img => {
+    desktopDragHandlers.push(
+      { element: img, event: 'pointerdown', handler: pointerDownHandler },
+      { element: img, event: 'pointermove', handler: pointerMoveHandler },
+      { element: img, event: 'pointerup', handler: pointerUpHandler },
+      { element: img, event: 'pointercancel', handler: pointerCancelHandler }
+    );
+  });
+  
+  // Добавляем обработчики для ссылок
+  slideLinks.forEach(link => {
+    desktopDragHandlers.push(
+      { element: link, event: 'pointerdown', handler: pointerDownHandler },
+      { element: link, event: 'pointermove', handler: pointerMoveHandler },
+      { element: link, event: 'pointerup', handler: pointerUpHandler },
+      { element: link, event: 'pointercancel', handler: pointerCancelHandler }
+    );
+  });
 }
 
 function clearDesktopDrag() {
@@ -1155,37 +1185,229 @@ function clearDesktopDrag() {
   dragLocked = false;
 }
 
+// === DRAG-VS-CLICK ПАТТЕРН (ТОЛЬКО ДЛЯ ДЕСКТОПА ДО 768px) ===
+var dragVsClickHandlers = [];
+
+function setupDragVsClick() {
+  if (!sliderWrapper) return;
+  
+  // Очищаем предыдущие обработчики
+  clearDragVsClick();
+
+  const pointerDownHandler = (e) => {
+    if (e.button !== 0) return;
+    
+    dragVsClickState.isDown = true;
+    dragVsClickState.startX = e.clientX;
+    dragVsClickState.scrollLeftStart = current;
+    dragVsClickState.movedEnough = false;
+    dragVsClickState.accumulatedDx = 0;
+    dragVsClickState.startTime = Date.now();
+    
+    // Для изображений добавляем специальную обработку
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault(); // Предотвращаем нативный drag изображения
+    }
+    
+    // Запускаем таймер для определения длительного зажатия
+    dragVsClickState.holdTimeout = setTimeout(() => {
+      if (dragVsClickState.isDown && !dragVsClickState.movedEnough) {
+        dragVsClickState.movedEnough = true;
+        sliderWrapper.classList.add('is-dragging');
+      }
+    }, HOLD_DRAG_TIME);
+    
+    // НЕ используем setPointerCapture - он блокирует клики
+    // Вместо этого полагаемся на то, что события придут к контейнеру
+    
+    // НЕ добавляем класс is-dragging сразу - только когда начинается реальный drag
+  };
+
+  const pointerMoveHandler = (e) => {
+    if (!dragVsClickState.isDown) return;
+    
+    const dx = e.clientX - dragVsClickState.startX;
+    
+    // Накопляем общее движение от начала
+    dragVsClickState.accumulatedDx = Math.abs(dx);
+    
+    // Определяем порог в зависимости от элемента
+    const isImage = e.target.tagName === 'IMG';
+    const currentThreshold = isImage ? DRAG_THRESHOLD_IMG : DRAG_THRESHOLD;
+    
+    // Проверяем порог драга (используем накопленное движение)
+    if (!dragVsClickState.movedEnough && dragVsClickState.accumulatedDx >= currentThreshold) {
+      dragVsClickState.movedEnough = true;
+      // Отменяем таймер зажатия, так как движение превысило порог
+      if (dragVsClickState.holdTimeout) {
+        clearTimeout(dragVsClickState.holdTimeout);
+        dragVsClickState.holdTimeout = null;
+      }
+      // Добавляем класс только когда начинается реальный drag
+      sliderWrapper.classList.add('is-dragging');
+    }
+    
+    // Если превышен порог, обновляем позицию слайдера
+    if (dragVsClickState.movedEnough && dragVsClickState.isDown) {
+      target = clamp(dragVsClickState.scrollLeftStart - (dx * DRAG_SENSITIVITY), 0, maxScroll);
+      e.preventDefault(); // Блокируем нативный drag изображений
+    } else if (!dragVsClickState.isDown) {
+      // Если кнопка отпущена, сбрасываем состояние
+      dragVsClickState.movedEnough = false;
+      sliderWrapper.classList.remove('is-dragging');
+    }
+  };
+
+  const pointerUpHandler = (e) => {
+    if (!dragVsClickState.isDown) return;
+    
+    dragVsClickState.isDown = false;
+    dragVsClickState.accumulatedDx = 0;
+    
+    // Очищаем таймер зажатия
+    if (dragVsClickState.holdTimeout) {
+      clearTimeout(dragVsClickState.holdTimeout);
+      dragVsClickState.holdTimeout = null;
+    }
+    
+    // Убираем класс для восстановления интерактивности
+    sliderWrapper.classList.remove('is-dragging');
+    
+    // НЕ блокируем клик здесь - пусть clickHandler решает
+    // dragVsClickState.movedEnough остается для clickHandler
+  };
+
+  const pointerCancelHandler = (e) => {
+    if (!dragVsClickState.isDown) return;
+    
+    dragVsClickState.isDown = false;
+    dragVsClickState.accumulatedDx = 0;
+    
+    // Очищаем таймер зажатия
+    if (dragVsClickState.holdTimeout) {
+      clearTimeout(dragVsClickState.holdTimeout);
+      dragVsClickState.holdTimeout = null;
+    }
+    
+    // Убираем класс для восстановления интерактивности
+    sliderWrapper.classList.remove('is-dragging');
+    
+    // Сбрасываем флаг драга сразу
+    dragVsClickState.movedEnough = false;
+  };
+
+  // Обработчик click в capture-фазе для блокировки кликов после драга
+  const clickHandler = (e) => {
+    if (dragVsClickState.movedEnough) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    // Сбрасываем флаг после обработки клика
+    dragVsClickState.movedEnough = false;
+  };
+
+  // Добавляем обработчики на контейнер слайдера
+  sliderWrapper.addEventListener('pointerdown', pointerDownHandler);
+  sliderWrapper.addEventListener('pointermove', pointerMoveHandler, { passive: false });
+  sliderWrapper.addEventListener('pointerup', pointerUpHandler);
+  sliderWrapper.addEventListener('pointercancel', pointerCancelHandler);
+  sliderWrapper.addEventListener('click', clickHandler, { capture: true });
+
+  // Добавляем обработчики на все изображения и ссылки в слайдере
+  const slideImages = sliderWrapper.querySelectorAll('img');
+  const slideLinks = sliderWrapper.querySelectorAll('a');
+  
+  slideImages.forEach((img, index) => {
+    img.addEventListener('pointerdown', pointerDownHandler);
+    img.addEventListener('pointermove', pointerMoveHandler, { passive: false });
+    img.addEventListener('pointerup', pointerUpHandler);
+    img.addEventListener('pointercancel', pointerCancelHandler);
+    img.addEventListener('click', clickHandler, { capture: true });
+  });
+  
+  slideLinks.forEach((link, index) => {
+    link.addEventListener('pointerdown', pointerDownHandler);
+    link.addEventListener('pointermove', pointerMoveHandler, { passive: false });
+    link.addEventListener('pointerup', pointerUpHandler);
+    link.addEventListener('pointercancel', pointerCancelHandler);
+    link.addEventListener('click', clickHandler, { capture: true });
+  });
+
+  // Сохраняем ссылки для последующего удаления
+  dragVsClickHandlers = [
+    { element: sliderWrapper, event: 'pointerdown', handler: pointerDownHandler },
+    { element: sliderWrapper, event: 'pointermove', handler: pointerMoveHandler, options: { passive: false } },
+    { element: sliderWrapper, event: 'pointerup', handler: pointerUpHandler },
+    { element: sliderWrapper, event: 'pointercancel', handler: pointerCancelHandler },
+    { element: sliderWrapper, event: 'click', handler: clickHandler, options: { capture: true } }
+  ];
+  
+  // Добавляем обработчики для изображений
+  slideImages.forEach(img => {
+    dragVsClickHandlers.push(
+      { element: img, event: 'pointerdown', handler: pointerDownHandler },
+      { element: img, event: 'pointermove', handler: pointerMoveHandler, options: { passive: false } },
+      { element: img, event: 'pointerup', handler: pointerUpHandler },
+      { element: img, event: 'pointercancel', handler: pointerCancelHandler },
+      { element: img, event: 'click', handler: clickHandler, options: { capture: true } }
+    );
+  });
+  
+  // Добавляем обработчики для ссылок
+  slideLinks.forEach(link => {
+    dragVsClickHandlers.push(
+      { element: link, event: 'pointerdown', handler: pointerDownHandler },
+      { element: link, event: 'pointermove', handler: pointerMoveHandler, options: { passive: false } },
+      { element: link, event: 'pointerup', handler: pointerUpHandler },
+      { element: link, event: 'pointercancel', handler: pointerCancelHandler },
+      { element: link, event: 'click', handler: clickHandler, options: { capture: true } }
+    );
+  });
+}
+
+function clearDragVsClick() {
+  // Удаляем все drag-vs-click обработчики
+  (Array.isArray(dragVsClickHandlers) ? dragVsClickHandlers : []).forEach(({ element, event, handler, options }) => {
+    if (element && element.removeEventListener) {
+      element.removeEventListener(event, handler, options);
+    }
+  });
+  dragVsClickHandlers = [];
+  
+  // Очищаем состояние
+  dragVsClickState.isDown = false;
+  dragVsClickState.movedEnough = false;
+  
+  // Убираем CSS класс
+  if (sliderWrapper) {
+    sliderWrapper.classList.remove('is-dragging');
+  }
+}
+
 // === КАСАНИЯ НА МОБИЛЬНЫХ УСТРОЙСТВАХ ===
 var mobileTouchHandlers = [];
 
 function setupMobileTouch(){
   if (!sliderWrapper) {
-    console.log(`[SLIDER DEBUG] setupMobileTouch: sliderWrapper not found!`);
     return;
   }
-  console.log(`[SLIDER DEBUG] setupMobileTouch: Setting up touch handlers (width: ${window.innerWidth})`);
-  console.log(`[SLIDER DEBUG] setupMobileTouch: sliderWrapper found:`, sliderWrapper);
-  console.log(`[SLIDER DEBUG] setupMobileTouch: Environment check - isInIframe: ${window !== window.top}, userAgent: ${navigator.userAgent}`);
   
   // Очищаем предыдущие обработчики если они есть
   clearMobileTouch();
 
   const touchStartHandler = (e) => {
-    console.log(`[SLIDER DEBUG] touchStartHandler: touches=${e.touches.length}, width=${window.innerWidth}, isMobile=${isMobile}`);
     
     // Если уже идет drag, не обрабатываем touch
     if (isDragging) {
-      console.log(`[SLIDER DEBUG] touchStartHandler: Drag in progress, skipping touch`);
       return;
     }
     
     // На десктопах (≥1440px) приоритет у drag событий
     if (!isMobile && window.innerWidth >= 1440) {
-      console.log(`[SLIDER DEBUG] touchStartHandler: Desktop detected, drag has priority`);
       // Не возвращаемся сразу, но даем приоритет drag событиям
     }
     
-    console.log(`[SLIDER DEBUG] touchStartHandler: Processing touch event`);
     
     // Отменяем авто-дотяг если он активен
     if (autoSnap && autoSnap.active) cancelAutoSnap();
@@ -1206,17 +1428,14 @@ function setupMobileTouch(){
   const touchMoveHandler = (e) => {
     // Если уже идет drag, не обрабатываем touch
     if (isDragging) {
-      console.log(`[SLIDER DEBUG] touchMoveHandler: Drag in progress, skipping touch`);
       return;
     }
     
     // На десктопах (≥1440px) приоритет у drag событий
     if (!isMobile && window.innerWidth >= 1440) {
-      console.log(`[SLIDER DEBUG] touchMoveHandler: Desktop detected, drag has priority`);
       // Не возвращаемся сразу, но даем приоритет drag событиям
     }
     
-    console.log(`[SLIDER DEBUG] touchMoveHandler: Processing touch move`);
     
     const t = e.touches[0];
     const dx = t.clientX - tStartX;
@@ -1227,10 +1446,8 @@ function setupMobileTouch(){
     const absDy = Math.abs(dy);
     const horizontalDominant = absDx > absDy && absDx > 8;
 
-    console.log(`[SLIDER DEBUG] touchMoveHandler: dx=${dx}, dy=${dy}, absDx=${absDx}, absDy=${absDy}, horizontalDominant=${horizontalDominant}`);
 
     if (!horizontalDominant) {
-      console.log(`[SLIDER DEBUG] touchMoveHandler: Not horizontal dominant, returning`);
       return; // let the browser handle vertical scrolling naturally
     }
 
@@ -1249,20 +1466,16 @@ function setupMobileTouch(){
   const touchEndHandler = () => {
     // Если уже идет drag, не обрабатываем touch
     if (isDragging) {
-      console.log(`[SLIDER DEBUG] touchEndHandler: Drag in progress, skipping touch`);
       return;
     }
     
     // На десктопах (≥1440px) приоритет у drag событий
     if (!isMobile && window.innerWidth >= 1440) {
-      console.log(`[SLIDER DEBUG] touchEndHandler: Desktop detected, drag has priority`);
       // Не возвращаемся сразу, но даем приоритет drag событиям
     }
     
-    console.log(`[SLIDER DEBUG] touchEndHandler: Processing touch end, touchHoriz=${touchHoriz}, hasHorizontalSwipe=${hasHorizontalSwipe}, width=${window.innerWidth}`);
     // Only act when a horizontal swipe occurred; otherwise, preserve vertical scroll behavior
     if (!touchHoriz || !hasHorizontalSwipe) {
-      console.log(`[SLIDER DEBUG] touchEndHandler: Not horizontal swipe, returning`);
       return;
     }
     
@@ -1325,18 +1538,15 @@ function setupIOApproachFallback(){
       const dir = (nowScrollY > lastScrollY) ? 'down' : (nowScrollY < lastScrollY ? 'up' : 'down');
       lastScrollY = nowScrollY;
 
-      debugLog('io', { vis, rectTop: rect.top, rectBottom: rect.bottom, dir });
 
       if (vis >= 0.5) {
         const align = (dir === 'down') ? 'start' : 'end';
-        debugLog('io-approach', { align });
         // На разрешениях < 1440px не переключаем на горизонтальный скролл
         if (!shouldDisableSliderScrollCapture()) {
           approachToSection(align);
         }
       } else if (Math.abs(rect.top) <= NEAR_PX) {
         const align = rect.top >= 0 ? 'start' : 'end';
-        debugLog('io-near', { align });
         // На разрешениях < 1440px не переключаем на горизонтальный скролл
         if (!shouldDisableSliderScrollCapture()) {
           approachToSection(align);
@@ -1353,7 +1563,6 @@ function setupIOApproachFallback(){
 function startLoop(){
   function tick(ts){
     if (window.lenis?.raf) window.lenis.raf(ts); // синхронизируем с Lenis если доступен
-    if (DEBUG && Math.random() < 0.02) debugLog('tick', { pageState, current: Math.round(current), target: Math.round(target), maxScroll: Math.round(maxScroll), isMobile, isDragging, approachInFlight, autoSnap: autoSnap && autoSnap.active });
 
     // === ПЛАВНОСТЬ У КРАЕВ + АВТОДОТЯГ ДО 100% КОГДА ≥95% ===
     const stepPx = isMobile ? getMobileStep() : getDesktopStep(); // размер шага слайдера
@@ -1541,13 +1750,11 @@ function hydrateImageAspectRatios(){
 // === ОБРАБОТКА ИЗМЕНЕНИЯ РАЗМЕРА ОКНА ===
 let resizeTimeout;
 window.addEventListener('resize', () => {
-  console.log(`[SLIDER DEBUG] resize: width=${window.innerWidth}, isMobile=${isMobile}`);
   // Debounce resize события для оптимизации производительности
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
     const wasMobile = isMobile;
     isMobile = isMobileDevice(); // обновляем определение мобильного устройства
-    console.log(`[SLIDER DEBUG] resize timeout: wasMobile=${wasMobile}, isMobile=${isMobile}, width=${window.innerWidth}`);
     
     // Если изменился тип устройства или разрешение, перестраиваем логику
     const currentWidth = window.innerWidth;
@@ -1556,10 +1763,10 @@ window.addEventListener('resize', () => {
     
     if (wasMobile !== isMobile || wasTablet !== isTablet) {
       // ВАЖНО: Принудительно очищаем ВСЕ обработчики при любом изменении
-      console.log(`[SLIDER DEBUG] resize: Clearing all handlers before reconfiguration`);
       clearWheel();
       clearDesktopDrag();
       clearMobileTouch();
+      clearDragVsClick();
       
       // Сначала очищаем все существующие обработчики
       if (wasMobile) {
@@ -1567,14 +1774,13 @@ window.addEventListener('resize', () => {
         clearMobileTouch(); // очищаем touch обработчики
         
         // ВАЖНО: Сбрасываем блокировку скролла при переходе на десктоп
-        console.log(`[SLIDER DEBUG] resize: Resuming Lenis on desktop transition`);
         resumeLenis();
         setOverscrollContain(false);
         
         // Принудительно очищаем все возможные обработчики
         if (sliderWrapper) {
           // Устанавливаем курсор
-          sliderWrapper.style.cursor = 'grab';
+          sliderWrapper.style.cursor = 'default';
         }
         
         // Принудительно очищаем все обработчики перед настройкой новых
@@ -1584,16 +1790,15 @@ window.addEventListener('resize', () => {
         // Обновляем ссылки на элементы после очистки
         if (sliderWrapper) {
           // Убеждаемся, что wrapper доступен
-          sliderWrapper.style.cursor = 'grab';
+          sliderWrapper.style.cursor = 'default';
         }
         
         // Настраиваем десктоп функциональность
         setupWheel();
-        setupDesktopDrag();
+        // setupDesktopDrag(); // ОТКЛЮЧЕНО: конфликт с setupDragVsClick
         
         // Сбрасываем состояние слайдера при переходе на десктоп
         if (pageState === STATE.ACTIVE) {
-          console.log(`[SLIDER DEBUG] resize: Resetting slider state on desktop transition`);
           setState(STATE.NORMAL);
           // Затем активируем заново если нужно
           setTimeout(() => {
@@ -1620,7 +1825,7 @@ window.addEventListener('resize', () => {
           // Убираем мобильные стили
           sliderWrapper.classList.remove('mobile-mode');
           // Восстанавливаем десктопные стили
-          sliderWrapper.style.cursor = 'grab';
+          sliderWrapper.style.cursor = 'default';
         }
         
         // Принудительно обновляем CSS стили слайдов для десктопного режима
@@ -1743,14 +1948,16 @@ window.addEventListener('resize', () => {
       
       // Дополнительная логика для планшетов (768px < width < 1440px)
       if (isTablet) {
-        console.log(`[SLIDER DEBUG] resize: Setting up tablet handlers with all events`);
         // Настраиваем все события для планшетов (для респонзивности)
         setupWheel();
-        setupDesktopDrag();
+        // setupDesktopDrag(); // ОТКЛЮЧЕНО: конфликт с setupDragVsClick
         setupMobileTouch();
         
+        // НЕ настраиваем drag-vs-click для планшетов > 768px
+        // drag-vs-click работает только для разрешений ≤ 768px
+        
         if (sliderWrapper) {
-          sliderWrapper.style.cursor = 'grab';
+          sliderWrapper.style.cursor = 'default';
         }
         
         // Настраиваем метаданные
@@ -1765,6 +1972,12 @@ window.addEventListener('resize', () => {
         updateSlideFX();
         updateSlideMetaVisibility();
       }
+      
+      // Настраиваем drag-vs-click для всех разрешений
+      setupDragVsClick();
+      if (sliderWrapper) {
+        sliderWrapper.style.cursor = 'default';
+      }
     }
     
     // Обновляем максимальную прокрутку
@@ -1778,4 +1991,5 @@ window.addEventListener('resize', () => {
 
 // === ОТЛАДОЧНАЯ ИНФОРМАЦИЯ ===
 if (window.location.search.includes('debug')) {
-  }
+  // Отладочная информация включена
+}

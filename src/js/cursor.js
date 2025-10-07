@@ -509,7 +509,6 @@ let cursorInstance = null;
 function initCursor() {
   // Отключаем курсор на мобильных устройствах (≤1024px с запасом)
   if (window.innerWidth <= 1024) {
-    console.log('[OOR] Cursor disabled on mobile devices (width ≤1024px)');
     // Если курсор уже был инициализирован, уничтожаем его
     if (cursorInstance) {
       cursorInstance.destroy();
@@ -591,7 +590,6 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-      console.log('[OOR] Cursor resize handler: width=' + window.innerWidth);
       initCursor(); // Переинициализируем курсор при изменении размера
     }, 150); // Задержка для оптимизации производительности
   });

@@ -2,7 +2,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Отключаем rolling text на мобильных устройствах (≤1024px с запасом)
   if (window.innerWidth <= 1024) {
-    console.log('[OOR] Rolling text disabled on mobile devices (width ≤1024px)');
     return;
   }
   

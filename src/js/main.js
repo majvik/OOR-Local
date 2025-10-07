@@ -127,7 +127,6 @@ function loadGSAPFallback() {
   const script = document.createElement('script');
   script.src = 'https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js';
   script.onload = function() {
-    console.log('[OOR] GSAP loaded from fallback');
     // Перезапускаем инициализацию после загрузки GSAP
     if (typeof initPreloader === 'function') {
       initPreloader();
@@ -246,7 +245,6 @@ function initPreloader() {
     progress = Math.round((actualProgress / totalResources) * 100);
     percentElement.textContent = progress;
 
-    // console.log(`Preloader: ${loadedResources}/${totalResources} (${progress}%)`);
 
     if (loadedResources >= totalResources) {
       // Завершаем прелоадер сразу при достижении 100%
@@ -270,9 +268,6 @@ function initPreloader() {
       try {
         const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
         if (DISABLE_LENIS) {
-          if (window.location.search.includes('debug')) {
-            console.log('[Lenis] disabled by query param');
-          }
           return;
         }
 
@@ -296,7 +291,6 @@ function initPreloader() {
                 infinite: false
               });
               if (window.location.search.includes('debug')) {
-                try { console.log('[Lenis] init after preloader', { limit: window.lenis && window.lenis.limit }); } catch(_) {}
               }
             }
           } catch(e) { console.warn('Lenis init error', e); }
@@ -934,7 +928,6 @@ function initNavigation() {
   navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
-      console.log('Navigation clicked:', this.textContent);
     });
   });
 }
@@ -955,11 +948,9 @@ function initHeroVideo() {
 
   // Оптимизация загрузки
   video.addEventListener('loadstart', function() {
-    console.log('Hero video: Начало загрузки');
   });
 
   video.addEventListener('canplay', function() {
-    console.log('Hero video: Готово к воспроизведению');
     // Убираем fallback изображение когда видео готово
     const fallback = video.querySelector('div');
     if (fallback) {
@@ -1061,7 +1052,6 @@ function initFullscreenVideo() {
     // Анимируем иконку закрытия через CSS класс
     fullscreenClose.classList.add('active');
     
-    console.log('Fullscreen video: Открыто');
   }
 
   function closeFullscreenVideo() {
@@ -1079,7 +1069,6 @@ function initFullscreenVideo() {
     // Возвращаем иконку в исходное состояние через CSS класс
     fullscreenClose.classList.remove('active');
     
-    console.log('Fullscreen video: Закрыто');
   }
 }
 
@@ -1129,7 +1118,6 @@ function installScrollUnlockWatchdog() {
 function initMagneticElements() {
   // Отключаем магнетизм на мобильных устройствах (≤1024px с запасом)
   if (window.innerWidth <= 1024) {
-    console.log('[OOR] Magnetic elements disabled on mobile devices (width ≤1024px)');
     return;
   }
   
@@ -1244,7 +1232,6 @@ function installScrollDiagnostics() {
           pageYOffset: window.pageYOffset
         }
       };
-      console.log('[ScrollDiag]', info);
     }
 
     function canScrollCheck(tag) {
@@ -1252,7 +1239,6 @@ function installScrollDiagnostics() {
       window.scrollTo(0, before + 2);
       setTimeout(() => {
         const after = window.pageYOffset;
-        console.log('[ScrollDiag] canScrollCheck', { tag, moved: after !== before, before, after });
       }, 50);
     }
 
@@ -1303,7 +1289,6 @@ function preventOrphans(element) {
     // Заменяем последний пробел на неразрывный пробел
     const newText = text.replace(/\s+$/, '\u00A0');
     element.textContent = newText;
-    // console.log('Orphan control applied:', element.className, '->', newText);
   }
   
   // Дополнительная проверка: если последние два слова короткие, связываем их
@@ -1313,7 +1298,6 @@ function preventOrphans(element) {
       const textWithoutLastTwo = words.slice(0, -2).join(' ');
       const lastTwoJoined = lastTwoWords.join('\u00A0');
       element.textContent = textWithoutLastTwo + ' ' + lastTwoJoined;
-      // console.log('Orphan control applied (two words):', element.className, '->', textWithoutLastTwo + ' ' + lastTwoJoined);
     }
   }
 }

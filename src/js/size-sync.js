@@ -48,19 +48,7 @@ class SizeSync {
                     targetElement.style.height = height + 'px';
                 }
                 
-                // console.log('Size synced:', {
-                //     source: task.sourceSelector,
-                //     target: task.targetSelector,
-                //     width: task.syncWidth ? sourceElement.offsetWidth + 'px' : 'not synced',
-                //     height: task.syncHeight ? sourceElement.offsetHeight + 'px' : 'not synced'
-                // });
             } else {
-                // console.log('Elements not found:', {
-                //     source: task.sourceSelector,
-                //     target: task.targetSelector,
-                //     sourceFound: !!sourceElement,
-                //     targetFound: !!targetElement
-                // });
             }
         });
     }

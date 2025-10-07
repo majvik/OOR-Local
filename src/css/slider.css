@@ -135,10 +135,19 @@ html{
   align-items: center;
   gap: 100px;
   padding: 0 0; /* убираем 600px паддинг, теперь колонка наложением */
+  /* Настройки для плавного драга */
+  touch-action: pan-y; /* разрешаем только вертикальную прокрутку браузера */
+  user-select: none; /* предотвращаем выделение текста */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   width: max-content;
-  cursor: grab;
+  cursor: default; /* убираем grab по умолчанию */
   /* Плавные переходы для wrapper */
   transition: all var(--transition-fast);
+  /* Drag-vs-click паттерн */
+  user-select: none;
+  touch-action: pan-y;
 }
 #wsls /* Добавляем правый отступ для последнего слайда, #wsls равный gap между слайдами */
 .slider-wrapper .slide:last-child{
@@ -167,6 +176,7 @@ html{
   user-select: none;
   -webkit-user-drag: none;
   -webkit-user-select: none;
+  /* Drag-vs-click паттерн - draggable="false" устанавливается в HTML */
 }
 #wsls /* Центрирование изображения внутри доступной высоты (пропорциональное масштабирование) */
 .slide-media{
@@ -191,11 +201,49 @@ a.slide-media:hover {
   text-decoration: none;
 }
 
-/* Скрываем курсор на мобильных устройствах */
-@media (max-width: 768px) {
-  a.slide-media.text-cuberto-cursor-2 {
-    pointer-events: none;
+/* Отключаем кастомный курсор в секции слайдера для корректной работы drag */
+#wsls .slide-media.text-cuberto-cursor-2 {
+  pointer-events: auto; /* Включаем pointer-events для drag-vs-click */
+}
+
+/* Для десктопа: отключаем кастомный курсор в секции слайдера */
+@media (min-width: 769px) {
+  #wsls .slide-media.text-cuberto-cursor-2 {
+    cursor: default !important; /* Убираем кастомный курсор, используем default */
   }
+}
+
+/* Скрываем курсор на мобильных устройствах (только для других секций) */
+@media (max-width: 768px) {
+  /* Убираем это правило, так как оно мешает drag-vs-click */
+}
+
+/* Drag-vs-click паттерн - для всех разрешений */
+/* Состояние драга */
+#wsls .slider-wrapper.is-dragging {
+  cursor: grabbing !important;
+}
+
+/* Курсор grab только во время драга */
+#wsls .slider-wrapper.is-dragging img {
+  cursor: grabbing !important;
+}
+
+/* Блокируем pointer-events для потомков ТОЛЬКО во время драга */
+#wsls .slider-wrapper.is-dragging * {
+  pointer-events: none;
+}
+
+/* Блокируем кастомный курсор во время драга */
+#wsls .slider-wrapper.is-dragging .text-cuberto-cursor-2 {
+  cursor: grabbing !important;
+}
+
+/* Изображения не должны перетаскиваться */
+#wsls .slide img[draggable="false"] {
+  -webkit-user-drag: none;
+  user-select: none;
+  cursor: pointer; /* курсор pointer только на изображениях */
 }
 #wsls .slide-media img{
   width: 100%;
