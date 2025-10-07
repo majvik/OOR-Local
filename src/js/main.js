@@ -639,7 +639,7 @@ function initParallaxImages() {
       img.setAttribute('data-parallax-max', '32');
     }
     if (img.closest('.oor-quality-img-container-1')) {
-      img.setAttribute('data-parallax-max', '64');
+      img.setAttribute('data-parallax-max', '24');
     }
     
     // Рассчитываем и замораживаем scale для заполнения контейнера

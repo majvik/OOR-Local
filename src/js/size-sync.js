@@ -100,3 +100,10 @@ sizeSync.addSyncTask(
     '.oor-manifesto-button',
     { syncWidth: true, syncHeight: false }
 );
+
+// Выравниваем высоту текста под высоту изображения "без страха" на десктопе (>768px)
+sizeSync.addSyncTask(
+    '.oor-without-fear-image',
+    '.oor-without-fear-text',
+    { syncWidth: true, syncHeight: false }
+);
