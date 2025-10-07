@@ -31,10 +31,12 @@
   display: block !important;
   width: 48px !important;
   height: 48px !important;
+  /* Базовый размер точки ~10px (48 * 0.2). При наведении увеличиваем до 24px */
   transform: scale(0.2) !important;
   background: #FA4144 !important; /* Брендовый цвет OOR */
   border-radius: 50% !important;
-  transition: transform 0.25s ease-in-out, opacity 0.1s !important;
+  opacity: 1 !important; /* Без прозрачности */
+  transition: transform 0.25s ease-in-out !important; /* Убираем переход по opacity */
 }
 
 /* Состояния курсора */
@@ -43,12 +45,13 @@
 }
 
 .mf-cursor.-pointer:before {
-  transform: scale(0.15) !important;
+  /* Ховер-розмер 24x24px: 48 * 0.5 = 24 */
+  transform: scale(0.5) !important;
 }
 
 .mf-cursor.-text:before {
-  opacity: 0.85 !important;
-  transform: scale(2.4) !important;
+  /* Текст не используется, оставляем видимой точку без изменения прозрачности */
+  opacity: 1 !important;
 }
 
 .mf-cursor.-text.-active:before {

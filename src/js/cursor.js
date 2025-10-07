@@ -541,9 +541,10 @@ function initCursor() {
    * @type {MouseFollower}
    */
   cursorInstance = new MouseFollower({
-    speed: 0.6,        // Скорость следования за мышью
-    skewing: 1,        // Эффект искажения при движении
-    skewingText: 3     // Искажение для текстовых элементов
+    speed: 0.6,           // Скорость следования за мышью
+    skewing: 2.4,         // Усиливаем деформацию при движении
+    skewingText: 3,       // Искажение для текстовых элементов
+    skewingDeltaMax: 0.25 // Позволяем больший максимум деформации
   });
 
   // Используем встроенные data-атрибуты MouseFollower
@@ -560,39 +561,8 @@ function initCursor() {
     el.setAttribute('data-cursor-img', '/public/assets/good-works.png');
   });
 
-  // Тексты
-  document.querySelectorAll('.oor-events-photo-image.text-cuberto-cursor-1').forEach(el => {
-    el.setAttribute('data-cursor-text', 'Все события');
-  });
-  document.querySelectorAll('.oor-footer-email.text-cuberto-cursor-1').forEach(el => {
-    el.setAttribute('data-cursor-text', 'Написать');
-  });
-  document.querySelectorAll('.slide-media.text-cuberto-cursor-2').forEach(el => {
-    el.setAttribute('data-cursor-text', 'Все артисты');
-  });
-  
-  // OUT OF TALK Images - "Все выпуски ток-шоу"
-  document.querySelectorAll('.oor-out-of-talk-image-1.text-cuberto-cursor-1').forEach(el => {
-    el.setAttribute('data-cursor-text', 'Все выпуски<br>ток-шоу');
-  });
-  document.querySelectorAll('.oor-out-of-talk-image-2.text-cuberto-cursor-1').forEach(el => {
-    el.setAttribute('data-cursor-text', 'Все выпуски<br>ток-шоу');
-  });
-  document.querySelectorAll('.oor-out-of-talk-image-3.text-cuberto-cursor-1').forEach(el => {
-    el.setAttribute('data-cursor-text', 'Все выпуски<br>ток-шоу');
-  });
-  
-  // MERCH Images - "Мерч"
-  document.querySelectorAll('.oor-merch-image-item.text-cuberto-cursor-1').forEach(el => {
-    el.setAttribute('data-cursor-text', 'Мерч');
-  });
-  
-  // Остальные элементы с text-cuberto-cursor-1
-  document.querySelectorAll('.text-cuberto-cursor-1').forEach(el => {
-    if (!el.getAttribute('data-cursor-text')) {
-      el.setAttribute('data-cursor-text', 'Стать артистом');
-    }
-  });
+  // Тексты отключены по требованиям: курсор не содержит текстовой подписи
+  // Не устанавливаем data-cursor-text на элементы
 }
 
 // Инициализация курсора после загрузки всех зависимостей
