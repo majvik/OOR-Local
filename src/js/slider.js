@@ -46,6 +46,11 @@ function shouldDisableSliderScrollCapture() {
   return window.innerWidth < 1440;
 }
 
+// На больших экранах >1920px полностью отключаем автоматический захват и подъезд
+function shouldDisableSliderAutoCapture() {
+  return window.innerWidth > 1920;
+}
+
 
 // === НАСТРОЙКИ ГОРИЗОНТАЛЬНОЙ АНИМАЦИИ ===
 const H_EASE = 0.06;           // плавность движения слайдера (чем меньше, тем плавнее)
@@ -217,6 +222,9 @@ document.addEventListener('wheel', (e) => {
   if (!isInsideSliderEvent(e)) return;
   // НЕ блокируем на мобильных устройствах - там работают touch события
   if (isMobile || pageState !== STATE.NORMAL || !sliderSection) return;
+  
+  // На больших экранах >1920px полностью отключаем ранний захват
+  if (shouldDisableSliderAutoCapture()) return;
 
   const now = performance.now();
   const dy = e.deltaY;
@@ -227,6 +235,10 @@ document.addEventListener('wheel', (e) => {
   if (softAlign) {
     // На разрешениях < 1440px не переключаем на горизонтальный скролл
     if (shouldDisableSliderScrollCapture()) {
+      return;
+    }
+    // На больших экранах >1920px отключаем автоматический захват
+    if (shouldDisableSliderAutoCapture()) {
       return;
     }
     reenterGuard = null;             // немедленно отключаем защиту от повторного входа
@@ -648,6 +660,11 @@ function approachToSection(align /* 'start' | 'end' */) {
     return;
   }
   
+  // На больших экранах >1920px отключаем подъезд полностью
+  if (shouldDisableSliderAutoCapture()) {
+    return;
+  }
+  
   approachInFlight = true;
 
   let lenisStopped = false;
@@ -661,7 +678,8 @@ function approachToSection(align /* 'start' | 'end' */) {
   const delta    = targetY - startY;
 
   const startT   = performance.now();
-  const dur      = APPROACH_DURATION_MS;
+  // На больших экранах >1920px отключаем анимацию подъезда
+  const dur      = (window.innerWidth > 1920) ? 0 : APPROACH_DURATION_MS;
   const ease     = (t) => 1 - Math.pow(1 - t, 3); // плавность: easeOutCubic (замедление к концу)
 
   wheelLockUntil = startT + dur + 140;
@@ -714,6 +732,12 @@ function setupWheel(){
       return;
     }
     
+    // На больших экранах >1920px отключаем автоматический захват
+    // Но разрешаем горизонтальную прокрутку если слайдер уже активен
+    if (shouldDisableSliderAutoCapture() && pageState === STATE.NORMAL) {
+      return;
+    }
+    
     const now = performance.now();
 
     // --- БЛОКИРОВКА КОЛЕСА ВО ВРЕМЯ АНИМАЦИЙ ---
@@ -737,6 +761,10 @@ function setupWheel(){
       if (softAlign2) {
         // На разрешениях < 1440px не переключаем на горизонтальный скролл
         if (shouldDisableSliderScrollCapture()) {
+          return;
+        }
+        // На больших экранах >1920px отключаем автоматический захват
+        if (shouldDisableSliderAutoCapture()) {
           return;
         }
         reenterGuard = null;    // отключаем защиту от повторного входа
@@ -782,7 +810,8 @@ function setupWheel(){
             if (!isMobile) {
               setMetaActive(0);
             }
-          } else {
+          } else if (!shouldDisableSliderAutoCapture()) {
+            // На больших экранах >1920px не активируем автоматически
             setState(STATE.ACTIVE);
           }
         }
@@ -1047,8 +1076,16 @@ function setupDesktopDrag(){
           if (!isMobile) {
             setMetaActive(0);
           }
-        } else {
+        } else if (!shouldDisableSliderAutoCapture()) {
+          // На больших экранах >1920px не активируем автоматически при drag
           setState(STATE.ACTIVE);
+        } else {
+          // На больших экранах разрешаем drag но без автоактивации
+          // Пользователь может вручную кликнуть и перетащить
+          pageState = STATE.ACTIVE;
+          if (!isMobile) {
+            setMetaActive(0);
+          }
         }
       } else {
         return;
@@ -1532,6 +1569,9 @@ function setupIOApproachFallback(){
       
       // НЕ активируем автоматический захват на мобильных устройствах
       if (isMobile) continue;
+      
+      // На больших экранах >1920px отключаем автоматический захват
+      if (shouldDisableSliderAutoCapture()) continue;
 
       const { rect, vh, vis } = visibilityInfo();
       const nowScrollY = window.scrollY;

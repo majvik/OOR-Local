@@ -404,7 +404,7 @@ body::-webkit-scrollbar {
   top:0;
   left:0;
   width:100vw;
-  height:100vh;
+  height:calc(100 * var(--oor-vh));
   background:black;
   z-index:99999;
   display:none;
@@ -422,7 +422,7 @@ body::-webkit-scrollbar {
   top:0;
   left:0;
   width:100vw;
-  height:100vh;
+  height:calc(100 * var(--oor-vh));
   z-index:99999;
   background:black;
 }
@@ -642,7 +642,7 @@ html.preloader-active,
 body.preloader-active{
   overflow:hidden;
   width:100vw;
-  height:100vh;
+  height:calc(100 * var(--oor-vh));
   margin:0;
   padding:0;
   position:fixed;
@@ -712,7 +712,7 @@ body.preloader-active{
 /* ===== MUSICAL ASSOCIATION SECTION ===== */
 .oor-musical-association {
   background: var(--color-white);
-  min-height: 100vh;
+  min-height: calc(100 * var(--oor-vh));
   padding-left: var(--container-x);
 }
 
@@ -726,13 +726,13 @@ body.preloader-active{
   align-items: flex-start;
   justify-content: space-between;
   text-align: left;
-  height: 100vh;
+  height: calc(100 * var(--oor-vh));
   box-sizing: border-box;
 }
 
 .oor-musical-association-right {
   display: flex;
-  height: 100vh;
+  height: calc(100 * var(--oor-vh));
   padding: 40px 0;
   margin: 0;
   align-items: center;
@@ -2309,7 +2309,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   top: 0;
   right: -100%;
   width: 360px;
-  height: 100vh;
+  height: calc(100 * var(--oor-vh));
   background: #000;
   z-index: 1000;
   transition: right 0.3s ease;
