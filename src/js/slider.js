@@ -703,15 +703,8 @@ function approachToSection(align /* 'start' | 'end' */) {
 
     const { vis } = visibilityInfo();
     if (vis >= ACTIVATE_WHEN_VISIBLE) {
-      // На разрешениях < 1440px активируем слайдер без блокировки скролла
-      if (shouldDisableSliderScrollCapture()) {
-        pageState = STATE.ACTIVE;
-        if (!isMobile) {
-          setMetaActive(0);
-        }
-      } else {
-        setState(STATE.ACTIVE);
-      }
+      // Активируем слайдер через setState для корректного управления состоянием
+      setState(STATE.ACTIVE);
     }
   })(startT);
 }
@@ -727,8 +720,9 @@ function setupWheel(){
 
   wheelHandler = (e) => {
     
-    // На разрешениях < 1440px не обрабатываем wheel события вообще
-    if (shouldDisableSliderScrollCapture()) {
+    // На разрешениях < 1440px не обрабатываем wheel события в NORMAL режиме
+    // Но разрешаем в ACTIVE режиме для выхода из слайдера
+    if (shouldDisableSliderScrollCapture() && pageState === STATE.NORMAL) {
       return;
     }
     
@@ -806,10 +800,7 @@ function setupWheel(){
         if (towards) { 
           // На разрешениях < 1440px активируем слайдер без блокировки скролла
           if (shouldDisableSliderScrollCapture()) {
-            pageState = STATE.ACTIVE;
-            if (!isMobile) {
-              setMetaActive(0);
-            }
+            setState(STATE.ACTIVE);
           } else if (!shouldDisableSliderAutoCapture()) {
             // На больших экранах >1920px не активируем автоматически
             setState(STATE.ACTIVE);
@@ -1070,18 +1061,11 @@ function setupDesktopDrag(){
       const minVis = shouldDisableSliderScrollCapture() ? 0.5 : DRAG_VIS_TO_ENTER;
       const canEnter = vis >= minVis && (Date.now() - lastExitTs) > EXIT_PASS_MS;
       if (canEnter) {
-        // На разрешениях < 1440px активируем слайдер без блокировки скролла
-        if (shouldDisableSliderScrollCapture()) {
-          pageState = STATE.ACTIVE;
-          if (!isMobile) {
-            setMetaActive(0);
-          }
-        } else if (!shouldDisableSliderAutoCapture()) {
-          // На больших экранах >1920px не активируем автоматически при drag
+        // Активируем слайдер через setState для корректного управления состоянием
+        if (!shouldDisableSliderAutoCapture()) {
           setState(STATE.ACTIVE);
         } else {
           // На больших экранах разрешаем drag но без автоактивации
-          // Пользователь может вручную кликнуть и перетащить
           pageState = STATE.ACTIVE;
           if (!isMobile) {
             setMetaActive(0);
@@ -1969,15 +1953,8 @@ window.addEventListener('resize', () => {
           setTimeout(() => {
             const { vis } = visibilityInfo();
             if (vis >= ACTIVATE_WHEN_VISIBLE) {
-              // На разрешениях < 1440px активируем слайдер без блокировки скролла
-              if (shouldDisableSliderScrollCapture()) {
-                pageState = STATE.ACTIVE;
-                if (!isMobile) {
-                  setMetaActive(0);
-                }
-              } else {
-                setState(STATE.ACTIVE);
-              }
+              // Активируем слайдер через setState для корректного управления состоянием
+              setState(STATE.ACTIVE);
             }
           }, 100);
         }
