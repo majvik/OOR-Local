@@ -870,10 +870,14 @@ function setupWheel(){
       const PUSH    = isTP ? TP_PUSH     : 110;       // порог выхода в зависимости от устройства
 
       // --- ЭКСПОНЕНЦИАЛЬНОЕ ЗАТУХАНИЕ НАМЕРЕНИЯ ВЫЙТИ ---
-      const dt = lastIntentTs ? (nowTs - lastIntentTs) : 0; // время с последнего события
-      const decay = Math.exp(-dt * (isTP ? TP_DECAY_PER_MS : TP_DECAY_PER_MS * 0.5)); // коэффициент затухания
-      edgeIntentUp   *= decay; // затухание намерения выйти вверх
-      edgeIntentDown *= decay; // затухание намерения выйти вниз
+      // На маленьких экранах (<1920px) отключаем затухание для легкого выхода
+      const isSmallScreen = window.innerWidth < 1920;
+      if (!isSmallScreen) {
+        const dt = lastIntentTs ? (nowTs - lastIntentTs) : 0; // время с последнего события
+        const decay = Math.exp(-dt * (isTP ? TP_DECAY_PER_MS : TP_DECAY_PER_MS * 0.5)); // коэффициент затухания
+        edgeIntentUp   *= decay; // затухание намерения выйти вверх
+        edgeIntentDown *= decay; // затухание намерения выйти вниз
+      }
       lastIntentTs = nowTs;    // обновляем время последнего события
 
       // --- ОПРЕДЕЛЕНИЕ БЛИЗОСТИ К КРАЯМ (УЧИТЫВАЕМ ИНЕРЦИЮ) ---
@@ -889,8 +893,7 @@ function setupWheel(){
       if (nearStartExit && dy < 0) {
         const nowTs = performance.now();
         
-        // На экранах <1920px упрощаем логику выхода
-        const isSmallScreen = window.innerWidth < 1920;
+        // isSmallScreen уже определен выше (строка 874)
         
         if (!isSmallScreen && nowTs < exitLockUntil) {
           // --- ПРОВЕРКА GRACE-ПЕРИОДА (только для больших экранов) ---
@@ -920,8 +923,10 @@ function setupWheel(){
         const pushThresh = isTP ? (TP_PUSH * EXIT_PUSH_K) : pushThreshMouse;      // итоговый порог в зависимости от устройства
 
         // На маленьких экранах не требуем startArmed - выходим сразу при достижении порога
+        // Для тачпада делаем порог еще ниже (0.05 вместо 0.1)
+        const smallScreenThreshold = isTP ? 0.05 : 0.1;
         const canExit = isSmallScreen ? 
-          (edgeIntentUp >= pushThresh * 0.5 || instant || burst) : // На маленьких экранах порог в 2 раза ниже
+          (edgeIntentUp >= pushThresh * smallScreenThreshold || instant || burst) : 
           (startArmed && (edgeIntentUp >= pushThresh || instant || burst));
 
         if (canExit) {
@@ -940,8 +945,7 @@ function setupWheel(){
       if (nearEndExit && dy > 0) {
         const nowTs = performance.now();
         
-        // На экранах <1920px упрощаем логику выхода
-        const isSmallScreen = window.innerWidth < 1920;
+        // isSmallScreen уже определен выше (строка 874)
         
         if (!isSmallScreen && nowTs < exitLockUntil) {
           // --- ПРОВЕРКА GRACE-ПЕРИОДА (только для больших экранов) ---
@@ -971,8 +975,10 @@ function setupWheel(){
         const pushThresh = isTP ? (TP_PUSH * EXIT_PUSH_K) : pushThreshMouse;      // итоговый порог в зависимости от устройства
 
         // На маленьких экранах не требуем endArmed - выходим сразу при достижении порога
+        // Для тачпада делаем порог еще ниже (0.05 вместо 0.1)
+        const smallScreenThreshold = isTP ? 0.05 : 0.1;
         const canExit = isSmallScreen ? 
-          (edgeIntentDown >= pushThresh * 0.5 || instant || burst) : // На маленьких экранах порог в 2 раза ниже
+          (edgeIntentDown >= pushThresh * smallScreenThreshold || instant || burst) : 
           (endArmed && (edgeIntentDown >= pushThresh || instant || burst));
 
         if (canExit) {
