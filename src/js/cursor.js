@@ -175,14 +175,19 @@
     };
     
     this.event.mousemove = function (e) {
+      // Компенсируем zoom если он применен к html
+      const zoom = window.oorZoom || 1;
+      const clientX = e.clientX / zoom;
+      const clientY = e.clientY / zoom;
+      
       self.gsap.to(self.pos, {
-        x: self.stick ? self.stick.x - (self.stick.x - e.clientX) * self.options.stickDelta : e.clientX,
-        y: self.stick ? self.stick.y - (self.stick.y - e.clientY) * self.options.stickDelta : e.clientY,
+        x: self.stick ? self.stick.x - (self.stick.x - clientX) * self.options.stickDelta : clientX,
+        y: self.stick ? self.stick.y - (self.stick.y - clientY) * self.options.stickDelta : clientY,
         overwrite: self.options.overwrite,
         ease: self.options.ease,
         duration: self.visible ? self.options.speed : 0,
         onUpdate: function () {
-          return self.vel = { x: e.clientX - self.pos.x, y: e.clientY - self.pos.y };
+          return self.vel = { x: clientX - self.pos.x, y: clientY - self.pos.y };
         }
       });
     };

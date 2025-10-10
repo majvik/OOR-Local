@@ -26,8 +26,9 @@
             <div class="oor-preloader-progress">
                 <span id="preloader-percent">0</span>%
             </div>
-              </div>
-              </div>
+        </div>
+    </div>
+    
     <!-- Header -->
     <header class="oor-header">
         <a href="#" class="oor-logo">
@@ -734,7 +735,10 @@
     </div>
     
     <!-- External deps (load first) -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
+    <!-- UI Scaling для больших мониторов (загружаем рано) -->
+    <script src="/src/js/scale-container.js"></script>
     
     <!-- OOR JavaScript модули -->
     <script src="/src/js/modules/error-handler.js"></script>
@@ -765,7 +769,7 @@
       <div class="custom-scrollbar-track">
         <div class="custom-scrollbar-thumb" id="scrollbarThumb"></div>
     </div>
-    </div>
+  </div>
     
     <!-- Custom scrollbar script -->
     <script src="/src/js/scrollbar.js"></script>

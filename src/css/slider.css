@@ -44,7 +44,7 @@ html{
 }
 #wsls .main-container{
   height: auto;
-  min-height: 100vh;
+  min-height: calc(100 * var(--oor-vh));
   overflow: visible;
   position: relative;
 }
@@ -59,7 +59,20 @@ html{
   overflow: hidden;
   position: relative;
 }
-#wsls .slider-section{ height: 100svh; min-height: 100vh; transition: none; }
+#wsls .slider-section{ 
+  height: calc(100 * var(--oor-vh)); 
+  min-height: calc(100 * var(--oor-vh)); 
+  transition: none;
+}
+
+/* На больших экранах >1920px слайдер сразу видимый */
+@media (min-width: 1921px) {
+  #wsls .slider-section {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
 #wsls .slider-section > *:first-child{ margin-top: 0; }/* на случай collapsing margins */
 
 /* Десктоп: слайдер остается на месте, но заполняет весь экран */
@@ -68,7 +81,7 @@ html{
     /* НЕ меняем position - остается relative */
     /* НЕ меняем top/left - остается на своем месте */
     width: 100% !important;
-    height: 100vh !important;
+    height: calc(100 * var(--oor-vh)) !important;
     z-index: 1000 !important;
     /* Добавляем тень или границу для визуального выделения */
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -279,7 +292,7 @@ a.slide-media:hover {
   #wsls .slider-section {
     --mobile-slide-width: 82vw; /* ширина первого слайда < 100vw для видимого превью второго */
     --mobile-gap: 24px;         /* расстояние между слайдами и слева */
-    height: 100vh;              /* фиксированная высота экрана */
+    height: calc(100 * var(--oor-vh));              /* фиксированная высота экрана */
     display: flex;
     flex-direction: column;
     justify-content: space-between;

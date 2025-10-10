@@ -46,6 +46,11 @@ function shouldDisableSliderScrollCapture() {
   return window.innerWidth < 1440;
 }
 
+// На больших экранах >1920px полностью отключаем автоматический захват и подъезд
+function shouldDisableSliderAutoCapture() {
+  return window.innerWidth > 1920;
+}
+
 
 // === НАСТРОЙКИ ГОРИЗОНТАЛЬНОЙ АНИМАЦИИ ===
 const H_EASE = 0.06;           // плавность движения слайдера (чем меньше, тем плавнее)
@@ -217,6 +222,9 @@ document.addEventListener('wheel', (e) => {
   if (!isInsideSliderEvent(e)) return;
   // НЕ блокируем на мобильных устройствах - там работают touch события
   if (isMobile || pageState !== STATE.NORMAL || !sliderSection) return;
+  
+  // На больших экранах >1920px полностью отключаем ранний захват
+  if (shouldDisableSliderAutoCapture()) return;
 
   const now = performance.now();
   const dy = e.deltaY;
@@ -227,6 +235,10 @@ document.addEventListener('wheel', (e) => {
   if (softAlign) {
     // На разрешениях < 1440px не переключаем на горизонтальный скролл
     if (shouldDisableSliderScrollCapture()) {
+      return;
+    }
+    // На больших экранах >1920px отключаем автоматический захват
+    if (shouldDisableSliderAutoCapture()) {
       return;
     }
     reenterGuard = null;             // немедленно отключаем защиту от повторного входа
@@ -648,6 +660,11 @@ function approachToSection(align /* 'start' | 'end' */) {
     return;
   }
   
+  // На больших экранах >1920px отключаем подъезд полностью
+  if (shouldDisableSliderAutoCapture()) {
+    return;
+  }
+  
   approachInFlight = true;
 
   let lenisStopped = false;
@@ -661,7 +678,8 @@ function approachToSection(align /* 'start' | 'end' */) {
   const delta    = targetY - startY;
 
   const startT   = performance.now();
-  const dur      = APPROACH_DURATION_MS;
+  // На больших экранах >1920px отключаем анимацию подъезда
+  const dur      = (window.innerWidth > 1920) ? 0 : APPROACH_DURATION_MS;
   const ease     = (t) => 1 - Math.pow(1 - t, 3); // плавность: easeOutCubic (замедление к концу)
 
   wheelLockUntil = startT + dur + 140;
@@ -685,15 +703,8 @@ function approachToSection(align /* 'start' | 'end' */) {
 
     const { vis } = visibilityInfo();
     if (vis >= ACTIVATE_WHEN_VISIBLE) {
-      // На разрешениях < 1440px активируем слайдер без блокировки скролла
-      if (shouldDisableSliderScrollCapture()) {
-        pageState = STATE.ACTIVE;
-        if (!isMobile) {
-          setMetaActive(0);
-        }
-      } else {
-        setState(STATE.ACTIVE);
-      }
+      // Активируем слайдер через setState для корректного управления состоянием
+      setState(STATE.ACTIVE);
     }
   })(startT);
 }
@@ -709,8 +720,15 @@ function setupWheel(){
 
   wheelHandler = (e) => {
     
-    // На разрешениях < 1440px не обрабатываем wheel события вообще
-    if (shouldDisableSliderScrollCapture()) {
+    // На разрешениях < 1440px не обрабатываем wheel события в NORMAL режиме
+    // Но разрешаем в ACTIVE режиме для выхода из слайдера
+    if (shouldDisableSliderScrollCapture() && pageState === STATE.NORMAL) {
+      return;
+    }
+    
+    // На больших экранах >1920px отключаем автоматический захват
+    // Но разрешаем горизонтальную прокрутку если слайдер уже активен
+    if (shouldDisableSliderAutoCapture() && pageState === STATE.NORMAL) {
       return;
     }
     
@@ -737,6 +755,10 @@ function setupWheel(){
       if (softAlign2) {
         // На разрешениях < 1440px не переключаем на горизонтальный скролл
         if (shouldDisableSliderScrollCapture()) {
+          return;
+        }
+        // На больших экранах >1920px отключаем автоматический захват
+        if (shouldDisableSliderAutoCapture()) {
           return;
         }
         reenterGuard = null;    // отключаем защиту от повторного входа
@@ -778,11 +800,9 @@ function setupWheel(){
         if (towards) { 
           // На разрешениях < 1440px активируем слайдер без блокировки скролла
           if (shouldDisableSliderScrollCapture()) {
-            pageState = STATE.ACTIVE;
-            if (!isMobile) {
-              setMetaActive(0);
-            }
-          } else {
+            setState(STATE.ACTIVE);
+          } else if (!shouldDisableSliderAutoCapture()) {
+            // На больших экранах >1920px не активируем автоматически
             setState(STATE.ACTIVE);
           }
         }
@@ -850,10 +870,14 @@ function setupWheel(){
       const PUSH    = isTP ? TP_PUSH     : 110;       // порог выхода в зависимости от устройства
 
       // --- ЭКСПОНЕНЦИАЛЬНОЕ ЗАТУХАНИЕ НАМЕРЕНИЯ ВЫЙТИ ---
-      const dt = lastIntentTs ? (nowTs - lastIntentTs) : 0; // время с последнего события
-      const decay = Math.exp(-dt * (isTP ? TP_DECAY_PER_MS : TP_DECAY_PER_MS * 0.5)); // коэффициент затухания
-      edgeIntentUp   *= decay; // затухание намерения выйти вверх
-      edgeIntentDown *= decay; // затухание намерения выйти вниз
+      // На маленьких экранах (<1920px) отключаем затухание для легкого выхода
+      const isSmallScreen = window.innerWidth < 1920;
+      if (!isSmallScreen) {
+        const dt = lastIntentTs ? (nowTs - lastIntentTs) : 0; // время с последнего события
+        const decay = Math.exp(-dt * (isTP ? TP_DECAY_PER_MS : TP_DECAY_PER_MS * 0.5)); // коэффициент затухания
+        edgeIntentUp   *= decay; // затухание намерения выйти вверх
+        edgeIntentDown *= decay; // затухание намерения выйти вниз
+      }
       lastIntentTs = nowTs;    // обновляем время последнего события
 
       // --- ОПРЕДЕЛЕНИЕ БЛИЗОСТИ К КРАЯМ (УЧИТЫВАЕМ ИНЕРЦИЮ) ---
@@ -868,9 +892,11 @@ function setupWheel(){
       // --- ПЕРВЫЙ СЛАЙД (ВЫХОД ВВЕРХ) - ШИРОКАЯ ЗОНА ВЫХОДА ---
       if (nearStartExit && dy < 0) {
         const nowTs = performance.now();
-        if (nowTs < exitLockUntil) {
-          // --- ПРОВЕРКА GRACE-ПЕРИОДА ---
-          // еще идет краткий запрет выхода - просто глотаем событие
+        
+        // isSmallScreen уже определен выше (строка 874)
+        
+        if (!isSmallScreen && nowTs < exitLockUntil) {
+          // --- ПРОВЕРКА GRACE-ПЕРИОДА (только для больших экранов) ---
           e.preventDefault();
           return;
         }
@@ -896,7 +922,14 @@ function setupWheel(){
         const pushThreshMouse = Math.max(PUSH_MOUSE_BASE, stepPx * PUSH_MOUSE_K); // порог для мыши
         const pushThresh = isTP ? (TP_PUSH * EXIT_PUSH_K) : pushThreshMouse;      // итоговый порог в зависимости от устройства
 
-        if ((startArmed) && (edgeIntentUp >= pushThresh || instant || burst)) {
+        // На маленьких экранах не требуем startArmed - выходим сразу при достижении порога
+        // Для тачпада делаем порог еще ниже (0.05 вместо 0.1)
+        const smallScreenThreshold = isTP ? 0.05 : 0.1;
+        const canExit = isSmallScreen ? 
+          (edgeIntentUp >= pushThresh * smallScreenThreshold || instant || burst) : 
+          (startArmed && (edgeIntentUp >= pushThresh || instant || burst));
+
+        if (canExit) {
           // --- ВЫХОД С ПЕРВОГО СЛАЙДА ---
           e.preventDefault();
           forceExit('up'); // принудительно выходим вверх
@@ -906,18 +939,16 @@ function setupWheel(){
           e.preventDefault();
           return;
         }
-
-        // продолжаем накапливать — страницу держим
-        e.preventDefault();
-        return;
       }
 
       // --- ПОСЛЕДНИЙ СЛАЙД (ВЫХОД ВНИЗ) - ШИРОКАЯ ЗОНА ВЫХОДА ---
       if (nearEndExit && dy > 0) {
         const nowTs = performance.now();
-        if (nowTs < exitLockUntil) {
-          // --- ПРОВЕРКА GRACE-ПЕРИОДА ---
-          // еще идет краткий запрет выхода - просто глотаем событие
+        
+        // isSmallScreen уже определен выше (строка 874)
+        
+        if (!isSmallScreen && nowTs < exitLockUntil) {
+          // --- ПРОВЕРКА GRACE-ПЕРИОДА (только для больших экранов) ---
           e.preventDefault();
           return;
         }
@@ -943,7 +974,14 @@ function setupWheel(){
         const pushThreshMouse = Math.max(PUSH_MOUSE_BASE, stepPx * PUSH_MOUSE_K); // порог для мыши
         const pushThresh = isTP ? (TP_PUSH * EXIT_PUSH_K) : pushThreshMouse;      // итоговый порог в зависимости от устройства
 
-        if ((endArmed) && (edgeIntentDown >= pushThresh || instant || burst)) {
+        // На маленьких экранах не требуем endArmed - выходим сразу при достижении порога
+        // Для тачпада делаем порог еще ниже (0.05 вместо 0.1)
+        const smallScreenThreshold = isTP ? 0.05 : 0.1;
+        const canExit = isSmallScreen ? 
+          (edgeIntentDown >= pushThresh * smallScreenThreshold || instant || burst) : 
+          (endArmed && (edgeIntentDown >= pushThresh || instant || burst));
+
+        if (canExit) {
           // --- ВЫХОД С ПОСЛЕДНЕГО СЛАЙДА ---
           e.preventDefault();
           forceExit('down'); // принудительно выходим вниз
@@ -953,9 +991,6 @@ function setupWheel(){
           e.preventDefault();
           return;
         }
-
-        e.preventDefault();
-        return;
       }
 
       // --- ОБЫЧНАЯ ГОРИЗОНТАЛЬНАЯ ПРОКРУТКА (НЕ У КРАЕВ) ---
@@ -1041,14 +1076,15 @@ function setupDesktopDrag(){
       const minVis = shouldDisableSliderScrollCapture() ? 0.5 : DRAG_VIS_TO_ENTER;
       const canEnter = vis >= minVis && (Date.now() - lastExitTs) > EXIT_PASS_MS;
       if (canEnter) {
-        // На разрешениях < 1440px активируем слайдер без блокировки скролла
-        if (shouldDisableSliderScrollCapture()) {
+        // Активируем слайдер через setState для корректного управления состоянием
+        if (!shouldDisableSliderAutoCapture()) {
+          setState(STATE.ACTIVE);
+        } else {
+          // На больших экранах разрешаем drag но без автоактивации
           pageState = STATE.ACTIVE;
           if (!isMobile) {
             setMetaActive(0);
           }
-        } else {
-          setState(STATE.ACTIVE);
         }
       } else {
         return;
@@ -1532,6 +1568,9 @@ function setupIOApproachFallback(){
       
       // НЕ активируем автоматический захват на мобильных устройствах
       if (isMobile) continue;
+      
+      // На больших экранах >1920px отключаем автоматический захват
+      if (shouldDisableSliderAutoCapture()) continue;
 
       const { rect, vh, vis } = visibilityInfo();
       const nowScrollY = window.scrollY;
@@ -1929,15 +1968,8 @@ window.addEventListener('resize', () => {
           setTimeout(() => {
             const { vis } = visibilityInfo();
             if (vis >= ACTIVATE_WHEN_VISIBLE) {
-              // На разрешениях < 1440px активируем слайдер без блокировки скролла
-              if (shouldDisableSliderScrollCapture()) {
-                pageState = STATE.ACTIVE;
-                if (!isMobile) {
-                  setMetaActive(0);
-                }
-              } else {
-                setState(STATE.ACTIVE);
-              }
+              // Активируем слайдер через setState для корректного управления состоянием
+              setState(STATE.ACTIVE);
             }
           }, 100);
         }

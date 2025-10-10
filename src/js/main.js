@@ -791,6 +791,7 @@ function initRevealOnScroll() {
   // Крупные контейнеры секций, без мелких вложенных элементов
   const selectors = [
     '.oor-hero-content',
+    '.slider-section',
     '.oor-musical-association-left',
     '.oor-musical-association-right',
     '.oor-challenge-left',
@@ -808,6 +809,20 @@ function initRevealOnScroll() {
   let nodes = selectors
     .flatMap(sel => Array.from(document.querySelectorAll(sel)))
     .filter(el => !el.classList.contains('no-reveal'));
+  
+  // На разрешениях >1920px отключаем анимацию для слайдера
+  const isLargeScreen = window.innerWidth > 1920;
+  if (isLargeScreen) {
+    nodes = nodes.filter(el => !el.matches('.slider-section'));
+    
+    // Делаем слайдер сразу видимым без анимации
+    const sliders = document.querySelectorAll('.slider-section');
+    sliders.forEach(slider => {
+      slider.style.opacity = '1';
+      slider.style.transform = 'translate3d(0, 0, 0)';
+      slider.style.transition = 'none';
+    });
+  }
 
   if (nodes.length === 0) return;
 
