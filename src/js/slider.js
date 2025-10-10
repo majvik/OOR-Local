@@ -889,22 +889,11 @@ function setupWheel(){
       if (nearStartExit && dy < 0) {
         const nowTs = performance.now();
         
-        // DEBUG для маленьких экранов
-        if (window.innerWidth < 1920 && window.innerWidth >= 1440) {
-          console.log('[Slider] Exit UP attempt:', {
-            nearStartExit,
-            dy,
-            current,
-            exitLockUntil: nowTs < exitLockUntil,
-            startArmed,
-            edgeIntentUp: edgeIntentUp.toFixed(2),
-            pushThresh: (isTP ? (TP_PUSH * EXIT_PUSH_K) : Math.max(PUSH_MOUSE_BASE, stepPx * PUSH_MOUSE_K)).toFixed(2)
-          });
-        }
+        // На экранах <1920px упрощаем логику выхода
+        const isSmallScreen = window.innerWidth < 1920;
         
-        if (nowTs < exitLockUntil) {
-          // --- ПРОВЕРКА GRACE-ПЕРИОДА ---
-          // еще идет краткий запрет выхода - просто глотаем событие
+        if (!isSmallScreen && nowTs < exitLockUntil) {
+          // --- ПРОВЕРКА GRACE-ПЕРИОДА (только для больших экранов) ---
           e.preventDefault();
           return;
         }
@@ -930,9 +919,13 @@ function setupWheel(){
         const pushThreshMouse = Math.max(PUSH_MOUSE_BASE, stepPx * PUSH_MOUSE_K); // порог для мыши
         const pushThresh = isTP ? (TP_PUSH * EXIT_PUSH_K) : pushThreshMouse;      // итоговый порог в зависимости от устройства
 
-        if ((startArmed) && (edgeIntentUp >= pushThresh || instant || burst)) {
+        // На маленьких экранах не требуем startArmed - выходим сразу при достижении порога
+        const canExit = isSmallScreen ? 
+          (edgeIntentUp >= pushThresh * 0.5 || instant || burst) : // На маленьких экранах порог в 2 раза ниже
+          (startArmed && (edgeIntentUp >= pushThresh || instant || burst));
+
+        if (canExit) {
           // --- ВЫХОД С ПЕРВОГО СЛАЙДА ---
-          console.log('[Slider] EXIT UP!');
           e.preventDefault();
           forceExit('up'); // принудительно выходим вверх
           return;
@@ -941,18 +934,17 @@ function setupWheel(){
           e.preventDefault();
           return;
         }
-
-        // продолжаем накапливать — страницу держим
-        e.preventDefault();
-        return;
       }
 
       // --- ПОСЛЕДНИЙ СЛАЙД (ВЫХОД ВНИЗ) - ШИРОКАЯ ЗОНА ВЫХОДА ---
       if (nearEndExit && dy > 0) {
         const nowTs = performance.now();
-        if (nowTs < exitLockUntil) {
-          // --- ПРОВЕРКА GRACE-ПЕРИОДА ---
-          // еще идет краткий запрет выхода - просто глотаем событие
+        
+        // На экранах <1920px упрощаем логику выхода
+        const isSmallScreen = window.innerWidth < 1920;
+        
+        if (!isSmallScreen && nowTs < exitLockUntil) {
+          // --- ПРОВЕРКА GRACE-ПЕРИОДА (только для больших экранов) ---
           e.preventDefault();
           return;
         }
@@ -978,7 +970,12 @@ function setupWheel(){
         const pushThreshMouse = Math.max(PUSH_MOUSE_BASE, stepPx * PUSH_MOUSE_K); // порог для мыши
         const pushThresh = isTP ? (TP_PUSH * EXIT_PUSH_K) : pushThreshMouse;      // итоговый порог в зависимости от устройства
 
-        if ((endArmed) && (edgeIntentDown >= pushThresh || instant || burst)) {
+        // На маленьких экранах не требуем endArmed - выходим сразу при достижении порога
+        const canExit = isSmallScreen ? 
+          (edgeIntentDown >= pushThresh * 0.5 || instant || burst) : // На маленьких экранах порог в 2 раза ниже
+          (endArmed && (edgeIntentDown >= pushThresh || instant || burst));
+
+        if (canExit) {
           // --- ВЫХОД С ПОСЛЕДНЕГО СЛАЙДА ---
           e.preventDefault();
           forceExit('down'); // принудительно выходим вниз
@@ -988,9 +985,6 @@ function setupWheel(){
           e.preventDefault();
           return;
         }
-
-        e.preventDefault();
-        return;
       }
 
       // --- ОБЫЧНАЯ ГОРИЗОНТАЛЬНАЯ ПРОКРУТКА (НЕ У КРАЕВ) ---
