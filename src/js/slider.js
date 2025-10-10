@@ -888,6 +888,20 @@ function setupWheel(){
       // --- ПЕРВЫЙ СЛАЙД (ВЫХОД ВВЕРХ) - ШИРОКАЯ ЗОНА ВЫХОДА ---
       if (nearStartExit && dy < 0) {
         const nowTs = performance.now();
+        
+        // DEBUG для маленьких экранов
+        if (window.innerWidth < 1920 && window.innerWidth >= 1440) {
+          console.log('[Slider] Exit UP attempt:', {
+            nearStartExit,
+            dy,
+            current,
+            exitLockUntil: nowTs < exitLockUntil,
+            startArmed,
+            edgeIntentUp: edgeIntentUp.toFixed(2),
+            pushThresh: (isTP ? (TP_PUSH * EXIT_PUSH_K) : Math.max(PUSH_MOUSE_BASE, stepPx * PUSH_MOUSE_K)).toFixed(2)
+          });
+        }
+        
         if (nowTs < exitLockUntil) {
           // --- ПРОВЕРКА GRACE-ПЕРИОДА ---
           // еще идет краткий запрет выхода - просто глотаем событие
@@ -918,6 +932,7 @@ function setupWheel(){
 
         if ((startArmed) && (edgeIntentUp >= pushThresh || instant || burst)) {
           // --- ВЫХОД С ПЕРВОГО СЛАЙДА ---
+          console.log('[Slider] EXIT UP!');
           e.preventDefault();
           forceExit('up'); // принудительно выходим вверх
           return;
