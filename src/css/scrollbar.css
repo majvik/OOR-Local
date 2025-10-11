@@ -30,12 +30,14 @@ html.lenis {
   top: 4px;
   right: 4px;
   width: 8px;
-  height: calc(100vh - 8px);
+  height: calc(100 * var(--oor-vh) - 8px);
   background: transparent;
   z-index: var(--z-scrollbar);
   pointer-events: none;
   opacity: 0;
   transition: opacity var(--transition-base);
+  /* Компенсация zoom применяется через JS */
+  transform-origin: top left;
 }
 
 .custom-scrollbar.visible {
