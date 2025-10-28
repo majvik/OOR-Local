@@ -1867,26 +1867,6 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 /* Desktop only styles for slider overlay */
-@media (min-width: 769px) {
-  .overlay-top {
-    padding-left: var(--container-x);
-    padding-top: 80px;
-  }
-  
-  .overlay-center {
-    padding-left: var(--container-x);
-  }
-  
-  .overlay-bottom {
-    padding-left: var(--container-x);
-    padding-bottom: 80px;
-  }
-
-  /* Musical Association: tablet/desktop bottom padding */
-  .oor-musical-association-left {
-    padding-bottom: 40px;
-  }
-}
 
 
 .slide-meta-top {
@@ -2095,116 +2075,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 /* Мобильная адаптация футера */
-@media (max-width: 1024px) {
-  .oor-footer {
-    padding: 60px var(--container-x) 20px var(--container-x);
-    gap: 60px;
-  }
-  
-  .oor-footer-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 120px;
-  }
-  
-  .oor-footer-content-left {
-    width: 100%;
-    gap: 40px;
-  }
-  
-  .oor-footer-logo {
-    width: fit-content;
-  }
-  
-  .oor-footer-logo-image {
-    width: auto;
-    height: auto;
-  }
-  
-  .oor-footer-links {
-    width: 100%;
-    gap: 40px;
-  }
-  
-  .oor-footer-links-top-group {
-    flex-wrap: wrap;
-    gap: 24px;
-  }
-  
-  .oor-footer-links-bottom-group {
-    flex-wrap: wrap;
-    gap: 24px;
-  }
-  
-  .oor-footer-privacy {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  
-  .oor-footer-privacy-left {
-    flex-direction: row;
-    gap: 24px;
-  }
-  
-  .oor-footer-copyright {
-    text-align: left;
-    font-size: 2.5rem;
-  }
-  
-  /* Hero секция - выравниваем year по низу title с отступом 8px */
-  .oor-hero-title-block {
-    align-items: flex-end;
-  }
-  
-  .oor-hero-year {
-    margin-bottom: 16px;
-  }
-  
-  /* Скрываем десктопное меню на планшетах и мобильных */
-  .oor-nav {
-    display: none;
-  }
-  
-  .oor-btn-small {
-    display: none;
-  }
-  
-  /* Показываем бургер-меню */
-  .oor-header .oor-burger-menu {
-    display: flex !important;
-  }
-  
-  /* Отключаем mix-blend-mode: difference на мобилке */
-  .oor-header {
-    mix-blend-mode: normal !important;
-  }
-  
-  .oor-logo img {
-    mix-blend-mode: normal !important;
-    filter: brightness(0) !important;
-  }
-}
 
-/* Десктопные стили - скрываем бургер, показываем обычное меню */
-@media (min-width: 1025px) {
-  .oor-header .oor-burger-menu {
-    display: none !important;
-  }
-  
-  .oor-nav {
-    display: block;
-  }
-  
-  .oor-btn-small {
-    display: flex;
-  }
 
-  /* Musical Association: desktop-only larger bottom padding */
-  .oor-musical-association-left {
-    padding-bottom: 96px;
-  }
-}
 
 /* UPPERCASE стили для заголовков */
 .oor-hero-description-title {
@@ -2402,6 +2274,251 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-mobile-menu-btn:hover .oor-mobile-menu-btn-icon img {
   filter: brightness(0) invert(0);
+}
+
+/* ========================================
+   MEDIA QUERIES - все медиа-запросы собраны здесь
+   ======================================== */
+
+/* Десктопные стили - скрываем бургер, показываем обычное меню */
+@media (min-width: 1025px) {
+  .oor-header .oor-burger-menu {
+    display: none !important;
+  }
+  
+  .oor-nav {
+    display: block;
+  }
+  
+  .oor-btn-small {
+    display: flex;
+  }
+
+  /* Musical Association: desktop-only larger bottom padding */
+  .oor-musical-association-left {
+    padding-bottom: 96px;
+  }
+}
+
+/* Стили для экранов меньше 1440px - уменьшаем font-size для merch description */
+@media (max-width: 1439px) {
+  .oor-merch-description {
+    font-size: 1.250rem; /* Уменьшаем с 1.500rem до 1.250rem */
+  }
+}
+
+@media (max-width: 1024px) {
+  .oor-footer {
+    padding: 60px var(--container-x) 20px var(--container-x);
+    gap: 60px;
+  }
+  
+  .oor-footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 120px;
+  }
+  
+  .oor-footer-content-left {
+    width: 100%;
+    gap: 40px;
+  }
+  
+  .oor-footer-logo {
+    width: fit-content;
+  }
+  
+  .oor-footer-logo-image {
+    width: auto;
+    height: auto;
+  }
+  
+  .oor-footer-links {
+    width: 100%;
+    gap: 40px;
+  }
+  
+  .oor-footer-links-top-group {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  
+  .oor-footer-links-bottom-group {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  
+  .oor-footer-privacy {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .oor-footer-privacy-left {
+    flex-direction: row;
+    gap: 24px;
+  }
+  
+  .oor-footer-copyright {
+    text-align: left;
+    font-size: 2.5rem;
+  }
+  
+  /* Hero секция - выравниваем year по низу title с отступом 8px */
+  .oor-hero-title-block {
+    align-items: flex-end;
+  }
+  
+  .oor-hero-year {
+    margin-bottom: 16px;
+  }
+  
+  /* Скрываем десктопное меню на планшетах и мобильных */
+  .oor-nav {
+    display: none;
+  }
+  
+  .oor-btn-small {
+    display: none;
+  }
+  
+  /* Показываем бургер-меню */
+  .oor-header .oor-burger-menu {
+    display: flex !important;
+  }
+  
+  /* Отключаем mix-blend-mode: difference на мобилке */
+  .oor-header {
+    mix-blend-mode: normal !important;
+  }
+  
+  .oor-logo img {
+    mix-blend-mode: normal !important;
+    filter: brightness(0) !important;
+  }
+}
+
+/* Desktop only styles for slider overlay */
+@media (min-width: 769px) {
+  .overlay-top {
+    padding-left: var(--container-x);
+    padding-top: 80px;
+  }
+  
+  .overlay-center {
+    padding-left: var(--container-x);
+  }
+  
+  .overlay-bottom {
+    padding-left: var(--container-x);
+    padding-bottom: 80px;
+  }
+
+  /* Musical Association: tablet/desktop bottom padding */
+  .oor-musical-association-left {
+    padding-bottom: 40px;
+  }
+}
+
+/* Адаптивные стили для мобильных устройств (768px и ниже) */
+@media (max-width: 768px) {
+  /* Уменьшаем базовый размер шрифта для мобильных */
+  html {
+    font-size: 14px; /* Уменьшаем с 16px по умолчанию до 14px */
+  }
+  
+  .oor-musical-association {
+    padding-left: var(--container-x);
+  }
+  
+  .oor-challenge-section {
+    padding: 80px var(--container-x);
+  }
+  
+  .oor-challenge-2-section {
+    padding: 160px var(--container-x) 104px var(--container-x);
+  }
+  
+  .oor-out-of-talk-text {
+    padding: 80px var(--container-x) 0 var(--container-x);
+  }
+  
+  .oor-out-of-talk-media {
+    padding: 120px 0 0 var(--container-x);
+  }
+  
+  .oor-events-text {
+    padding: 80px var(--container-x) 0 var(--container-x);
+  }
+  
+  .oor-events-media {
+    padding: 80px var(--container-x);
+  }
+  
+  .oor-merch-text {
+    padding: 120px var(--container-x) 0 var(--container-x);
+  }
+  
+  .oor-merch-images-grid {
+    padding: 120px var(--container-x) 0 var(--container-x);
+  }
+  
+  /* Plus иконки - позиционирование для мобильных */
+  .oor-hero-plus-top-left {
+    left: 24px;
+    right: auto;
+  }
+  
+  .oor-hero-plus-bottom-left {
+    left: 24px;
+    right: auto;
+  }
+  
+  .oor-challenge-2-counter {
+    left: 24px;
+  }
+  
+  .oor-hero-description-title {
+    font-size: 3.000rem;
+  }
+  
+  .oor-merch-description {
+    width: auto;
+  }
+  
+  .oor-nav-item .tn-atom {
+    line-height: 24px !important;
+  }
+
+  .oor-quality-title {
+    font-size: 1.4rem;
+  }
+
+  .oor-become-artist-container .oor-become-artist-button {
+    width: 100%;
+  }
+
+  .oor-challenge-2-good-works-header {
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    align-self: stretch;
+    justify-content: space-between;
+  }
+
+  .oor-challenge-2-good-works-icon {
+    flex-basis: 100%;
+    justify-content: flex-start;
+    margin-top: 16px;
+  }
+
+  .oor-challenge-2-good-works-description {
+    font-size: 0.875rem;
+  }
+  .oor-footer-email {
+    font-size: 3.000rem;
+  }
 }
 
 /* Адаптация для больших телефонов (≥425px) */
@@ -2700,111 +2817,9 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   }
 }
 
-/* Стили для экранов меньше 1440px - уменьшаем font-size для merch description */
-@media (max-width: 1439px) {
-  .oor-merch-description {
-    font-size: 1.250rem; /* Уменьшаем с 1.500rem до 1.250rem */
-  }
-}
 
-/* Адаптивные стили для мобильных устройств (768px и ниже) */
-@media (max-width: 768px) {
-  /* Уменьшаем базовый размер шрифта для мобильных */
-  html {
-    font-size: 14px; /* Уменьшаем с 16px по умолчанию до 14px */
-  }
-  
-  .oor-musical-association {
-    padding-left: var(--container-x);
-  }
-  
-  .oor-challenge-section {
-    padding: 80px var(--container-x);
-  }
-  
-  .oor-challenge-2-section {
-    padding: 160px var(--container-x) 104px var(--container-x);
-  }
-  
-  .oor-out-of-talk-text {
-    padding: 80px var(--container-x) 0 var(--container-x);
-  }
-  
-  .oor-out-of-talk-media {
-    padding: 120px 0 0 var(--container-x);
-  }
-  
-  .oor-events-text {
-    padding: 80px var(--container-x) 0 var(--container-x);
-  }
-  
-  .oor-events-media {
-    padding: 80px var(--container-x);
-  }
-  
-  .oor-merch-text {
-    padding: 120px var(--container-x) 0 var(--container-x);
-  }
-  
-  .oor-merch-images-grid {
-    padding: 120px var(--container-x) 0 var(--container-x);
-  }
-  
-  /* Plus иконки - позиционирование для мобильных */
-  .oor-hero-plus-top-left {
-    left: 24px;
-    right: auto;
-  }
-  
-  .oor-hero-plus-bottom-left {
-    left: 24px;
-    right: auto;
-  }
-  
-  .oor-challenge-2-counter {
-    left: 24px;
-  }
-  
-  .oor-hero-description-title {
-    font-size: 3.000rem;
-  }
-  
-  .oor-merch-description {
-    width: auto;
-  }
-  
-  .oor-nav-item .tn-atom {
-    line-height: 24px !important;
-  }
 
-  .oor-quality-title {
-    font-size: 1.4rem;
-  }
 
-  .oor-become-artist-container .oor-become-artist-button {
-    width: 100%;
-  }
 
-  .oor-challenge-2-good-works-header {
-    flex-wrap: wrap;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-start;
-    align-self: stretch;
-    justify-content: space-between;
-  }
 
-  .oor-challenge-2-good-works-icon {
-    flex-basis: 100%;
-    justify-content: flex-start;
-    margin-top: 16px;
-  }
-
-  .oor-challenge-2-good-works-description {
-    font-size: 0.875rem;
-  }
-  .oor-footer-email {
-    font-size: 3.000rem;
-  }
-}
 
