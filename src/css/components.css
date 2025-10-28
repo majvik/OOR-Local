@@ -2247,7 +2247,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   width: 40px;
   height: 40px;
   position: relative;
-  transform: translateX(16px) translateZ(0); /* Принудительный отступ вправо + GPU ускорение */
+  transform: translateX(8px) translateZ(0); /* Принудительный отступ вправо + GPU ускорение */
   transition: all 0.3s ease;
   /* Создаем новый контекст наложения */
   mix-blend-mode: normal;
@@ -2288,7 +2288,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   cursor: pointer;
   position: absolute;
   top: 24px;
-  right: calc(var(--container-x) - 16px); /* Принудительный отступ влево на 16px */
+  right: calc(var(--container-x) - 8px); /* Принудительный отступ влево на 8px */
   z-index: 10001;
   width: 48px;
   height: 48px;
@@ -2438,7 +2438,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
   /* Переносим колонки в строки — одна колонка во всю ширину */
   .oor-challenge-2-left {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
   }
 
   .oor-out-of-talk-media {
@@ -2518,7 +2519,17 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   .oor-hero-description-grid {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 32px !important;
+  }
+
+  /* Social Icons: увеличиваем gap для мобильных */
+  .oor-social-icons {
+    gap: 24px !important;
+  }
+
+  /* Musical Association: левая колонка — отступы для мобильных */
+  .oor-musical-association-left {
+    padding: 0 0 24px 0 !important;
   }
 
   /* Глобальная сетка: на мобиле в колонку */
@@ -2560,13 +2571,21 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
   /* Challenge section: на мобиле в колонку с большим отступом между блоками */
   .oor-challenge-section {
-    flex-direction: column;
-    gap: 80px;
+    flex-direction: column !important;
+    gap: 80px !important;
+    padding: 88px var(--container-x) 16px var(--container-x) !important;
   }
 
   /* Good Works image — отступ сверху */
   .oor-challenge-2-good-works-image {
-    margin-top: 64px;
+    margin-top: 16px !important;
+  }
+
+  /* Good Works title — выравнивание по левому краю */
+  .oor-challenge-2-good-works-title {
+    text-align: left !important;
+    align-self: flex-start !important;
+    width: 100% !important;
   }
 
   /* Out of Talk: заголовок на всю ширину */
@@ -2641,6 +2660,43 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
   .oor-merch-images-wrapper {
     flex-direction: column;
+  }
+
+  /* Дополнительные стили для challenge секций */
+  .oor-challenge-left {
+    gap: 64px !important;
+  }
+
+  .oor-challenge-gap {
+    display: none !important;
+  }
+
+  .oor-challenge-2-section {
+    padding: 0px var(--container-x) 64px var(--container-x) !important;
+  }
+
+  .oor-challenge-2-studio {
+    gap: 32px !important;
+  }
+
+  .oor-challenge-2-music-game {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    align-self: stretch !important;
+  }
+
+  .oor-challenge-2-good-works-text {
+    gap: 16px !important;
+  }
+
+  .oor-challenge-2-good-works-header {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    align-items: flex-start !important;
+    align-self: stretch !important;
+    justify-content: flex-start !important;
   }
 }
 
@@ -2731,6 +2787,11 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
   .oor-challenge-2-good-works-header {
     flex-wrap: wrap;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    align-self: stretch;
+    justify-content: space-between;
   }
 
   .oor-challenge-2-good-works-icon {
@@ -2746,3 +2807,4 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     font-size: 3.000rem;
   }
 }
+
