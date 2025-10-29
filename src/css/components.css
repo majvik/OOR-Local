@@ -2562,11 +2562,17 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   .oor-out-of-talk-media {
     grid-template-columns: 1fr;
     gap: 24px;
-    padding: 120px var(--container-x) 0 var(--container-x);
+    padding: 48px var(--container-x) 0 var(--container-x);
   }
 
   .oor-out-of-talk-images {
     grid-template-columns: 1fr;
+    gap: 16px;
+    padding-right: 0;
+  }
+
+  .oor-out-of-talk-text {
+    padding-top: 88px;
   }
 
   /* Доп. страховка для очень узких экранов */
@@ -2581,7 +2587,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
     /* Добавляем симметричные внутренние отступы контейнеру картинок */
     .oor-out-of-talk-images {
-      padding-right: var(--container-x);
+      padding-right: 0;
       padding-left: 0;
     }
 
@@ -2601,14 +2607,31 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     }
   }
 
+  .oor-events-section {
+    padding-top: 0 !important;
+  }
+
+  .oor-events-text {
+    padding: 16px var(--container-x) 0 var(--container-x) !important;
+  }
+
   .oor-events-media {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 80px var(--container-x);
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 0 var(--container-x) 88px var(--container-x) !important;
   }
 
   .oor-events-posters {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .oor-events-photo {
+    margin-top: -16px;
+  }
+
+  .oor-events-photo-image {
+    margin: 0;
   }
 
   .oor-merch-text {
