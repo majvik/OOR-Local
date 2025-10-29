@@ -19,8 +19,14 @@ function initPreloader() {
   const isMainPage = window.location.pathname === '/' || 
                     window.location.pathname === '/index.html' || 
                     window.location.pathname === '';
+  
+  const scrollY = window.scrollY;
+  
   document.documentElement.classList.add('preloader-active');
   document.body.classList.add('preloader-active');
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.width = '100%';
 
   let progress = 0;
   let loadedResources = 0;
@@ -345,6 +351,13 @@ function initPreloader() {
           splashScreen.remove();
         }
         
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        
         document.documentElement.classList.remove('preloader-active');
         document.body.classList.remove('preloader-active');
         document.documentElement.style.overflow = '';
@@ -387,6 +400,10 @@ function initPreloader() {
       }, 800);
       
     } catch(_) {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, 0);
       document.documentElement.classList.remove('preloader-active');
       document.body.classList.remove('preloader-active');
       document.documentElement.style.overflow = '';
