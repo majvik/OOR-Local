@@ -640,7 +640,7 @@ body::-webkit-scrollbar {
 
 html.preloader-active,
 body.preloader-active{
-  overflow:hidden;
+  overflow:hidden !important;
   width:100vw;
   height:calc(100 * var(--oor-vh));
   margin:0;
@@ -658,6 +658,7 @@ body.preloader-active{
 .oor-preloader-content{
   text-align:center;
   position:relative;
+  padding: 0 20px;
 }
 
 .oor-preloader-progress{
@@ -669,6 +670,145 @@ body.preloader-active{
   line-height:100%;
   letter-spacing: -0.630rem;
   text-transform:uppercase;
+  display: block;
+  overflow: hidden;
+  padding: 0 10px;
+}
+
+.oor-preloader-progress-inner{
+  display: inline-block;
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  transition: transform 600ms cubic-bezier(0.84, 0.00, 0.16, 1), opacity 600ms ease;
+  will-change: transform, opacity;
+}
+
+.oor-preloader-progress.hidden .oor-preloader-progress-inner{
+  transform: translate3d(0, -120%, 0);
+  opacity: 0;
+}
+
+/* Enter Button */
+.oor-enter-button{
+  display: inline-flex;
+  padding: 12px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--color-white);
+  text-align: center;
+  font-family: "Pragmatica";
+  font-size: 0.750rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.015rem;
+  text-transform: uppercase;
+  background: #000;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  margin-top: 64px;
+  transition: all 0.3s ease, opacity 0.5s ease, border-color 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(var(--mouse-x, 0px), var(--mouse-y, 0px));
+}
+
+.oor-enter-button.visible{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.oor-enter-button:hover {
+  background: var(--color-white);
+  color: #000;
+  border-color: #000;
+}
+
+.oor-enter-button:active {
+  animation: shake 1.2s ease-in-out;
+  --mouse-x: 0px !important;
+  --mouse-y: 0px !important;
+}
+
+/* Mobile optimization for enter button */
+@media (max-width: 768px) {
+  .oor-preloader-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    padding: 0;
+  }
+  
+  .oor-preloader-progress {
+    margin: 0;
+  }
+  
+  .oor-enter-button {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    margin: 0;
+    padding: 18px;
+    font-size: 1.125rem;
+    letter-spacing: -0.023rem;
+    transform: none;
+    border-radius: 0;
+    z-index: 10001;
+  }
+  
+  .oor-enter-button:active {
+    transform: none;
+  }
+}
+
+/* Splash Screen */
+.oor-splash-screen{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.oor-splash-screen.visible{
+  display: flex;
+  opacity: 1;
+}
+
+.oor-splash-screen.hidden{
+  opacity: 0;
+}
+
+.oor-splash-video{
+  max-width: 50%;
+  max-height: 50%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Mobile padding for splash video */
+@media (max-width: 768px) {
+  .oor-splash-video{
+    padding: 80px;
+    max-width: calc(100% - 160px);
+    max-height: calc(100% - 160px);
+  }
 }
 
 .oor-hero-subtitle{

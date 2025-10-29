@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="preloader-active">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -19,14 +19,22 @@
     <link rel="stylesheet" href="/src/css/components.css?v=1.3">
     <link rel="stylesheet" href="/src/css/cursor.css">
   </head>
-<body>
+<body class="preloader-active">
     <!-- Preloader -->
     <div id="preloader" class="oor-preloader">
         <div class="oor-preloader-content">
             <div class="oor-preloader-progress">
-                <span id="preloader-percent">0</span>%
+                <span class="oor-preloader-progress-inner"><span id="preloader-percent">0</span>%</span>
             </div>
+            <button id="enter-button" class="oor-enter-button">Войти</button>
         </div>
+    </div>
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="oor-splash-screen">
+        <video id="splash-video" class="oor-splash-video" muted playsinline preload="metadata">
+            <source src="/public/assets/splash.mp4" type="video/mp4">
+        </video>
     </div>
     
     <!-- Header -->
