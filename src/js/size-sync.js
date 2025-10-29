@@ -1,11 +1,10 @@
-// Универсальная синхронизация размеров элементов
+// Синхронизация размеров элементов
 class SizeSync {
     constructor() {
         this.syncTasks = [];
         this.init();
     }
 
-    // Добавить задачу синхронизации
     addSyncTask(sourceSelector, targetSelector, options = {}) {
         const task = {
             sourceSelector,
@@ -19,9 +18,7 @@ class SizeSync {
         return this;
     }
 
-    // Выполнить синхронизацию для всех задач
     sync() {
-        // Disable size sync for screens 768px and below
         if (window.innerWidth <= 768) {
             this.syncTasks.forEach(task => {
                 const targetElement = document.querySelector(task.targetSelector);
@@ -53,7 +50,6 @@ class SizeSync {
         });
     }
 
-    // Инициализация с задержками
     init() {
         const initWithDelay = () => {
             setTimeout(() => this.sync(), 100);
@@ -61,35 +57,27 @@ class SizeSync {
             setTimeout(() => this.sync(), 1000);
         };
 
-        // Выполняем синхронизацию при загрузке страницы
         document.addEventListener('DOMContentLoaded', initWithDelay);
 
-        // Выполняем синхронизацию при изменении размера окна
         window.addEventListener('resize', () => this.sync());
 
-        // Выполняем синхронизацию после загрузки изображений
         window.addEventListener('load', initWithDelay);
     }
 }
 
-// Создаем экземпляр синхронизатора
 const sizeSync = new SizeSync();
-
-// Синхронизация ширины кнопки "Стать артистом" с первым изображением
 sizeSync.addSyncTask(
     '.oor-quality-img-container-1',
     '.oor-become-artist-button',
     { syncWidth: true, syncHeight: false }
 );
 
-// Синхронизация ширины кнопки "Манифест" с изображением "без страха"
 sizeSync.addSyncTask(
     '.oor-without-fear-image',
     '.oor-manifesto-button',
     { syncWidth: true, syncHeight: false }
 );
 
-// Выравниваем высоту текста под высоту изображения "без страха" на десктопе (>768px)
 sizeSync.addSyncTask(
     '.oor-without-fear-image',
     '.oor-without-fear-text',

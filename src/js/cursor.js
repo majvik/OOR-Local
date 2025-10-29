@@ -1,36 +1,4 @@
-/**
- * ========================================
- * CURSOR SYSTEM - MouseFollower + Custom Implementation
- * ========================================
- * 
- * Объединенный файл курсора для проекта OOR
- * Содержит библиотеку MouseFollower и кастомную реализацию
- * 
- * @author OOR Development Team
- * @version 1.0.0
- * @since 2025-09-21
- * 
- * COMPONENTS:
- * 1. MouseFollower Library - базовая библиотека курсора
- * 2. Custom Cursor Implementation - настройки для OOR
- * 
- * FEATURES:
- * - Плавное следование за мышью
- * - Анимации при наведении на элементы
- * - Видео превью в курсоре
- * - Текстовые подсказки
- * - Изображения в курсоре
- * 
- * USAGE:
- * Элементы автоматически получают курсор через data-атрибуты:
- * - data-cursor-video="path/to/video.mp4"
- * - data-cursor-img="path/to/image.jpg"
- * - data-cursor-text="Текст подсказки"
- * 
- * MouseFollower - Custom cursor library
- * Source: https://matilda-design.ru/library/mouse-follower.min.js
- * Unminified version + Custom cursor implementation
- */
+// Курсор MouseFollower + кастомная реализация
 
 (function (global, factory) {
   if (typeof exports === 'object' && typeof module !== 'undefined') {
@@ -175,7 +143,6 @@
     };
     
     this.event.mousemove = function (e) {
-      // Компенсируем zoom если он применен к html
       const zoom = window.oorZoom || 1;
       const clientX = e.clientX / zoom;
       const clientY = e.clientY / zoom;
@@ -426,7 +393,6 @@
     
     // Безопасный play() с обработкой ошибок
     this.mediaVideo.play().catch(error => {
-      // Игнорируем ошибки play() - это нормально для курсора
       if (error.name !== 'AbortError') {
         console.warn('[OOR] Video play error (ignored):', error.message);
       }
@@ -499,22 +465,11 @@
   return MouseFollower;
 });
 
-/**
- * ========================================
- * CUSTOM CURSOR IMPLEMENTATION
- * ========================================
- * 
- * Кастомная реализация курсора для OOR проекта
- * Использует MouseFollower библиотеку с настройками
- */
-
-// Cuberto Cursor Implementation using MouseFollower
+// Кастомная реализация курсора для OOR
 let cursorInstance = null;
 
 function initCursor() {
-  // Отключаем курсор на мобильных устройствах (≤1024px с запасом)
   if (window.innerWidth <= 1024) {
-    // Если курсор уже был инициализирован, уничтожаем его
     if (cursorInstance) {
       cursorInstance.destroy();
       cursorInstance = null;
@@ -522,60 +477,45 @@ function initCursor() {
     return;
   }
   
-  // Проверяем, что MouseFollower доступен
   if (typeof MouseFollower === 'undefined') {
     console.error('[OOR] MouseFollower not loaded - cursor disabled');
     return;
   }
 
-  // Проверяем, что GSAP доступен
   if (typeof gsap === 'undefined') {
     console.error('[OOR] GSAP not loaded - cursor animations disabled');
     return;
   }
 
-  // Если курсор уже существует, уничтожаем его
   if (cursorInstance) {
     cursorInstance.destroy();
     cursorInstance = null;
   }
 
-  /**
-   * Инициализация курсора с настройками OOR
-   * @type {MouseFollower}
-   */
   cursorInstance = new MouseFollower({
-    speed: 0.6,           // Скорость следования за мышью
-    skewing: 2.4,         // Усиливаем деформацию при движении
-    skewingText: 3,       // Искажение для текстовых элементов
-    skewingDeltaMax: 0.25 // Позволяем больший максимум деформации
+    speed: 0.6,
+    skewing: 2.4,
+    skewingText: 3,
+    skewingDeltaMax: 0.25
   });
 
-  // Используем встроенные data-атрибуты MouseFollower
-  // Видео
+  // Настройка data-атрибутов для курсора
   document.querySelectorAll('.video-cuberto-cursor-1').forEach(el => {
     el.setAttribute('data-cursor-video', '/public/assets/OUTOFREC_reel_v4_nologo.mp4');
   });
 
-  // Изображения
   document.querySelectorAll('.img-cuberto-cursor-1').forEach(el => {
     el.setAttribute('data-cursor-img', '/public/assets/challenge-studio.png');
   });
   document.querySelectorAll('.img-cuberto-cursor-2').forEach(el => {
     el.setAttribute('data-cursor-img', '/public/assets/good-works.png');
   });
-
-  // Тексты отключены по требованиям: курсор не содержит текстовой подписи
-  // Не устанавливаем data-cursor-text на элементы
 }
 
-// Инициализация курсора после загрузки всех зависимостей
 document.addEventListener('DOMContentLoaded', function() {
-  // Ждем загрузки GSAP
   if (typeof gsap !== 'undefined') {
     initCursor();
   } else {
-    // Если GSAP еще не загружен, ждем его
     const checkGSAP = setInterval(() => {
       if (typeof gsap !== 'undefined') {
         clearInterval(checkGSAP);
@@ -583,19 +523,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, 100);
     
-    // Таймаут на случай, если GSAP так и не загрузится
     setTimeout(() => {
       clearInterval(checkGSAP);
       console.warn('[OOR] GSAP timeout - cursor may not work properly');
     }, 5000);
   }
 
-  // Обработчик изменения размера окна для курсора
   let resizeTimeout;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-      initCursor(); // Переинициализируем курсор при изменении размера
-    }, 150); // Задержка для оптимизации производительности
+      initCursor();
+    }, 150);
   });
 });

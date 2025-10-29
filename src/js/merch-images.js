@@ -1,31 +1,5 @@
-/**
- * ========================================
- * MERCH IMAGES DYNAMIC SIZING
- * ========================================
- * 
- * Скрипт для динамического изменения размеров изображений мерча
- * Обеспечивает равномерное распределение изображений в сетке
- * 
- * @author OOR Development Team
- * @version 1.0.0
- * @since 2025-09-21
- * 
- * FEATURES:
- * - Автоматический расчет размеров изображений
- * - Равномерное распределение в сетке
- * - Адаптивность под размер контейнера
- * - Оптимизация для разных разрешений
- * 
- * USAGE:
- * Автоматически выполняется при загрузке страницы и изменении размера окна
- */
-/**
- * Динамически изменяет размеры изображений мерча для равномерного распределения
- * @function resizeMerchImages
- * @returns {void}
- */
+// Динамическое изменение размеров изображений мерча
 function resizeMerchImages() {
-    // Disable dynamic sizing on very small screens (425px and below)
     if (window.innerWidth <= 425) {
         const imageEls = document.querySelectorAll('.oor-merch-image-item img');
         imageEls.forEach(img => {
@@ -41,7 +15,6 @@ function resizeMerchImages() {
     
     if (!grid || !wrapper || imageItems.length === 0) return;
     
-    // Reset all images to natural size
     imageItems.forEach(item => {
         const img = item.querySelector('img');
         if (img) {
@@ -50,13 +23,11 @@ function resizeMerchImages() {
         }
     });
     
-    // Get available width (grid width minus padding)
-    const availableWidth = grid.offsetWidth - 96; // 48px padding on each side
+    const availableWidth = grid.offsetWidth - 96;
     const gap = 16;
     const gapsTotal = (imageItems.length - 1) * gap;
     const imagesWidth = availableWidth - gapsTotal;
     
-    // Calculate total natural width of all images
     let totalNaturalWidth = 0;
     const naturalWidths = [];
     
@@ -73,10 +44,8 @@ function resizeMerchImages() {
     
     if (totalNaturalWidth === 0) return;
     
-    // Calculate scale factor to fit all images
     const scaleFactor = imagesWidth / totalNaturalWidth;
     
-    // Apply calculated widths to images
     imageItems.forEach((item, index) => {
         const img = item.querySelector('img');
         if (img && naturalWidths[index]) {
@@ -88,14 +57,10 @@ function resizeMerchImages() {
     });
 }
 
-// Resize on load and window resize
 window.addEventListener('load', () => {
-    // Wait for images to load
     setTimeout(resizeMerchImages, 100);
 });
 window.addEventListener('resize', resizeMerchImages);
-
-// Also resize when images load
 document.addEventListener('DOMContentLoaded', () => {
     const images = document.querySelectorAll('.oor-merch-image-item img');
     images.forEach(img => {

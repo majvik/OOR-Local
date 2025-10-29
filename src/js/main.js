@@ -63,48 +63,14 @@ function initMaskedHeadingsReveal() {
     headings.forEach(h => io.observe(h));
   });
 }
-/**
- * ========================================
- * OOR PROJECT - MAIN JAVASCRIPT
- * ========================================
- * 
- * Главный файл JavaScript для проекта OOR (Out Of Records)
- * Содержит инициализацию всех компонентов и функциональности
- * 
- * @author OOR Development Team
- * @version 1.0.0
- * @since 2025-09-21
- * 
- * DEPENDENCIES:
- * - GSAP 3.x (анимации)
- * - Lenis (плавная прокрутка)
- * - MouseFollower (кастомный курсор)
- * 
- * FEATURES:
- * - Прелоадер с анимацией
- * - Плавная прокрутка (Lenis)
- * - Кастомный курсор
- * - Магнитные элементы
- * - Видео плеер
- * - Навигация
- * - Диагностика производительности
- */
-
-/**
- * Инициализация при загрузке DOM
- * Выполняется сразу после загрузки HTML структуры
- */
+// Главный файл JavaScript для проекта OOR
 document.addEventListener('DOMContentLoaded', function() {
-  // Проверяем загрузку GSAP
   if (typeof gsap === 'undefined') {
     console.error('[OOR] GSAP not loaded - some animations may not work');
-    // Загружаем GSAP локально как fallback
     loadGSAPFallback();
   }
 
-  // Безопасная инициализация с обработкой ошибок
   try {
-    // Инициализация прелоадера
     if (typeof window.initPreloader === 'function') {
       window.initPreloader();
     } else if (typeof initPreloader === 'function') {
@@ -112,13 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       console.error('[OOR] initPreloader function not found');
     }
-    // Страховка: гарантированно снимаем любые блокировки скролла
     installScrollUnlockWatchdog();
-    // Диагностика блокировок скролла (включается при ?debug)
     installScrollDiagnostics();
   } catch (error) {
     console.error('[OOR] DOMContentLoaded error:', error);
-    // Гарантированно снимаем блокировки при ошибке
     document.documentElement.classList.remove('preloader-active');
     document.body.classList.remove('preloader-active');
     document.documentElement.style.overflow = 'auto';
@@ -126,14 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-/**
- * Загружает GSAP локально как fallback
- */
 function loadGSAPFallback() {
   const script = document.createElement('script');
   script.src = 'https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js';
   script.onload = function() {
-    // Перезапускаем инициализацию после загрузки GSAP
     if (typeof initPreloader === 'function') {
       initPreloader();
     }
@@ -144,11 +103,8 @@ function loadGSAPFallback() {
   document.head.appendChild(script);
 }
 
-// Инициализация после загрузки
 window.addEventListener('load', function() {
-  // Безопасная инициализация компонентов с обработкой ошибок
   try {
-    // Инициализация компонентов
     initNavigation();
     initDynamicYear();
     initHeroVideo();
@@ -160,7 +116,6 @@ window.addEventListener('load', function() {
     initRevealOnScroll();
     initMaskedHeadingsReveal();
     
-    // Диагностика: если ?nolenis — убедимся, что любые блокировки сняты
     const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
     if (DISABLE_LENIS) {
       document.documentElement.classList.remove('preloader-active');
@@ -172,7 +127,6 @@ window.addEventListener('load', function() {
     }
   } catch (error) {
     console.error('[OOR] Window load error:', error);
-    // Гарантированно снимаем блокировки при ошибке
     document.documentElement.classList.remove('preloader-active');
     document.body.classList.remove('preloader-active');
     document.documentElement.style.overflow = 'auto';
@@ -180,16 +134,12 @@ window.addEventListener('load', function() {
   }
 });
 
-// Preloader функция теперь загружается из модуля /src/js/modules/preloader.js
-// Старая версия удалена, чтобы избежать конфликтов
-
-// Retina (2x) support for <img> and background layers
+// Retina поддержка для изображений и фоновых слоев
 function initRetinaSupport() {
-  // Apply only on high-DPR screens
   const isHighDPR = (typeof window !== 'undefined') && (window.devicePixelRatio && window.devicePixelRatio >= 2);
   if (!isHighDPR) return;
 
-  // Helper: build @2x url from a given url like /path/name.ext -> /path/name@2x.ext
+  // Генерирует @2x версию URL для retina
   function build2xUrl(url) {
     try {
       const qIndex = url.indexOf('?');
@@ -201,7 +151,7 @@ function initRetinaSupport() {
     } catch (_) { return null; }
   }
 
-  // Helper: test if an image exists (loadable)
+  // Проверяет существование изображения
   function imageExists(url) {
     return new Promise(resolve => {
       const img = new Image();
@@ -211,7 +161,7 @@ function initRetinaSupport() {
     });
   }
 
-  // Upgrade <img> without srcset/picture to use 2x if available
+  // Обновляем <img> без srcset для использования @2x версий
   (async () => {
     const imgs = Array.from(document.querySelectorAll('img'))
       .filter(img => !img.closest('picture'))
@@ -221,11 +171,9 @@ function initRetinaSupport() {
     for (const img of imgs) {
       const src = img.getAttribute('src');
       if (!src) continue;
-      // Skip video-cover files (no 2x versions available)
       if (/video-cover/i.test(src)) continue;
       const hi = build2xUrl(src);
       if (!hi) continue;
-      // eslint-disable-next-line no-await-in-loop
       const ok = await imageExists(hi);
       if (ok) {
         img.setAttribute('srcset', `${src} 1x, ${hi} 2x`);
@@ -233,40 +181,35 @@ function initRetinaSupport() {
     }
   })();
 
-  // Upgrade background layers created for parallax (.oor-parallax-bg)
+  // Обновляем фоновые слои для параллакса
   (async () => {
     const layers = Array.from(document.querySelectorAll('.oor-parallax-bg'));
     for (const layer of layers) {
-      const bg = getComputedStyle(layer).backgroundImage; // e.g., url("/path/image.png")
+      const bg = getComputedStyle(layer).backgroundImage;
       const match = /url\(("|')?(.*?)("|')?\)/.exec(bg || '');
       if (!match || !match[2]) continue;
       const url = match[2];
       if (/\.svg($|\?)/i.test(url)) continue;
       const hi = build2xUrl(url);
       if (!hi) continue;
-      // eslint-disable-next-line no-await-in-loop
       const ok = await imageExists(hi);
       if (ok) {
-        // Prefer CSS image-set for crisp rendering
         layer.style.backgroundImage = `image-set(url(${url}) 1x, url(${hi}) 2x)`;
       }
     }
   })();
 
-  // Upgrade ALL elements with a single URL background-image (site-wide)
+  // Обновляем все элементы с фоновыми изображениями
   (async () => {
     const all = Array.from(document.querySelectorAll('*'));
     for (const el of all) {
-      // Skip parallax bg (already processed)
       if (el.classList && el.classList.contains('oor-parallax-bg')) continue;
       const cs = getComputedStyle(el);
       const bg = cs.backgroundImage;
       if (!bg || bg === 'none') continue;
-      // Skip already set image-set or multiple backgrounds / gradients
       if (/image-set\(/i.test(bg)) continue;
-      if (/,/.test(bg)) continue; // multiple backgrounds not handled
+      if (/,/.test(bg)) continue;
       if (/gradient\(/i.test(bg)) continue;
-      // Skip video-cover files (no 2x versions available)
       if (/video-cover/i.test(bg)) continue;
       const match = /url\(("|')?(.*?)("|')?\)/.exec(bg);
       if (!match || !match[2]) continue;
@@ -274,7 +217,6 @@ function initRetinaSupport() {
       if (/\.svg($|\?)/i.test(url)) continue;
       const hi = build2xUrl(url);
       if (!hi) continue;
-      // eslint-disable-next-line no-await-in-loop
       const ok = await imageExists(hi);
       if (ok) {
         el.style.backgroundImage = `image-set(url(${url}) 1x, url(${hi}) 2x)`;
@@ -283,35 +225,29 @@ function initRetinaSupport() {
   })();
 }
 
-// Параллакс: двигаем ТОЛЬКО изображение внутри фиксированного контейнера
+// Параллакс для изображений
 function initParallaxImages() {
-  // Производительность: отключаем на очень маленьких экранах
   if (window.innerWidth <= 425) return;
 
-  // Селектор кандидатов: все <img>, кроме исключений
   const allImages = Array.from(document.querySelectorAll('img'));
   const candidates = allImages.filter(img => {
-    // Исключаем любые SVG: встроенные <svg> мы не выбираем; но также исключим src оканчивающиеся на .svg
     const src = (img.getAttribute('src') || '').toLowerCase();
     const isSvg = src.endsWith('.svg');
     if (isSvg) return false;
-    // Исключаем изображения внутри слайдера и других зон
     if (img.closest('#wsls')) return false;
     if (img.closest('.oor-merch-images-grid')) return false;
     if (img.closest('.oor-events-posters')) return false;
-    // Явные отключения для конкретных контейнеров/изображений
     if (img.closest('.oor-without-fear-image-2')) return false;
     if (img.closest('.oor-quality-img-container-2')) return false;
     if (img.closest('.oor-challenge-2-good-works-image')) return false;
     if (img.closest('.oor-out-of-talk-image-1')) return false;
     if (img.closest('.oor-out-of-talk-image-2')) return false;
     if (img.closest('.oor-out-of-talk-image-3')) return false;
-    // Явное отключение
     if (img.classList.contains('no-parallax')) return false;
     return true;
   });
 
-  // Поддержка параллакса для блоков с фоном (.oor-musical-association-right)
+  // Поддержка параллакса для блоков с фоном
   const bgTargets = [];
   document.querySelectorAll('.oor-musical-association-right').forEach(el => {
     const cs = getComputedStyle(el);
@@ -334,7 +270,6 @@ function initParallaxImages() {
     layer.setAttribute('data-parallax-speed', el.getAttribute('data-parallax-speed') || '');
     layer.setAttribute('data-parallax-max', el.getAttribute('data-parallax-max') || '');
     layer.style.transform = `translate3d(0,0,0) scale(${initScale})`;
-    // Убираем фон у контейнера, переносим в слой
     el.style.backgroundImage = 'none';
     el.appendChild(layer);
     bgTargets.push(layer);
@@ -342,28 +277,24 @@ function initParallaxImages() {
 
   if (candidates.length === 0 && bgTargets.length === 0) return;
 
-  // Оборачиваем изображение в контейнер, чтобы блок занимал фиксированное место
+  // Оборачиваем изображения в контейнеры для параллакса
   candidates.forEach(img => {
-    if (img.closest('.oor-parallax-wrap')) return; // уже обернуто
+    if (img.closest('.oor-parallax-wrap')) return;
     const wrap = document.createElement('div');
     wrap.className = 'oor-parallax-wrap';
     wrap.style.position = 'relative';
     wrap.style.overflow = 'hidden';
     wrap.style.display = 'block';
-    wrap.style.width = img.style.width || ''; // уважаем заданные стили
+    wrap.style.width = img.style.width || '';
     wrap.style.height = '';
-    // Снижаем мерцание за счет изоляции перерисовки
     wrap.style.contain = 'paint';
-    // Вставляем перед изображением и переносим img внутрь
     img.parentNode.insertBefore(wrap, img);
     wrap.appendChild(img);
-    // Уточняем стили изображения
     img.style.display = 'block';
     img.style.willChange = 'transform';
     img.style.transformOrigin = 'center center';
     img.style.transformStyle = 'preserve-3d';
     img.style.backfaceVisibility = 'hidden';
-    // Специфичные настройки параллакса для определенных контейнеров
     if (img.closest('.oor-without-fear-image')) {
       img.setAttribute('data-parallax-max', '32');
     }
@@ -371,63 +302,47 @@ function initParallaxImages() {
       img.setAttribute('data-parallax-max', '24');
     }
     
-    // Рассчитываем и замораживаем scale для заполнения контейнера
+    // Рассчитываем scale для заполнения контейнера
     const calculateAndFreezeScale = () => {
       const container = img.closest('.oor-parallax-wrap') || img.parentElement;
       const containerRect = container.getBoundingClientRect();
       const parallaxMax = parseFloat(img.getAttribute('data-parallax-max')) || 64;
       const customScale = parseFloat(img.getAttribute('data-parallax-scale'));
       
-      // Если задан кастомный scale, используем его
       if (Number.isFinite(customScale)) {
         return Promise.resolve(customScale);
       }
       
-      // Запас должен покрывать максимальное смещение параллакса + дополнительный буфер
-      const reserve = Math.max(parallaxMax + 32, 80); // минимум 80px запас
+      const reserve = Math.max(parallaxMax + 32, 80);
       
-      // Ждем загрузки изображения для получения естественных размеров
       return new Promise((resolve) => {
         if (img.complete && img.naturalWidth > 0) {
-          // Изображение уже загружено
           const naturalWidth = img.naturalWidth;
           const naturalHeight = img.naturalHeight;
-          
-          // Рассчитываем scale для полного заполнения контейнера + запас для параллакса
           const neededWidth = containerRect.width + reserve;
           const neededHeight = containerRect.height + reserve;
-          
           const scaleX = neededWidth / naturalWidth;
           const scaleY = neededHeight / naturalHeight;
-          
-          // Берем больший scale, но минимум 1.0 (естественный размер)
           resolve(Math.max(scaleX, scaleY, 1.0));
         } else {
-          // Ждем загрузки изображения
           img.onload = () => {
             const naturalWidth = img.naturalWidth;
             const naturalHeight = img.naturalHeight;
-            
             const neededWidth = containerRect.width + reserve;
             const neededHeight = containerRect.height + reserve;
-            
             const scaleX = neededWidth / naturalWidth;
             const scaleY = neededHeight / naturalHeight;
-            
-            // Берем больший scale, но минимум 1.0 (естественный размер)
             resolve(Math.max(scaleX, scaleY, 1.0));
           };
         }
       });
     };
     
-    // Рассчитываем и замораживаем начальный scale
     calculateAndFreezeScale().then(frozenScale => {
       img.setAttribute('data-frozen-scale', frozenScale.toString());
       img.style.transform = `translate3d(0,0,0) scale(${frozenScale})`;
     });
     
-    // Сохраняем функцию для пересчета при ресайзе
     img._recalculateScale = calculateAndFreezeScale;
   });
 
@@ -440,9 +355,6 @@ function initParallaxImages() {
         inView.add(node);
       } else {
         inView.delete(node);
-        // Не сбрасываем мгновенно transform, чтобы избежать "прыжков" на границе видимости
-        // node.style.transform = '';
-        // node.style.willChange = '';
       }
     });
   }, { root: null, rootMargin: '100px 0px', threshold: [0, 0.1, 0.5, 1] });
@@ -458,18 +370,15 @@ function initParallaxImages() {
     const vh = getVH();
     inView.forEach(node => {
       const maxAttr = parseFloat(node.getAttribute('data-parallax-max'));
-      const maxShift = Number.isFinite(maxAttr) ? maxAttr : 64;    // пиксели
+      const maxShift = Number.isFinite(maxAttr) ? maxAttr : 64;
 
       const rect = node.getBoundingClientRect();
       const centerY = rect.top + rect.height / 2;
       
-      // Параллакс начинается как только изображение появляется в viewport
-      // -1 когда изображение только появилось сверху, +1 когда полностью ушло вниз
       const norm = (centerY - vh) / vh;
       let shift = Math.max(-1, Math.min(1, norm)) * maxShift;
-      // Слегка квантуем изменение, чтобы избежать субпиксельного дрожания
-      shift = Math.round(shift * 2) / 2; // шаг 0.5px
-      // Используем замороженный scale или fallback
+      shift = Math.round(shift * 2) / 2;
+      
       let baseScale;
       const frozenScale = parseFloat(node.getAttribute('data-frozen-scale'));
       if (Number.isFinite(frozenScale)) {
@@ -492,7 +401,7 @@ function initParallaxImages() {
   function stop() {
     if (rafId != null) cancelAnimationFrame(rafId);
     rafId = null;
-    inView.forEach(node => { node.style.transform = ''; /* оставляем will-change для плавности */ });
+    inView.forEach(node => { node.style.transform = ''; });
   }
 
   start();
@@ -501,7 +410,6 @@ function initParallaxImages() {
     if (window.innerWidth <= 425) {
       stop();
     } else {
-      // Пересчитываем и замораживаем новый scale для всех изображений при ресайзе
       candidates.forEach(img => {
         if (img._recalculateScale) {
           img._recalculateScale().then(newScale => {
@@ -518,12 +426,10 @@ function initParallaxImages() {
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
 }
 
-// Мягкое "подъезжание" блоков на десктопе
+// Анимация появления блоков при скролле
 function initRevealOnScroll() {
-  // Только десктоп (чтобы не мешать мобильной производительности)
   if (window.innerWidth <= 1024) return;
 
-  // Крупные контейнеры секций, без мелких вложенных элементов
   const selectors = [
     '.oor-hero-content',
     '.slider-section',
@@ -545,12 +451,9 @@ function initRevealOnScroll() {
     .flatMap(sel => Array.from(document.querySelectorAll(sel)))
     .filter(el => !el.classList.contains('no-reveal'));
   
-  // На разрешениях >1920px отключаем анимацию для слайдера
   const isLargeScreen = window.innerWidth > 1920;
   if (isLargeScreen) {
     nodes = nodes.filter(el => !el.matches('.slider-section'));
-    
-    // Делаем слайдер сразу видимым без анимации
     const sliders = document.querySelectorAll('.slider-section');
     sliders.forEach(slider => {
       slider.style.opacity = '1';
@@ -561,25 +464,19 @@ function initRevealOnScroll() {
 
   if (nodes.length === 0) return;
 
-  // Дополнительно: элементы изображений мерча, которые должны подъезжать по очереди
   const merchItems = Array.from(document.querySelectorAll('.oor-merch-images-wrapper .oor-merch-image-item'));
-  // Если есть элементы мерча, не анимируем контейнер .oor-merch-images-grid, чтобы не дублировать эффекты
   if (merchItems.length > 0) {
     nodes = nodes.filter(el => !el.matches('.oor-merch-images-grid'));
   }
 
-  // Начальные стили (ниже и прозрачнее, как у референса: больше дистанция и плавнее)
   nodes.forEach(el => {
     el.style.opacity = '0';
-    // Появление строго по вертикали, без смещения по X
     el.style.transform = 'translate3d(0, 120px, 0)';
     el.style.transformOrigin = '';
-    // более плавные тайминги
     el.style.transition = 'opacity 800ms ease, transform 1200ms cubic-bezier(0.22, 1, 0.36, 1)';
     el.style.willChange = 'opacity, transform';
   });
 
-  // Инициализация начальных стилей и стаггера для мерча (по одному элементу с интервалом)
   const MERCH_STAGGER_MS = 140;
   merchItems.forEach((el, idx) => {
     el.style.opacity = '0';

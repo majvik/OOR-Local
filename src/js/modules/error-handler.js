@@ -1,25 +1,4 @@
-/**
- * ========================================
- * ERROR HANDLER MODULE
- * ========================================
- * 
- * Централизованная обработка ошибок для OOR проекта
- * Следует принципам Always Works™
- * 
- * @author OOR Development Team
- * @version 1.0.0
- * @since 2025-09-21
- * 
- * FEATURES:
- * - Глобальная обработка ошибок
- * - Логирование в консоль
- * - Graceful degradation
- * - Пользовательские уведомления
- */
-
-/**
- * Класс для обработки ошибок
- */
+// Централизованная обработка ошибок для OOR проекта
 class ErrorHandler {
   constructor() {
     this.errors = [];
@@ -29,10 +8,6 @@ class ErrorHandler {
     this.init();
   }
 
-  /**
-   * Проверяет режим отладки
-   * @returns {boolean}
-   */
   checkDebugMode() {
     return (
       typeof window !== 'undefined' && 
@@ -41,14 +16,9 @@ class ErrorHandler {
     );
   }
 
-  /**
-   * Инициализирует обработчик ошибок
-   */
   init() {
-    // Отложенная проверка зависимостей после загрузки страницы
     this.scheduleDependencyCheck();
     
-    // Глобальная обработка ошибок JavaScript
     window.addEventListener('error', (event) => {
       this.handleError({
         type: 'javascript',
@@ -61,7 +31,6 @@ class ErrorHandler {
       });
     });
 
-    // Обработка необработанных промисов
     window.addEventListener('unhandledrejection', (event) => {
       this.handleError({
         type: 'promise',
@@ -71,7 +40,6 @@ class ErrorHandler {
       });
     });
 
-    // Обработка ошибок загрузки ресурсов
     window.addEventListener('error', (event) => {
       if (event.target !== window) {
         this.handleError({
@@ -84,16 +52,11 @@ class ErrorHandler {
     }, true);
   }
 
-  /**
-   * Планирует проверку зависимостей после завершения загрузки
-   */
   scheduleDependencyCheck() {
-    // Проверяем зависимости через 2 секунды после загрузки
     setTimeout(() => {
       this.checkCriticalDependencies();
     }, 2000);
 
-    // Дополнительная проверка при завершении прелоадера
     const preloader = document.getElementById('preloader');
     if (preloader) {
       const observer = new MutationObserver((mutations) => {
@@ -110,19 +73,12 @@ class ErrorHandler {
     }
   }
 
-  /**
-   * Проверяет загрузку критических зависимостей
-   * Выполняется только после завершения прелоадера
-   */
   checkCriticalDependencies() {
-    // Проверяем, что прелоадер завершен
     const preloader = document.getElementById('preloader');
     if (preloader && !preloader.classList.contains('oor-preloader-hidden')) {
-      // Прелоадер еще активен - не проверяем зависимости
       return;
     }
 
-    // Проверяем GSAP только если он критичен для текущей страницы
     if (typeof gsap === 'undefined' && this.isGSAPRequired()) {
       this.handleError({
         type: 'dependency',
@@ -131,7 +87,6 @@ class ErrorHandler {
       });
     }
 
-    // Проверяем MouseFollower только если курсор нужен
     if (typeof MouseFollower === 'undefined' && this.isCursorRequired()) {
       this.handleError({
         type: 'dependency',
@@ -140,36 +95,20 @@ class ErrorHandler {
       });
     }
 
-    // Lenis не критичен - только предупреждение
     if (typeof Lenis === 'undefined') {
       console.info('[OOR] Lenis library not loaded - smooth scrolling disabled');
     }
   }
 
-  /**
-   * Проверяет, нужен ли GSAP для текущей страницы
-   * @returns {boolean}
-   */
   isGSAPRequired() {
-    // GSAP нужен только если есть анимированные элементы
     return document.querySelector('.oor-preloader, .oor-hero-video, .slider-section') !== null;
   }
 
-  /**
-   * Проверяет, нужен ли курсор для текущей страницы
-   * @returns {boolean}
-   */
   isCursorRequired() {
-    // Курсор нужен только если есть элементы с data-cursor
     return document.querySelector('[data-cursor-text], [data-cursor-video], [data-cursor-img]') !== null;
   }
 
-  /**
-   * Обрабатывает ошибку
-   * @param {Object} errorData - Данные об ошибке
-   */
   handleError(errorData) {
-    // Фильтруем ненужные ошибки
     if (this.shouldIgnoreError(errorData)) {
       return;
     }
@@ -181,40 +120,28 @@ class ErrorHandler {
       url: window.location.href
     };
 
-    // Добавляем в массив ошибок
     this.errors.push(error);
     
-    // Ограничиваем количество ошибок
     if (this.errors.length > this.maxErrors) {
       this.errors.shift();
     }
 
-    // Логируем в консоль
     this.logError(error);
 
-    // Показываем пользователю в debug режиме
     if (this.isDebugMode) {
       this.showUserError(error);
     }
 
-    // Отправляем в аналитику (если настроена)
     this.sendToAnalytics(error);
   }
 
-  /**
-   * Проверяет, нужно ли игнорировать ошибку
-   * @param {Object} errorData - Данные об ошибке
-   * @returns {boolean} Игнорировать ли ошибку
-   */
   shouldIgnoreError(errorData) {
-    // Игнорируем ошибки видео play()
     if (errorData.type === 'promise' && 
         errorData.message && 
         errorData.message.includes('play() request was interrupted')) {
       return true;
     }
 
-    // Игнорируем AbortError для видео
     if (errorData.error && 
         errorData.error.name === 'AbortError' && 
         errorData.message && 
@@ -222,7 +149,6 @@ class ErrorHandler {
       return true;
     }
 
-    // Игнорируем ошибки загрузки ресурсов для курсора
     if (errorData.type === 'resource' && 
         errorData.src && 
         errorData.src.includes('video')) {
@@ -232,10 +158,6 @@ class ErrorHandler {
     return false;
   }
 
-  /**
-   * Логирует ошибку в консоль
-   * @param {Object} error - Данные об ошибке
-   */
   logError(error) {
     const logMethod = this.isDebugMode ? 'error' : 'warn';
     
@@ -251,12 +173,7 @@ class ErrorHandler {
     });
   }
 
-  /**
-   * Показывает ошибку пользователю в debug режиме
-   * @param {Object} error - Данные об ошибке
-   */
   showUserError(error) {
-    // Создаем уведомление об ошибке
     const notification = document.createElement('div');
     notification.className = 'oor-error-notification';
     notification.style.cssText = `
@@ -282,7 +199,6 @@ class ErrorHandler {
 
     document.body.appendChild(notification);
 
-    // Автоматически удаляем через 5 секунд
     setTimeout(() => {
       if (notification.parentNode) {
         notification.parentNode.removeChild(notification);
@@ -290,12 +206,7 @@ class ErrorHandler {
     }, 5000);
   }
 
-  /**
-   * Отправляет ошибку в аналитику
-   * @param {Object} error - Данные об ошибке
-   */
   sendToAnalytics(error) {
-    // Здесь можно добавить отправку в Google Analytics, Sentry и т.д.
     if (typeof gtag !== 'undefined') {
       gtag('event', 'exception', {
         description: error.message,
@@ -304,25 +215,14 @@ class ErrorHandler {
     }
   }
 
-  /**
-   * Получает все ошибки
-   * @returns {Array} Массив ошибок
-   */
   getErrors() {
     return [...this.errors];
   }
 
-  /**
-   * Очищает все ошибки
-   */
   clearErrors() {
     this.errors = [];
   }
 
-  /**
-   * Получает статистику ошибок
-   * @returns {Object} Статистика
-   */
   getStats() {
     const stats = {
       total: this.errors.length,
@@ -338,17 +238,8 @@ class ErrorHandler {
   }
 }
 
-/**
- * Создаем глобальный экземпляр обработчика ошибок
- */
 const errorHandler = new ErrorHandler();
 
-/**
- * Функция для безопасного выполнения кода
- * @param {Function} fn - Функция для выполнения
- * @param {*} fallback - Значение по умолчанию при ошибке
- * @returns {*} Результат выполнения или fallback
- */
 function safeExecute(fn, fallback = null) {
   try {
     return fn();
@@ -363,12 +254,6 @@ function safeExecute(fn, fallback = null) {
   }
 }
 
-/**
- * Функция для безопасного выполнения асинхронного кода
- * @param {Function} fn - Асинхронная функция
- * @param {*} fallback - Значение по умолчанию при ошибке
- * @returns {Promise} Промис с результатом или fallback
- */
 async function safeExecuteAsync(fn, fallback = null) {
   try {
     return await fn();
@@ -383,12 +268,6 @@ async function safeExecuteAsync(fn, fallback = null) {
   }
 }
 
-/**
- * Функция для проверки доступности API
- * @param {string} apiName - Название API
- * @param {Function} checkFn - Функция проверки
- * @returns {boolean} Доступно ли API
- */
 function checkAPI(apiName, checkFn) {
   try {
     const result = checkFn();
@@ -411,12 +290,6 @@ function checkAPI(apiName, checkFn) {
   }
 }
 
-/**
- * Функция для безопасной загрузки скриптов
- * @param {string} src - URL скрипта
- * @param {Object} options - Опции загрузки
- * @returns {Promise} Промис загрузки
- */
 function loadScript(src, options = {}) {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -447,7 +320,6 @@ function loadScript(src, options = {}) {
   });
 }
 
-// Делаем функции доступными глобально
 window.OOR = window.OOR || {};
 window.OOR.errorHandler = errorHandler;
 window.OOR.safeExecute = safeExecute;
