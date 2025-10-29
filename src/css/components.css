@@ -661,34 +661,24 @@ body.preloader-active{
   padding: 0 20px;
 }
 
-.oor-preloader-progress{
-  color:var(--color-black);
-  font-family:var(--font-ui);
-  font-size: 7.000rem;
-  font-style:normal;
-  font-weight:300;
-  line-height:100%;
-  letter-spacing: -0.630rem;
-  text-transform:uppercase;
-  display: block;
-  overflow: hidden;
-  padding: 0 10px;
-}
-
-.oor-preloader-progress-inner{
-  display: inline-block;
-  transform: translate3d(0, 0, 0);
+/* Progress Bar */
+.oor-preloader-progress-bar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 8px;
+  width: 0%;
+  background: #000;
+  z-index: 10000;
+  transition: width 0.1s linear, opacity 0.3s ease;
   opacity: 1;
-  transition: transform 600ms cubic-bezier(0.84, 0.00, 0.16, 1), opacity 600ms ease;
-  will-change: transform, opacity;
 }
 
-.oor-preloader-progress.hidden .oor-preloader-progress-inner{
-  transform: translate3d(0, -120%, 0);
+.oor-preloader-progress-bar.hidden{
   opacity: 0;
 }
 
-/* Enter Button */
+/* Enter Button - полностью без магнетизма и анимаций */
 .oor-enter-button{
   display: inline-flex;
   padding: 12px;
@@ -707,13 +697,23 @@ body.preloader-active{
   background: #000;
   border: 1px solid transparent;
   cursor: pointer;
-  position: relative;
-  margin-top: 64px;
-  transition: all 0.3s ease, opacity 0.5s ease, border-color 0.3s ease;
+  position: fixed;
+  bottom: 48px;
+  left: 50%;
+  width: auto;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(var(--mouse-x, 0px), var(--mouse-y, 0px));
+  z-index: 10005;
+  transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.2s ease, color 0.2s ease;
+  will-change: auto;
+}
+
+/* Кнопка внутри splash-screen */
+.oor-splash-screen .oor-enter-button{
+  position: absolute;
+  bottom: 48px;
+  z-index: 10005;
 }
 
 .oor-enter-button.visible{
@@ -728,10 +728,13 @@ body.preloader-active{
   border-color: #000;
 }
 
-.oor-enter-button:active {
-  animation: shake 1.2s ease-in-out;
-  --mouse-x: 0px !important;
-  --mouse-y: 0px !important;
+/* Отключаем все эффекты при нажатии */
+.oor-enter-button:active,
+#enter-button-splash:active,
+.oor-splash-screen .oor-enter-button:active {
+  animation: none;
+  transition: none;
+  outline: none;
 }
 
 /* Mobile optimization for enter button */
@@ -744,27 +747,24 @@ body.preloader-active{
     padding: 0;
   }
   
-  .oor-preloader-progress {
-    margin: 0;
-  }
-  
-  .oor-enter-button {
+  .oor-enter-button,
+  .oor-splash-screen .oor-enter-button {
     position: fixed;
     bottom: 16px;
     left: 16px;
     right: 16px;
     width: auto;
-    margin: 0;
     padding: 18px;
     font-size: 1.125rem;
     letter-spacing: -0.023rem;
-    transform: none;
     border-radius: 0;
-    z-index: 10001;
+    transition: background-color 0.2s ease, color 0.2s ease, opacity 0.3s ease;
   }
   
-  .oor-enter-button:active {
-    transform: none;
+  .oor-enter-button:active,
+  .oor-splash-screen .oor-enter-button:active {
+    transition: none;
+    outline: none;
   }
 }
 
@@ -776,7 +776,7 @@ body.preloader-active{
   width: 100vw;
   height: 100vh;
   background: white;
-  z-index: 10000;
+  z-index: 10001;
   display: none;
   align-items: center;
   justify-content: center;
@@ -793,21 +793,44 @@ body.preloader-active{
   opacity: 0;
 }
 
-.oor-splash-video{
-  max-width: 50%;
-  max-height: 50%;
-  width: auto;
-  height: auto;
+.oor-splash-gif{
+  width: 400px;
+  height: 400px;
   object-fit: contain;
   display: block;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-/* Mobile padding for splash video */
+/* Стили для замороженного PNG (под GIF) */
+#splash-gif-frozen{
+  width: 400px;
+  height: 400px;
+  max-width: 400px;
+  max-height: 400px;
+  object-fit: contain;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Mobile optimization for splash gif */
 @media (max-width: 768px) {
-  .oor-splash-video{
-    padding: 80px;
-    max-width: calc(100% - 160px);
-    max-height: calc(100% - 160px);
+  .oor-splash-gif,
+  #splash-gif-frozen,
+  .oor-splash-screen canvas.oor-splash-gif{
+    width: 400px;
+    height: 400px;
+    max-width: calc(100% - 32px);
+    max-height: calc(100% - 32px);
   }
 }
 

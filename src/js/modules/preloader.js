@@ -1,12 +1,12 @@
 // Модуль прелоадера с splash screen
 function initPreloader() {
   const preloader = document.getElementById('preloader');
-  const percentElement = document.getElementById('preloader-percent');
-  const enterButton = document.getElementById('enter-button');
+  const progressBar = document.getElementById('preloader-progress-bar');
+  const enterButton = document.getElementById('enter-button-splash') || document.getElementById('enter-button');
   const splashScreen = document.getElementById('splash-screen');
-  const splashVideo = document.getElementById('splash-video');
+  const splashGif = document.getElementById('splash-gif');
   
-  if (!preloader || !percentElement) {
+  if (!preloader || !progressBar) {
     try {
       document.documentElement.classList.remove('preloader-active');
       document.body.classList.remove('preloader-active');
@@ -25,6 +25,8 @@ function initPreloader() {
   let progress = 0;
   let loadedResources = 0;
   let totalResources = 0;
+  let gifCompletionStarted = false;
+  let gifStopped = false;
   
   const resourcesToLoad = [
     '/public/assets/plus-large.svg',
@@ -32,6 +34,7 @@ function initPreloader() {
     '/public/assets/line-small.svg',
     '/public/assets/hero-bg.png',
     '/public/assets/OUTOFREC_reel_v4_nologo.mp4',
+    '/public/assets/splash-last-frame.png',
     '/public/fonts/pragmatica-book.ttf',
     '/public/fonts/pragmatica-book-oblique.ttf',
     '/public/fonts/pragmatica-extended-book.ttf',
@@ -46,7 +49,6 @@ function initPreloader() {
     '/public/fonts/pragmatica-extended-extralight-oblique.ttf'
   ];
 
-  // Ожидаемые CSS и JS файлы
   const expectedCssJsFiles = [
     '/src/css/reset.css',
     '/src/css/fonts.css',
@@ -62,17 +64,26 @@ function initPreloader() {
 
   function updateProgress() {
     const actualProgress = Math.min(loadedResources, totalResources);
-    progress = Math.round((actualProgress / totalResources) * 100);
-    percentElement.textContent = progress;
+    progress = (actualProgress / totalResources) * 100;
+    progressBar.style.width = progress + '%';
 
     if (loadedResources >= totalResources) {
-      if (isMainPage && enterButton && splashScreen && splashVideo) {
-        showEnterButton();
+      handleProgressComplete();
+    }
+  }
+
+  function handleProgressComplete() {
+    progressBar.classList.add('hidden');
+    
+    setTimeout(() => {
+      if (isMainPage && splashScreen && splashGif) {
+        showSplashGif();
       } else {
         hidePreloader();
       }
-    }
+    }, 300);
   }
+
   function loadResource(url) {
     return new Promise((resolve) => {
       const isImage = /\.(jpg|jpeg|png|gif|svg|webp)$/i.test(url);
@@ -201,133 +212,179 @@ function initPreloader() {
     }
   }, 500);
 
+  function showSplashGif() {
+    if (!splashScreen || !splashGif) {
+      console.warn('[Preloader] splashScreen or splashGif not found, hiding preloader');
+      hidePreloader();
+      return;
+    }
+    
+    const parent = splashGif.parentNode || splashScreen;
+    
+    const lastFrameImg = document.createElement('img');
+    lastFrameImg.id = 'splash-gif-frozen';
+    lastFrameImg.src = '/public/assets/splash-last-frame.png';
+    lastFrameImg.alt = 'Splash';
+    lastFrameImg.width = 400;
+    lastFrameImg.height = 400;
+    lastFrameImg.style.zIndex = '1';
+    
+    splashGif.style.zIndex = '2';
+    
+    parent.insertBefore(lastFrameImg, splashGif);
+    
+    splashScreen.classList.add('visible');
+    gifCompletionStarted = false;
+    
+    splashGif.onload = () => {
+      if (!gifCompletionStarted) {
+        gifCompletionStarted = true;
+        waitForGifCompletion();
+      }
+    };
+    
+    if (splashGif.complete && splashGif.naturalHeight !== 0) {
+      if (!gifCompletionStarted) {
+        gifCompletionStarted = true;
+        waitForGifCompletion();
+      }
+    }
+  }
+
+  function waitForGifCompletion() {
+    if (!splashGif) return;
+    
+    const estimatedDuration = 3800;
+    
+    setTimeout(() => {
+      stopGifLoop();
+    }, estimatedDuration);
+  }
+
+  function stopGifLoop() {
+    if (gifStopped) return;
+    gifStopped = true;
+    
+    const currentGif = document.getElementById('splash-gif');
+    if (!currentGif) {
+      setTimeout(() => {
+        showEnterButton();
+      }, 300);
+      return;
+    }
+    
+    try {
+      if (currentGif && currentGif.parentNode) {
+        currentGif.remove();
+      }
+      
+      setTimeout(() => {
+        showEnterButton();
+      }, 100);
+    } catch (error) {
+      console.error('[Preloader] Error removing GIF:', error);
+      setTimeout(() => {
+        showEnterButton();
+      }, 300);
+    }
+  }
+
   function showEnterButton() {
     if (!enterButton) return;
-    enterButton.classList.add('visible');
-    enterButton.addEventListener('click', handleEnterClick);
-  }
-  function handleEnterClick() {
-    if (!enterButton || !percentElement || !splashScreen || !splashVideo) return;
     
-    enterButton.removeEventListener('click', handleEnterClick);
+    if (enterButton.dataset.initialized === 'true') {
+      return;
+    }
+    
+    enterButton.dataset.initialized = 'true';
+    
+    enterButton.addEventListener('click', handleEnterClick, { once: true });
+    
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) {
+      enterButton.style.transform = 'translateX(-50%)';
+    }
+    
+    requestAnimationFrame(() => {
+      enterButton.classList.add('visible');
+    });
+  }
+
+  function handleEnterClick(e) {
+    if (!enterButton) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
     
     if (typeof window.unlockVideoAutoplay === 'function') {
       window.unlockVideoAutoplay().then(() => {
         console.log('[Preloader] Video autoplay unlocked successfully');
-        // Устанавливаем глобальный флаг для других скриптов
         window.videoAutoplayUnlocked = true;
       }).catch(e => {
         console.warn('[Preloader] Failed to unlock video autoplay:', e);
       });
     }
     
-    const progressContainer = percentElement.closest('.oor-preloader-progress');
-    if (progressContainer) {
-      progressContainer.classList.add('hidden');
-    }
-    
-    enterButton.classList.remove('visible');
-    
-    setTimeout(() => {
-      showSplashScreen();
-    }, 600);
-  }
-
-  function showSplashScreen() {
-    if (!splashScreen || !splashVideo) {
-      hidePreloader();
-      return;
-    }
-    
-    if (preloader) {
-      preloader.style.display = 'none';
-    }
-    
-    splashScreen.classList.add('visible');
-    
-    setTimeout(() => {
-      playSplashVideo();
-    }, 800);
-  }
-
-  function playSplashVideo() {
-    if (!splashVideo) {
-      hideSplashScreen();
-      return;
-    }
-    
-    splashVideo.addEventListener('ended', hideSplashScreen);
-    splashVideo.addEventListener('error', () => {
-      console.warn('Splash video error, hiding after 2 seconds');
-      setTimeout(hideSplashScreen, 2000);
-    });
-    
-    splashVideo.play().catch(error => {
-      console.warn('Splash video autoplay failed:', error);
-      setTimeout(hideSplashScreen, 2000);
-    });
-  }
-
-  function hideSplashScreen() {
-    if (!splashScreen) {
-      hidePreloader();
-      return;
-    }
-    
-    splashScreen.classList.add('hidden');
-    
-    setTimeout(() => {
-      hidePreloader();
-    }, 800);
+    hidePreloader();
   }
 
   function hidePreloader() {
     try {
       if (preloader) {
-        preloader.remove();
+        preloader.classList.add('hidden');
       }
       if (splashScreen) {
-        splashScreen.remove();
+        splashScreen.classList.add('hidden');
       }
       
-      document.documentElement.classList.remove('preloader-active');
-      document.body.classList.remove('preloader-active');
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      
       setTimeout(() => {
-        try {
-          const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && 
-                               (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
-          if (DISABLE_LENIS) {
-            return;
-          }
+        if (preloader) {
+          preloader.remove();
+        }
+        if (splashScreen) {
+          splashScreen.remove();
+        }
+        
+        document.documentElement.classList.remove('preloader-active');
+        document.body.classList.remove('preloader-active');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        
+        setTimeout(() => {
+          try {
+            const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && 
+                                 (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
+            if (DISABLE_LENIS) {
+              return;
+            }
 
-          const s = document.createElement('script');
-          s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
-          s.async = true;
-          s.onload = () => {
-            try {
-              if (window.Lenis && !window.lenis) {
-                window.lenis = new window.Lenis({
-                  smoothWheel: true,
-                  smoothTouch: false,
-                  normalizeWheel: true,
-                  lerp: 0.09,
-                  wheelMultiplier: 1.0,
-                  duration: 1.0,
-                  easing: (t) => 1 - Math.pow(1 - t, 3),
-                  orientation: 'vertical',
-                  gestureOrientation: 'vertical',
-                  touchMultiplier: 2,
-                  infinite: false
-                });
-              }
-            } catch(e) { console.warn('Lenis init error', e); }
-          };
-          document.head.appendChild(s);
-        } catch(e) { console.warn('Lenis load error', e); }
-      }, 100);
+            const s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
+            s.async = true;
+            s.onload = () => {
+              try {
+                if (window.Lenis && !window.lenis) {
+                  window.lenis = new window.Lenis({
+                    smoothWheel: true,
+                    smoothTouch: false,
+                    normalizeWheel: true,
+                    lerp: 0.09,
+                    wheelMultiplier: 1.0,
+                    duration: 1.0,
+                    easing: (t) => 1 - Math.pow(1 - t, 3),
+                    orientation: 'vertical',
+                    gestureOrientation: 'vertical',
+                    touchMultiplier: 2,
+                    infinite: false
+                  });
+                }
+              } catch(e) { console.warn('Lenis init error', e); }
+            };
+            document.head.appendChild(s);
+          } catch(e) { console.warn('Lenis load error', e); }
+        }, 100);
+        
+      }, 800);
       
     } catch(_) {
       document.documentElement.classList.remove('preloader-active');

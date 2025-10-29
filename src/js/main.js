@@ -234,6 +234,8 @@ function initParallaxImages() {
     const src = (img.getAttribute('src') || '').toLowerCase();
     const isSvg = src.endsWith('.svg');
     if (isSvg) return false;
+    // Исключаем splash gif на прелоадере (и замороженный canvas), чтобы не оборачивать и не пересчитывать его
+    if (img.id === 'splash-gif' || img.id === 'splash-gif-frozen' || img.closest('.oor-splash-screen')) return false;
     if (img.closest('#wsls')) return false;
     if (img.closest('.oor-merch-images-grid')) return false;
     if (img.closest('.oor-events-posters')) return false;
@@ -411,11 +413,19 @@ function initParallaxImages() {
       stop();
     } else {
       candidates.forEach(img => {
-        if (img._recalculateScale) {
-          img._recalculateScale().then(newScale => {
-            img.setAttribute('data-frozen-scale', newScale.toString());
-            img.style.transform = `translate3d(0,0,0) scale(${newScale})`;
-          });
+        // Проверяем, что элемент все еще в DOM и не был заменен (например, splash-gif на canvas)
+        if (img.parentNode && img._recalculateScale) {
+          try {
+            img._recalculateScale().then(newScale => {
+              // Проверяем еще раз перед обновлением (элемент мог быть удален)
+              if (img.parentNode) {
+                img.setAttribute('data-frozen-scale', newScale.toString());
+                img.style.transform = `translate3d(0,0,0) scale(${newScale})`;
+              }
+            });
+          } catch (error) {
+            console.warn('[Parallax] Error recalculating scale for image:', error);
+          }
         }
       });
       if (rafId == null) start();
@@ -898,8 +908,7 @@ function initMagneticElements() {
     .oor-challenge-2-good-works-icon,
     .oor-events-sold-out,
     .oor-events-buy-ticket,
-    .oor-merch-button,
-    .oor-enter-button
+    .oor-merch-button
   `);
 
   magneticElements.forEach(element => {

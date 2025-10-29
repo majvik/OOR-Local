@@ -22,19 +22,16 @@
 <body class="preloader-active">
     <!-- Preloader -->
     <div id="preloader" class="oor-preloader">
+        <div class="oor-preloader-progress-bar" id="preloader-progress-bar"></div>
         <div class="oor-preloader-content">
-            <div class="oor-preloader-progress">
-                <span class="oor-preloader-progress-inner"><span id="preloader-percent">0</span>%</span>
-            </div>
             <button id="enter-button" class="oor-enter-button">Войти</button>
         </div>
     </div>
     
     <!-- Splash Screen -->
     <div id="splash-screen" class="oor-splash-screen">
-        <video id="splash-video" class="oor-splash-video" muted playsinline preload="metadata">
-            <source src="/public/assets/splash.mp4" type="video/mp4">
-        </video>
+        <img id="splash-gif" class="oor-splash-gif" src="/public/assets/splash.gif" alt="Splash" width="400" height="400">
+        <button id="enter-button-splash" class="oor-enter-button">Войти</button>
     </div>
     
     <!-- Header -->
