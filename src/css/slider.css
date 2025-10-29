@@ -281,6 +281,12 @@ a.slide-media:hover {
   opacity: 1 !important;
   visibility: visible !important;
 }
+#wsls /* Плавное затухание предыдущего слайда */
+.slide.meta-fading .slide-meta-top, #wsls .slide.meta-fading .slide-meta-bottom, #wsls .slide.meta-fading .artist-name{
+  opacity: 0.3 !important;
+  visibility: visible !important;
+  transition: opacity 600ms ease-out !important;
+}
 #wsls /* Artist name под изображением */
 .artist-name{
   text-align: left;

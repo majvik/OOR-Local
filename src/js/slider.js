@@ -147,6 +147,8 @@ let isMobile = isMobileDevice(); // определение мобильного 
 
 // === ПЕРЕМЕННЫЕ ДЛЯ МЕТАДАННЫХ СЛАЙДОВ ===
 let lastMetaActiveIndex = -1; // кэш последнего активного индекса
+let metaFadeTimeout = null; // таймер для задержки скрытия метаданных
+const META_FADE_DELAY = 800; // задержка перед скрытием метаданных в миллисекундах
 
 // === ПЕРЕМЕННЫЕ СОСТОЯНИЯ СТРАНИЦЫ ===
 let pageState = STATE.NORMAL; // текущее состояние: обычная страница или активен слайдер
@@ -218,6 +220,8 @@ let reenterGuard = null;      // защита от повторного вход
 let lastExitDir  = null;      // направление последнего выхода из слайдера
 
 // ===== РАННИЙ ЗАХВАТ КОЛЕСА МЫШИ (исправление инерции тачпада) =====
+// ОТКЛЮЧЕНО: Захват скролла убран для свободного вертикального скролла страницы
+/*
 document.addEventListener('wheel', (e) => {
   if (!isInsideSliderEvent(e)) return;
   // НЕ блокируем на мобильных устройствах - там работают touch события
@@ -289,6 +293,7 @@ document.addEventListener('wheel', (e) => {
     // не вызываем e.preventDefault() здесь — позволяем странице скроллиться
   }
 }, { passive: true, capture: true });
+*/
 // ===== КОНЕЦ РАННЕГО ЗАХВАТА КОЛЕСА =====
 
 // === ИНИЦИАЛИЗАЦИЯ СЛАЙДЕРА ===
@@ -297,7 +302,8 @@ function boot() {
   // Lenis инициализируется после скрытия прелоадера (в main.js)
 
   initSlider();              // инициализация слайдера
-  setupIOApproachFallback(); // настройка fallback для Intersection Observer
+  // ОТКЛЮЧЕНО: setupIOApproachFallback() - автоматический подъезд убран
+  // setupIOApproachFallback(); // настройка fallback для Intersection Observer
   startLoop();               // запуск главного цикла анимации
 }
 
@@ -316,17 +322,18 @@ function initSlider() {
   setupDragVsClick();
   if (sliderWrapper) sliderWrapper.style.cursor = 'default';
   
+  // ОТКЛЮЧЕНО: Захват wheel событий убран для свободного вертикального скролла
   // Настраиваем wheel только для десктопа
-  if (window.innerWidth > 768) {
-    setupWheel();
-  }
+  // if (window.innerWidth > 768) {
+  //   setupWheel();
+  // }
   
   // На мобильных убеждаемся, что все метаданные видны
   if (isMobile) {
     slides.forEach(s => s.classList.remove('meta-active'));
   } else {
-    // Принудительно скрываем все метаданные при инициализации на десктопе
-    setMetaActive(-1);
+    // ИЗМЕНЕНО: Показываем метаданные первого слайда при инициализации
+    setMetaActive(0);
   }
   
   // Настраиваем touch события для всех разрешений для респонзивности
@@ -355,10 +362,35 @@ function setMetaActive(index) {
 
   if (index === lastMetaActiveIndex) return;
 
+  // Очищаем предыдущий таймер если он есть
+  if (metaFadeTimeout) {
+    clearTimeout(metaFadeTimeout);
+    metaFadeTimeout = null;
+  }
+
+  // Сразу активируем новый слайд
   slides.forEach((s, i) => {
-    if (i === index) s.classList.add('meta-active');
-    else s.classList.remove('meta-active');
+    if (i === index) {
+      s.classList.add('meta-active');
+      s.classList.remove('meta-fading'); // убираем состояние затухания если оно было
+    }
   });
+
+  // Для предыдущего активного слайда добавляем состояние затухания
+  if (lastMetaActiveIndex >= 0 && lastMetaActiveIndex < slides.length) {
+    const prevSlide = slides[lastMetaActiveIndex];
+    if (prevSlide && lastMetaActiveIndex !== index) {
+      prevSlide.classList.add('meta-fading'); // добавляем класс для плавного затухания
+      
+      // Скрываем метаданные предыдущего слайда с задержкой
+      metaFadeTimeout = setTimeout(() => {
+        prevSlide.classList.remove('meta-active');
+        prevSlide.classList.remove('meta-fading');
+        metaFadeTimeout = null;
+      }, META_FADE_DELAY);
+    }
+  }
+
   lastMetaActiveIndex = index;
 }
 
@@ -368,12 +400,8 @@ function updateSlideMetaVisibility() {
     return;
   }
 
-  // Показываем подписи только когда слайдер активируется/активен
-  if (pageState !== STATE.ACTIVE) {
-    setMetaActive(-1);
-    return;
-  }
-
+  // ИЗМЕНЕНО: Показываем метаданные всегда, независимо от состояния слайдера
+  // Это исправляет проблему исчезновения надписей после отключения автозахвата
   let idx = getCurrentSlideIndex();
 
   // Если дошли до конца — подсвечиваем последний
@@ -457,10 +485,18 @@ function isLastSlide() {
   return getCurrentSlideIndex() === slides.length - 1;
 }
 
-function pauseLenis(){ window.lenis?.stop?.(); }
-function resumeLenis(){ window.lenis?.start?.(); }
+// ОТКЛЮЧЕНО: Блокировка Lenis убрана для свободного вертикального скролла
+function pauseLenis(){ 
+  // window.lenis?.stop?.(); 
+}
+function resumeLenis(){ 
+  // window.lenis?.start?.(); 
+}
 
 function setOverscrollContain(on){
+  // ОТКЛЮЧЕНО: Блокировка overscroll убрана для свободного вертикального скролла
+  return;
+  
   const el = document.scrollingElement || document.documentElement;
   el.style.overscrollBehaviorY = on ? 'contain' : '';
 }
@@ -556,10 +592,10 @@ function setState(next){
       resumeLenis();
     } else {
     }
-    // При деактивации скрываем все метаданные
-    if (!isMobile) {
-      setMetaActive(-1);
-    }
+    // ИЗМЕНЕНО: Не скрываем метаданные при деактивации - они теперь видны всегда
+    // if (!isMobile) {
+    //   setMetaActive(-1);
+    // }
   }
 }
 
@@ -713,6 +749,9 @@ function approachToSection(align /* 'start' | 'end' */) {
 var wheelHandler = null;
 
 function setupWheel(){
+  // ОТКЛЮЧЕНО: Захват wheel событий убран для свободного вертикального скролла страницы
+  return;
+  
   if (isMobile) return;
   
   // Очищаем предыдущий обработчик если он есть
@@ -1553,6 +1592,9 @@ function clearMobileTouch() {
 
 // === РЕЗЕРВНЫЙ МЕХАНИЗМ ЧЕРЕЗ IntersectionObserver: гарантируем захват и подъезд ===
 function setupIOApproachFallback(){
+  // ОТКЛЮЧЕНО: Автоматический подъезд к слайдеру убран для свободного вертикального скролла
+  return;
+  
   if (!('IntersectionObserver' in window) || !sliderSection) return;
 
   let lastScrollY = window.scrollY;
@@ -1832,8 +1874,9 @@ window.addEventListener('resize', () => {
           sliderWrapper.style.cursor = 'default';
         }
         
+        // ОТКЛЮЧЕНО: Захват wheel событий убран для свободного вертикального скролла
         // Настраиваем десктоп функциональность
-        setupWheel();
+        // setupWheel();
         // setupDesktopDrag(); // ОТКЛЮЧЕНО: конфликт с setupDragVsClick
         
         // Сбрасываем состояние слайдера при переходе на десктоп
@@ -1847,7 +1890,9 @@ window.addEventListener('resize', () => {
             }
           }, 100);
         } else {
-          setMetaActive(-1);
+          // ИЗМЕНЕНО: Показываем метаданные текущего слайда при переходе на десктоп
+          const idx = getCurrentSlideIndex();
+          setMetaActive(Math.max(0, Math.min(idx, slides.length - 1)));
         }
         
         // Принудительно обновляем состояние слайдера для десктопного режима
@@ -1980,8 +2025,9 @@ window.addEventListener('resize', () => {
       
       // Дополнительная логика для планшетов (768px < width < 1440px)
       if (isTablet) {
+        // ОТКЛЮЧЕНО: Захват wheel событий убран для свободного вертикального скролла
         // Настраиваем все события для планшетов (для респонзивности)
-        setupWheel();
+        // setupWheel();
         // setupDesktopDrag(); // ОТКЛЮЧЕНО: конфликт с setupDragVsClick
         setupMobileTouch();
         
@@ -1992,13 +2038,9 @@ window.addEventListener('resize', () => {
           sliderWrapper.style.cursor = 'default';
         }
         
-        // Настраиваем метаданные
-        if (pageState === STATE.ACTIVE) {
-          const idx = getCurrentSlideIndex();
-          setMetaActive(Math.max(0, Math.min(idx, slides.length - 1)));
-        } else {
-          setMetaActive(-1);
-        }
+        // ИЗМЕНЕНО: Показываем метаданные текущего слайда независимо от состояния
+        const idx = getCurrentSlideIndex();
+        setMetaActive(Math.max(0, Math.min(idx, slides.length - 1)));
         
         // Обновляем визуальные эффекты
         updateSlideFX();
