@@ -2612,13 +2612,13 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   }
 
   .oor-events-text {
-    padding: 16px var(--container-x) 0 var(--container-x) !important;
+    padding: 88px var(--container-x) 88px var(--container-x) !important;
   }
 
   .oor-events-media {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
-    padding: 0 var(--container-x) 88px var(--container-x) !important;
+    padding: 0 var(--container-x) !important;
   }
 
   .oor-events-posters {
@@ -2636,9 +2636,53 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
   .oor-merch-text {
     grid-template-columns: 1fr;
-    padding: 120px var(--container-x) 0 var(--container-x);
+    padding: 88px var(--container-x) 0 var(--container-x);
     display: flex;
     flex-direction: column;
+  }
+
+  .oor-merch-title {
+    padding: 0 0 48px 0;
+  }
+
+  .oor-merch-description {
+    padding-top: 48px;
+  }
+
+  .oor-merch-buttons {
+    flex-wrap: wrap;
+  }
+
+  .oor-merch-images-grid {
+    padding: 64px var(--container-x) 0 var(--container-x) !important;
+  }
+
+  .oor-merch-images-wrapper {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+
+  .oor-merch-image-item {
+    flex: 1 1 calc(50% - 8px) !important;
+    min-width: calc(50% - 8px) !important;
+    max-width: calc(50% - 8px) !important;
+    width: calc(50% - 8px) !important;
+    aspect-ratio: 3/4 !important;
+    overflow: hidden !important;
+    border-radius: 0 !important;
+  }
+
+  .oor-merch-image-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .oor-merch-section {
+    padding-bottom: 16px;
   }
 
   
