@@ -17,7 +17,11 @@ class MenuSync {
     }
     
     this.bindEvents();
-    this.setInitialActiveState();
+    
+    // Задержка для инициализации после загрузки других скриптов (включая rolling-text)
+    setTimeout(() => {
+      this.setActiveItemFromUrl();
+    }, 200);
   }
   
   bindEvents() {
@@ -27,7 +31,9 @@ class MenuSync {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const menuItem = link.getAttribute('data-menu-item');
-        this.setActiveItem(menuItem);
+        if (menuItem) {
+          this.setActiveItem(menuItem);
+        }
         this.closeMobileMenuIfOpen();
       });
     });
@@ -38,9 +44,16 @@ class MenuSync {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const menuItem = link.getAttribute('data-menu-item');
-        this.setActiveItem(menuItem);
+        if (menuItem) {
+          this.setActiveItem(menuItem);
+        }
         this.closeMobileMenuIfOpen();
       });
+    });
+    
+    // Слушаем изменения URL для автоматической синхронизации
+    window.addEventListener('popstate', () => {
+      this.setActiveItemFromUrl();
     });
     
     // Синхронизация кнопок "Стать артистом"
@@ -71,6 +84,9 @@ class MenuSync {
       // Дополнительная синхронизация при закрытии
       this.syncActiveStates();
     });
+    
+    // Временно отключаем MutationObserver для избежания бесконечных циклов
+    // Синхронизация будет происходить через события клика и popstate
   }
   
   setActiveItem(menuItem) {
@@ -89,19 +105,69 @@ class MenuSync {
   }
   
   updateDesktopMenu(menuItem) {
+    if (!this.desktopMenu) return;
+    
     const desktopLinks = this.desktopMenu.querySelectorAll('[data-menu-item]');
     
     desktopLinks.forEach(link => {
       const linkMenuItem = link.getAttribute('data-menu-item');
+      const atom = link.querySelector('.tn-atom');
+      
       if (linkMenuItem === menuItem) {
         link.classList.add('oor-nav-link--active');
+        // Добавляем скобки для rolling text структуры
+        if (atom) {
+          const blocks = atom.querySelectorAll('.block');
+          blocks.forEach(block => {
+            // Проверяем, что скобки еще не добавлены
+            const firstLetter = block.querySelector('.letter:first-child');
+            const lastLetter = block.querySelector('.letter:last-child');
+            if (firstLetter && !firstLetter.classList.contains('bracket-start')) {
+              const bracketStart = document.createElement('span');
+              bracketStart.classList.add('letter', 'bracket-start');
+              bracketStart.innerText = '[';
+              bracketStart.style.marginRight = '2px';
+              block.insertBefore(bracketStart, firstLetter);
+            }
+            if (lastLetter && !lastLetter.classList.contains('bracket-end')) {
+              const bracketEnd = document.createElement('span');
+              bracketEnd.classList.add('letter', 'bracket-end');
+              bracketEnd.innerText = ']';
+              bracketEnd.style.marginLeft = '2px';
+              block.appendChild(bracketEnd);
+            }
+          });
+        }
       } else {
         link.classList.remove('oor-nav-link--active');
+        // Удаляем скобки
+        if (atom) {
+          const blocks = atom.querySelectorAll('.block');
+          blocks.forEach(block => {
+            const bracketStart = block.querySelector('.bracket-start');
+            const bracketEnd = block.querySelector('.bracket-end');
+            if (bracketStart) bracketStart.remove();
+            if (bracketEnd) bracketEnd.remove();
+          });
+        }
+      }
+    });
+    
+    // Также обновляем футер, если там есть ссылки с data-menu-item
+    const footerLinks = document.querySelectorAll('.oor-footer-link[data-menu-item]');
+    footerLinks.forEach(link => {
+      const linkMenuItem = link.getAttribute('data-menu-item');
+      if (linkMenuItem === menuItem) {
+        link.classList.add('oor-footer-link--active');
+      } else {
+        link.classList.remove('oor-footer-link--active');
       }
     });
   }
   
   updateMobileMenu(menuItem) {
+    if (!this.mobileMenu) return;
+    
     const mobileLinks = this.mobileMenu.querySelectorAll('[data-menu-item]');
     
     mobileLinks.forEach(link => {
@@ -115,11 +181,25 @@ class MenuSync {
   }
   
   syncActiveStates() {
-    // Синхронизируем состояния при открытии мобильного меню
+    // Двусторонняя синхронизация состояний
+    // Сначала проверяем десктопное меню
     const activeDesktopLink = this.desktopMenu.querySelector('.oor-nav-link--active');
     if (activeDesktopLink) {
       const menuItem = activeDesktopLink.getAttribute('data-menu-item');
-      this.updateMobileMenu(menuItem);
+      if (menuItem && menuItem !== this.currentActiveItem) {
+        this.setActiveItem(menuItem);
+      }
+      this.updateMobileMenu(menuItem || this.currentActiveItem);
+      return;
+    }
+    
+    // Если нет активного в десктопном, проверяем мобильное
+    const activeMobileLink = this.mobileMenu.querySelector('.oor-mobile-menu-link--active');
+    if (activeMobileLink) {
+      const menuItem = activeMobileLink.getAttribute('data-menu-item');
+      if (menuItem && menuItem !== this.currentActiveItem) {
+        this.setActiveItem(menuItem);
+      }
     }
   }
   
@@ -163,22 +243,54 @@ class MenuSync {
     const hash = window.location.hash;
     
     // Простая логика определения активного пункта по URL
-    let menuItem = 'main';
+    let menuItem = 'main'; // По умолчанию главная
     
-    if (path.includes('/studio') || hash === '#studio') {
-      menuItem = 'studio';
-    } else if (path.includes('/dawgs') || hash === '#dawgs') {
-      menuItem = 'dawgs';
-    } else if (path.includes('/podcast') || hash === '#podcast') {
-      menuItem = 'podcast';
-    } else if (path.includes('/events') || hash === '#events') {
-      menuItem = 'events';
-    } else if (path.includes('/merch') || hash === '#merch') {
-      menuItem = 'merch';
-    } else if (path.includes('/contacts') || hash === '#contacts') {
-      menuItem = 'contacts';
+    // Проверяем hash первым (более приоритетный)
+    if (hash) {
+      if (hash === '#manifest') {
+        menuItem = 'manifest';
+      } else if (hash === '#artists') {
+        menuItem = 'artists';
+      } else if (hash === '#studio') {
+        menuItem = 'studio';
+      } else if (hash === '#services') {
+        menuItem = 'services';
+      } else if (hash === '#dawgs') {
+        menuItem = 'dawgs';
+      } else if (hash === '#talk-show') {
+        menuItem = 'talk-show';
+      } else if (hash === '#events') {
+        menuItem = 'events';
+      } else if (hash === '#merch') {
+        menuItem = 'merch';
+      } else if (hash === '#contacts') {
+        menuItem = 'contacts';
+      }
+    } else if (path && path !== '/' && path !== '/index.html' && path !== '') {
+      // Если есть путь (не главная страница)
+      if (path.includes('/manifest')) {
+        menuItem = 'manifest';
+      } else if (path.includes('/artists')) {
+        menuItem = 'artists';
+      } else if (path.includes('/studio')) {
+        menuItem = 'studio';
+      } else if (path.includes('/services')) {
+        menuItem = 'services';
+      } else if (path.includes('/dawgs')) {
+        menuItem = 'dawgs';
+      } else if (path.includes('/talk-show')) {
+        menuItem = 'talk-show';
+      } else if (path.includes('/events')) {
+        menuItem = 'events';
+      } else if (path.includes('/merch')) {
+        menuItem = 'merch';
+      } else if (path.includes('/contacts')) {
+        menuItem = 'contacts';
+      }
     }
+    // Если path === '/' или '/index.html' или '', остается 'main'
     
+    // Устанавливаем активное состояние
     this.setActiveItem(menuItem);
   }
 }
@@ -193,6 +305,7 @@ function initMenuSync() {
   }
   
   menuSyncInstance = new MenuSync();
+  window.menuSyncInstance = menuSyncInstance;
 }
 
 // Автоматическая инициализация при загрузке DOM
@@ -204,4 +317,3 @@ if (document.readyState === 'loading') {
 
 // Экспорт для внешнего использования
 window.MenuSync = MenuSync;
-window.menuSyncInstance = menuSyncInstance;

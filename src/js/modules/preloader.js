@@ -234,6 +234,8 @@ function initPreloader() {
     lastFrameImg.width = 400;
     lastFrameImg.height = 400;
     lastFrameImg.style.zIndex = '1';
+    lastFrameImg.style.cursor = 'pointer';
+    lastFrameImg.addEventListener('click', handleEnterClick, { once: true });
     
     splashGif.style.zIndex = '2';
     

@@ -1,11 +1,12 @@
 // Rolling Text Effect
 document.addEventListener('DOMContentLoaded', function () {
-  if (window.innerWidth <= 1024) {
-    return;
-  }
+  const isDesktop = window.innerWidth > 1024;
   
   setTimeout(() => {
-    const elements = document.querySelectorAll('.rolling-button .tn-atom');
+    const selector = isDesktop
+      ? '.rolling-button .tn-atom'
+      : '.oor-splash-enter-button.rolling-button .tn-atom';
+    const elements = document.querySelectorAll(selector);
     elements.forEach(el => {
       if (el.dataset.processed === 'true') return;
 

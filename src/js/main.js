@@ -172,6 +172,7 @@ function initRetinaSupport() {
       const src = img.getAttribute('src');
       if (!src) continue;
       if (/video-cover/i.test(src)) continue;
+      if (/splash\.gif/i.test(src)) continue;
       const hi = build2xUrl(src);
       if (!hi) continue;
       const ok = await imageExists(hi);
