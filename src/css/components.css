@@ -2076,6 +2076,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   justify-content: space-between;
   align-items: flex-end;
   align-self: stretch;
+  gap: 80px; /* Минимальный отступ между left и links */
 }
 
 .oor-footer-content-left {
@@ -2084,6 +2085,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   flex-direction: column;
   align-items: flex-start;
   gap: 72px;
+  flex-shrink: 0; /* Запрещаем сжатие, чтобы сохранить gap */
 }
 
 .oor-footer-logo {
@@ -2118,10 +2120,13 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 .oor-footer-links {
   display: flex;
   width: fit-content;
+  min-width: 0; /* Разрешаем сжатие */
+  max-width: 100%; /* Ограничиваем максимальную ширину */
   padding-bottom: 8px;
   flex-direction: column;
   align-items: flex-start;
   gap: 80px;
+  flex-shrink: 1; /* Разрешаем сжатие при нехватке места */
 }
 
 .oor-footer-links-top {
@@ -2131,6 +2136,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   align-items: flex-start;
   gap: 12px;
   align-self: stretch;
+  min-width: 0; /* Разрешаем сжатие */
+  max-width: 100%; /* Ограничиваем максимальную ширину */
 }
 
 .oor-footer-nav-title {
@@ -2149,7 +2156,10 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 .oor-footer-links-top-group {
   display: flex;
   align-items: flex-start;
-  gap: 32px;
+  column-gap: 32px; /* Горизонтальный отступ между ссылками */
+  row-gap: 8px; /* Отступ между строками при переносе */
+  flex-wrap: wrap; /* Разрешаем перенос при нехватке места */
+  max-width: 100%; /* Ограничиваем ширину для переноса */
 }
 
 .oor-footer-link {
@@ -2164,6 +2174,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   text-transform: uppercase;
   transition: none;
   cursor: pointer;
+  white-space: nowrap; /* Предотвращаем перенос текста внутри ссылки */
+  flex-shrink: 0; /* Ссылки не сжимаются */
 }
 
 .oor-footer-link:hover {
@@ -2472,6 +2484,30 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 @media (max-width: 1439px) {
   .oor-merch-description {
     font-size: 1.250rem; /* Уменьшаем с 1.500rem до 1.250rem */
+  }
+}
+
+/* Медиа-запрос для диапазона 1680px - 1025px: включаем wrap для навигации */
+@media (min-width: 1025px) and (max-width: 1680px) {
+  .oor-footer-content {
+    /* Оставляем justify-content: space-between и gap: 80px */
+  }
+  
+  .oor-footer-links {
+    /* Разрешаем сжатие, но с ограничением */
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  
+  .oor-footer-links-top {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .oor-footer-links-top-group {
+    flex-wrap: wrap;
+    width: 100%; /* Полная ширина для переноса */
+    max-width: 100%;
   }
 }
 
