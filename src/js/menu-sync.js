@@ -18,12 +18,10 @@ class MenuSync {
     
     // Fix header background for studio page
     if (document.body.classList.contains('oor-studio-page')) {
-      console.log('[MenuSync] Studio page detected, fixing header');
       const header = document.querySelector('.oor-header');
       if (header) {
         header.style.setProperty('background', '#000', 'important');
-        header.style.setProperty('mix-blend-mode', 'difference', 'important');
-        console.log('[MenuSync] Header styles set');
+        header.style.setProperty('mix-blend-mode', 'normal', 'important');
       }
     }
     
@@ -182,7 +180,6 @@ class MenuSync {
             // Проверяем, есть ли уже скобки
             const hasBrackets = block.querySelector('.bracket-start') || block.querySelector('.bracket-end');
             if (hasBrackets) {
-              console.log('[MenuSync] Brackets already exist, skipping');
               return; // Скобки уже есть, ничего не делаем
             }
             

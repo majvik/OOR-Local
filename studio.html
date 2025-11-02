@@ -118,7 +118,7 @@
         </div>
         
         <div class="oor-studio-hero-image">
-            <img src="https://placeholdit.com/1440x853/000000/FFFFFF?text=Studio+Hero" alt="Студия Out of Records" class="oor-media-cover">
+            <img src="https://via.placeholder.com/1440x853/1a1a1a/666666?text=Studio+Hero" alt="Студия Out of Records" class="oor-media-cover">
         </div>
     </section>
 
@@ -130,10 +130,10 @@
                 <div class="oor-studio-content-images">
                     <div class="oor-studio-image-row">
                         <div class="oor-studio-image-item">
-                            <img src="https://placeholdit.com/569x402/333333/FFFFFF?text=Studio+Photo+1" alt="Студия" class="oor-media-cover">
+                            <img src="https://via.placeholder.com/569x402/1a1a1a/666666?text=Studio+Photo+1" alt="Студия" class="oor-media-cover">
                         </div>
                         <div class="oor-studio-image-item">
-                            <img src="https://placeholdit.com/569x402/333333/FFFFFF?text=Studio+Photo+2" alt="Студия" class="oor-media-cover">
+                            <img src="https://via.placeholder.com/569x402/1a1a1a/666666?text=Studio+Photo+2" alt="Студия" class="oor-media-cover">
                         </div>
                     </div>
                     <p class="oor-studio-content-text">
@@ -257,7 +257,7 @@
                 </div>
                 
                 <div class="oor-studio-equipment-image">
-                    <img src="https://placeholdit.com/376x376/CCCCCC/000000?text=Studio+Equipment" alt="Оборудование студии" class="oor-media-cover">
+                    <img src="https://via.placeholder.com/376x376/cccccc/333333?text=Studio+Equipment" alt="Оборудование студии" class="oor-media-cover">
                 </div>
             </div>
         </div>
@@ -330,7 +330,7 @@
             
             <div class="oor-grid oor-studio-recording-grid">
                 <div class="oor-col-7 oor-studio-recording-image">
-                    <img src="https://placeholdit.com/550x550/333333/FFFFFF?text=Recording+Studio" alt="Запись в студии" class="oor-media-cover">
+                    <img src="https://via.placeholder.com/550x550/1a1a1a/666666?text=Recording+Studio" alt="Запись в студии" class="oor-media-cover">
                 </div>
                 
                 <div class="oor-col-5 oor-studio-recording-list">
@@ -477,27 +477,17 @@
       (function() {
         function forceHeaderStyles() {
           const header = document.querySelector('.oor-header');
-          console.log('[Studio Header Fix] Applying styles, header:', header, 'has class:', document.body.classList.contains('oor-studio-page'));
           if (header && document.body.classList.contains('oor-studio-page')) {
             header.style.setProperty('background', '#000', 'important');
-            header.style.setProperty('mix-blend-mode', 'difference', 'important');
-            console.log('[Studio Header Fix] Styles applied! Background:', window.getComputedStyle(header).background);
+            header.style.setProperty('mix-blend-mode', 'normal', 'important');
           }
         }
         
-        // Apply immediately
-        console.log('[Studio Header Fix] Script loaded');
         forceHeaderStyles();
-        
-        // Apply after DOM load
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', forceHeaderStyles);
         }
-        
-        // Apply after full load
         window.addEventListener('load', forceHeaderStyles);
-        
-        // Apply after preloader hides
         setTimeout(forceHeaderStyles, 1000);
         setTimeout(forceHeaderStyles, 2000);
         setTimeout(forceHeaderStyles, 3000);

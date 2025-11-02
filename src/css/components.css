@@ -144,42 +144,47 @@ body::-webkit-scrollbar {
   mix-blend-mode:difference;
 }
 
-/* Studio page - header with black background */
+/* Studio page - header with black background (no mix-blend-mode) */
 body.oor-studio-page .oor-header {
   background: #000 !important;
-  mix-blend-mode: difference !important;
+  mix-blend-mode: normal !important;
   isolation: isolate;
 }
 
 body.oor-studio-page .oor-logo img {
-  mix-blend-mode: difference !important;
+  mix-blend-mode: normal !important;
+  filter: invert(1) !important;
 }
 
-/* Ensure navigation links are visible with mix-blend-mode on studio page */
+/* Ensure navigation links are visible on black header on studio page */
 body.oor-studio-page .oor-nav-link {
-  color: #fff;
-  mix-blend-mode: difference;
+  color: #fff !important;
+  mix-blend-mode: normal !important;
 }
 
 body.oor-studio-page .oor-nav-link--active {
-  color: #fff;
-  mix-blend-mode: difference;
+  color: #fff !important;
+  mix-blend-mode: normal !important;
 }
 
 /* Separator slashes in navigation */
 body.oor-studio-page .oor-nav-item > span {
-  color: #fff;
-  mix-blend-mode: difference;
+  color: #fff !important;
+  mix-blend-mode: normal !important;
 }
 
 /* Button "Стать артистом" on studio page */
 body.oor-studio-page .oor-btn-small {
-  mix-blend-mode: difference;
+  mix-blend-mode: normal !important;
 }
 
 body.oor-studio-page .oor-btn-small-text {
-  color: #fff;
-  mix-blend-mode: difference;
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-studio-page .oor-btn-small-icon {
+  filter: invert(1) !important;
 }
 
 .oor-header-right{
@@ -2629,15 +2634,15 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     display: flex !important;
   }
   
-  /* На странице studio сохраняем черный фон и mix-blend-mode даже на мобилке */
+  /* На странице studio сохраняем черный фон даже на мобилке */
   body.oor-studio-page .oor-header {
     background: #000 !important;
-    mix-blend-mode: difference !important;
+    mix-blend-mode: normal !important;
   }
   
   body.oor-studio-page .oor-logo img {
-    mix-blend-mode: difference !important;
-    filter: none !important;
+    mix-blend-mode: normal !important;
+    filter: invert(1) !important;
   }
   
   /* Отключаем mix-blend-mode: difference на мобилке (только для не-studio страниц) */
@@ -2675,12 +2680,12 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   /* Studio page - ensure black header on desktop */
   body.oor-studio-page .oor-header {
     background: #000 !important;
-    mix-blend-mode: difference !important;
+    mix-blend-mode: normal !important;
   }
   
   body.oor-studio-page .oor-logo img {
-    mix-blend-mode: difference !important;
-    filter: none !important;
+    mix-blend-mode: normal !important;
+    filter: invert(1) !important;
   }
 }
 
