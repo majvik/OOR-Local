@@ -144,6 +144,44 @@ body::-webkit-scrollbar {
   mix-blend-mode:difference;
 }
 
+/* Studio page - header with black background */
+body.oor-studio-page .oor-header {
+  background: #000 !important;
+  mix-blend-mode: difference !important;
+  isolation: isolate;
+}
+
+body.oor-studio-page .oor-logo img {
+  mix-blend-mode: difference !important;
+}
+
+/* Ensure navigation links are visible with mix-blend-mode on studio page */
+body.oor-studio-page .oor-nav-link {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+body.oor-studio-page .oor-nav-link--active {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+/* Separator slashes in navigation */
+body.oor-studio-page .oor-nav-item > span {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+/* Button "Стать артистом" on studio page */
+body.oor-studio-page .oor-btn-small {
+  mix-blend-mode: difference;
+}
+
+body.oor-studio-page .oor-btn-small-text {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
 .oor-header-right{
   display:flex;
   align-items:center;
@@ -2591,12 +2629,23 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
     display: flex !important;
   }
   
-  /* Отключаем mix-blend-mode: difference на мобилке */
-  .oor-header {
+  /* На странице studio сохраняем черный фон и mix-blend-mode даже на мобилке */
+  body.oor-studio-page .oor-header {
+    background: #000 !important;
+    mix-blend-mode: difference !important;
+  }
+  
+  body.oor-studio-page .oor-logo img {
+    mix-blend-mode: difference !important;
+    filter: none !important;
+  }
+  
+  /* Отключаем mix-blend-mode: difference на мобилке (только для не-studio страниц) */
+  body:not(.oor-studio-page) .oor-header {
     mix-blend-mode: normal !important;
   }
   
-  .oor-logo img {
+  body:not(.oor-studio-page) .oor-logo img {
     mix-blend-mode: normal !important;
     filter: brightness(0) !important;
   }
@@ -2621,6 +2670,17 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   /* Musical Association: tablet/desktop bottom padding */
   .oor-musical-association-left {
     padding-bottom: 40px;
+  }
+  
+  /* Studio page - ensure black header on desktop */
+  body.oor-studio-page .oor-header {
+    background: #000 !important;
+    mix-blend-mode: difference !important;
+  }
+  
+  body.oor-studio-page .oor-logo img {
+    mix-blend-mode: difference !important;
+    filter: none !important;
   }
 }
 

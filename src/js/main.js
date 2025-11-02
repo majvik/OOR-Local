@@ -580,15 +580,10 @@ function initRevealOnScroll() {
   window.addEventListener('resize', onResize);
 }
 
-// Навигация
-function initNavigation() {
-  const navLinks = document.querySelectorAll('.oor-nav-link');
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-    });
-  });
-}
+// Навигация - обработка удалена, теперь используется menu-sync.js
+// function initNavigation() {
+//   // Navigation logic moved to menu-sync.js
+// }
 
 // Динамическая дата
 function initDynamicYear() {

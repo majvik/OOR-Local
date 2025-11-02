@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="/src/css/components.css?v=1.3">
     <link rel="stylesheet" href="/src/css/cursor.css">
   </head>
-<body class="preloader-active">
+<body class="preloader-active oor-studio-page">
     <!-- Preloader -->
     <div id="preloader" class="oor-preloader">
         <div class="oor-preloader-progress-bar" id="preloader-progress-bar"></div>
@@ -472,6 +472,37 @@
     <!-- Custom scrollbar script -->
     <script src="/src/js/scrollbar.js"></script>
     
+    <!-- Force header styles for studio page -->
+    <script>
+      (function() {
+        function forceHeaderStyles() {
+          const header = document.querySelector('.oor-header');
+          console.log('[Studio Header Fix] Applying styles, header:', header, 'has class:', document.body.classList.contains('oor-studio-page'));
+          if (header && document.body.classList.contains('oor-studio-page')) {
+            header.style.setProperty('background', '#000', 'important');
+            header.style.setProperty('mix-blend-mode', 'difference', 'important');
+            console.log('[Studio Header Fix] Styles applied! Background:', window.getComputedStyle(header).background);
+          }
+        }
+        
+        // Apply immediately
+        console.log('[Studio Header Fix] Script loaded');
+        forceHeaderStyles();
+        
+        // Apply after DOM load
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', forceHeaderStyles);
+        }
+        
+        // Apply after full load
+        window.addEventListener('load', forceHeaderStyles);
+        
+        // Apply after preloader hides
+        setTimeout(forceHeaderStyles, 1000);
+        setTimeout(forceHeaderStyles, 2000);
+        setTimeout(forceHeaderStyles, 3000);
+      })();
+    </script>
   </body>
 </html>
 

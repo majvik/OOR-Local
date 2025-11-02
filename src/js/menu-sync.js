@@ -16,6 +16,17 @@ class MenuSync {
       return;
     }
     
+    // Fix header background for studio page
+    if (document.body.classList.contains('oor-studio-page')) {
+      console.log('[MenuSync] Studio page detected, fixing header');
+      const header = document.querySelector('.oor-header');
+      if (header) {
+        header.style.setProperty('background', '#000', 'important');
+        header.style.setProperty('mix-blend-mode', 'difference', 'important');
+        console.log('[MenuSync] Header styles set');
+      }
+    }
+    
     this.bindEvents();
     
     // Задержка для инициализации после загрузки других скриптов (включая rolling-text)
@@ -168,23 +179,38 @@ class MenuSync {
         if (atom) {
           const blocks = atom.querySelectorAll('.block');
           blocks.forEach(block => {
-            // Проверяем, что скобки еще не добавлены
-            const firstLetter = block.querySelector('.letter:first-child');
-            const lastLetter = block.querySelector('.letter:last-child');
-            if (firstLetter && !firstLetter.classList.contains('bracket-start')) {
-              const bracketStart = document.createElement('span');
-              bracketStart.classList.add('letter', 'bracket-start');
-              bracketStart.innerText = '[';
-              bracketStart.style.marginRight = '2px';
-              block.insertBefore(bracketStart, firstLetter);
+            // Проверяем, есть ли уже скобки
+            const hasBrackets = block.querySelector('.bracket-start') || block.querySelector('.bracket-end');
+            if (hasBrackets) {
+              console.log('[MenuSync] Brackets already exist, skipping');
+              return; // Скобки уже есть, ничего не делаем
             }
-            if (lastLetter && !lastLetter.classList.contains('bracket-end')) {
-              const bracketEnd = document.createElement('span');
-              bracketEnd.classList.add('letter', 'bracket-end');
-              bracketEnd.innerText = ']';
-              bracketEnd.style.marginLeft = '2px';
-              block.appendChild(bracketEnd);
+            
+            // Получаем первый и последний элементы с классом letter
+            const letters = block.querySelectorAll('.letter');
+            if (letters.length === 0) return;
+            
+            const firstLetter = letters[0];
+            const lastLetter = letters[letters.length - 1];
+            
+            // Проверяем текстовое содержимое первого и последнего элемента
+            if (firstLetter.textContent.trim() === '[' || lastLetter.textContent.trim() === ']') {
+              return; // Скобки уже есть в тексте
             }
+            
+            // Добавляем открывающую скобку
+            const bracketStart = document.createElement('span');
+            bracketStart.classList.add('letter', 'bracket-start');
+            bracketStart.innerText = '[';
+            bracketStart.style.marginRight = '2px';
+            block.insertBefore(bracketStart, firstLetter);
+            
+            // Добавляем закрывающую скобку
+            const bracketEnd = document.createElement('span');
+            bracketEnd.classList.add('letter', 'bracket-end');
+            bracketEnd.innerText = ']';
+            bracketEnd.style.marginLeft = '2px';
+            block.appendChild(bracketEnd);
           });
         }
       } else {
