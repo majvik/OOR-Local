@@ -85,7 +85,8 @@ function initPreloader() {
       if (isMainPage && splashScreen && splashGif) {
         showSplashGif();
       } else {
-        hidePreloader();
+        // For non-main pages, hide preloader immediately without splash
+        hidePreloaderQuick();
       }
     }, 300);
   }
@@ -212,6 +213,17 @@ function initPreloader() {
     }
   }, 5000);
   
+  // Failsafe: unlock scroll after maximum timeout
+  setTimeout(() => {
+    if (document.documentElement.classList.contains('preloader-active') || 
+        document.body.classList.contains('preloader-active')) {
+      console.warn('Preloader failsafe triggered - forcing scroll unlock');
+      unlockScroll();
+      if (preloader) preloader.remove();
+      if (splashScreen) splashScreen.remove();
+    }
+  }, 8000);
+  
   const progressCheckInterval = setInterval(() => {
     if (loadedResources >= totalResources) {
       clearInterval(progressCheckInterval);
@@ -336,6 +348,46 @@ function initPreloader() {
     hidePreloader();
   }
 
+  function unlockScroll() {
+    const scrollY = document.body.style.top;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    
+    document.documentElement.classList.remove('preloader-active');
+    document.body.classList.remove('preloader-active');
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+  }
+
+  function hidePreloaderQuick() {
+    try {
+      if (preloader) {
+        preloader.classList.add('hidden');
+      }
+      if (splashScreen) {
+        splashScreen.classList.add('hidden');
+      }
+      
+      setTimeout(() => {
+        if (preloader) {
+          preloader.remove();
+        }
+        if (splashScreen) {
+          splashScreen.remove();
+        }
+        
+        unlockScroll();
+        
+      }, 300);
+      
+    } catch(_) {
+      unlockScroll();
+    }
+  }
+
   function hidePreloader() {
     try {
       if (preloader) {
@@ -353,17 +405,7 @@ function initPreloader() {
           splashScreen.remove();
         }
         
-        const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-        
-        document.documentElement.classList.remove('preloader-active');
-        document.body.classList.remove('preloader-active');
-        document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
+        unlockScroll();
         
         setTimeout(() => {
           try {
@@ -402,14 +444,7 @@ function initPreloader() {
       }, 800);
       
     } catch(_) {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      window.scrollTo(0, 0);
-      document.documentElement.classList.remove('preloader-active');
-      document.body.classList.remove('preloader-active');
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
+      unlockScroll();
     }
   }
 }

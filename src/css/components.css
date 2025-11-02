@@ -3130,9 +3130,562 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   outline: none;
 }
 
+/* ===== STUDIO PAGE STYLES ===== */
+
+/* Studio Hero Section */
+.oor-studio-hero {
+  background: #000;
+  padding-top: 80px;
+  padding-bottom: 0;
+}
+
+.oor-studio-hero-grid {
+  padding-bottom: 80px;
+}
+
+.oor-studio-hero-title {
+  font-family: var(--font-ui);
+  font-size: 96px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -9.6px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+.oor-studio-hero-index {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.48px;
+  color: #fff;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.oor-studio-hero-image {
+  width: 100%;
+  height: 853px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-studio-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Studio Content Section [02] */
+.oor-studio-content-section {
+  background: #000;
+  padding: 80px 48px;
+  position: relative;
+}
+
+.oor-studio-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 569px) minmax(0, 857px) 18px;
+  column-gap: 32px;
+  row-gap: 24px;
+  align-items: flex-start;
+  min-height: 644px;
+}
+
+.oor-studio-content-images {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.oor-studio-image-row {
+  display: flex;
+  gap: 32px;
+}
+
+.oor-studio-image-item {
+  width: 569px;
+  height: 402px;
+  opacity: 0.8;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-studio-image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oor-studio-content-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #fff;
+  opacity: 0.5;
+  width: 455px;
+  margin: 0;
+}
+
+.oor-studio-content-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 644px;
+  width: 100%;
+  max-width: 857px;
+  position: relative;
+  margin-left: auto;
+}
+
+.oor-studio-content-title-wrapper {
+  padding-top: 140px;
+}
+
+.oor-studio-section-index {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.48px;
+  color: #fff;
+  opacity: 0.6;
+}
+
+.oor-studio-equipment-section .oor-studio-section-index {
+  color: #000;
+  opacity: 0.6;
+}
 
 
+.oor-studio-content-title {
+  font-family: var(--font-ui);
+  font-size: 48px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  width: 857px;
+}
 
+.oor-studio-content-icon,
+.oor-studio-sidebar-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.oor-studio-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 644px;
+  align-items: flex-start;
+  width: 18px;
+}
+
+/* Studio Equipment Section [03] */
+.oor-studio-equipment-section {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.oor-studio-equipment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 48px;
+}
+
+.oor-studio-equipment-title {
+  font-family: var(--font-ui);
+  font-size: 30px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -1.2px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-studio-equipment-icon {
+  width: 25px;
+  height: 18px;
+}
+
+
+.oor-studio-equipment-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  border-top: 1px solid #d0d0d0;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.oor-studio-equipment-table {
+  border-right: none;
+}
+
+.oor-studio-equipment-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 104px 104px 12px;
+  border-left: 1px solid #d0d0d0;
+}
+
+.oor-studio-equipment-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oor-studio-equipment-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.oor-studio-equipment-row:last-child {
+  border-bottom: none;
+}
+
+.oor-studio-equipment-index {
+  width: 73px;
+  padding: 24px 24px 24px 48px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.56px;
+  color: #000;
+  text-align: right;
+}
+
+.oor-studio-equipment-content {
+  flex: 1;
+  padding: 24px;
+  border-left: 1px solid #d0d0d0;
+  display: flex;
+  flex-direction: column;
+  gap: 88px;
+}
+
+.oor-studio-equipment-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.oor-studio-equipment-item-title {
+  font-family: var(--font-ui);
+  font-size: 22px;
+  line-height: 116%;
+  font-weight: 300;
+  letter-spacing: -0.88px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+  flex: 1;
+}
+
+.oor-studio-equipment-item-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oor-studio-equipment-item-icon img {
+  transform: rotate(180deg);
+}
+
+.oor-studio-equipment-item-description {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+}
+
+.oor-studio-equipment-image {
+  width: 100%;
+  height: 376px;
+  padding: 12px;
+  margin-top: 104px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-studio-equipment-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Studio Services Section */
+.oor-studio-services-section {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.oor-studio-services-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 48px;
+}
+
+.oor-studio-services-title {
+  font-family: var(--font-ui);
+  font-size: 30px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -1.2px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-studio-services-icon {
+  width: 25px;
+  height: 18px;
+}
+
+.oor-studio-services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.oor-studio-services-row {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #d0d0d0;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.oor-studio-service-item {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  border-right: 1px solid #d0d0d0;
+}
+
+.oor-studio-service-item:last-child {
+  border-right: none;
+}
+
+.oor-studio-service-index {
+  width: 64px;
+  padding: 24px 24px 24px 32px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.56px;
+  color: #000;
+  text-align: right;
+}
+
+.oor-studio-service-content {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oor-studio-service-title {
+  font-family: var(--font-ui);
+  font-size: 22px;
+  line-height: 116%;
+  font-weight: 300;
+  letter-spacing: -0.88px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-studio-services-descriptions {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.oor-studio-service-description {
+  flex: 1;
+  padding: 24px;
+  border-right: 1px solid #d0d0d0;
+}
+
+.oor-studio-service-description:last-child {
+  border-right: none;
+}
+
+.oor-studio-service-description p {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+}
+
+/* Studio Recording Section [04] */
+.oor-studio-recording-section {
+  background: #000;
+  padding: 80px 0;
+}
+
+.oor-studio-recording-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.oor-studio-recording-title {
+  font-family: var(--font-ui);
+  font-size: 30px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -1.2px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  width: 560px;
+}
+
+.oor-studio-recording-divider {
+  width: 100%;
+  height: 1px;
+  background: #fff;
+  opacity: 0.3;
+  margin: 24px 0;
+}
+
+.oor-studio-recording-grid {
+  margin-top: 48px;
+  gap: 56px;
+}
+
+.oor-studio-recording-image {
+  height: 550px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-studio-recording-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oor-studio-recording-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 550px;
+}
+
+.oor-studio-recording-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.oor-studio-recording-item {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.oor-studio-recording-item-title {
+  font-family: var(--font-ui);
+  font-size: 22px;
+  line-height: 116%;
+  font-weight: 300;
+  letter-spacing: -0.88px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+.oor-studio-recording-item-divider {
+  width: 100%;
+  height: 1px;
+  background: #fff;
+  opacity: 0.3;
+}
+
+.oor-studio-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.oor-studio-contact-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #fff;
+  opacity: 0.5;
+  margin: 0;
+}
+
+.oor-studio-contact-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.64px;
+}
+
+.oor-studio-contact-button img {
+  width: 32px;
+  height: 32px;
+}
+
+/* Responsive adjustments for studio page */
+@media (max-width: 1440px) {
+  .oor-studio-hero-title {
+    font-size: clamp(48px, 6.67vw, 96px);
+    letter-spacing: clamp(-4.8px, -0.67vw, -9.6px);
+  }
+  
+  .oor-studio-content-title {
+    font-size: clamp(32px, 3.33vw, 48px);
+    letter-spacing: clamp(-1.28px, -0.13vw, -1.92px);
+  }
+}
+
+/* Studio page - ensure scroll works after preloader */
+body:not(.preloader-active) {
+  overflow-y: auto !important;
+}
+
+html:not(.preloader-active) {
+  overflow-y: auto !important;
+}
 
 
 

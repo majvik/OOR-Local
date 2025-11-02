@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ru" class="preloader-active">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Студия - Out of Records</title>
+    
+    <!-- OOR CSS файлы в правильном порядке -->
+    <link rel="stylesheet" href="/src/css/reset.css">
+    <link rel="stylesheet" href="/src/css/tokens.css">
+    <link rel="stylesheet" href="/src/css/base.css">
+    <link rel="stylesheet" href="/src/css/grid.css">
+    <link rel="stylesheet" href="/src/css/layout.css">
+    <link rel="stylesheet" href="/src/css/fonts.css">
+    <link rel="stylesheet" href="/src/css/utilities.css">
+    <link rel="stylesheet" href="/src/css/slider.css?v=1.1">
+    <link rel="stylesheet" href="/src/css/scrollbar.css">
+    <link rel="stylesheet" href="/src/css/animations.css">
+    <link rel="stylesheet" href="/src/css/components.css?v=1.3">
+    <link rel="stylesheet" href="/src/css/cursor.css">
+  </head>
+<body class="preloader-active">
+    <!-- Preloader -->
+    <div id="preloader" class="oor-preloader">
+        <div class="oor-preloader-progress-bar" id="preloader-progress-bar"></div>
+        <div class="oor-preloader-content">
+            <button id="enter-button" class="oor-enter-button">Войти</button>
+        </div>
+    </div>
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="oor-splash-screen">
+        <img id="splash-gif" class="oor-splash-gif" src="/public/assets/splash.gif" alt="Splash" width="400" height="400">
+        <button id="enter-button-splash" class="oor-splash-enter-button rolling-button"><span class="tn-atom">[  ВОЙТИ В OOR  ]</span></button>
+    </div>
+    
+    <!-- Header -->
+    <header class="oor-header">
+        <a href="/" class="oor-logo">
+            <img src="/public/assets/logo.svg" alt="Out of Records" width="73" height="20" class="oor-media-cover">
+        </a>
+        
+        <div class="oor-header-right">
+            <nav class="oor-nav">
+                <div class="oor-nav-list" role="navigation" aria-label="Main">
+                    <div class="oor-nav-item"><a href="/" class="oor-nav-link rolling-button" data-menu-item="main"><span class="tn-atom">Main</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="manifest"><span class="tn-atom">Манифест</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="artists"><span class="tn-atom">Артисты</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/studio.html" class="oor-nav-link rolling-button" data-menu-item="studio"><span class="tn-atom">Студия</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="services"><span class="tn-atom">Услуги</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="dawgs"><span class="tn-atom">DAWGS</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="talk-show"><span class="tn-atom">Talk-шоу</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="events"><span class="tn-atom">События</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="merch"><span class="tn-atom">Мерч</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="contacts"><span class="tn-atom">Контакты</span></a></div>
+              </div>
+            </nav>
+            
+            <button class="oor-btn-small" data-action="become-artist">
+                <span class="oor-btn-small-text">Стать артистом</span>
+                <span class="oor-btn-small-icon">
+                    <img src="/public/assets/plus-small.svg" alt="">
+                </span>
+            </button>
+            
+            <!-- Бургер-меню для мобильных устройств -->
+            <button class="oor-burger-menu" id="burger-menu" aria-label="Открыть меню">
+                <img src="/public/assets/burger-icon.svg" alt="" class="oor-burger-icon">
+            </button>
+          </div>
+          
+          <!-- Мобильное меню (сайдбар) -->
+          <div class="oor-mobile-menu" id="mobile-menu">
+              <button id="close-menu" aria-label="Закрыть меню">
+                  <img src="/public/assets/close-icon.svg" alt="">
+              </button>
+              <div class="oor-mobile-menu-content">
+                  <!-- Основные пункты меню -->
+                  <div class="oor-mobile-menu-main">
+                      <a href="/" class="oor-mobile-menu-link rolling-button" data-menu-item="main">Main</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="manifest">Манифест</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="artists">Артисты</a>
+                      <a href="/studio.html" class="oor-mobile-menu-link rolling-button" data-menu-item="studio">Студия</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="services">Услуги</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="dawgs">DAWGS</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="talk-show">Talk-шоу</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="events">События</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="merch">Мерч</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="contacts">Контакты</a>
+                  </div>
+                  
+                  <!-- Кнопка "Стать артистом" -->
+                  <div class="oor-mobile-menu-bottom">
+                      <button class="oor-mobile-menu-btn" data-action="become-artist">
+                          <span class="oor-mobile-menu-btn-text">Стать артистом</span>
+                          <span class="oor-mobile-menu-btn-icon">
+                              <img src="/public/assets/plus-small.svg" alt="">
+                          </span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+          </div>
+    </header>
+
+    <!-- HERO Section -->
+    <section class="oor-section-hero oor-studio-hero">
+        <div class="oor-container">
+            <div class="oor-grid oor-studio-hero-grid">
+                <div class="oor-col-10">
+                    <h1 class="oor-studio-hero-title">ПРОФЕССИОНАЛЬНАЯ СТУДИЯ ЗВУКОЗАПИСИ</h1>
+                </div>
+                <div class="oor-col-1"></div>
+                <div class="oor-col-1">
+                    <div class="oor-studio-hero-index">[01]</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="oor-studio-hero-image">
+            <img src="https://placeholdit.com/1440x853/000000/FFFFFF?text=Studio+Hero" alt="Студия Out of Records" class="oor-media-cover">
+        </div>
+    </section>
+
+    <!-- Content Section [02] -->
+    <section class="oor-studio-content-section">
+        <div class="oor-container">
+            <div class="oor-grid oor-studio-content-grid">
+                <!-- Left Column - Images (absolute positioned) -->
+                <div class="oor-studio-content-images">
+                    <div class="oor-studio-image-row">
+                        <div class="oor-studio-image-item">
+                            <img src="https://placeholdit.com/569x402/333333/FFFFFF?text=Studio+Photo+1" alt="Студия" class="oor-media-cover">
+                        </div>
+                        <div class="oor-studio-image-item">
+                            <img src="https://placeholdit.com/569x402/333333/FFFFFF?text=Studio+Photo+2" alt="Студия" class="oor-media-cover">
+                        </div>
+                    </div>
+                    <p class="oor-studio-content-text">
+                        Музыка попадает в сердца благодаря артисту, а не метрикам. Мы помогаем реализоваться в музыке без оглядки на цифры и алгоритмы — и остаться собой без страха непопулярности
+                    </p>
+                </div>
+                
+                <!-- Right Column - Title and Index -->
+                <div class="oor-studio-content-right">
+                    <div class="oor-studio-section-index">[02]</div>
+                    <div class="oor-studio-content-title-wrapper">
+                        <h2 class="oor-studio-content-title">
+                            СТУДИЯ С ПРЕМИУМ АКУСТИКОЙ И ТОПОВЫМ ОБОРУДОВАНИЕМ
+                        </h2>
+                    </div>
+                    <div class="oor-studio-content-icon">
+                        <img src="/public/assets/plus-large.svg" alt="" width="18" height="18">
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="oor-studio-sidebar">
+                    <div class="oor-studio-sidebar-icon">
+                        <img src="/public/assets/plus-large.svg" alt="" width="18" height="18">
+                    </div>
+                    <div class="oor-studio-sidebar-icon">
+                        <img src="/public/assets/plus-large.svg" alt="" width="18" height="18">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Studio Equipment Section [03] -->
+    <section class="oor-studio-equipment-section">
+        <div class="oor-container">
+            <div class="oor-studio-equipment-header">
+                <h2 class="oor-studio-equipment-title">ЧТО В СТУДИИ?</h2>
+                <div class="oor-studio-section-index">[03]</div>
+                <div class="oor-studio-equipment-icon">
+                    <img src="/public/assets/plus-large.svg" alt="" width="25" height="18">
+                </div>
+            </div>
+            
+            <div class="oor-studio-equipment-wrapper">
+                <div class="oor-studio-equipment-table">
+                    <div class="oor-studio-equipment-row">
+                        <div class="oor-studio-equipment-index">01</div>
+                        <div class="oor-studio-equipment-content">
+                            <div class="oor-studio-equipment-header-row">
+                                <h3 class="oor-studio-equipment-item-title">мониторинг и акустика</h3>
+                                <div class="oor-studio-equipment-item-icon">
+                                    <img src="/public/assets/plus-large.svg" alt="" width="24" height="24" style="transform: rotate(180deg);">
+                                </div>
+                            </div>
+                            <p class="oor-studio-equipment-item-description">
+                                PMC 8-2 XBD, GENELEC 8361A, Sonarworks SoundID Reference, Grace Design m905 и другие
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="oor-studio-equipment-row">
+                        <div class="oor-studio-equipment-index">02</div>
+                        <div class="oor-studio-equipment-content">
+                            <div class="oor-studio-equipment-header-row">
+                                <h3 class="oor-studio-equipment-item-title">рабочие станции и управление</h3>
+                                <div class="oor-studio-equipment-item-icon">
+                                    <img src="/public/assets/plus-large.svg" alt="" width="24" height="24" style="transform: rotate(180deg);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oor-studio-equipment-row">
+                        <div class="oor-studio-equipment-index">03</div>
+                        <div class="oor-studio-equipment-content">
+                            <div class="oor-studio-equipment-header-row">
+                                <h3 class="oor-studio-equipment-item-title">микрофоны и предусилители</h3>
+                                <div class="oor-studio-equipment-item-icon">
+                                    <img src="/public/assets/plus-large.svg" alt="" width="24" height="24" style="transform: rotate(180deg);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oor-studio-equipment-row">
+                        <div class="oor-studio-equipment-index">04</div>
+                        <div class="oor-studio-equipment-content">
+                            <div class="oor-studio-equipment-header-row">
+                                <h3 class="oor-studio-equipment-item-title">компрессоры и эквалайзеры</h3>
+                                <div class="oor-studio-equipment-item-icon">
+                                    <img src="/public/assets/plus-large.svg" alt="" width="24" height="24" style="transform: rotate(180deg);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oor-studio-equipment-row">
+                        <div class="oor-studio-equipment-index">05</div>
+                        <div class="oor-studio-equipment-content">
+                            <div class="oor-studio-equipment-header-row">
+                                <h3 class="oor-studio-equipment-item-title">инструменты и контроллеры</h3>
+                                <div class="oor-studio-equipment-item-icon">
+                                    <img src="/public/assets/plus-large.svg" alt="" width="24" height="24" style="transform: rotate(180deg);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oor-studio-equipment-row">
+                        <div class="oor-studio-equipment-index">06</div>
+                        <div class="oor-studio-equipment-content">
+                            <div class="oor-studio-equipment-header-row">
+                                <h3 class="oor-studio-equipment-item-title">DAW и плагины</h3>
+                                <div class="oor-studio-equipment-item-icon">
+                                    <img src="/public/assets/plus-large.svg" alt="" width="24" height="24" style="transform: rotate(180deg);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="oor-studio-equipment-image">
+                    <img src="https://placeholdit.com/376x376/CCCCCC/000000?text=Studio+Equipment" alt="Оборудование студии" class="oor-media-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="oor-studio-services-section">
+        <div class="oor-container">
+            <div class="oor-studio-services-header">
+                <h2 class="oor-studio-services-title">ЧТО МЫ ДЕЛАЕМ:</h2>
+                <div class="oor-studio-services-icon">
+                    <img src="/public/assets/plus-large.svg" alt="" width="25" height="18">
+                </div>
+            </div>
+            
+            <div class="oor-studio-services-grid">
+                <div class="oor-studio-services-row">
+                    <div class="oor-studio-service-item">
+                        <div class="oor-studio-service-index">01</div>
+                        <div class="oor-studio-service-content">
+                            <h3 class="oor-studio-service-title">ПРОДАКШН</h3>
+                        </div>
+                    </div>
+                    <div class="oor-studio-service-item">
+                        <div class="oor-studio-service-index">02</div>
+                        <div class="oor-studio-service-content">
+                            <h3 class="oor-studio-service-title">СВЕДЕНИЕ И МАСТЕРИНГ</h3>
+                        </div>
+                    </div>
+                    <div class="oor-studio-service-item">
+                        <div class="oor-studio-service-index">03</div>
+                        <div class="oor-studio-service-content">
+                            <h3 class="oor-studio-service-title">ТЮНИНГ ВОКАЛА</h3>
+                        </div>
+                    </div>
+                    <div class="oor-studio-service-item">
+                        <div class="oor-studio-service-index">04</div>
+                        <div class="oor-studio-service-content">
+                            <h3 class="oor-studio-service-title">АРАНЖИРОВКА</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="oor-studio-services-descriptions">
+                    <div class="oor-studio-service-description">
+                        <p>Работаем со звуком, видео и фото — от первоначальной идеи до полноценной записи/съемки</p>
+                    </div>
+                    <div class="oor-studio-service-description">
+                        <p>Хип-хоп, оркестровая музыка, синематик, трип-хоп, нью-вейв, синти-поп, рок, фолк, джаз, r'n'b, техно — собираем сетап под любой жанр. Мы не навязываем правки, если они не принципиальны — финальный трек остается с вашим характером и звучит четко где угодно</p>
+                    </div>
+                    <div class="oor-studio-service-description">
+                        <p>Исправляем ошибки вокалиста, подтягиваем ноты и можем добавить к голосу спецэффекты</p>
+                    </div>
+                    <div class="oor-studio-service-description">
+                        <p>Собираем структуру, развиваем динамику и балансируем инструменты по их ролям в общей композиции</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recording Section [04] -->
+    <section class="oor-studio-recording-section">
+        <div class="oor-container">
+            <div class="oor-studio-recording-header">
+                <h2 class="oor-studio-recording-title">СТУДИЯ ПОДХОДИТ ДЛЯ ЗАПИСИ:</h2>
+                <div class="oor-studio-section-index">[04]</div>
+            </div>
+            <div class="oor-studio-recording-divider"></div>
+            
+            <div class="oor-grid oor-studio-recording-grid">
+                <div class="oor-col-7 oor-studio-recording-image">
+                    <img src="https://placeholdit.com/550x550/333333/FFFFFF?text=Recording+Studio" alt="Запись в студии" class="oor-media-cover">
+                </div>
+                
+                <div class="oor-col-5 oor-studio-recording-list">
+                    <div class="oor-studio-recording-items">
+                        <div class="oor-studio-recording-item">
+                            <h3 class="oor-studio-recording-item-title">авторской музыки</h3>
+                            <div class="oor-studio-recording-item-divider"></div>
+                        </div>
+                        <div class="oor-studio-recording-item">
+                            <h3 class="oor-studio-recording-item-title">песен, хип-хопа и рэпа</h3>
+                            <div class="oor-studio-recording-item-divider"></div>
+                        </div>
+                        <div class="oor-studio-recording-item">
+                            <h3 class="oor-studio-recording-item-title">подкастов, лекций и аудиокниг</h3>
+                            <div class="oor-studio-recording-item-divider"></div>
+                        </div>
+                        <div class="oor-studio-recording-item">
+                            <h3 class="oor-studio-recording-item-title">саундтреков к кино, играм и шоу</h3>
+                            <div class="oor-studio-recording-item-divider"></div>
+                        </div>
+                        <div class="oor-studio-recording-item">
+                            <h3 class="oor-studio-recording-item-title">рекламной музыки и джинглов</h3>
+                            <div class="oor-studio-recording-item-divider"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="oor-studio-contact">
+                        <p class="oor-studio-contact-text">
+                            Хотите арендовать студию? Есть вопросы по техническому оснащению? Нужен профессиональный совет по треку?
+                        </p>
+                        <a href="mailto:info@OOR.com" class="oor-studio-contact-button rolling-button">
+                            <span class="tn-atom">Напишите нам</span>
+                            <img src="/public/assets/plus-small.svg" alt="" width="32" height="32">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="oor-studio-recording-divider"></div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="oor-footer">
+        <!-- Content Block -->
+        <div class="oor-footer-content">
+            <!-- Content Left -->
+            <div class="oor-footer-content-left">
+                <!-- Vector Logo -->
+                <div class="oor-footer-logo">
+                    <img src="/public/assets/logo-footer.svg" alt="Out of Records" class="oor-footer-logo-image">
+          </div>
+                
+                <!-- Email Link -->
+                <a href="mailto:info@OOR.com" class="oor-footer-email rolling-button text-cuberto-cursor-1" data-text="Написать"><span class="tn-atom">info@OOR.com</span></a>
+        </div>
+            
+            <!-- Links -->
+            <div class="oor-footer-links">
+                <!-- Links Top -->
+                <div class="oor-footer-links-top">
+                    <!-- Navigation Title -->
+                    <h3 class="oor-footer-nav-title">навигация</h3>
+                    
+                    <!-- Links Top Group -->
+                    <div class="oor-footer-links-top-group">
+                        <a href="/" class="oor-footer-link rolling-button"><span class="tn-atom">Main</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Манифест</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Артисты</span></a>
+                        <a href="/studio.html" class="oor-footer-link rolling-button"><span class="tn-atom">Студия</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Услуги</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">DAWGS</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Talk-шоу</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">События</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Мерч</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Контакты</span></a>
+                  </div>
+
+</div>
+                
+                <!-- Links Bottom -->
+                <div class="oor-footer-links-bottom">
+                    <!-- Social Title -->
+                    <h3 class="oor-footer-social-title">соцсети</h3>
+                    
+                    <!-- Links Bottom Group -->
+                    <div class="oor-footer-links-bottom-group">
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">ВК</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Инста</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Ютуб</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Телеграм</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Privacy Block -->
+        <div class="oor-footer-privacy">
+            <!-- Privacy Left -->
+            <div class="oor-footer-privacy-left">
+                <a href="#" class="oor-footer-privacy-link rolling-button"><span class="tn-atom">политика конфиденциальности</span></a>
+                <a href="#" class="oor-footer-privacy-link rolling-button"><span class="tn-atom">все права защищены</span></a>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="oor-footer-copyright">© 2025</div>
+        </div>
+    </footer>
+
+    <!-- OOR JavaScript -->
+    <!-- External deps (load first) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
+    <!-- UI Scaling для больших мониторов (загружаем рано) -->
+    <script src="/src/js/scale-container.js"></script>
+    
+    <!-- OOR JavaScript модули -->
+    <script src="/src/js/modules/error-handler.js"></script>
+    <script src="/src/js/modules/preloader.js"></script>
+    <script src="/src/js/modules/navigation.js"></script>
+    <script src="/src/js/modules/video.js"></script>
+    <script src="/src/js/mobile-menu.js"></script>
+    <script src="/src/js/menu-sync.js"></script>
+    <script src="/src/js/main.js"></script>
+    
+    <!-- Rolling text effect script -->
+    <script defer src="/src/js/rolling-text.js"></script>
+    
+    <!-- MouseFollower + Custom cursor (объединенный) -->
+    <script src="/src/js/cursor.js"></script>
+    
+    <!-- Кастомный декоративный скроллбар -->
+    <div class="custom-scrollbar" id="customScrollbar">
+      <div class="custom-scrollbar-track">
+        <div class="custom-scrollbar-thumb" id="scrollbarThumb"></div>
+    </div>
+  </div>
+    
+    <!-- Custom scrollbar script -->
+    <script src="/src/js/scrollbar.js"></script>
+    
+  </body>
+</html>
+
