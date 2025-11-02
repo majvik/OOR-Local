@@ -29,8 +29,20 @@ class MenuSync {
     const desktopLinks = this.desktopMenu.querySelectorAll('[data-menu-item]');
     desktopLinks.forEach(link => {
       link.addEventListener('click', (e) => {
-        e.preventDefault();
+        const href = link.getAttribute('href');
         const menuItem = link.getAttribute('data-menu-item');
+        
+        // Если ссылка ведет на другую страницу (не якорь #), разрешаем переход
+        if (href && href !== '#' && !href.startsWith('#')) {
+          // Не вызываем preventDefault, позволяем браузеру перейти по ссылке
+          if (menuItem) {
+            this.setActiveItem(menuItem);
+          }
+          return;
+        }
+        
+        // Для якорных ссылок (#) блокируем переход и только меняем активное состояние
+        e.preventDefault();
         if (menuItem) {
           this.setActiveItem(menuItem);
         }
@@ -42,12 +54,49 @@ class MenuSync {
     const mobileLinks = this.mobileMenu.querySelectorAll('[data-menu-item]');
     mobileLinks.forEach(link => {
       link.addEventListener('click', (e) => {
-        e.preventDefault();
+        const href = link.getAttribute('href');
         const menuItem = link.getAttribute('data-menu-item');
+        
+        // Если ссылка ведет на другую страницу (не якорь #), разрешаем переход
+        if (href && href !== '#' && !href.startsWith('#')) {
+          // Не вызываем preventDefault, позволяем браузеру перейти по ссылке
+          if (menuItem) {
+            this.setActiveItem(menuItem);
+          }
+          this.closeMobileMenuIfOpen();
+          return;
+        }
+        
+        // Для якорных ссылок (#) блокируем переход и только меняем активное состояние
+        e.preventDefault();
         if (menuItem) {
           this.setActiveItem(menuItem);
         }
         this.closeMobileMenuIfOpen();
+      });
+    });
+    
+    // Синхронизация кликов по футер-меню
+    const footerLinks = document.querySelectorAll('.oor-footer-link[data-menu-item]');
+    footerLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        const menuItem = link.getAttribute('data-menu-item');
+        
+        // Если ссылка ведет на другую страницу (не якорь #), разрешаем переход
+        if (href && href !== '#' && !href.startsWith('#')) {
+          // Не вызываем preventDefault, позволяем браузеру перейти по ссылке
+          if (menuItem) {
+            this.setActiveItem(menuItem);
+          }
+          return;
+        }
+        
+        // Для якорных ссылок (#) блокируем переход и только меняем активное состояние
+        e.preventDefault();
+        if (menuItem) {
+          this.setActiveItem(menuItem);
+        }
       });
     });
     
