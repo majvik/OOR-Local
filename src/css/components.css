@@ -153,7 +153,7 @@ body.oor-studio-page .oor-header {
 
 body.oor-studio-page .oor-logo img {
   mix-blend-mode: normal !important;
-  filter: invert(1) !important;
+  filter: brightness(0) invert(1) !important;
 }
 
 /* Ensure navigation links are visible on black header on studio page */
@@ -284,21 +284,19 @@ body.oor-studio-page .oor-btn-small-icon {
   color: var(--color-accent);
 }
 
-/* Скобки для всех активных состояний */
-.oor-nav-link--active::before,
-.current-menu-item .oor-nav-link::before,
-.current_page_item .oor-nav-link::before,
-.current-menu-ancestor .oor-nav-link::before {
+/* Скобки для WordPress-совместимых классов (без rolling text) */
+.current-menu-item .oor-nav-link:not(:has(.tn-atom))::before,
+.current_page_item .oor-nav-link:not(:has(.tn-atom))::before,
+.current-menu-ancestor .oor-nav-link:not(:has(.tn-atom))::before {
   content:"[";
   display: inline;
   vertical-align: baseline;
   line-height: 1.4em;
 }
 
-.oor-nav-link--active::after,
-.current-menu-item .oor-nav-link::after,
-.current_page_item .oor-nav-link::after,
-.current-menu-ancestor .oor-nav-link::after {
+.current-menu-item .oor-nav-link:not(:has(.tn-atom))::after,
+.current_page_item .oor-nav-link:not(:has(.tn-atom))::after,
+.current-menu-ancestor .oor-nav-link:not(:has(.tn-atom))::after {
   content:"]";
   display: inline;
   vertical-align: baseline;
@@ -2642,7 +2640,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   
   body.oor-studio-page .oor-logo img {
     mix-blend-mode: normal !important;
-    filter: invert(1) !important;
+    filter: brightness(0) invert(1) !important;
   }
   
   /* Отключаем mix-blend-mode: difference на мобилке (только для не-studio страниц) */
@@ -2685,7 +2683,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   
   body.oor-studio-page .oor-logo img {
     mix-blend-mode: normal !important;
-    filter: invert(1) !important;
+    filter: brightness(0) invert(1) !important;
   }
 }
 

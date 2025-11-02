@@ -381,6 +381,46 @@ function initPreloader() {
         
         unlockScroll();
         
+        setTimeout(() => {
+          try {
+            const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && 
+                                 (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
+            if (DISABLE_LENIS) {
+              return;
+            }
+
+            const s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
+            s.async = true;
+            s.onload = () => {
+              try {
+                if (window.Lenis && !window.lenis) {
+                  window.lenis = new window.Lenis({
+                    smoothWheel: true,
+                    smoothTouch: false,
+                    normalizeWheel: true,
+                    lerp: 0.09,
+                    wheelMultiplier: 1.0,
+                    duration: 1.0,
+                    easing: (t) => 1 - Math.pow(1 - t, 3),
+                    orientation: 'vertical',
+                    gestureOrientation: 'vertical',
+                    touchMultiplier: 2,
+                    infinite: false
+                  });
+                  
+                  function raf(time) {
+                    window.lenis.raf(time);
+                    requestAnimationFrame(raf);
+                  }
+                  requestAnimationFrame(raf);
+                }
+              } catch(e) { console.warn('Lenis init error', e); }
+            };
+            document.head.appendChild(s);
+          } catch(e) { console.warn('Lenis load error', e); }
+        }, 100);
+        
       }, 300);
       
     } catch(_) {
@@ -434,6 +474,12 @@ function initPreloader() {
                     touchMultiplier: 2,
                     infinite: false
                   });
+                  
+                  function raf(time) {
+                    window.lenis.raf(time);
+                    requestAnimationFrame(raf);
+                  }
+                  requestAnimationFrame(raf);
                 }
               } catch(e) { console.warn('Lenis init error', e); }
             };

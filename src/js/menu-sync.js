@@ -173,42 +173,46 @@ class MenuSync {
       
       if (linkMenuItem === menuItem) {
         link.classList.add('oor-nav-link--active');
+        
         // Добавляем скобки для rolling text структуры
-        if (atom) {
+        // ВАЖНО: Добавляем только в первый блок, т.к. второй блок скрыт (translateY(100%))
+        if (atom && !atom.dataset.bracketsAdded) {
           const blocks = atom.querySelectorAll('.block');
-          blocks.forEach(block => {
+          
+          // Обрабатываем только первый блок
+          const firstBlock = blocks[0];
+          if (firstBlock) {
             // Проверяем, есть ли уже скобки
-            const hasBrackets = block.querySelector('.bracket-start') || block.querySelector('.bracket-end');
-            if (hasBrackets) {
-              return; // Скобки уже есть, ничего не делаем
+            const hasBrackets = firstBlock.querySelector('.bracket-start') || firstBlock.querySelector('.bracket-end');
+            if (!hasBrackets) {
+              // Получаем первый и последний элементы с классом letter
+              const letters = firstBlock.querySelectorAll('.letter');
+              if (letters.length > 0) {
+                const firstLetter = letters[0];
+                const lastLetter = letters[letters.length - 1];
+                
+                // Проверяем текстовое содержимое
+                if (firstLetter.textContent.trim() !== '[' && lastLetter.textContent.trim() !== ']') {
+                  // Добавляем открывающую скобку
+                  const bracketStart = document.createElement('span');
+                  bracketStart.classList.add('letter', 'bracket-start');
+                  bracketStart.innerText = '[';
+                  bracketStart.style.marginRight = '2px';
+                  firstBlock.insertBefore(bracketStart, firstLetter);
+                  
+                  // Добавляем закрывающую скобку
+                  const bracketEnd = document.createElement('span');
+                  bracketEnd.classList.add('letter', 'bracket-end');
+                  bracketEnd.innerText = ']';
+                  bracketEnd.style.marginLeft = '2px';
+                  firstBlock.appendChild(bracketEnd);
+                }
+              }
             }
-            
-            // Получаем первый и последний элементы с классом letter
-            const letters = block.querySelectorAll('.letter');
-            if (letters.length === 0) return;
-            
-            const firstLetter = letters[0];
-            const lastLetter = letters[letters.length - 1];
-            
-            // Проверяем текстовое содержимое первого и последнего элемента
-            if (firstLetter.textContent.trim() === '[' || lastLetter.textContent.trim() === ']') {
-              return; // Скобки уже есть в тексте
-            }
-            
-            // Добавляем открывающую скобку
-            const bracketStart = document.createElement('span');
-            bracketStart.classList.add('letter', 'bracket-start');
-            bracketStart.innerText = '[';
-            bracketStart.style.marginRight = '2px';
-            block.insertBefore(bracketStart, firstLetter);
-            
-            // Добавляем закрывающую скобку
-            const bracketEnd = document.createElement('span');
-            bracketEnd.classList.add('letter', 'bracket-end');
-            bracketEnd.innerText = ']';
-            bracketEnd.style.marginLeft = '2px';
-            block.appendChild(bracketEnd);
-          });
+          }
+          
+          // Помечаем, что скобки добавлены
+          atom.dataset.bracketsAdded = 'true';
         }
       } else {
         link.classList.remove('oor-nav-link--active');
@@ -221,6 +225,8 @@ class MenuSync {
             if (bracketStart) bracketStart.remove();
             if (bracketEnd) bracketEnd.remove();
           });
+          // Сбрасываем флаг, чтобы скобки можно было добавить снова при активации
+          delete atom.dataset.bracketsAdded;
         }
       }
     });

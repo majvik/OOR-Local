@@ -246,6 +246,10 @@ function initParallaxImages() {
     if (img.closest('.oor-out-of-talk-image-1')) return false;
     if (img.closest('.oor-out-of-talk-image-2')) return false;
     if (img.closest('.oor-out-of-talk-image-3')) return false;
+    if (img.closest('.oor-studio-hero')) return false;
+    if (img.closest('.oor-studio-content-section')) return false;
+    if (img.closest('.oor-studio-equipment-section')) return false;
+    if (img.closest('.oor-studio-recording-section')) return false;
     if (img.classList.contains('no-parallax')) return false;
     return true;
   });
@@ -774,12 +778,13 @@ function initFullscreenVideo() {
   const fullscreenVideoElement = document.querySelector('.oor-fullscreen-video-element');
   const fullscreenClose = document.getElementById('fullscreen-close');
   const plusTopRight = document.querySelector('.oor-hero-plus-top-right');
-  const plusIcon = plusTopRight.querySelector('img');
-
+  
   if (!heroVideoOverlay || !fullscreenVideo || !fullscreenVideoElement || !fullscreenClose || !plusTopRight) {
-    console.warn('Fullscreen video: Не найдены необходимые элементы');
+    // Элементы не найдены (нормально для страниц без fullscreen video)
     return;
   }
+  
+  const plusIcon = plusTopRight.querySelector('img');
 
   // Клик по оверлею фонового видео открывает полноэкранное
   heroVideoOverlay.addEventListener('click', function() {
