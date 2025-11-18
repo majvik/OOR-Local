@@ -1,0 +1,12 @@
+{
+  "name": "oor-webstudio",
+  "version": "1.0.0",
+  "description": "Out of Records Web Studio",
+  "scripts": {
+    "build": "node scripts/update-cache-version.js"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+
