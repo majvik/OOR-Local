@@ -1,9 +1,11 @@
 (function() {
   'use strict';
 
-  function calculateMaxImageHeight(rows, imageContainer, equipmentImage) {
+  function calculateMaxImageHeight(rows, imageContainer) {
     return new Promise((resolve) => {
-      const imageUrls = Array.from(rows).map(row => row.getAttribute('data-image')).filter(Boolean);
+      const imageUrls = Array.from(rows)
+        .map(row => row.getAttribute('data-image-png') || row.getAttribute('data-image'))
+        .filter(Boolean);
       let loadedCount = 0;
       let maxHeight = 0;
 
@@ -63,12 +65,15 @@
     const rows = document.querySelectorAll('.oor-studio-equipment-row');
     const equipmentImage = document.getElementById('equipment-image');
     const imageContainer = equipmentImage ? equipmentImage.closest('.oor-studio-equipment-image') : null;
+    const equipmentPicture = equipmentImage ? equipmentImage.closest('picture') : null;
+    const equipmentImageAvifSource = equipmentPicture ? equipmentPicture.querySelector('[data-equipment-image-avif]') : null;
+    const equipmentImageWebpSource = equipmentPicture ? equipmentPicture.querySelector('[data-equipment-image-webp]') : null;
 
     if (!rows.length || !equipmentImage || !imageContainer) return;
 
     // Вычисляем максимальную высоту и устанавливаем её
     function updateImageHeight() {
-      calculateMaxImageHeight(rows, imageContainer, equipmentImage).then(maxHeight => {
+      calculateMaxImageHeight(rows, imageContainer).then(maxHeight => {
         setImageHeight(equipmentImage, imageContainer, maxHeight);
       });
     }
@@ -86,7 +91,9 @@
         const icon = row.querySelector('.oor-studio-equipment-item-icon');
         const iconImg = icon ? icon.querySelector('img') : null;
         const description = row.querySelector('.oor-studio-equipment-item-description');
-        const imageUrl = row.getAttribute('data-image');
+        const imageUrlPng = row.getAttribute('data-image-png') || row.getAttribute('data-image');
+        const imageUrlWebp = row.getAttribute('data-image-webp');
+        const imageUrlAvif = row.getAttribute('data-image-avif');
 
         // Закрываем все остальные строки
         rows.forEach(otherRow => {
@@ -138,13 +145,19 @@
           if (description) {
             description.style.display = 'block';
           }
-          if (imageUrl && equipmentImage.src !== imageUrl) {
+          if (imageUrlPng && equipmentImage.src !== imageUrlPng) {
             // Fade out
             equipmentImage.style.opacity = '0';
             
             // После fade out меняем изображение и fade in
             setTimeout(() => {
-              equipmentImage.src = imageUrl;
+              if (equipmentImageAvifSource) {
+                equipmentImageAvifSource.srcset = imageUrlAvif || '';
+              }
+              if (equipmentImageWebpSource) {
+                equipmentImageWebpSource.srcset = imageUrlWebp || '';
+              }
+              equipmentImage.src = imageUrlPng;
               // Fade in
               setTimeout(() => {
                 equipmentImage.style.opacity = '1';

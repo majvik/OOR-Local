@@ -43,14 +43,16 @@
         <div class="oor-header-right">
             <nav class="oor-nav">
                 <div class="oor-nav-list" role="navigation" aria-label="Main">
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="artists"><span class="tn-atom">АРТИСТЫ</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="/studio.html" class="oor-nav-link rolling-button" data-menu-item="studio"><span class="tn-atom">СТУДИЯ</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="services"><span class="tn-atom">УСЛУГИ</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/" class="oor-nav-link rolling-button" data-menu-item="main"><span class="tn-atom">Main</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="manifest"><span class="tn-atom">Манифест</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="artists"><span class="tn-atom">Артисты</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/studio.html" class="oor-nav-link rolling-button" data-menu-item="studio"><span class="tn-atom">Студия</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="services"><span class="tn-atom">Услуги</span></a><span>/</span></div>
                     <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="dawgs"><span class="tn-atom">DAWGS</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="talk-show"><span class="tn-atom">TALK ШОУ</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="events"><span class="tn-atom">СОБЫТИЯ</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="merch"><span class="tn-atom">МЕРЧ</span></a><span>/</span></div>
-                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="contacts"><span class="tn-atom">КОНТАКТЫ</span></a></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="talk-show"><span class="tn-atom">Talk-шоу</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="events"><span class="tn-atom">События</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="merch"><span class="tn-atom">Мерч</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="contacts"><span class="tn-atom">Контакты</span></a></div>
               </div>
             </nav>
             
@@ -75,14 +77,16 @@
               <div class="oor-mobile-menu-content">
                   <!-- Основные пункты меню -->
                   <div class="oor-mobile-menu-main">
-                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="artists">АРТИСТЫ</a>
-                      <a href="/studio.html" class="oor-mobile-menu-link rolling-button" data-menu-item="studio">СТУДИЯ</a>
-                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="services">УСЛУГИ</a>
+                      <a href="/" class="oor-mobile-menu-link rolling-button" data-menu-item="main">Main</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="manifest">Манифест</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="artists">Артисты</a>
+                      <a href="/studio.html" class="oor-mobile-menu-link rolling-button" data-menu-item="studio">Студия</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="services">Услуги</a>
                       <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="dawgs">DAWGS</a>
-                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="talk-show">TALK ШОУ</a>
-                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="events">СОБЫТИЯ</a>
-                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="merch">МЕРЧ</a>
-                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="contacts">КОНТАКТЫ</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="talk-show">Talk-шоу</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="events">События</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="merch">Мерч</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="contacts">Контакты</a>
                   </div>
                   
                   <!-- Кнопка "Стать артистом" -->
@@ -114,7 +118,11 @@
         </div>
         
         <div class="oor-studio-hero-image">
-            <img src="https://placehold.co/1440x853/1a1a1a/666666?text=Studio+Hero" alt="Студия Out of Records" class="oor-media-cover">
+            <picture>
+                <source srcset="/public/assets/oor-studio-hero-image.avif" type="image/avif">
+                <source srcset="/public/assets/oor-studio-hero-image.webp" type="image/webp">
+                <img src="/public/assets/oor-studio-hero-image.png" alt="Студия Out of Records" class="oor-media-cover">
+            </picture>
         </div>
     </section>
 
@@ -137,10 +145,18 @@
                 <div class="oor-studio-content-right">
                     <div class="oor-studio-image-row">
                         <div class="oor-studio-image-item">
-                            <img src="https://placehold.co/798x560/1a1a1a/666666?text=Studio+Photo+1" alt="Студия" class="oor-media-cover">
+                            <picture>
+                                <source srcset="/public/assets/oor-studio-image-item-1.avif" type="image/avif">
+                                <source srcset="/public/assets/oor-studio-image-item-1.webp" type="image/webp">
+                                <img src="/public/assets/oor-studio-image-item-1.png" alt="Студия" class="oor-media-cover">
+                            </picture>
                         </div>
                         <div class="oor-studio-image-item">
-                            <img src="https://placehold.co/798x560/1a1a1a/666666?text=Studio+Photo+2" alt="Студия" class="oor-media-cover">
+                            <picture>
+                                <source srcset="/public/assets/oor-studio-image-item-2.avif" type="image/avif">
+                                <source srcset="/public/assets/oor-studio-image-item-2.webp" type="image/webp">
+                                <img src="/public/assets/oor-studio-image-item-2.png" alt="Студия" class="oor-media-cover">
+                            </picture>
                         </div>
                     </div>
                     <p class="oor-studio-content-text">
@@ -173,7 +189,12 @@
             
             <div class="oor-studio-equipment-wrapper">
                 <div class="oor-studio-equipment-table">
-                    <div class="oor-studio-equipment-row oor-studio-equipment-row-active" data-image="https://placehold.co/1440x960/cccccc/333333?text=Equipment+1">
+                    <div
+                        class="oor-studio-equipment-row oor-studio-equipment-row-active"
+                        data-image-png="/public/assets/oor-studio-equipment-image-1.png"
+                        data-image-webp="/public/assets/oor-studio-equipment-image-1.webp"
+                        data-image-avif="/public/assets/oor-studio-equipment-image-1.avif"
+                    >
                         <div class="oor-studio-equipment-index">01</div>
                         <div class="oor-studio-equipment-content">
                             <div class="oor-studio-equipment-header-row">
@@ -188,7 +209,12 @@
                         </div>
                     </div>
                     
-                    <div class="oor-studio-equipment-row" data-image="https://placehold.co/1440x960/cccccc/333333?text=Equipment+2">
+                    <div
+                        class="oor-studio-equipment-row"
+                        data-image-png="/public/assets/oor-studio-equipment-image-2.png"
+                        data-image-webp="/public/assets/oor-studio-equipment-image-2.webp"
+                        data-image-avif="/public/assets/oor-studio-equipment-image-2.avif"
+                    >
                         <div class="oor-studio-equipment-index">02</div>
                         <div class="oor-studio-equipment-content">
                             <div class="oor-studio-equipment-header-row">
@@ -203,7 +229,12 @@
                         </div>
                     </div>
                     
-                    <div class="oor-studio-equipment-row" data-image="https://placehold.co/1440x960/cccccc/333333?text=Equipment+3">
+                    <div
+                        class="oor-studio-equipment-row"
+                        data-image-png="/public/assets/oor-studio-equipment-image-3.png"
+                        data-image-webp="/public/assets/oor-studio-equipment-image-3.webp"
+                        data-image-avif="/public/assets/oor-studio-equipment-image-3.avif"
+                    >
                         <div class="oor-studio-equipment-index">03</div>
                         <div class="oor-studio-equipment-content">
                             <div class="oor-studio-equipment-header-row">
@@ -218,7 +249,12 @@
                         </div>
                     </div>
                     
-                    <div class="oor-studio-equipment-row" data-image="https://placehold.co/1440x960/cccccc/333333?text=Equipment+4">
+                    <div
+                        class="oor-studio-equipment-row"
+                        data-image-png="/public/assets/oor-studio-equipment-image-4.png"
+                        data-image-webp="/public/assets/oor-studio-equipment-image-4.webp"
+                        data-image-avif="/public/assets/oor-studio-equipment-image-4.avif"
+                    >
                         <div class="oor-studio-equipment-index">04</div>
                         <div class="oor-studio-equipment-content">
                             <div class="oor-studio-equipment-header-row">
@@ -233,7 +269,12 @@
                         </div>
                     </div>
                     
-                    <div class="oor-studio-equipment-row" data-image="https://placehold.co/1440x960/cccccc/333333?text=Equipment+5">
+                    <div
+                        class="oor-studio-equipment-row"
+                        data-image-png="/public/assets/oor-studio-equipment-image-5.png"
+                        data-image-webp="/public/assets/oor-studio-equipment-image-5.webp"
+                        data-image-avif="/public/assets/oor-studio-equipment-image-5.avif"
+                    >
                         <div class="oor-studio-equipment-index">05</div>
                         <div class="oor-studio-equipment-content">
                             <div class="oor-studio-equipment-header-row">
@@ -248,7 +289,12 @@
                         </div>
                     </div>
                     
-                    <div class="oor-studio-equipment-row" data-image="https://placehold.co/1440x960/cccccc/333333?text=Equipment+6">
+                    <div
+                        class="oor-studio-equipment-row"
+                        data-image-png="/public/assets/oor-studio-equipment-image-6.png"
+                        data-image-webp="/public/assets/oor-studio-equipment-image-6.webp"
+                        data-image-avif="/public/assets/oor-studio-equipment-image-6.avif"
+                    >
                         <div class="oor-studio-equipment-index">06</div>
                         <div class="oor-studio-equipment-content">
                             <div class="oor-studio-equipment-header-row">
@@ -265,7 +311,11 @@
                 </div>
                 
                 <div class="oor-studio-equipment-image">
-                    <img id="equipment-image" src="https://placehold.co/1440x960/cccccc/333333?text=Equipment+1" alt="Оборудование студии" class="oor-media-cover">
+                    <picture>
+                        <source data-equipment-image-avif srcset="/public/assets/oor-studio-equipment-image-1.avif" type="image/avif">
+                        <source data-equipment-image-webp srcset="/public/assets/oor-studio-equipment-image-1.webp" type="image/webp">
+                        <img id="equipment-image" src="/public/assets/oor-studio-equipment-image-1.png" alt="Оборудование студии" class="oor-media-cover">
+                    </picture>
                 </div>
             </div>
         </div>
@@ -338,7 +388,11 @@
             
             <div class="oor-grid oor-studio-recording-grid">
                 <div class="oor-col-7 oor-studio-recording-image">
-                    <img src="https://placehold.co/550x550/1a1a1a/666666?text=Recording+Studio" alt="Запись в студии" class="oor-media-cover">
+                    <picture>
+                        <source srcset="/public/assets/oor-studio-recording-image.avif" type="image/avif">
+                        <source srcset="/public/assets/oor-studio-recording-image.webp" type="image/webp">
+                        <img src="/public/assets/oor-studio-recording-image.png" alt="Запись в студии" class="oor-media-cover">
+                    </picture>
                 </div>
                 
                 <div class="oor-col-5 oor-studio-recording-list">
