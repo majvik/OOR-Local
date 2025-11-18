@@ -1,11 +1,81 @@
 (function() {
   'use strict';
 
+  function calculateMaxImageHeight(rows, imageContainer, equipmentImage) {
+    return new Promise((resolve) => {
+      const imageUrls = Array.from(rows).map(row => row.getAttribute('data-image')).filter(Boolean);
+      let loadedCount = 0;
+      let maxHeight = 0;
+
+      if (imageUrls.length === 0) {
+        resolve(0);
+        return;
+      }
+
+      imageUrls.forEach(url => {
+        const img = new Image();
+        img.onload = function() {
+          // Вычисляем высоту изображения с учетом padding контейнера (116px * 2 = 232px)
+          const containerPadding = 232;
+          const availableWidth = imageContainer.offsetWidth - containerPadding;
+          const imageAspectRatio = img.width / img.height;
+          const calculatedHeight = availableWidth / imageAspectRatio;
+          
+          maxHeight = Math.max(maxHeight, calculatedHeight);
+          loadedCount++;
+          
+          if (loadedCount === imageUrls.length) {
+            resolve(maxHeight);
+          }
+        };
+        img.onerror = function() {
+          loadedCount++;
+          if (loadedCount === imageUrls.length) {
+            resolve(maxHeight);
+          }
+        };
+        img.src = url;
+      });
+    });
+  }
+
+  function setImageHeight(equipmentImage, imageContainer, maxHeight) {
+    if (maxHeight > 0) {
+      // Устанавливаем фиксированную высоту для самого изображения
+      equipmentImage.style.height = maxHeight + 'px';
+      
+      // Вычисляем ширину на основе aspect-ratio (1440 / 960 = 1.5)
+      const aspectRatio = 1440 / 960;
+      const calculatedWidth = maxHeight * aspectRatio;
+      equipmentImage.style.width = calculatedWidth + 'px';
+      
+      // Контейнер автоматически подстроится под высоту изображения + padding
+      // Также устанавливаем min-height для wrapper, чтобы он соответствовал высоте контейнера
+      const containerTotalHeight = maxHeight + 232; // высота изображения + padding
+      const wrapper = imageContainer.closest('.oor-studio-equipment-wrapper');
+      if (wrapper) {
+        wrapper.style.minHeight = containerTotalHeight + 'px';
+      }
+    }
+  }
+
   function initEquipmentAccordion() {
     const rows = document.querySelectorAll('.oor-studio-equipment-row');
     const equipmentImage = document.getElementById('equipment-image');
+    const imageContainer = equipmentImage ? equipmentImage.closest('.oor-studio-equipment-image') : null;
 
-    if (!rows.length || !equipmentImage) return;
+    if (!rows.length || !equipmentImage || !imageContainer) return;
+
+    // Вычисляем максимальную высоту и устанавливаем её
+    function updateImageHeight() {
+      calculateMaxImageHeight(rows, imageContainer, equipmentImage).then(maxHeight => {
+        setImageHeight(equipmentImage, imageContainer, maxHeight);
+      });
+    }
+
+    // Обновляем высоту при загрузке и изменении размера окна
+    updateImageHeight();
+    window.addEventListener('resize', updateImageHeight);
 
     rows.forEach(row => {
       const headerRow = row.querySelector('.oor-studio-equipment-header-row');
