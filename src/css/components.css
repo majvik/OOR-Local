@@ -3597,7 +3597,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-studio-services-grid {
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: auto 1fr;
   gap: 0;
   align-items: stretch;
 }
