@@ -3417,47 +3417,80 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 .oor-studio-equipment-icon {
   width: 25px;
   height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oor-studio-equipment-icon img {
+  filter: brightness(0);
+  mix-blend-mode: normal !important;
 }
 
 
 .oor-studio-equipment-wrapper {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  grid-template-columns: 1fr 1fr;
   border-top: 1px solid #d0d0d0;
   border-bottom: 1px solid #d0d0d0;
+  min-height: 100%;
 }
 
 .oor-studio-equipment-table {
   border-right: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .oor-studio-equipment-image {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 104px 104px 12px;
+  padding: 116px;
   border-left: 1px solid #d0d0d0;
+  height: 100%;
+  position: relative;
 }
 
 .oor-studio-equipment-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  aspect-ratio: 1440 / 960;
+  transition: opacity 0.4s ease;
+  opacity: 1;
 }
 
 .oor-studio-equipment-row {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   border-bottom: 1px solid #d0d0d0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 76px;
 }
 
 .oor-studio-equipment-row:last-child {
   border-bottom: none;
+  flex: 1;
+}
+
+.oor-studio-equipment-item-description {
+  display: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  margin: 0;
+}
+
+.oor-studio-equipment-row-active .oor-studio-equipment-item-description {
+  display: block;
+  opacity: 1;
 }
 
 .oor-studio-equipment-index {
   width: 73px;
-  padding: 24px 24px 24px 48px;
+  padding: 24px 24px 24px 0;
   font-family: var(--font-ui);
   font-size: 14px;
   line-height: 120%;
@@ -3465,6 +3498,9 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   letter-spacing: -0.56px;
   color: #000;
   text-align: right;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
 }
 
 .oor-studio-equipment-content {
@@ -3474,6 +3510,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   display: flex;
   flex-direction: column;
   gap: 88px;
+  height: 100%;
+  align-self: stretch;
 }
 
 .oor-studio-equipment-header-row {
@@ -3496,8 +3534,8 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 }
 
 .oor-studio-equipment-item-icon {
-  width: 24px;
-  height: 24px;
+  width: 17px;
+  height: 17px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3505,6 +3543,16 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-studio-equipment-item-icon img {
   transform: rotate(180deg);
+  filter: brightness(0);
+  mix-blend-mode: normal !important;
+}
+
+.oor-studio-equipment-item-icon-open img {
+  transform: none;
+  width: 17px;
+  height: 17px;
+  filter: brightness(0);
+  mix-blend-mode: normal !important;
 }
 
 .oor-studio-equipment-item-description {
@@ -3517,20 +3565,6 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   margin: 0;
 }
 
-.oor-studio-equipment-image {
-  width: 100%;
-  height: 376px;
-  padding: 12px;
-  margin-top: 104px;
-  position: relative;
-  overflow: hidden;
-}
-
-.oor-studio-equipment-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 /* Studio Services Section */
 .oor-studio-services-section {
