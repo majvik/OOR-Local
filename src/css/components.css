@@ -3863,5 +3863,352 @@ html:not(.preloader-active) {
   overflow-y: auto !important;
 }
 
+/* ===== DAWGS PAGE STYLES ===== */
+
+/* DAWGS page - black header */
+body.oor-dawgs-page .oor-header {
+  background: #000 !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate;
+}
+
+body.oor-dawgs-page .oor-logo img {
+  mix-blend-mode: normal !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+body.oor-dawgs-page .oor-nav-link {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-dawgs-page .oor-nav-link--active {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-dawgs-page .oor-nav-item > span {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-dawgs-page .oor-btn-small {
+  mix-blend-mode: normal !important;
+}
+
+body.oor-dawgs-page .oor-btn-small-text {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-dawgs-page .oor-btn-small-icon {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-dawgs-page .oor-btn-small-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+/* DAWGS Hero Section */
+.oor-dawgs-hero {
+  background: #000;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  position: relative;
+}
+
+.oor-dawgs-hero-grid {
+  position: relative;
+  align-items: flex-start;
+  margin-bottom: 64px;
+}
+
+.oor-dawgs-hero-title {
+  font-family: var(--font-ui);
+  font-size: 96px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -9.6px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+.oor-dawgs-hero-description-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.oor-dawgs-hero-description {
+  display: flex;
+  flex-direction: column;
+  gap: 89px;
+  width: 100%;
+}
+
+.oor-dawgs-hero-index {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.48px;
+  color: #fff;
+  opacity: 0.6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.oor-dawgs-hero-description-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.oor-dawgs-hero-subtitle {
+  font-family: var(--font-ui);
+  font-size: 32px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -3.2px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+.oor-dawgs-hero-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #fff;
+  margin: 0;
+}
+
+.oor-dawgs-hero-plus-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.oor-dawgs-hero-plus {
+  width: 18px;
+  height: 18px;
+}
+
+.oor-dawgs-hero-plus img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
+}
+
+/* DAWGS Hero Gallery */
+.oor-dawgs-hero-gallery {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 64px;
+  align-items: flex-end;
+}
+
+.oor-dawgs-hero-gallery-item {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.oor-dawgs-gallery-1 {
+  flex-basis: calc((100% - 96px) * 0.22);
+  aspect-ratio: 400 / 455;
+}
+
+.oor-dawgs-gallery-2 {
+  flex-basis: calc((100% - 96px) * 0.18);
+  aspect-ratio: 350 / 324;
+}
+
+.oor-dawgs-gallery-3 {
+  flex-basis: calc((100% - 96px) * 0.25);
+  aspect-ratio: 472 / 487;
+}
+
+.oor-dawgs-gallery-4 {
+  flex-basis: calc((100% - 96px) * 0.18);
+  aspect-ratio: 350 / 255;
+}
+
+.oor-dawgs-gallery-5 {
+  flex-basis: calc((100% - 96px) * 0.17);
+  aspect-ratio: 300 / 205;
+}
+
+.oor-dawgs-hero-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* DAWGS Hero Footer */
+.oor-dawgs-hero-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.oor-dawgs-hero-footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.oor-dawgs-hero-stats {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.oor-dawgs-hero-stats-number {
+  font-family: var(--font-ui);
+  font-size: 56px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -5.6px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.oor-dawgs-hero-stats-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #fff;
+  max-width: 258px;
+}
+
+.oor-dawgs-hero-footer-right {
+  display: flex;
+  align-items: center;
+}
+
+.oor-dawgs-hero-sponsors {
+  display: flex;
+  gap: 64px;
+  align-items: center;
+}
+
+.oor-dawgs-sponsor-1,
+.oor-dawgs-sponsor-2 {
+  display: flex;
+  align-items: center;
+}
+
+.oor-dawgs-sponsor-1 img,
+.oor-dawgs-sponsor-2 img {
+  height: auto;
+  max-height: 60px;
+  width: auto;
+}
+
+/* DAWGS Team Section */
+.oor-dawgs-team-section {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.oor-dawgs-team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.oor-dawgs-team-title {
+  font-family: var(--font-ui);
+  font-size: 30px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -1.2px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-dawgs-team-plus {
+  width: 18px;
+  height: 18px;
+}
+
+.oor-dawgs-team-plus img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0);
+}
+
+/* DAWGS Team Grid */
+.oor-dawgs-team-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.oor-dawgs-team-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 44px;
+}
+
+.oor-dawgs-team-member {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.oor-dawgs-team-member-image {
+  width: 100%;
+  height: 273px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-dawgs-team-member-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oor-dawgs-team-member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.oor-dawgs-team-member-name {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 700;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+}
+
+.oor-dawgs-team-member-role {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+}
+
 
 
