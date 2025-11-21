@@ -375,7 +375,7 @@ body.oor-studio-page .oor-btn-small-icon img {
   line-height:100%;
   letter-spacing: -0.630rem;
   text-transform:uppercase;
-  margin:0;
+  margin:0 0 24px 0;
 }
 
 .oor-hero-year{
@@ -3238,7 +3238,7 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   letter-spacing: -9.6px;
   text-transform: uppercase;
   color: #fff;
-  margin: 0;
+  margin: 0 0 24px 0;
 }
 
 .oor-studio-hero-index {
@@ -3934,7 +3934,7 @@ body.oor-dawgs-page .oor-btn-small-icon img {
   letter-spacing: -9.6px;
   text-transform: uppercase;
   color: #fff;
-  margin: 0;
+  margin: 0 0 24px 0;
 }
 
 .oor-dawgs-hero-description-wrapper {
