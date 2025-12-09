@@ -5119,5 +5119,767 @@ body.oor-artists-page .oor-btn-small-icon img {
   margin: 0;
 }
 
+/* ===== MANIFEST PAGE STYLES ===== */
+
+/* Manifest page - white header */
+body.oor-manifest-page .oor-header {
+  background: #fff !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate;
+}
+
+body.oor-manifest-page .oor-logo img {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-manifest-page .oor-nav-link,
+body.oor-manifest-page .oor-nav-item > span {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-manifest-page .oor-btn-small-text {
+  color: #000 !important;
+}
+
+body.oor-manifest-page .oor-btn-small-icon img {
+  filter: none !important;
+}
+
+/* Hero */
+.oor-manifest-hero {
+  background: #fff;
+  padding: 80px 0 48px;
+  position: relative;
+}
+
+.oor-manifest-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.oor-manifest-hero-title {
+  font-family: var(--font-ui);
+  font-size: 96px;
+  line-height: 110%;
+  font-weight: 300;
+  letter-spacing: -9.6px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+  max-width: 900px;
+}
+
+.oor-manifest-hero-plus-top-right {
+  width: 18px;
+  height: 18px;
+  margin-top: 12px;
+}
+
+.oor-manifest-hero-plus-top-right img {
+  width: 100%;
+  height: 100%;
+}
+
+.oor-manifest-hero-image-wrapper {
+  width: 100%;
+  height: 668px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 24px;
+}
+
+.oor-manifest-hero-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-manifest-hero-overlay {
+  position: absolute;
+  top: 50%;
+  left: 80px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.oor-manifest-hero-card {
+  width: 227px;
+  height: 225px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-manifest-hero-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-manifest-hero-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 400;
+  letter-spacing: -0.28px;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 2px 9px rgba(0, 0, 0, 0.4);
+}
+
+/* Manifest section */
+.oor-manifest-section {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.oor-manifest-section-inner {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 64px;
+  align-items: flex-start;
+}
+
+.oor-manifest-section-label {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.24px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.oor-manifest-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.oor-manifest-section-title {
+  font-family: var(--font-ui);
+  font-size: 48px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-manifest-section-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 497px;
+}
+
+.oor-manifest-section-text p {
+  margin: 0;
+}
+
+/* CEO section */
+.oor-manifest-ceo-section {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.oor-manifest-ceo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.oor-manifest-ceo-label {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.24px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.oor-manifest-ceo-plus {
+  width: 18px;
+  height: 18px;
+}
+
+.oor-manifest-ceo-plus img {
+  width: 100%;
+  height: 100%;
+}
+
+.oor-manifest-ceo-quote {
+  font-family: var(--font-ui);
+  font-size: 48px;
+  line-height: 110%;
+  font-weight: 300;
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0 0 66px 0;
+  text-align: center;
+}
+
+.oor-manifest-ceo-content {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 64px;
+  position: relative;
+}
+
+.oor-manifest-ceo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 428px;
+}
+
+.oor-manifest-ceo-name {
+  font-family: var(--font-ui);
+  font-size: 24px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.96px;
+  color: #000;
+}
+
+.oor-manifest-ceo-role {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.56px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.oor-manifest-ceo-description {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.oor-manifest-ceo-description p {
+  margin: 0;
+}
+
+.oor-manifest-ceo-link {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 120%;
+  font-weight: 400;
+  letter-spacing: -0.56px;
+  color: #000;
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+.oor-manifest-ceo-image {
+  width: 411px;
+  height: 532px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.oor-manifest-ceo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-manifest-ceo-plus-bottom {
+  position: absolute;
+  bottom: -10px;
+  right: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.oor-manifest-ceo-plus-bottom img {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== ARTISTS PAGE STYLES ===== */
+
+/* Artists page - black header */
+body.oor-artists-page .oor-header {
+  background: #000 !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate;
+}
+
+body.oor-artists-page .oor-logo img {
+  mix-blend-mode: normal !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+body.oor-artists-page .oor-nav-link {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artists-page .oor-nav-link--active {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artists-page .oor-nav-item > span {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artists-page .oor-btn-small {
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artists-page .oor-btn-small-text {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artists-page .oor-btn-small-icon {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-artists-page .oor-btn-small-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+/* Artists Hero Section */
+.oor-artists-hero {
+  background: #fff;
+  padding-top: 80px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #000;
+}
+
+.oor-artists-hero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.oor-artists-hero-title {
+  font-family: var(--font-ui);
+  font-size: 96px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -8.64px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-artists-hero-copyright {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.32px;
+  color: #000;
+  margin: 0;
+}
+
+/* Artists Grid Section */
+.oor-artists-grid-section {
+  background: #fff;
+  padding: 63px 0 80px;
+}
+
+.oor-artists-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 44px 44px;
+  width: 100%;
+}
+
+.oor-artist-card {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.oor-artist-image {
+  width: 100%;
+  height: 273px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-artist-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-artist-name {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+}
+
+/* ===== MANIFEST PAGE STYLES ===== */
+
+.oor-manifest-hero {
+  background: #fff;
+  padding: 64px 0 32px;
+}
+
+.oor-manifest-hero-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.oor-manifest-hero-plus {
+  width: 18px;
+  height: 18px;
+  margin-top: 8px;
+}
+
+.oor-manifest-hero-plus img {
+  width: 100%;
+  height: 100%;
+}
+
+.oor-manifest-hero-title {
+  font-family: var(--font-ui);
+  font-size: 96px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -9.6px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0 0 24px 0;
+  max-width: 940px;
+}
+
+.oor-manifest-hero-image {
+  position: relative;
+  width: 100%;
+  height: 640px;
+  overflow: hidden;
+}
+
+.oor-manifest-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-manifest-hero-label {
+  position: absolute;
+  left: 32px;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 48px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.oor-manifest-hero-caption {
+  position: absolute;
+  right: 40px;
+  bottom: 32px;
+  max-width: 380px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 2px 9px rgba(0, 0, 0, 0.4);
+}
+
+.oor-manifest-banner-section {
+  background: #fff;
+}
+
+.oor-manifest-banner {
+  position: relative;
+  width: 100%;
+  height: 668px;
+  overflow: hidden;
+}
+
+.oor-manifest-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-manifest-banner-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 48px;
+}
+
+.oor-manifest-banner-group {
+  width: 227px;
+  height: 225px;
+  object-fit: contain;
+}
+
+.oor-manifest-banner-text {
+  max-width: 521px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 400;
+  letter-spacing: -0.28px;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 2px 9px rgba(0, 0, 0, 0.4);
+}
+
+.oor-manifest-text-section {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.oor-manifest-text-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.oor-manifest-text-label {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.oor-manifest-text-index {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.24px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.oor-manifest-text-line {
+  width: 18px;
+  height: 18px;
+}
+
+.oor-manifest-text-line img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0);
+}
+
+.oor-manifest-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.oor-manifest-text-title {
+  font-family: var(--font-ui);
+  font-size: 48px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-manifest-text-body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+  max-width: 520px;
+}
+
+.oor-manifest-ceo-section {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.oor-manifest-ceo-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 66px;
+}
+
+.oor-manifest-ceo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.oor-manifest-ceo-index {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.24px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.oor-manifest-ceo-plus {
+  width: 18px;
+  height: 18px;
+}
+
+.oor-manifest-ceo-plus img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0);
+}
+
+.oor-manifest-ceo-quote {
+  font-family: var(--font-ui);
+  font-size: 48px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  color: #000;
+  text-align: center;
+  margin: 0;
+}
+
+.oor-manifest-ceo-content {
+  display: grid;
+  grid-template-columns: 1fr 411px;
+  gap: 64px;
+  align-items: end;
+  position: relative;
+}
+
+.oor-manifest-ceo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 520px;
+}
+
+.oor-manifest-ceo-name {
+  font-family: var(--font-ui);
+  font-size: 24px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.96px;
+  color: #000;
+}
+
+.oor-manifest-ceo-role {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.56px;
+  color: #000;
+}
+
+.oor-manifest-ceo-body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+}
+
+.oor-manifest-ceo-link {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.56px;
+  color: #000;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  width: fit-content;
+}
+
+.oor-manifest-ceo-image {
+  width: 411px;
+  height: 532px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-manifest-ceo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-manifest-ceo-plus-right {
+  position: absolute;
+  right: -32px;
+  bottom: 16px;
+  width: 18px;
+  height: 18px;
+}
+
+.oor-manifest-ceo-plus-right img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0);
+}
+
 
 

@@ -10,7 +10,7 @@ const { readFileSync, writeFileSync } = require('fs');
 const { resolve } = require('path');
 
 const ROOT = resolve(__dirname, '..');
-const TARGET_FILES = ['index.html', 'studio.html', 'dawgs.html', 'events.html', 'talk-show.html', 'artists.html'].map((file) =>
+const TARGET_FILES = ['index.html', 'studio.html', 'dawgs.html', 'events.html', 'talk-show.html', 'artists.html', 'manifest.html'].map((file) =>
   resolve(ROOT, file)
 );
 
