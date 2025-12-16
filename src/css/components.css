@@ -4597,400 +4597,6 @@ body.oor-talk-show-page .oor-btn-small-icon img {
   opacity: 1 !important;
 }
 
-/* Talk Show Hero Section */
-.oor-talk-show-hero {
-  background: #000;
-  padding-top: 80px;
-  padding-bottom: 80px;
-  position: relative;
-}
-
-.oor-talk-show-hero-grid {
-  position: relative;
-  align-items: flex-start;
-  margin-bottom: 64px;
-}
-
-.oor-talk-show-hero-title {
-  font-family: var(--font-ui);
-  font-size: 112px;
-  line-height: 100%;
-  font-weight: 300;
-  letter-spacing: -11.2px;
-  text-transform: uppercase;
-  color: #fff;
-  margin: 0 0 24px 0;
-}
-
-.oor-talk-show-hero-index {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  line-height: 120%;
-  font-weight: 300;
-  letter-spacing: -0.48px;
-  color: #fff;
-  opacity: 0.6;
-  text-align: right;
-}
-
-/* Talk Show Hero Content */
-.oor-talk-show-hero-content {
-  display: flex;
-  gap: 25px;
-  align-items: flex-start;
-  position: relative;
-}
-
-.oor-talk-show-hero-video-large {
-  width: 700px;
-  height: 262px;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.oor-talk-show-hero-video-small-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: flex-start;
-}
-
-.oor-talk-show-hero-video-small {
-  width: 321px;
-  height: 179px;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.oor-talk-show-hero-description {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  line-height: 140%;
-  font-weight: 300;
-  letter-spacing: -0.28px;
-  color: #fff;
-  margin: 0;
-  max-width: 265px;
-}
-
-.oor-talk-show-hero-plus-top-right {
-  position: absolute;
-  top: 80px;
-  right: var(--container-x);
-  width: 18px;
-  height: 18px;
-  z-index: 2;
-}
-
-.oor-talk-show-hero-plus-top-right img {
-  width: 100%;
-  height: 100%;
-  filter: brightness(0) invert(1);
-}
-
-/* Talk Show Episodes Section */
-.oor-talk-show-episodes-section {
-  background: #000;
-  padding: 80px 0;
-  position: relative;
-}
-
-.oor-talk-show-episodes-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 55px;
-  position: relative;
-}
-
-.oor-talk-show-episodes-index {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  line-height: 120%;
-  font-weight: 300;
-  letter-spacing: -0.48px;
-  color: #fff;
-  opacity: 0.6;
-}
-
-.oor-talk-show-episodes-plus-top-right {
-  width: 18px;
-  height: 18px;
-}
-
-.oor-talk-show-episodes-plus-top-right img {
-  width: 100%;
-  height: 100%;
-  filter: brightness(0) invert(1);
-}
-
-/* Talk Show Episodes Grid */
-.oor-talk-show-episodes-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
-  margin-bottom: 48px;
-  width: 100%;
-}
-
-@media (min-width: 1440px) {
-  .oor-talk-show-episodes-grid {
-    gap: calc((100% - (319px * 4)) / 3);
-  }
-}
-
-.oor-talk-show-episode-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.oor-talk-show-episode-image {
-  width: 100%;
-  height: 240px;
-  position: relative;
-  overflow: hidden;
-}
-
-.oor-talk-show-episode-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.oor-talk-show-episode-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
-  pointer-events: none;
-}
-
-.oor-talk-show-episode-play-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
-  z-index: 2;
-}
-
-.oor-talk-show-episode-play-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.oor-talk-show-episode-title {
-  position: absolute;
-  bottom: 36px;
-  left: 16px;
-  font-family: var(--font-ui);
-  font-size: 12px;
-  line-height: 140%;
-  font-weight: 300;
-  letter-spacing: 0;
-  color: #fff;
-  margin: 0;
-  max-width: 192px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.oor-talk-show-episodes-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.oor-talk-show-episodes-more {
-  font-family: var(--font-ui);
-  font-size: 16px;
-  line-height: 140%;
-  font-weight: 300;
-  letter-spacing: 0;
-  color: #fff;
-  text-decoration: underline;
-  text-underline-position: from-font;
-}
-
-.oor-talk-show-episodes-counter {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  line-height: 120%;
-  font-weight: 300;
-  letter-spacing: -0.48px;
-  color: #fff;
-  opacity: 0.6;
-}
-
-/* Talk Show Rules Section */
-.oor-talk-show-rules-section {
-  background: #fff;
-  padding: 80px 0;
-}
-
-.oor-talk-show-rules-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 48px;
-}
-
-.oor-talk-show-rules-title-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.oor-talk-show-rules-title {
-  font-family: var(--font-ui);
-  font-size: 30px;
-  line-height: 120%;
-  font-weight: 300;
-  letter-spacing: -1.2px;
-  text-transform: uppercase;
-  color: #000;
-  margin: 0;
-}
-
-.oor-talk-show-rules-description {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  line-height: 140%;
-  font-weight: 300;
-  letter-spacing: -0.28px;
-  color: #000;
-  margin: 0;
-  max-width: 439px;
-  white-space: pre-wrap;
-}
-
-.oor-talk-show-rules-index-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 24px;
-}
-
-.oor-talk-show-rules-index {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  line-height: 120%;
-  font-weight: 300;
-  letter-spacing: -0.48px;
-  color: #000;
-}
-
-.oor-talk-show-rules-plus {
-  width: 18px;
-  height: 18px;
-}
-
-.oor-talk-show-rules-plus img {
-  width: 100%;
-  height: 100%;
-  filter: brightness(0);
-}
-
-/* Talk Show Rules Content */
-.oor-talk-show-rules-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: start;
-  position: relative;
-}
-
-.oor-talk-show-rules-text {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 439px;
-}
-
-.oor-talk-show-rules-participants-title {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  line-height: 140%;
-  font-weight: 700;
-  letter-spacing: -0.28px;
-  color: #000;
-  margin: 0;
-}
-
-.oor-talk-show-rules-participants-list {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  line-height: 140%;
-  font-weight: 300;
-  letter-spacing: -0.28px;
-  color: #000;
-  margin: 0;
-}
-
-/* Talk Show Participants Grid */
-.oor-talk-show-rules-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  width: 308px;
-  margin-left: auto;
-  grid-auto-rows: min-content;
-}
-
-/* First 3 participants in left column, last 2 in right column */
-.oor-talk-show-participant-card:nth-child(1) {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.oor-talk-show-participant-card:nth-child(2) {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-.oor-talk-show-participant-card:nth-child(3) {
-  grid-column: 1;
-  grid-row: 3;
-}
-
-.oor-talk-show-participant-card:nth-child(4) {
-  grid-column: 2;
-  grid-row: 1;
-}
-
-.oor-talk-show-participant-card:nth-child(5) {
-  grid-column: 2;
-  grid-row: 2;
-}
-
-.oor-talk-show-participant-card {
-  position: relative;
-}
-
-.oor-talk-show-participant-image {
-  width: 100%;
-  height: 288px;
-  position: relative;
-  overflow: hidden;
-}
-
-.oor-talk-show-participant-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
 /* ===== ARTISTS PAGE STYLES ===== */
 
 /* Artists page - black header */
@@ -5833,6 +5439,472 @@ body.oor-services-page .oor-btn-small-icon img {
 .oor-services-recording-image .oor-parallax-wrap {
   width: 100% !important;
   height: 100% !important;
+}
+
+/* ===== TALK SHOW PAGE STYLES ===== */
+
+/* Talk Show page - black header */
+body.oor-talk-show-page {
+  background: #000;
+}
+
+body.oor-talk-show-page .oor-header {
+  background: #000 !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate;
+}
+
+body.oor-talk-show-page .oor-logo img {
+  mix-blend-mode: normal !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+body.oor-talk-show-page .oor-nav-link {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-talk-show-page .oor-nav-item span {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-talk-show-page .oor-btn-small {
+  border-color: #fff !important;
+  color: #fff !important;
+}
+
+body.oor-talk-show-page .oor-btn-small-icon img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Hero Section */
+.oor-talk-show-hero {
+  background: #000;
+  padding-top: 97px;
+  padding-bottom: 48px;
+  position: relative;
+  min-height: 603px;
+}
+
+.oor-talk-show-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.oor-talk-show-hero-left {
+  max-width: 700px;
+}
+
+.oor-talk-show-hero-title {
+  font-family: var(--font-ui);
+  font-size: 112px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -11.2px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+.oor-talk-show-hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  width: 321px;
+  flex-shrink: 0;
+}
+
+.oor-talk-show-hero-video-small {
+  width: 321px;
+  height: 179px;
+  overflow: hidden;
+  position: relative;
+}
+
+.oor-talk-show-hero-video-small video,
+.oor-talk-show-hero-video-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oor-talk-show-hero-description {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #fff;
+  margin: 0;
+  max-width: 265px;
+}
+
+.oor-talk-show-hero-bottom {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.oor-talk-show-hero-video-large {
+  width: 700px;
+  height: 262px;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.oor-talk-show-hero-video-large video,
+.oor-talk-show-hero-video-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oor-talk-show-hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-talk-show-hero-line {
+  position: absolute;
+  bottom: 48px;
+  right: 48px;
+  width: 18px;
+  height: 1px;
+}
+
+.oor-talk-show-hero-line img {
+  filter: brightness(0) invert(1);
+  opacity: 0.6;
+}
+
+/* Episodes Section */
+.oor-talk-show-episodes {
+  background: #000;
+  padding: 60px 0 86px;
+  position: relative;
+}
+
+.oor-talk-show-episodes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 55px;
+  position: relative;
+}
+
+.oor-talk-show-episodes-index {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.48px;
+  color: #fff;
+  text-align: center;
+}
+
+.oor-talk-show-episodes-plus-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+}
+
+.oor-talk-show-episodes-plus-center img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
+}
+
+.oor-talk-show-episodes-plus-right {
+  width: 18px;
+  height: 18px;
+}
+
+.oor-talk-show-episodes-plus-right img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
+}
+
+.oor-talk-show-episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.oor-talk-show-episode-card {
+  display: block;
+  text-decoration: none;
+  position: relative;
+}
+
+.oor-talk-show-episode-image {
+  width: 100%;
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oor-talk-show-episode-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.oor-talk-show-episode-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+  pointer-events: none;
+}
+
+.oor-talk-show-episode-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 2;
+}
+
+.oor-talk-show-episode-play img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Hover states for episode cards */
+.oor-talk-show-episode-card:hover .oor-talk-show-episode-image img {
+  transform: scale(1.05);
+  filter: brightness(0.7);
+}
+
+.oor-talk-show-episode-card:hover .oor-talk-show-episode-play {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.oor-talk-show-episode-title {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 300;
+  letter-spacing: 0;
+  color: #fff;
+  margin: 16px 0 0;
+  padding: 0 16px;
+}
+
+.oor-talk-show-episodes-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.oor-talk-show-episodes-more {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 300;
+  letter-spacing: 0;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  transition: text-decoration 0.3s ease;
+}
+
+.oor-talk-show-episodes-more:hover {
+  text-decoration: none;
+}
+
+.oor-talk-show-episodes-counter {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.48px;
+  color: #fff;
+  text-align: center;
+}
+
+/* Rules Section - Parallax Scroll */
+.oor-talk-show-rules {
+  background: #fff;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.oor-talk-show-rules-wrapper {
+  height: 100%;
+  padding-top: 64px;
+  padding-bottom: 0;
+  box-sizing: border-box;
+}
+
+.oor-talk-show-rules-header {
+  margin-bottom: 64px;
+}
+
+.oor-talk-show-rules-index {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.48px;
+  color: #000;
+  text-align: left;
+}
+
+.oor-talk-show-rules-content {
+  display: flex;
+  gap: 64px;
+  align-items: flex-start;
+  height: calc(100vh - 64px - 14px - 64px);
+}
+
+.oor-talk-show-rules-left {
+  width: 50%;
+  padding-top: 0;
+  padding-right: 64px;
+}
+
+.oor-talk-show-rules-title {
+  font-family: var(--font-ui);
+  font-size: 30px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -1.2px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0 0 64px;
+}
+
+.oor-talk-show-rules-line,
+.oor-talk-show-rules-line-2 {
+  width: 18px;
+  height: 1px;
+  margin-bottom: 64px;
+}
+
+.oor-talk-show-rules-line img,
+.oor-talk-show-rules-line-2 img {
+  width: 100%;
+  height: 100%;
+}
+
+.oor-talk-show-rules-description {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0 0 64px;
+  max-width: 439px;
+}
+
+.oor-talk-show-rules-participants {
+  max-width: 439px;
+}
+
+.oor-talk-show-rules-participants-title {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 700;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0 0 8px;
+}
+
+.oor-talk-show-rules-participants-list {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+}
+
+.oor-talk-show-rules-right {
+  width: 50%;
+  display: flex;
+  gap: 24px;
+  height: 100%;
+  overflow: visible;
+}
+
+.oor-talk-show-rules-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+  will-change: transform;
+}
+
+.oor-talk-show-rules-col-1 {
+  padding-top: 0;
+}
+
+.oor-talk-show-rules-col-2 {
+  padding-top: 136px;
+}
+
+.oor-talk-show-participant-card {
+  width: 100%;
+  aspect-ratio: 308 / 288;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.oor-talk-show-participant-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Footer plus icons for talk-show */
+.oor-footer-plus-left,
+.oor-footer-plus-right,
+.oor-footer-plus-bottom {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+
+.oor-footer-plus-left {
+  top: 0;
+  left: 0;
+}
+
+.oor-footer-plus-right {
+  top: 0;
+  right: 0;
+}
+
+.oor-footer-plus-bottom {
+  bottom: 0;
+  left: 0;
+}
+
+.oor-footer-plus-left img,
+.oor-footer-plus-right img,
+.oor-footer-plus-bottom img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
 }
 
 

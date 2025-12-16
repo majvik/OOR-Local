@@ -250,6 +250,9 @@ function initParallaxImages() {
     if (img.closest('.oor-studio-content-section')) return false;
     if (img.closest('.oor-studio-equipment-section')) return false;
     if (img.closest('.oor-studio-recording-section')) return false;
+    if (img.closest('.oor-talk-show-hero')) return false;
+    if (img.closest('.oor-talk-show-episodes')) return false;
+    if (img.closest('.oor-talk-show-rules')) return false;
     if (img.classList.contains('no-parallax')) return false;
     return true;
   });
