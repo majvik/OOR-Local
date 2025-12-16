@@ -5637,5 +5637,202 @@ body.oor-artists-page .oor-btn-small-icon img {
   margin: 0;
 }
 
+/* ===== SERVICES PAGE STYLES ===== */
+
+/* Services page - black header */
+body.oor-services-page {
+  background: #000;
+}
+
+body.oor-services-page .oor-header {
+  background: #000 !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate;
+}
+
+body.oor-services-page .oor-logo img {
+  mix-blend-mode: normal !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+body.oor-services-page .oor-nav-link {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-services-page .oor-nav-link--active {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-services-page .oor-nav-item > span {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-services-page .oor-btn-small {
+  mix-blend-mode: normal !important;
+}
+
+body.oor-services-page .oor-btn-small-text {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-services-page .oor-btn-small-icon {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-services-page .oor-btn-small-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+/* Services Hero Section */
+.oor-services-hero {
+  background: #000;
+  padding: 80px 0 0;
+}
+
+.oor-services-hero-title {
+  font-family: var(--font-ui);
+  font-size: 96px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -9.6px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+/* Services Recording Section */
+.oor-services-recording {
+  background: #000;
+  padding: 56px 0 0;
+}
+
+.oor-services-recording-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.oor-services-recording-content {
+  display: flex;
+  gap: 56px;
+  padding: 56px 0;
+  align-items: stretch;
+}
+
+.oor-services-recording-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.oor-services-recording-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.oor-services-recording-item-title {
+  font-family: var(--font-ui);
+  font-size: 22px;
+  line-height: 116%;
+  font-weight: 300;
+  letter-spacing: -0.88px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+.oor-services-recording-item-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.oor-services-recording-item-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.oor-services-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 131px;
+}
+
+.oor-services-contact-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.oor-services-contact-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  color: #fff;
+}
+
+.oor-services-contact-button .tn-atom {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.64px;
+  color: #fff;
+}
+
+.oor-services-contact-button img {
+  width: 32px;
+  height: 32px;
+}
+
+.oor-services-recording-image {
+  width: 644px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  align-self: stretch;
+}
+
+.oor-services-recording-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.15);
+  transform-origin: center center;
+}
+
+.oor-services-recording-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.oor-services-recording-image .oor-parallax-wrap {
+  width: 100% !important;
+  height: 100% !important;
+}
 
 
