@@ -101,8 +101,10 @@
   // Audio Player
   function initPlayer() {
     const audio = new Audio();
+    audio.preload = 'auto'; // Разрешаем seek до старта play
     let currentTrack = null;
     let isPlaying = false;
+    let pendingSeek = null; // Ожидающая перемотка
 
     // Player elements
     const playerPlayPause = document.getElementById('player-play-pause');
@@ -131,11 +133,17 @@
         // Пропускаем клик, если он был по элементам плеера (прогресс-бар, кнопки и т.д.)
         const player = document.querySelector('.oor-artist-player');
         if (player && player.contains(e.target)) {
+          if (window.DEBUG_AUDIO) {
+            console.log('Track click: blocked by player element');
+          }
           return;
         }
         
         // Пропускаем клик, если он был по прогресс-бару или его элементам
         if (playerProgressBar && (playerProgressBar.contains(e.target) || e.target.closest('.oor-artist-player-progress-bar'))) {
+          if (window.DEBUG_AUDIO) {
+            console.log('Track click: blocked by progress bar');
+          }
           return;
         }
         
@@ -190,114 +198,226 @@
       });
     }
 
-    // Progress bar interaction
-    if (playerProgressBar) {
-      // Функция для выполнения перемотки
-      function performSeek(clientX) {
-        if (!playerProgressBar || !audio.src) {
-          return;
+    // Единая функция перемотки - ждет готовности метаданных
+    function seekWhenReady(percentage) {
+      if (!audio.src) {
+        if (window.DEBUG_AUDIO) {
+          console.warn('seekWhenReady: no audio.src');
         }
-        
+        return;
+      }
+
+      // Проверяем, что длительность числовая и конечная
+      const duration = audio.duration;
+      // Используем readyState >= 0 (HAVE_NOTHING) - пытаемся установить currentTime в любом случае
+      // Браузер сам обработает, если данные еще не готовы
+      if (!isNaN(duration) && isFinite(duration) && duration > 0) {
+        const seekTime = percentage * duration;
+        try {
+          audio.currentTime = seekTime;
+          pendingSeek = null;
+          
+          if (window.DEBUG_AUDIO) {
+            console.log('Seek applied:', { seekTime, duration, percentage, readyState: audio.readyState, currentTime: audio.currentTime });
+          }
+        } catch (error) {
+          // Если не удалось установить currentTime, сохраняем для применения позже
+          pendingSeek = percentage;
+          if (window.DEBUG_AUDIO) {
+            console.warn('Seek failed, saved as pending:', error);
+          }
+        }
+      } else {
+        // Если метаданные еще не готовы, сохраняем процент
+        pendingSeek = percentage;
+        // Принудительно вызываем загрузку, если она не началась
+        if (audio.networkState === 0) {
+          audio.load();
+        }
+        // Логирование для отладки (можно убрать в продакшене)
+        if (window.DEBUG_AUDIO) {
+          console.log('Seek pending:', {
+            duration: duration,
+            readyState: audio.readyState,
+            networkState: audio.networkState,
+            percentage: percentage,
+            isNaN: isNaN(duration),
+            isFinite: isFinite(duration)
+          });
+        }
+      }
+    }
+
+    // Обработчик загрузки метаданных - применяет ожидающую перемотку
+    audio.addEventListener('loadedmetadata', function() {
+      if (pendingSeek !== null) {
+        const duration = audio.duration;
+        const savedPendingSeek = pendingSeek; // Сохраняем перед обнулением
+        // Проверяем, что duration валидный и конечный
+        if (!isNaN(duration) && isFinite(duration) && duration > 0) {
+          audio.currentTime = savedPendingSeek * duration;
+          pendingSeek = null;
+          // Логирование для отладки
+          if (window.DEBUG_AUDIO) {
+            console.log('Pending seek applied:', {
+              duration: duration,
+              seekTime: savedPendingSeek * duration,
+              readyState: audio.readyState
+            });
+          }
+        } else if (window.DEBUG_AUDIO) {
+          console.warn('Invalid duration in loadedmetadata:', {
+            duration: duration,
+            isNaN: isNaN(duration),
+            isFinite: isFinite(duration)
+          });
+        }
+      }
+    });
+
+    // Progress bar interaction - полностью переписанная логика
+    if (!playerProgressBar) {
+      console.warn('Progress bar not found!');
+    }
+    
+    if (playerProgressBar) {
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let lastMouseX = 0;
+      let lastMouseY = 0;
+      const DRAG_THRESHOLD = 5; // Порог для различения drag от click (5px)
+      
+      // Функция для вычисления percentage из clientX
+      function getPercentageFromClientX(clientX) {
         const rect = playerProgressBar.getBoundingClientRect();
+        if (rect.width === 0) {
+          if (window.DEBUG_AUDIO) {
+            console.warn('Progress bar width is 0!');
+          }
+          return 0;
+        }
         const x = clientX - rect.left;
         const percentage = Math.max(0, Math.min(x / rect.width, 1));
         
-        // Всегда устанавливаем currentTime - браузер сам обработает
-        if (audio.duration && !isNaN(audio.duration) && audio.duration > 0 && isFinite(audio.duration)) {
-          // Duration загружен - используем его
-          const newTime = percentage * audio.duration;
-          if (!isNaN(newTime) && isFinite(newTime) && newTime >= 0 && newTime <= audio.duration) {
-            audio.currentTime = newTime;
-          }
-        } else {
-          // Duration не загружен - устанавливаем currentTime с примерной длительностью
-          const estimatedDuration = 180; // 3 минуты
-          const estimatedTime = Math.max(0, percentage * estimatedDuration);
-          audio.currentTime = estimatedTime;
-          
-          // Ждем загрузки метаданных для точной перемотки
-          const seekHandler = function() {
-            if (audio.duration && !isNaN(audio.duration) && audio.duration > 0 && isFinite(audio.duration)) {
-              const newTime = percentage * audio.duration;
-              if (!isNaN(newTime) && isFinite(newTime) && newTime >= 0 && newTime <= audio.duration) {
-                audio.currentTime = newTime;
-              }
-            }
-          };
-          audio.addEventListener('loadedmetadata', seekHandler, { once: true });
+        if (window.DEBUG_AUDIO) {
+          console.log('getPercentageFromClientX:', { clientX, rectLeft: rect.left, rectWidth: rect.width, x, percentage });
         }
-      }
-      
-      // Handle dragging
-      let isDragging = false;
-      let dragStartX = 0;
-      let hasMoved = false;
-
-      if (playerHandle) {
-        playerHandle.addEventListener('mousedown', function(e) {
-          isDragging = true;
-          hasMoved = false;
-          dragStartX = e.clientX;
-          e.preventDefault();
-          e.stopPropagation();
-        });
+        
+        return percentage;
       }
 
-      // Обработчик клика по прогресс-бару
+      // Клик по прогресс-бару
       playerProgressBar.addEventListener('click', function(e) {
-        // Пропускаем, если клик был по handle
+        // Пропускаем клик по handle
         if (playerHandle && (e.target === playerHandle || playerHandle.contains(e.target))) {
+          if (window.DEBUG_AUDIO) {
+            console.log('Click on handle, skipping');
+          }
+          return;
+        }
+        
+        // Проверяем, был ли реальный drag по расстоянию движения
+        const deltaX = Math.abs(e.clientX - dragStartX);
+        const deltaY = Math.abs(e.clientY - dragStartY);
+        const wasRealDrag = (dragStartX !== 0 || dragStartY !== 0) && (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD);
+        
+        if (wasRealDrag) {
+          if (window.DEBUG_AUDIO) {
+            console.log('Was real drag, skipping click:', { deltaX, deltaY, dragStartX, dragStartY });
+          }
           return;
         }
         
         e.stopPropagation();
-        performSeek(e.clientX);
-      });
+        e.preventDefault();
+        const percentage = getPercentageFromClientX(e.clientX);
+        
+        if (window.DEBUG_AUDIO) {
+          console.log('Progress bar clicked:', { percentage, clientX: e.clientX, wasRealDrag });
+        }
+        
+        seekWhenReady(percentage);
+      }, true); // Используем capture phase для надежности
       
-      // Обработчик клика по fill
+      // Клик по fill (дополнительный обработчик)
       if (playerProgress) {
         playerProgress.addEventListener('click', function(e) {
-          e.stopPropagation();
-          performSeek(e.clientX);
-        });
-      }
-
-      document.addEventListener('mousemove', function(e) {
-        if (isDragging && audio.src && playerProgressBar) {
-          // Проверяем, действительно ли произошло движение (больше 5px)
-          if (Math.abs(e.clientX - dragStartX) > 5) {
-            hasMoved = true;
+          // Проверяем, был ли реальный drag
+          const deltaX = Math.abs(e.clientX - dragStartX);
+          const deltaY = Math.abs(e.clientY - dragStartY);
+          const wasRealDrag = (dragStartX !== 0 || dragStartY !== 0) && (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD);
+          
+          if (wasRealDrag) {
+            if (window.DEBUG_AUDIO) {
+              console.log('Progress fill: was real drag, skipping');
+            }
+            return;
           }
           
-          const rect = playerProgressBar.getBoundingClientRect();
-          const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-          const percentage = Math.max(0, Math.min(x / rect.width, 1));
+          e.stopPropagation();
+          e.preventDefault();
+          const percentage = getPercentageFromClientX(e.clientX);
           
-          if (audio.duration && !isNaN(audio.duration) && audio.duration > 0 && isFinite(audio.duration)) {
-            const newTime = percentage * audio.duration;
-            if (!isNaN(newTime) && isFinite(newTime) && newTime >= 0 && newTime <= audio.duration) {
-              audio.currentTime = newTime;
+          if (window.DEBUG_AUDIO) {
+            console.log('Progress fill clicked:', { percentage, clientX: e.clientX });
+          }
+          
+          seekWhenReady(percentage);
+        }, true); // Используем capture phase
+      }
+
+      // Drag для handle и прогресс-бара
+      playerProgressBar.addEventListener('mousedown', function(e) {
+        // Пропускаем клик по handle (он обрабатывается отдельно)
+        if (playerHandle && (e.target === playerHandle || playerHandle.contains(e.target))) {
+          return;
+        }
+        
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        
+        if (window.DEBUG_AUDIO) {
+          console.log('Mouse down on progress bar:', { dragStartX, dragStartY });
+        }
+      });
+
+      // Drag обработка
+      document.addEventListener('mousemove', function(e) {
+        if (dragStartX !== 0 && dragStartY !== 0 && audio.src) {
+          const deltaX = Math.abs(e.clientX - dragStartX);
+          const deltaY = Math.abs(e.clientY - dragStartY);
+          
+          // Если движение больше порога - это drag
+          if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
+            // Добавляем проверку, чтобы не перегружать API
+            if (!audio.seeking) {
+              const percentage = getPercentageFromClientX(e.clientX);
+              seekWhenReady(percentage);
             }
-          } else {
-            // Duration не загружен - используем примерную длительность
-            const estimatedDuration = 180;
-            const estimatedTime = Math.max(0, percentage * estimatedDuration);
-            audio.currentTime = estimatedTime;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
           }
         }
       });
 
       document.addEventListener('mouseup', function(e) {
-        // Сбрасываем hasMoved только если это был реальный drag
-        if (isDragging && hasMoved) {
-          // Не обрабатываем клик после drag
+        if (dragStartX !== 0 || dragStartY !== 0) {
+          if (window.DEBUG_AUDIO) {
+            const deltaX = Math.abs(e.clientX - dragStartX);
+            const deltaY = Math.abs(e.clientY - dragStartY);
+            console.log('Mouse up:', { dragStartX, dragStartY, deltaX, deltaY, wasDrag: deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD });
+          }
+          
+          // Сбрасываем флаги с небольшой задержкой, чтобы клик успел обработаться
           setTimeout(function() {
-            hasMoved = false;
-          }, 0);
-        } else {
-          hasMoved = false;
+            dragStartX = 0;
+            dragStartY = 0;
+            lastMouseX = 0;
+            lastMouseY = 0;
+          }, 100);
         }
-        isDragging = false;
       });
     }
 
@@ -452,29 +572,40 @@
       // Update player
       // Важно: сначала останавливаем текущее воспроизведение
       audio.pause();
-      audio.currentTime = 0;
+      
+      // Сбрасываем pendingSeek
+      pendingSeek = null;
+      
+      // Устанавливаем новый src
       audio.src = src;
+      
       if (playerTrackName) {
         playerTrackName.textContent = name;
       }
       
-      // Ждем загрузки метаданных для получения duration
+      // Загружаем аудио для получения метаданных
+      audio.load();
+      
+      // Ждем загрузки метаданных перед воспроизведением
       const metadataHandler = function() {
+        // Сбрасываем currentTime только один раз после загрузки метаданных
+        audio.currentTime = 0;
+        
         if (playerTime && audio.duration) {
           playerTime.textContent = formatTime(0) + ' / ' + formatTime(audio.duration);
         }
+        
+        // Только после загрузки метаданных начинаем воспроизведение
+        audio.play().then(function() {
+          isPlaying = true;
+          updatePlayPauseButton();
+        }).catch(function(error) {
+          console.error('Error playing audio:', error);
+          isPlaying = false;
+          updatePlayPauseButton();
+        });
       };
       audio.addEventListener('loadedmetadata', metadataHandler, { once: true });
-
-      // Play audio
-      audio.play().then(function() {
-        isPlaying = true;
-        updatePlayPauseButton();
-      }).catch(function(error) {
-        console.error('Error playing audio:', error);
-        isPlaying = false;
-        updatePlayPauseButton();
-      });
     }
 
     function playTrack() {
@@ -557,5 +688,24 @@
     audio.volume = 1;
     savedVolume = 1;
     updateVolumeDisplay(1);
+    
+    // Экспорт для тестирования (только в dev режиме)
+    if (window.DEBUG_AUDIO) {
+      window.testAudioSeek = function(percentage) {
+        console.log('Test seek to:', percentage);
+        seekWhenReady(percentage);
+      };
+      window.getAudioState = function() {
+        return {
+          src: audio.src,
+          duration: audio.duration,
+          currentTime: audio.currentTime,
+          readyState: audio.readyState,
+          networkState: audio.networkState,
+          seeking: audio.seeking,
+          pendingSeek: pendingSeek
+        };
+      };
+    }
   }
 })();
