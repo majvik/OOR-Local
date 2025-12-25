@@ -455,7 +455,6 @@ function initRevealOnScroll() {
   if (window.innerWidth <= 1024) return;
 
   const selectors = [
-    '.oor-hero-content',
     '.slider-section',
     '.oor-musical-association-left',
     '.oor-musical-association-right',
@@ -468,7 +467,20 @@ function initRevealOnScroll() {
     '.oor-events-text',
     '.oor-events-media',
     '.oor-merch-text',
-    '.oor-merch-images-grid'
+    '.oor-merch-images-grid',
+    // Manifest page (hero excluded - верх страницы не анимируется)
+    '.oor-manifest-section-inner',
+    '.oor-manifest-ceo-content',
+    // Studio page (hero excluded - верх страницы не анимируется)
+    '.oor-studio-content',
+    '.oor-studio-equipment-wrapper',
+    '.oor-studio-services-grid',
+    '.oor-studio-recording-grid',
+    // Talk-show page (hero excluded - верх страницы не анимируется)
+    '.oor-talk-show-episodes-grid',
+    '.oor-talk-show-rules-content',
+    // Events page (hero excluded - верх страницы не анимируется)
+    '.oor-events-listing-grid'
   ];
 
   let nodes = selectors
@@ -514,7 +526,15 @@ function initRevealOnScroll() {
     ['.oor-musical-association-left', '.oor-musical-association-right'],
     ['.oor-challenge-left', '.oor-challenge-right'],
     ['.oor-challenge-2-left', '.oor-challenge-2-good-works'],
-    ['.oor-events-text', '.oor-events-media']
+    ['.oor-events-text', '.oor-events-media'],
+    // Manifest page (hero excluded)
+    ['.oor-manifest-section-left', '.oor-manifest-section-content'],
+    ['.oor-manifest-ceo-text', '.oor-manifest-ceo-image'],
+    // Studio page
+    ['.oor-studio-content-left', '.oor-studio-content-right'],
+    ['.oor-studio-recording-image', '.oor-studio-recording-list'],
+    // Talk-show page (hero excluded)
+    ['.oor-talk-show-rules-left', '.oor-talk-show-rules-right']
   ];
   const STAGGER_DELAY_MS = 200;
   staggerPairs.forEach(([firstSel, secondSel]) => {
