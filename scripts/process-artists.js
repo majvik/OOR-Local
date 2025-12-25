@@ -316,6 +316,39 @@ async function convertWavToMp3(inputPath, outputPath) {
   });
 }
 
+// Перекодирование MP3 файла для поддержки Accept-Ranges: bytes
+// Гарантирует правильные заголовки ID3v2 в начале файла
+async function reencodeMP3(inputPath, outputPath) {
+  return new Promise((resolve, reject) => {
+    // Убеждаемся, что пути абсолютные
+    const absInputPath = path.isAbsolute(inputPath) ? inputPath : path.resolve(inputPath);
+    const absOutputPath = path.isAbsolute(outputPath) ? outputPath : path.resolve(outputPath);
+    
+    ffmpeg(absInputPath)
+      .audioBitrate(320)
+      .audioCodec('libmp3lame')
+      .outputOptions([
+        '-write_id3v2', '1',
+        '-id3v2_version', '3',
+        '-map_metadata', '0'
+      ])
+      .on('start', (commandLine) => {
+        // Логируем команду только в debug режиме
+        if (process.env.DEBUG) {
+          console.log('    FFmpeg command:', commandLine);
+        }
+      })
+      .on('end', () => {
+        resolve();
+      })
+      .on('error', (err) => {
+        console.error(`    ✗ Ошибка перекодирования:`, err.message);
+        reject(err);
+      })
+      .save(absOutputPath);
+  });
+}
+
 // Обработка артиста
 async function processArtist(artistDir, artistName) {
   const slug = createSlug(artistName);
@@ -358,7 +391,22 @@ async function processArtist(artistDir, artistName) {
     const releaseFolders = await fs.readdir(releasesDir);
     
     for (const releaseFolder of releaseFolders) {
+      // Безопасность: проверяем, что имя папки не содержит опасных символов
+      if (releaseFolder.includes('..') || releaseFolder.includes('/') || releaseFolder.includes('\\')) {
+        console.warn(`    ⚠️  Пропускаем папку релиза с небезопасным именем: ${releaseFolder}`);
+        continue;
+      }
+      
       const releasePath = path.join(releasesDir, releaseFolder);
+      
+      // Безопасность: проверяем, что путь находится внутри директории релизов
+      const resolvedPath = path.resolve(releasePath);
+      const resolvedReleasesDir = path.resolve(releasesDir);
+      if (!resolvedPath.startsWith(resolvedReleasesDir)) {
+        console.warn(`    ⚠️  Пропускаем папку релиза вне директории: ${releaseFolder}`);
+        continue;
+      }
+      
       const stat = await fs.stat(releasePath);
       
       if (!stat.isDirectory()) continue;
@@ -424,6 +472,17 @@ async function processArtist(artistDir, artistName) {
       const mp3Path = path.join(trackDir, 'audio.mp3');
       try {
         await convertWavToMp3(wavPath, mp3Path);
+        // Перекодируем для поддержки Accept-Ranges: bytes
+        // Используем временный файл с расширением .mp3 в той же директории
+        const tempPath = path.join(trackDir, 'audio_temp.mp3');
+        await reencodeMP3(mp3Path, tempPath);
+        // Проверяем, что временный файл создан и не пустой
+        const tempStats = await fs.stat(tempPath);
+        if (tempStats.size === 0) {
+          throw new Error('Временный файл пустой');
+        }
+        await fs.rename(tempPath, mp3Path);
+        console.log(`    ✓ Перекодировано для поддержки range requests`);
       } catch (error) {
         console.error(`    ✗ Ошибка конвертации аудио:`, error.message);
         continue;
@@ -614,8 +673,128 @@ ${pictureTag}
   });
 }
 
+// Перекодирование всех существующих MP3 файлов
+async function reencodeAllMP3() {
+  console.log('🎵 Перекодирование всех MP3 файлов для поддержки Accept-Ranges: bytes\n');
+  
+  const { execSync } = require('child_process');
+  
+  // Проверяем наличие ffmpeg
+  try {
+    execSync('ffmpeg -version', { stdio: 'ignore' });
+  } catch (e) {
+    console.error('❌ ffmpeg не найден. Установите ffmpeg:');
+    console.error('   macOS: brew install ffmpeg');
+    console.error('   Linux: sudo apt-get install ffmpeg');
+    process.exit(1);
+  }
+  
+  // Находим все MP3 файлы
+  async function findMP3Files(dir) {
+    const files = [];
+    async function walkDir(currentPath) {
+      const entries = await fs.readdir(currentPath, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = path.join(currentPath, entry.name);
+        if (entry.isDirectory()) {
+          await walkDir(fullPath);
+        } else if (entry.isFile() && entry.name.endsWith('.mp3')) {
+          files.push(fullPath);
+        }
+      }
+    }
+    await walkDir(dir);
+    return files;
+  }
+  
+  const mp3Files = await findMP3Files(ASSETS_DIR);
+  console.log(`📂 Найдено MP3 файлов: ${mp3Files.length}\n`);
+  
+  if (mp3Files.length === 0) {
+    console.log('✅ MP3 файлы не найдены');
+    return;
+  }
+  
+  let successCount = 0;
+  let errorCount = 0;
+  
+  // Создаем временную директорию для перекодирования
+  const tempDir = path.join(PROJECT_ROOT, 'temp_mp3_reencode');
+  await fs.mkdir(tempDir, { recursive: true });
+  
+  for (let i = 0; i < mp3Files.length; i++) {
+    const mp3Path = mp3Files[i];
+    const relativePath = path.relative(ASSETS_DIR, mp3Path);
+    console.log(`[${i + 1}/${mp3Files.length}] ${relativePath}`);
+    
+    // Используем временный файл с расширением .mp3 в отдельной директории
+    const tempFileName = `temp_${i}_${path.basename(mp3Path)}`;
+    const tempPath = path.join(tempDir, tempFileName);
+    
+    try {
+      await reencodeMP3(mp3Path, tempPath);
+      // Проверяем, что временный файл создан и не пустой
+      const tempStats = await fs.stat(tempPath);
+      if (tempStats.size === 0) {
+        throw new Error('Временный файл пустой');
+      }
+      // Заменяем оригинальный файл
+      await fs.rename(tempPath, mp3Path);
+      console.log(`   ✅ Перекодирован успешно`);
+      successCount++;
+    } catch (error) {
+      console.error(`   ❌ Ошибка: ${error.message}`);
+      // Удаляем временный файл, если он был создан
+      try {
+        await fs.access(tempPath);
+        await fs.unlink(tempPath);
+      } catch {
+        // Файл не существует, ничего не делаем
+      }
+      errorCount++;
+    }
+    console.log('');
+  }
+  
+  // Удаляем временную директорию
+  try {
+    const files = await fs.readdir(tempDir);
+    // Если директория пустая, удаляем её
+    if (files.length === 0) {
+      await fs.rmdir(tempDir);
+    } else {
+      // Если есть файлы, удаляем их и директорию
+      for (const file of files) {
+        await fs.unlink(path.join(tempDir, file));
+      }
+      await fs.rmdir(tempDir);
+    }
+  } catch (error) {
+    // Директория не существует или ошибка удаления - не критично
+    if (process.env.DEBUG) {
+      console.log('Не удалось удалить временную директорию:', error.message);
+    }
+  }
+  
+  console.log('📊 Итоги:');
+  console.log(`   ✅ Успешно: ${successCount}`);
+  console.log(`   ❌ Ошибок: ${errorCount}\n`);
+  
+  if (errorCount === 0) {
+    console.log('✅ Все файлы успешно перекодированы!');
+    console.log('   Теперь все MP3 файлы должны поддерживать Accept-Ranges: bytes\n');
+  }
+}
+
 // Главная функция
 async function main() {
+  // Проверяем аргументы командной строки
+  const args = process.argv.slice(2);
+  if (args.includes('--reencode-mp3') || args.includes('-r')) {
+    await reencodeAllMP3();
+    return;
+  }
+  
   console.log('🚀 Начало обработки артистов...\n');
 
   try {
@@ -637,7 +816,22 @@ async function main() {
 
     // Обрабатываем каждого артиста
     for (const artistFolder of artistFolders) {
+      // Безопасность: проверяем, что имя папки не содержит опасных символов
+      if (artistFolder.includes('..') || artistFolder.includes('/') || artistFolder.includes('\\')) {
+        console.warn(`⚠️  Пропускаем папку с небезопасным именем: ${artistFolder}`);
+        continue;
+      }
+      
       const artistPath = path.join(ARTISTS_SOURCE_DIR, artistFolder);
+      
+      // Безопасность: проверяем, что путь находится внутри исходной директории
+      const resolvedPath = path.resolve(artistPath);
+      const resolvedSourceDir = path.resolve(ARTISTS_SOURCE_DIR);
+      if (!resolvedPath.startsWith(resolvedSourceDir)) {
+        console.warn(`⚠️  Пропускаем папку вне исходной директории: ${artistFolder}`);
+        continue;
+      }
+      
       const stat = await fs.stat(artistPath);
       
       if (!stat.isDirectory()) continue;
