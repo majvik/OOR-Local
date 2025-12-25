@@ -4263,14 +4263,18 @@ body.oor-events-page .oor-btn-small-icon img {
 .oor-events-hero {
   background: #000;
   padding-top: 80px;
-  padding-bottom: 80px;
+  padding-bottom: 0;
   position: relative;
+  min-height: 705px;
+  overflow: hidden;
+  width: 100%;
+  max-width: none;
 }
 
 .oor-events-hero-grid {
   position: relative;
   align-items: flex-start;
-  margin-bottom: 64px;
+  margin-bottom: 0;
 }
 
 .oor-events-hero-title {
@@ -4281,7 +4285,13 @@ body.oor-events-page .oor-btn-small-icon img {
   letter-spacing: -9.6px;
   text-transform: uppercase;
   color: #fff;
-  margin: 0 0 24px 0;
+  margin: 0;
+  position: absolute;
+  top: 165px;
+  left: var(--container-x);
+  width: 940px;
+  white-space: pre-wrap;
+  z-index: 2;
 }
 
 .oor-events-hero-index {
@@ -4292,14 +4302,25 @@ body.oor-events-page .oor-btn-small-icon img {
   letter-spacing: -0.48px;
   color: #fff;
   opacity: 0.6;
-  text-align: right;
+  text-align: center;
+  position: absolute;
+  top: 191px;
+  right: var(--container-x);
+  transform: translateY(-50%);
+  white-space: nowrap;
+  z-index: 2;
 }
 
 /* Events Hero Gallery */
 .oor-events-hero-gallery {
-  position: relative;
-  width: 100%;
-  margin-bottom: 64px;
+  position: absolute;
+  top: 285px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 420px;
+  margin-bottom: 0;
+  z-index: 1;
 }
 
 .oor-events-hero-gallery-row {
@@ -4307,11 +4328,30 @@ body.oor-events-page .oor-btn-small-icon img {
   width: 100%;
   height: 210px;
   gap: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.oor-events-hero-gallery-row:first-child {
+  top: 0;
+}
+
+.oor-events-hero-gallery-row:last-child {
+  top: 210px;
 }
 
 @media (min-width: 1920px) {
   .oor-events-hero-gallery-row {
     height: 280px;
+  }
+  
+  .oor-events-hero-gallery-row:last-child {
+    top: 280px;
+  }
+  
+  .oor-events-hero-gallery {
+    height: 560px;
   }
 }
 
@@ -4320,6 +4360,7 @@ body.oor-events-page .oor-btn-small-icon img {
   height: 100%;
   position: relative;
   overflow: hidden;
+  min-width: 0;
 }
 
 .oor-events-hero-gallery-item img {
@@ -4334,11 +4375,12 @@ body.oor-events-page .oor-btn-small-icon img {
   position: absolute;
   top: 285px;
   left: 0;
+  right: 0;
   width: 100%;
   height: 420px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.77), rgba(0, 0, 0, 0));
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.77) 0%, rgba(0, 0, 0, 0.00) 100%);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 @media (min-width: 1920px) {
@@ -4347,17 +4389,33 @@ body.oor-events-page .oor-btn-small-icon img {
   }
 }
 
+
 /* Events Hero Plus Icons */
 .oor-events-hero-plus-bottom-left {
   position: absolute;
-  bottom: 80px;
-  left: var(--container-x);
+  bottom: 42px;
+  left: 48px;
   width: 18px;
   height: 18px;
   z-index: 2;
 }
 
 .oor-events-hero-plus-bottom-left img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
+}
+
+.oor-events-hero-plus-bottom-right {
+  position: absolute;
+  bottom: 42px;
+  right: 48px;
+  width: 18px;
+  height: 18px;
+  z-index: 2;
+}
+
+.oor-events-hero-plus-bottom-right img {
   width: 100%;
   height: 100%;
   filter: brightness(0) invert(1);
@@ -4388,20 +4446,23 @@ body.oor-events-page .oor-btn-small-icon img {
 /* Events Listing Section */
 .oor-events-listing-section {
   background: #fff;
-  padding: 80px 0;
+  padding: 64px 0 0 0;
+  min-height: 831px;
+  position: relative;
 }
 
 .oor-events-listing-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: start;
+  position: relative;
+  padding: 0;
   margin-bottom: 48px;
 }
 
 .oor-events-listing-title-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  grid-column: 1;
+  position: relative;
 }
 
 .oor-events-listing-title {
@@ -4412,7 +4473,10 @@ body.oor-events-page .oor-btn-small-icon img {
   letter-spacing: -1.92px;
   text-transform: uppercase;
   color: #000;
-  margin: 0;
+  margin: 0 0 24px 0;
+  width: 521px;
+  white-space: pre-wrap;
+  position: relative;
 }
 
 .oor-events-listing-description {
@@ -4423,14 +4487,18 @@ body.oor-events-page .oor-btn-small-icon img {
   letter-spacing: -0.28px;
   color: #000;
   margin: 0;
-  max-width: 408px;
+  width: 408px;
+  white-space: pre-wrap;
+  position: relative;
 }
 
 .oor-events-listing-index-wrapper {
+  grid-column: 3;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: flex-end;
-  gap: 24px;
+  align-self: end;
+  position: relative;
 }
 
 .oor-events-listing-index {
@@ -4440,6 +4508,7 @@ body.oor-events-page .oor-btn-small-icon img {
   font-weight: 300;
   letter-spacing: -0.48px;
   color: #000;
+  margin: 0;
 }
 
 .oor-events-listing-plus {
@@ -4455,23 +4524,48 @@ body.oor-events-page .oor-btn-small-icon img {
 
 /* Events Listing Grid */
 .oor-events-listing-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   gap: 25px;
   width: 100%;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-@media (min-width: 1440px) {
-  .oor-events-listing-grid {
-    gap: calc((100% - (408px * 4)) / 3);
-  }
+.oor-events-listing-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.oor-events-listing-grid.is-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .oor-events-listing-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 0;
+  flex-shrink: 0;
+  width: 408px;
+}
+
+.oor-events-listing-card:nth-child(2),
+.oor-events-listing-card:nth-child(4) {
+  width: 409px;
+}
+
+.oor-events-listing-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  gap: 16px;
 }
 
 .oor-events-listing-card-image {
@@ -4489,9 +4583,7 @@ body.oor-events-page .oor-btn-small-icon img {
 }
 
 .oor-events-listing-card-button {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  position: relative;
   padding: 12px;
   display: inline-flex;
   align-items: center;
@@ -4507,7 +4599,8 @@ body.oor-events-page .oor-btn-small-icon img {
   transition: all 0.3s ease;
   backdrop-filter: blur(85.15px);
   -webkit-backdrop-filter: blur(85.15px);
-  z-index: 2;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .oor-events-listing-card-button-soldout {
@@ -4546,6 +4639,7 @@ body.oor-events-page .oor-btn-small-icon img {
   text-transform: uppercase;
   color: #000;
   margin: 0;
+  flex: 1;
 }
 
 /* ===== TALK SHOW PAGE STYLES ===== */

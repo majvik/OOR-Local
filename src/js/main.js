@@ -173,6 +173,8 @@ function initRetinaSupport() {
       if (!src) continue;
       if (/video-cover/i.test(src)) continue;
       if (/splash\.gif/i.test(src)) continue;
+      if (/events-gallery/i.test(src)) continue;
+      if (/events-card/i.test(src)) continue;
       const hi = build2xUrl(src);
       if (!hi) continue;
       const ok = await imageExists(hi);
@@ -240,6 +242,10 @@ function initParallaxImages() {
     if (img.closest('#wsls')) return false;
     if (img.closest('.oor-merch-images-grid')) return false;
     if (img.closest('.oor-events-posters')) return false;
+    if (img.closest('.oor-events-hero-gallery')) return false;
+    if (img.closest('.oor-events-listing-card-image')) return false;
+    if (img.closest('.oor-events-hero')) return false;
+    if (img.closest('.oor-events-listing-section')) return false;
     if (img.closest('.oor-without-fear-image-2')) return false;
     if (img.closest('.oor-quality-img-container-2')) return false;
     if (img.closest('.oor-challenge-2-good-works-image')) return false;
