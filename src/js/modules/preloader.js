@@ -385,7 +385,9 @@ function initPreloader() {
           try {
             const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && 
                                  (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
-            if (DISABLE_LENIS) {
+            const IS_ARTIST_PAGE = (typeof window !== 'undefined') && window.location && 
+                                 (window.location.pathname.includes('artist.html') || document.body.classList.contains('oor-artist-page'));
+            if (DISABLE_LENIS || IS_ARTIST_PAGE) {
               return;
             }
 
@@ -410,10 +412,14 @@ function initPreloader() {
                   });
                   
                   function raf(time) {
-                    window.lenis.raf(time);
+                    if (window.lenis) {
+                      window.lenis.raf(time);
+                      requestAnimationFrame(raf);
+                    }
+                  }
+                  if (window.lenis) {
                     requestAnimationFrame(raf);
                   }
-                  requestAnimationFrame(raf);
                 }
               } catch(e) { console.warn('Lenis init error', e); }
             };
@@ -451,7 +457,9 @@ function initPreloader() {
           try {
             const DISABLE_LENIS = (typeof window !== 'undefined') && window.location && 
                                  (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
-            if (DISABLE_LENIS) {
+            const IS_ARTIST_PAGE = (typeof window !== 'undefined') && window.location && 
+                                 (window.location.pathname.includes('artist.html') || document.body.classList.contains('oor-artist-page'));
+            if (DISABLE_LENIS || IS_ARTIST_PAGE) {
               return;
             }
 
@@ -476,10 +484,14 @@ function initPreloader() {
                   });
                   
                   function raf(time) {
-                    window.lenis.raf(time);
+                    if (window.lenis) {
+                      window.lenis.raf(time);
+                      requestAnimationFrame(raf);
+                    }
+                  }
+                  if (window.lenis) {
                     requestAnimationFrame(raf);
                   }
-                  requestAnimationFrame(raf);
                 }
               } catch(e) { console.warn('Lenis init error', e); }
             };

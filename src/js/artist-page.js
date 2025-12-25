@@ -112,7 +112,7 @@
     const playerTime = document.getElementById('player-time');
     const playerProgress = document.getElementById('player-progress');
     const playerHandle = document.getElementById('player-handle');
-    const playerProgressBar = playerProgress ? playerProgress.parentElement : null;
+    const playerProgressBar = document.querySelector('.oor-artist-player-progress-bar') || (playerProgress ? playerProgress.parentElement : null);
     const playerVolumeBtn = document.getElementById('player-volume-btn');
     const playerVolumeFill = document.getElementById('player-volume-fill');
     const playerVolumeHandle = document.getElementById('player-volume-handle');
@@ -127,7 +127,18 @@
 
     // Track click handlers
     tracks.forEach(function(track, index) {
-      track.addEventListener('click', function() {
+      track.addEventListener('click', function(e) {
+        // Пропускаем клик, если он был по элементам плеера (прогресс-бар, кнопки и т.д.)
+        const player = document.querySelector('.oor-artist-player');
+        if (player && player.contains(e.target)) {
+          return;
+        }
+        
+        // Пропускаем клик, если он был по прогресс-бару или его элементам
+        if (playerProgressBar && (playerProgressBar.contains(e.target) || e.target.closest('.oor-artist-player-progress-bar'))) {
+          return;
+        }
+        
         const trackSrc = track.dataset.trackSrc;
         const trackName = track.querySelector('.oor-artist-track-name').textContent;
         
@@ -181,43 +192,111 @@
 
     // Progress bar interaction
     if (playerProgressBar) {
-      playerProgressBar.addEventListener('click', function(e) {
-        if (!audio.src) return;
+      // Функция для выполнения перемотки
+      function performSeek(clientX) {
+        if (!playerProgressBar || !audio.src) {
+          return;
+        }
         
         const rect = playerProgressBar.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const percentage = x / rect.width;
-        const newTime = percentage * audio.duration;
+        const x = clientX - rect.left;
+        const percentage = Math.max(0, Math.min(x / rect.width, 1));
         
-        if (!isNaN(newTime)) {
-          audio.currentTime = newTime;
+        // Всегда устанавливаем currentTime - браузер сам обработает
+        if (audio.duration && !isNaN(audio.duration) && audio.duration > 0 && isFinite(audio.duration)) {
+          // Duration загружен - используем его
+          const newTime = percentage * audio.duration;
+          if (!isNaN(newTime) && isFinite(newTime) && newTime >= 0 && newTime <= audio.duration) {
+            audio.currentTime = newTime;
+          }
+        } else {
+          // Duration не загружен - устанавливаем currentTime с примерной длительностью
+          const estimatedDuration = 180; // 3 минуты
+          const estimatedTime = Math.max(0, percentage * estimatedDuration);
+          audio.currentTime = estimatedTime;
+          
+          // Ждем загрузки метаданных для точной перемотки
+          const seekHandler = function() {
+            if (audio.duration && !isNaN(audio.duration) && audio.duration > 0 && isFinite(audio.duration)) {
+              const newTime = percentage * audio.duration;
+              if (!isNaN(newTime) && isFinite(newTime) && newTime >= 0 && newTime <= audio.duration) {
+                audio.currentTime = newTime;
+              }
+            }
+          };
+          audio.addEventListener('loadedmetadata', seekHandler, { once: true });
         }
-      });
-
+      }
+      
       // Handle dragging
       let isDragging = false;
+      let dragStartX = 0;
+      let hasMoved = false;
 
       if (playerHandle) {
         playerHandle.addEventListener('mousedown', function(e) {
           isDragging = true;
+          hasMoved = false;
+          dragStartX = e.clientX;
           e.preventDefault();
+          e.stopPropagation();
+        });
+      }
+
+      // Обработчик клика по прогресс-бару
+      playerProgressBar.addEventListener('click', function(e) {
+        // Пропускаем, если клик был по handle
+        if (playerHandle && (e.target === playerHandle || playerHandle.contains(e.target))) {
+          return;
+        }
+        
+        e.stopPropagation();
+        performSeek(e.clientX);
+      });
+      
+      // Обработчик клика по fill
+      if (playerProgress) {
+        playerProgress.addEventListener('click', function(e) {
+          e.stopPropagation();
+          performSeek(e.clientX);
         });
       }
 
       document.addEventListener('mousemove', function(e) {
-        if (isDragging && audio.src) {
+        if (isDragging && audio.src && playerProgressBar) {
+          // Проверяем, действительно ли произошло движение (больше 5px)
+          if (Math.abs(e.clientX - dragStartX) > 5) {
+            hasMoved = true;
+          }
+          
           const rect = playerProgressBar.getBoundingClientRect();
           const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-          const percentage = x / rect.width;
-          const newTime = percentage * audio.duration;
+          const percentage = Math.max(0, Math.min(x / rect.width, 1));
           
-          if (!isNaN(newTime)) {
-            audio.currentTime = newTime;
+          if (audio.duration && !isNaN(audio.duration) && audio.duration > 0 && isFinite(audio.duration)) {
+            const newTime = percentage * audio.duration;
+            if (!isNaN(newTime) && isFinite(newTime) && newTime >= 0 && newTime <= audio.duration) {
+              audio.currentTime = newTime;
+            }
+          } else {
+            // Duration не загружен - используем примерную длительность
+            const estimatedDuration = 180;
+            const estimatedTime = Math.max(0, percentage * estimatedDuration);
+            audio.currentTime = estimatedTime;
           }
         }
       });
 
-      document.addEventListener('mouseup', function() {
+      document.addEventListener('mouseup', function(e) {
+        // Сбрасываем hasMoved только если это был реальный drag
+        if (isDragging && hasMoved) {
+          // Не обрабатываем клик после drag
+          setTimeout(function() {
+            hasMoved = false;
+          }, 0);
+        } else {
+          hasMoved = false;
+        }
         isDragging = false;
       });
     }
@@ -358,6 +437,12 @@
           const circumference = 2 * Math.PI * 85;
           progressFill.style.strokeDashoffset = circumference;
         }
+        // Возвращаем иконку плей на всех треках
+        const trackPlayIcon = t.querySelector('.oor-artist-track-play-icon');
+        if (trackPlayIcon) {
+          trackPlayIcon.src = '/public/assets/artist-page/play-track.svg';
+          trackPlayIcon.style.display = 'block';
+        }
       });
 
       // Set current track
@@ -365,10 +450,21 @@
       currentTrack.classList.add('playing');
 
       // Update player
+      // Важно: сначала останавливаем текущее воспроизведение
+      audio.pause();
+      audio.currentTime = 0;
       audio.src = src;
       if (playerTrackName) {
         playerTrackName.textContent = name;
       }
+      
+      // Ждем загрузки метаданных для получения duration
+      const metadataHandler = function() {
+        if (playerTime && audio.duration) {
+          playerTime.textContent = formatTime(0) + ' / ' + formatTime(audio.duration);
+        }
+      };
+      audio.addEventListener('loadedmetadata', metadataHandler, { once: true });
 
       // Play audio
       audio.play().then(function() {
@@ -402,7 +498,9 @@
     }
 
     function pauseTrack() {
-      audio.pause();
+      if (audio.src) {
+        audio.pause();
+      }
       isPlaying = false;
       updatePlayPauseButton();
     }
@@ -414,12 +512,34 @@
       const pauseIcon = playerPlayPause.querySelector('.oor-artist-player-pause-icon');
 
       if (playIcon && pauseIcon) {
+        // Принудительно обновляем иконки
         if (isPlaying) {
           playIcon.style.display = 'none';
           pauseIcon.style.display = 'block';
         } else {
           playIcon.style.display = 'block';
           pauseIcon.style.display = 'none';
+        }
+        // Принудительный reflow для гарантированного обновления
+        void playerPlayPause.offsetHeight;
+      }
+      
+      // Обновляем иконку на текущем треке
+      updateTrackPlayIcon();
+    }
+    
+    function updateTrackPlayIcon() {
+      if (!currentTrack) return;
+      
+      const trackPlayIcon = currentTrack.querySelector('.oor-artist-track-play-icon');
+      if (trackPlayIcon) {
+        // При воспроизведении показываем иконку паузы, при паузе - иконку плей
+        if (isPlaying) {
+          trackPlayIcon.src = '/public/assets/artist-page/pause-track.svg';
+          trackPlayIcon.style.display = 'block';
+        } else {
+          trackPlayIcon.src = '/public/assets/artist-page/play-track.svg';
+          trackPlayIcon.style.display = 'block';
         }
       }
     }
