@@ -4699,11 +4699,23 @@ body.oor-artists-page .oor-btn-small-icon img {
   display: flex;
   flex-direction: column;
   gap: 11px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+a.oor-artist-card {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.oor-artist-card:hover {
+  opacity: 0.8;
 }
 
 .oor-artist-image {
   width: 100%;
-  height: 273px;
+  aspect-ratio: 1 / 1;
   position: relative;
   overflow: hidden;
 }
@@ -5217,11 +5229,23 @@ body.oor-artists-page .oor-btn-small-icon img {
   display: flex;
   flex-direction: column;
   gap: 11px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+a.oor-artist-card {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.oor-artist-card:hover {
+  opacity: 0.8;
 }
 
 .oor-artist-image {
   width: 100%;
-  height: 273px;
+  aspect-ratio: 1 / 1;
   position: relative;
   overflow: hidden;
 }
@@ -5905,6 +5929,557 @@ body.oor-talk-show-page .oor-btn-small-icon img {
   width: 100%;
   height: 100%;
   filter: brightness(0) invert(1);
+}
+
+/* ===== ARTIST PAGE STYLES ===== */
+
+/* Artist page - full height, no footer */
+body.oor-artist-page {
+  height: 100vh;
+  overflow: hidden;
+  background: #fff;
+}
+
+body.oor-artist-page .oor-footer {
+  display: none;
+}
+
+/* Artist page - white header on image background */
+body.oor-artist-page .oor-header {
+  background: transparent !important;
+  mix-blend-mode: difference !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+body.oor-artist-page .oor-logo img {
+  mix-blend-mode: difference !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+body.oor-artist-page .oor-nav-link {
+  color: #fff !important;
+  mix-blend-mode: difference !important;
+}
+
+body.oor-artist-page .oor-nav-item > span {
+  color: #fff !important;
+  mix-blend-mode: difference !important;
+}
+
+body.oor-artist-page .oor-btn-small {
+  mix-blend-mode: difference !important;
+}
+
+body.oor-artist-page .oor-btn-small-text {
+  color: #fff !important;
+  mix-blend-mode: difference !important;
+}
+
+body.oor-artist-page .oor-btn-small-icon {
+  mix-blend-mode: difference !important;
+}
+
+body.oor-artist-page .oor-btn-small-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: difference !important;
+}
+
+/* Breadcrumbs */
+.oor-artist-breadcrumbs {
+  position: fixed;
+  top: 92px;
+  left: 48px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 50;
+}
+
+.oor-artist-breadcrumb-link {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  line-height: normal;
+  font-weight: 300;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+  color: #fff;
+  mix-blend-mode: difference;
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+.oor-artist-breadcrumb-dot {
+  width: 6px;
+  height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+}
+
+.oor-artist-breadcrumb-current {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  line-height: normal;
+  font-weight: 300;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+/* Main Content - Flex layout: fixed left column + flexible image + fixed right column */
+.oor-artist-main {
+  display: flex;
+  height: calc(100vh - 84px - 48px);
+  position: relative;
+  background: #fff;
+  margin-top: 84px;
+  overflow: visible;
+}
+
+/* Artist Image Container (flexible, fills available space) */
+.oor-artist-image-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.oor-artist-image-container picture {
+  position: absolute;
+  top: 0;
+  left: 48px;
+  right: 48px;
+  bottom: 0;
+  width: calc(100% - 96px);
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.oor-artist-image-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  display: block;
+}
+
+/* Left - Description with gradient background (fixed width) */
+.oor-artist-description-container {
+  position: relative;
+  z-index: 2;
+  width: 338px;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 97px 48px 48px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: linear-gradient(to right, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 100%);
+  overflow-y: auto;
+}
+
+.oor-artist-title {
+  font-family: var(--font-ui);
+  font-size: 24px;
+  line-height: 116%;
+  font-weight: 300;
+  letter-spacing: -0.96px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-artist-description-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.oor-artist-description-content {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 130%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+}
+
+.oor-artist-description-content p {
+  margin: 0 0 12px 0;
+}
+
+.oor-artist-description-content p:last-child {
+  margin-bottom: 0;
+}
+
+.oor-artist-description-expanded {
+  display: none;
+}
+
+.oor-artist-description-content.expanded .oor-artist-description-expanded {
+  display: block;
+}
+
+.oor-artist-description-toggle {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  line-height: normal;
+  font-weight: 300;
+  letter-spacing: -0.2px;
+  color: #000;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.oor-artist-description-toggle:hover {
+  opacity: 0.7;
+}
+
+.oor-artist-social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.oor-artist-social-link {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+/* Right - Tracks Grid (fixed width, scrollable) */
+.oor-artist-tracks-container {
+  position: relative;
+  z-index: 10;
+  width: 636px;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  padding: 0 48px 100px 0;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+  will-change: scroll-position;
+  scroll-behavior: auto;
+}
+
+/* Ensure tracks container can scroll even if Lenis is active */
+body.oor-artist-page .oor-artist-tracks-container {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.oor-artist-tracks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 180px);
+  gap: 36px 24px;
+  padding: 0;
+  min-height: min-content;
+}
+
+.oor-artist-track {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.oor-artist-track-cover {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.oor-artist-track-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.oor-artist-track-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.67);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.oor-artist-track:hover .oor-artist-track-overlay,
+.oor-artist-track.playing .oor-artist-track-overlay {
+  opacity: 1;
+}
+
+.oor-artist-track-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.oor-artist-track-progress-bg {
+  opacity: 0.3;
+}
+
+.oor-artist-track-progress-fill {
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+.oor-artist-track-play-icon {
+  width: 68px;
+  height: 68px;
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+.oor-artist-track.playing .oor-artist-track-overlay .oor-artist-track-play-icon {
+  content: url('/public/assets/artist-page/pause-track.svg');
+}
+
+.oor-artist-track-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 130%;
+  font-weight: 300;
+  letter-spacing: -0.24px;
+  color: #000;
+}
+
+.oor-artist-track-name {
+  flex: 1;
+}
+
+.oor-artist-track-year {
+  opacity: 0.6;
+}
+
+/* Player - positioned with offset from left column and right/bottom edges */
+.oor-artist-player {
+  position: fixed;
+  bottom: 20px;
+  left: 386px;
+  right: 20px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8.05px);
+  -webkit-backdrop-filter: blur(8.05px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 12px 12px;
+  z-index: 200;
+  border-top: none;
+  border-image: none;
+}
+
+.oor-artist-player-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.oor-artist-player-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px;
+}
+
+.oor-artist-player-btn {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oor-artist-player-btn img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0);
+}
+
+.oor-artist-player-btn:hover {
+  opacity: 0.7;
+}
+
+.oor-artist-player-track-name {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: normal;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  color: #000;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.oor-artist-player-center {
+  flex: 1;
+  padding: 0 24px;
+}
+
+.oor-artist-player-progress-bar {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: #000;
+  cursor: pointer;
+}
+
+.oor-artist-player-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #000;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.oor-artist-player-progress-handle {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: #000;
+  border-radius: 50%;
+  cursor: grab;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.oor-artist-player-progress-bar:hover .oor-artist-player-progress-handle {
+  opacity: 1;
+}
+
+.oor-artist-player-progress-handle:active {
+  cursor: grabbing;
+  opacity: 1;
+}
+
+.oor-artist-player-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.oor-artist-player-time {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: normal;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  color: #000;
+  white-space: nowrap;
+}
+
+.oor-artist-player-volume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.oor-artist-player-volume-btn {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oor-artist-player-volume-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+.oor-artist-player-volume-bar-wrapper {
+  position: relative;
+}
+
+.oor-artist-player-volume-bar {
+  width: 78px;
+  height: 1px;
+  background: #000;
+  position: relative;
+  cursor: pointer;
+}
+
+.oor-artist-player-volume-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #000;
+  width: 100%;
+}
+
+.oor-artist-player-volume-handle {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: #000;
+  border-radius: 50%;
+  cursor: grab;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.oor-artist-player-volume-handle:active {
+  cursor: grabbing;
+  opacity: 1;
 }
 
 

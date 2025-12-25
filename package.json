@@ -3,10 +3,18 @@
   "version": "1.0.0",
   "description": "Out of Records Web Studio",
   "scripts": {
-    "build": "node scripts/update-cache-version.js"
+    "build": "node scripts/update-cache-version.js",
+    "process-artists": "node scripts/process-artists.js"
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "sharp": "^0.33.0",
+    "fluent-ffmpeg": "^2.1.2"
+  },
+  "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.21"
   }
 }
 
