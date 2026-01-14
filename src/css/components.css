@@ -3572,6 +3572,10 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   mix-blend-mode: normal !important;
 }
 
+.oor-studio-equipment-item-image {
+  display: none; /* Скрываем изображения внутри пунктов на десктопе */
+}
+
 .oor-studio-equipment-item-description {
   font-family: var(--font-ui);
   font-size: 14px;
@@ -5795,8 +5799,27 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
     display: block;
   }
 
+  .oor-studio-equipment-item-image {
+    display: none; /* Скрываем изображение по умолчанию */
+    height: 200px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin-top: 0;
+  }
+
+  .oor-studio-equipment-row-active .oor-studio-equipment-item-image {
+    display: block; /* Показываем изображение для активного пункта */
+  }
+
+  .oor-studio-equipment-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .oor-studio-equipment-image {
-    display: none; /* Скрываем изображение на мобильных */
+    display: none; /* Скрываем отдельное изображение на мобильных */
   }
 
   /* Services Section */
