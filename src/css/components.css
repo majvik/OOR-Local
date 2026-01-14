@@ -4853,10 +4853,13 @@ body.oor-manifest-page .oor-nav-item > span {
 }
 
 /* Для текста внутри header на странице манифеста (включая rolling-button/tn-atom) */
-body.oor-manifest-page .oor-header a,
-body.oor-manifest-page .oor-header .rolling-button,
-body.oor-manifest-page .oor-header .rolling-button .tn-atom,
-body.oor-manifest-page .oor-header .tn-atom {
+/* Исключаем мобильное меню из этих стилей */
+body.oor-manifest-page .oor-header > a,
+body.oor-manifest-page .oor-header > .oor-header-right > .oor-nav .rolling-button,
+body.oor-manifest-page .oor-header > .oor-header-right > .oor-nav .rolling-button .tn-atom,
+body.oor-manifest-page .oor-header > .oor-header-right > .oor-nav .tn-atom,
+body.oor-manifest-page .oor-header > .oor-header-right > .oor-btn-small,
+body.oor-manifest-page .oor-header > .oor-header-right > .oor-btn-small .tn-atom {
   color: #000 !important;
   mix-blend-mode: normal !important;
 }
@@ -4870,14 +4873,96 @@ body.oor-manifest-page .oor-btn-small-icon img {
 }
 
 /* Жесткое отключение любых режимов наложения и белого текста в header на странице манифеста */
-body.oor-manifest-page .oor-header * {
+/* Исключаем мобильное меню из этих стилей - оно должно быть белым */
+body.oor-manifest-page .oor-header .oor-logo,
+body.oor-manifest-page .oor-header .oor-header-right,
+body.oor-manifest-page .oor-header .oor-header-right .oor-nav,
+body.oor-manifest-page .oor-header .oor-header-right .oor-nav *,
+body.oor-manifest-page .oor-header .oor-header-right .oor-btn-small,
+body.oor-manifest-page .oor-header .oor-header-right .oor-btn-small *,
+body.oor-manifest-page .oor-header .oor-header-right .oor-burger-menu,
+body.oor-manifest-page .oor-header .oor-header-right .oor-burger-menu * {
   mix-blend-mode: normal !important;
 }
 
 @media (min-width: 1025px) {
-  body.oor-manifest-page .oor-header * {
+  body.oor-manifest-page .oor-header .oor-logo,
+  body.oor-manifest-page .oor-header .oor-header-right,
+  body.oor-manifest-page .oor-header .oor-header-right .oor-nav,
+  body.oor-manifest-page .oor-header .oor-header-right .oor-nav *,
+  body.oor-manifest-page .oor-header .oor-header-right .oor-btn-small,
+  body.oor-manifest-page .oor-header .oor-header-right .oor-btn-small * {
     color: #000 !important;
   }
+}
+
+/* Мобильное меню должно оставаться с белым текстом на черном фоне на всех страницах */
+/* Исключаем мобильное меню из всех стилей header на странице манифеста */
+body.oor-manifest-page .oor-header .oor-mobile-menu,
+body.oor-manifest-page .oor-header .oor-mobile-menu * {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-manifest-page .oor-mobile-menu {
+  background: #000 !important;
+}
+
+body.oor-manifest-page .oor-mobile-menu a,
+body.oor-manifest-page .oor-mobile-menu button,
+body.oor-manifest-page .oor-mobile-menu span,
+body.oor-manifest-page .oor-mobile-menu div {
+  color: #fff !important;
+}
+
+body.oor-manifest-page .oor-mobile-menu-link,
+body.oor-manifest-page .oor-mobile-menu-link.rolling-button {
+  color: #fff !important;
+  opacity: 0.8;
+}
+
+body.oor-manifest-page .oor-mobile-menu-link:hover,
+body.oor-manifest-page .oor-mobile-menu-link.rolling-button:hover {
+  color: #fff !important;
+  opacity: 1;
+}
+
+body.oor-manifest-page .oor-mobile-menu-link--active {
+  color: rgba(255, 255, 255, 0.6) !important;
+  opacity: 1;
+}
+
+body.oor-manifest-page .oor-mobile-menu-btn {
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+body.oor-manifest-page .oor-mobile-menu-btn .oor-mobile-menu-btn-text {
+  color: #fff !important;
+}
+
+body.oor-manifest-page .oor-mobile-menu-btn:hover {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+body.oor-manifest-page .oor-mobile-menu-btn:hover .oor-mobile-menu-btn-text {
+  color: #000 !important;
+}
+
+/* Дополнительная защита - переопределяем все возможные стили для мобильного меню */
+body.oor-manifest-page .oor-mobile-menu *,
+body.oor-manifest-page .oor-mobile-menu a.rolling-button,
+body.oor-manifest-page .oor-mobile-menu a.rolling-button span,
+body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-link,
+body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-link.rolling-button {
+  color: #fff !important;
+}
+
+/* Убеждаемся, что текст внутри ссылок тоже белый */
+body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a,
+body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
+  color: #fff !important;
 }
 
 /* Hero */
@@ -5219,6 +5304,253 @@ body.oor-manifest-page .oor-header * {
 .oor-manifest-ceo-plus-bottom img {
   width: 100%;
   height: 100%;
+}
+
+/* ===== MANIFEST PAGE MOBILE STYLES ===== */
+
+/* Мобильная версия для страницы манифеста (≤768px) */
+@media (max-width: 768px) {
+  /* Hero секция */
+  .oor-manifest-hero {
+    padding-top: 0;
+  }
+
+  .oor-manifest-hero .oor-container:first-child {
+    padding: 0;
+  }
+
+  .oor-manifest-hero-top {
+    padding: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .oor-manifest-hero-plus-left {
+    display: none; /* Скрываем plus на мобильных */
+  }
+
+  .oor-manifest-hero-title {
+    font-size: 56px;
+    letter-spacing: -5.6px;
+    line-height: 100%;
+    margin: 0;
+    padding: 81px 0 0 12px;
+    max-width: 416px;
+    width: calc(100% - 12px);
+  }
+
+  .oor-manifest-hero .oor-container:last-child {
+    padding: 0;
+    margin-top: 0;
+  }
+
+  .oor-manifest-hero-video-wrapper {
+    margin-top: 0;
+    height: 668px;
+    padding: 64px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+    position: relative;
+  }
+
+  .oor-manifest-hero-overlay {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .oor-manifest-hero-col-left {
+    padding: 0;
+    width: 227px;
+    height: 225px;
+  }
+
+  .oor-manifest-hero-col-right {
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .oor-manifest-hero-text {
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.28px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0px 2px 9px rgba(0, 0, 0, 0.4);
+    max-width: 100%;
+  }
+
+  /* Manifest section */
+  .oor-manifest-section {
+    padding: 0;
+  }
+
+  .oor-manifest-section-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px 12px;
+  }
+
+  .oor-manifest-section-left {
+    min-height: auto;
+    gap: 32px;
+  }
+
+  .oor-manifest-section-label {
+    font-size: 12px;
+    line-height: 120%;
+    letter-spacing: -0.24px;
+  }
+
+  .oor-manifest-section-line {
+    display: none; /* Скрываем линию на мобильных */
+  }
+
+  .oor-manifest-section-content {
+    gap: 32px;
+    width: 100%;
+  }
+
+  .oor-manifest-section-title {
+    font-size: 48px;
+    line-height: 100%;
+    letter-spacing: -1.92px;
+    max-width: 100%;
+  }
+
+  .oor-manifest-section-text {
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.28px;
+    max-width: 100%;
+  }
+
+  /* CEO section */
+  .oor-manifest-ceo-section {
+    padding: 0;
+  }
+
+  .oor-manifest-ceo-section .oor-container {
+    padding: 32px 12px;
+  }
+
+  .oor-manifest-ceo-header {
+    margin-bottom: 32px;
+    gap: 0;
+  }
+
+  .oor-manifest-ceo-label {
+    font-size: 12px;
+    line-height: 120%;
+    letter-spacing: -0.24px;
+  }
+
+  .oor-manifest-ceo-plus {
+    display: none; /* Скрываем plus на мобильных */
+  }
+
+  .oor-manifest-ceo-quote {
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: -1.28px;
+    margin-bottom: 32px;
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .oor-manifest-ceo-content {
+    flex-direction: column;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  .oor-manifest-ceo-plus-top-right {
+    display: none; /* Скрываем plus на мобильных */
+  }
+
+  .oor-manifest-ceo-text {
+    max-width: 100%;
+    width: 100%;
+    gap: 32px;
+  }
+
+  .oor-manifest-ceo-info {
+    gap: 24px;
+    margin-bottom: 0;
+    width: 226px;
+  }
+
+  .oor-manifest-ceo-name {
+    font-size: 24px;
+    line-height: 120%;
+    letter-spacing: -0.96px;
+    max-width: 188px;
+  }
+
+  .oor-manifest-ceo-role {
+    font-size: 14px;
+    line-height: 120%;
+    letter-spacing: -0.56px;
+  }
+
+  .oor-manifest-ceo-description {
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.28px;
+    width: 100%;
+  }
+
+  .oor-manifest-ceo-link {
+    font-size: 14px;
+    line-height: 120%;
+    letter-spacing: -0.56px;
+    text-decoration: underline;
+    margin-top: 0;
+  }
+
+  .oor-manifest-ceo-image {
+    width: 100%;
+    max-width: 428px;
+    height: 532px;
+    margin: 0 auto;
+  }
+
+  .oor-manifest-ceo-plus-bottom {
+    display: none; /* Скрываем plus на мобильных */
+  }
+}
+
+/* Дополнительные стили для очень маленьких экранов (≤425px) */
+@media (max-width: 425px) {
+  .oor-manifest-hero-title {
+    font-size: 48px;
+    letter-spacing: -4.8px;
+    padding: 0 16px;
+  }
+
+  .oor-manifest-hero-video-wrapper {
+    padding: 64px 16px;
+  }
+
+  .oor-manifest-section-inner {
+    padding: 32px 16px;
+  }
+
+  .oor-manifest-ceo-section .oor-container {
+    padding: 32px 16px;
+  }
 }
 
 /* ===== ARTISTS PAGE STYLES ===== */
