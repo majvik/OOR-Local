@@ -154,3 +154,14 @@
     display: none !important;
   }
 }
+
+/* Отключение курсора на страницах магазина */
+body.oor-merch-page .mf-cursor,
+body.oor-product-page .mf-cursor,
+body.oor-cart-page .mf-cursor,
+body.oor-checkout-page .mf-cursor {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
