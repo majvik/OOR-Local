@@ -9234,6 +9234,12 @@ body.oor-product-page .oor-header .oor-logo img {
   opacity: 1 !important;
 }
 
+body.oor-product-page .oor-nav-link,
+body.oor-product-page .oor-nav-item > span {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
 body.oor-product-page .oor-header .oor-nav-link {
   color: #000 !important;
   mix-blend-mode: normal !important;
@@ -9252,6 +9258,38 @@ body.oor-product-page .oor-header .oor-nav-item > span {
 body.oor-product-page .oor-header .oor-nav-item .tn-atom {
   color: #000 !important;
   mix-blend-mode: normal !important;
+}
+
+/* Для текста внутри header на странице продукта (включая rolling-button/tn-atom) */
+body.oor-product-page .oor-header > a,
+body.oor-product-page .oor-header > .oor-header-right > .oor-nav .rolling-button,
+body.oor-product-page .oor-header > .oor-header-right > .oor-nav .rolling-button .tn-atom,
+body.oor-product-page .oor-header > .oor-header-right > .oor-nav .tn-atom {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Жесткое отключение любых режимов наложения в header на странице продукта */
+body.oor-product-page .oor-header .oor-logo,
+body.oor-product-page .oor-header .oor-header-right,
+body.oor-product-page .oor-header .oor-header-right .oor-nav,
+body.oor-product-page .oor-header .oor-header-right .oor-nav *,
+body.oor-product-page .oor-header .oor-header-right .oor-merch-cart,
+body.oor-product-page .oor-header .oor-header-right .oor-merch-cart *,
+body.oor-product-page .oor-header .oor-header-right .oor-burger-menu,
+body.oor-product-page .oor-header .oor-header-right .oor-burger-menu * {
+  mix-blend-mode: normal !important;
+}
+
+@media (min-width: 1025px) {
+  body.oor-product-page .oor-header .oor-logo,
+  body.oor-product-page .oor-header .oor-header-right,
+  body.oor-product-page .oor-header .oor-header-right .oor-nav,
+  body.oor-product-page .oor-header .oor-header-right .oor-nav *,
+  body.oor-product-page .oor-header .oor-header-right .oor-merch-cart,
+  body.oor-product-page .oor-header .oor-header-right .oor-merch-cart * {
+    color: #000 !important;
+  }
 }
 
 body.oor-product-page .oor-header .oor-merch-cart-info {
@@ -9308,14 +9346,14 @@ body.oor-product-page .oor-product-section .oor-container {
   align-items: stretch;
   padding-top: 40px;
   padding-bottom: 40px;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .oor-product-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 78px;
-  align-items: start;
+  align-items: stretch;
   height: 100%;
   max-height: 100%;
   width: 100%;
@@ -9328,8 +9366,8 @@ body.oor-product-page .oor-product-section .oor-container {
   display: flex;
   flex-direction: column;
   gap: 0;
-  height: 100%;
-  max-height: 100%;
+  height: calc(100vh - 80px - 80px);
+  max-height: calc(100vh - 80px - 80px);
   overflow-y: auto !important;
   overflow-x: hidden !important;
   scrollbar-width: thin;
@@ -9339,7 +9377,7 @@ body.oor-product-page .oor-product-section .oor-container {
   -webkit-overflow-scrolling: touch;
   position: relative;
   min-height: 0;
-  flex: 1 1 0;
+  align-self: stretch;
 }
 
 body.oor-product-page .oor-product-images img,
@@ -9366,6 +9404,7 @@ body.oor-merch-page .oor-merch-product-image {
 .oor-product-image-item {
   width: 100%;
   flex-shrink: 0;
+  flex-grow: 0;
   min-height: 0;
   display: block;
   position: relative;
@@ -9379,8 +9418,9 @@ body.oor-merch-page .oor-merch-product-image {
   width: 100%;
   height: auto;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   min-height: 0;
+  flex-shrink: 0;
 }
 
 body.oor-product-page .oor-product-images {
@@ -9397,15 +9437,11 @@ body.oor-product-page .oor-product-images {
   max-width: 608px;
   height: 100%;
   max-height: 100%;
-  overflow-y: auto;
+  overflow-y: visible;
   overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-  padding-right: 8px;
-  -webkit-overflow-scrolling: touch;
   position: relative;
   min-height: 0;
-  flex: 1 1 0;
+  align-self: stretch;
 }
 
 .oor-product-info::-webkit-scrollbar {

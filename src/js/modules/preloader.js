@@ -387,14 +387,12 @@ function initPreloader() {
                                  (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
             const IS_ARTIST_PAGE = (typeof window !== 'undefined') && window.location && 
                                  (window.location.pathname.includes('artist.html') || document.body.classList.contains('oor-artist-page'));
-            if (DISABLE_LENIS || IS_ARTIST_PAGE) {
+            const IS_PRODUCT_PAGE = (typeof window !== 'undefined') && document.body.classList.contains('oor-product-page');
+            if (DISABLE_LENIS || IS_ARTIST_PAGE || IS_PRODUCT_PAGE) {
               return;
             }
 
-            const s = document.createElement('script');
-            s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
-            s.async = true;
-            s.onload = () => {
+            function initLenis() {
               try {
                 if (window.Lenis && !window.lenis) {
                   window.lenis = new window.Lenis({
@@ -422,7 +420,24 @@ function initPreloader() {
                   }
                 }
               } catch(e) { console.warn('Lenis init error', e); }
+            }
+            
+            const s = document.createElement('script');
+            // Пробуем загрузить с основного CDN
+            s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
+            s.async = true;
+            s.onerror = () => {
+              // Если основной CDN не работает, пробуем альтернативный
+              const s2 = document.createElement('script');
+              s2.src = 'https://unpkg.com/@studio-freight/lenis@1/bundled/lenis.min.js';
+              s2.async = true;
+              s2.onload = initLenis;
+              s2.onerror = () => {
+                console.warn('[OOR] Lenis library could not be loaded from any CDN - smooth scrolling disabled');
+              };
+              document.head.appendChild(s2);
             };
+            s.onload = initLenis;
             document.head.appendChild(s);
           } catch(e) { console.warn('Lenis load error', e); }
         }, 100);
@@ -459,14 +474,12 @@ function initPreloader() {
                                  (window.location.search.includes('nolenis') || window.location.search.includes('disablelenis'));
             const IS_ARTIST_PAGE = (typeof window !== 'undefined') && window.location && 
                                  (window.location.pathname.includes('artist.html') || document.body.classList.contains('oor-artist-page'));
-            if (DISABLE_LENIS || IS_ARTIST_PAGE) {
+            const IS_PRODUCT_PAGE = (typeof window !== 'undefined') && document.body.classList.contains('oor-product-page');
+            if (DISABLE_LENIS || IS_ARTIST_PAGE || IS_PRODUCT_PAGE) {
               return;
             }
 
-            const s = document.createElement('script');
-            s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
-            s.async = true;
-            s.onload = () => {
+            function initLenis() {
               try {
                 if (window.Lenis && !window.lenis) {
                   window.lenis = new window.Lenis({
@@ -494,7 +507,24 @@ function initPreloader() {
                   }
                 }
               } catch(e) { console.warn('Lenis init error', e); }
+            }
+            
+            const s = document.createElement('script');
+            // Пробуем загрузить с основного CDN
+            s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js';
+            s.async = true;
+            s.onerror = () => {
+              // Если основной CDN не работает, пробуем альтернативный
+              const s2 = document.createElement('script');
+              s2.src = 'https://unpkg.com/@studio-freight/lenis@1/bundled/lenis.min.js';
+              s2.async = true;
+              s2.onload = initLenis;
+              s2.onerror = () => {
+                console.warn('[OOR] Lenis library could not be loaded from any CDN - smooth scrolling disabled');
+              };
+              document.head.appendChild(s2);
             };
+            s.onload = initLenis;
             document.head.appendChild(s);
           } catch(e) { console.warn('Lenis load error', e); }
         }, 100);
