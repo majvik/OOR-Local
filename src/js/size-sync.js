@@ -83,3 +83,56 @@ sizeSync.addSyncTask(
     '.oor-without-fear-text',
     { syncWidth: true, syncHeight: false }
 );
+
+// Синхронизация высоты элементов .oor-studio-service-item
+function syncServiceItemsHeight() {
+    if (window.innerWidth <= 768) {
+        // На мобильных не синхронизируем
+        const items = document.querySelectorAll('.oor-studio-service-item');
+        items.forEach(item => {
+            item.style.height = '';
+        });
+        return;
+    }
+
+    const items = document.querySelectorAll('.oor-studio-service-item');
+    if (items.length === 0) return;
+
+    let maxHeight = 0;
+    items.forEach(item => {
+        item.style.height = '';
+        const height = item.offsetHeight;
+        if (height > maxHeight) {
+            maxHeight = height;
+        }
+    });
+
+    if (maxHeight > 0) {
+        items.forEach(item => {
+            item.style.height = maxHeight + 'px';
+        });
+    }
+}
+
+// Инициализация синхронизации высоты элементов сервисов
+function initServiceItemsHeightSync() {
+    const initWithDelay = () => {
+        setTimeout(() => syncServiceItemsHeight(), 100);
+        setTimeout(() => syncServiceItemsHeight(), 500);
+        setTimeout(() => syncServiceItemsHeight(), 1000);
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initWithDelay);
+    } else {
+        initWithDelay();
+    }
+
+    window.addEventListener('resize', () => {
+        setTimeout(() => syncServiceItemsHeight(), 100);
+    });
+
+    window.addEventListener('load', initWithDelay);
+}
+
+initServiceItemsHeightSync();

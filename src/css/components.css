@@ -3618,26 +3618,27 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
 
 .oor-studio-services-grid {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  align-items: stretch;
-}
-
-.oor-studio-services-row {
-  display: flex;
   align-items: stretch;
   border-top: 1px solid #d0d0d0;
   border-bottom: 1px solid #d0d0d0;
 }
 
-.oor-studio-service-item {
+.oor-studio-service-column {
   display: flex;
-  flex: 1;
-  align-items: stretch;
+  flex-direction: column;
+  border-right: 1px solid #d0d0d0;
 }
 
-.oor-studio-service-item:last-child .oor-studio-service-content {
+.oor-studio-service-column:last-child {
   border-right: none;
+}
+
+.oor-studio-service-item {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid #d0d0d0;
 }
 
 .oor-studio-service-index {
@@ -3664,7 +3665,6 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   align-items: center;
   justify-content: center;
   height: 100%;
-  border-right: 1px solid #d0d0d0;
 }
 
 .oor-studio-service-title {
@@ -3678,30 +3678,80 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   margin: 0;
 }
 
-.oor-studio-services-descriptions {
-  display: flex;
-  align-items: stretch;
-  border-bottom: 1px solid #d0d0d0;
-  height: 100%;
-}
-
 .oor-studio-service-description {
   flex: 1;
   padding: 24px;
   display: flex;
   align-items: flex-start;
-  min-height: 100%;
-  height: 100%;
-  box-shadow: inset -1px 0 0 0 #d0d0d0;
   box-sizing: border-box;
-}
-
-.oor-studio-service-description:last-child {
-  box-shadow: none;
 }
 
 .oor-studio-service-description-header {
   display: none; /* Скрываем заголовки внутри описаний на десктопе */
+}
+
+/* На десктопе показываем заголовки в .oor-studio-service-item, скрываем в описаниях */
+@media (min-width: 769px) {
+  .oor-studio-service-item {
+    display: flex;
+  }
+
+  .oor-studio-service-description-header {
+    display: none !important;
+  }
+}
+
+/* Промежуточные размеры (планшеты) - используем десктопную структуру */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .oor-studio-services-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .oor-studio-service-column {
+    border-right: 1px solid #d0d0d0;
+  }
+
+  .oor-studio-service-column:last-child {
+    border-right: none;
+  }
+
+  .oor-studio-service-description-header {
+    display: none !important;
+  }
+
+  .oor-studio-service-description p {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    border-top: none !important;
+    margin: 0;
+  }
+}
+
+/* Десктоп - используем десктопную структуру */
+@media (min-width: 1024px) {
+  .oor-studio-services-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .oor-studio-service-description-header {
+    display: none !important;
+  }
+
+  .oor-studio-service-description p {
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    border-top: none !important;
+    margin: 0;
+    box-sizing: border-box;
+  }
 }
 
 .oor-studio-service-description p {
@@ -5858,35 +5908,39 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
   }
 
   .oor-studio-services-grid {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 0;
     max-width: 100%;
     overflow: visible;
-  }
-
-  .oor-studio-services-row {
-    display: none; /* Скрываем горизонтальный ряд на мобильных */
-  }
-
-  .oor-studio-services-descriptions {
-    flex-direction: column;
     border-top: 1px solid #d0d0d0;
     border-bottom: 1px solid #d0d0d0;
-    display: flex;
+  }
+
+  .oor-studio-service-column {
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none;
+  }
+
+  .oor-studio-service-item {
+    display: none !important; /* Скрываем заголовки на мобильных */
   }
 
   .oor-studio-service-description {
     border-top: 1px solid #d0d0d0;
     border-bottom: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    flex: none;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: none !important;
+    min-height: auto !important;
+    height: auto !important;
+    box-shadow: none !important;
   }
 
-  .oor-studio-service-description:first-child {
-    border-top: 1px solid #d0d0d0;
+  .oor-studio-service-column:first-child .oor-studio-service-description {
+    border-top: none !important; /* Убираем двойной бордер у первого элемента */
   }
 
   /* Заголовок внутри описания */
@@ -5936,10 +5990,12 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
     font-weight: 300;
     letter-spacing: -0.28px;
     color: #000;
-    max-width: 328px;
+    max-width: 100%;
+    width: 100%;
     padding: 24px;
     margin: 0;
     border-top: 1px solid #d0d0d0;
+    box-sizing: border-box;
   }
 
   .oor-studio-service-description:nth-child(3) p {
