@@ -4,7 +4,9 @@
   "description": "Out of Records Web Studio",
   "scripts": {
     "build": "node scripts/update-cache-version.js",
-    "process-artists": "node scripts/process-artists.js"
+    "process-artists": "node scripts/process-artists.js",
+    "migrate-paths": "node scripts/migrate-paths-to-wp.js",
+    "migrate-paths:dry-run": "node scripts/migrate-paths-to-wp.js --dry-run"
   },
   "engines": {
     "node": ">=14.0.0"
