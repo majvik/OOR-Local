@@ -194,6 +194,35 @@ body.oor-studio-page .oor-btn-small-icon img {
   opacity: 1 !important;
 }
 
+/* Бургер-меню на странице студии - белая иконка */
+body.oor-studio-page .oor-header .oor-burger-menu {
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+}
+
+body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon {
+  color: #fff !important;
+  fill: #fff !important;
+  stroke: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon,
+body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon * {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
 .oor-header-right{
   display:flex;
   align-items:center;
@@ -2394,6 +2423,13 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   will-change: transform;
 }
 
+.oor-burger-menu .oor-burger-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* Кнопка закрыть в сайдбаре */
 #close-menu {
   opacity: 1;
@@ -2665,6 +2701,13 @@ a.text-cuberto-cursor-2:not([href^="mailto:"]):hover {
   body.oor-studio-page .oor-logo img {
     mix-blend-mode: normal !important;
     filter: brightness(0) invert(1) !important;
+  }
+
+  /* Бургер-меню на странице студии на мобильных - белая иконка */
+  body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
+    filter: brightness(0) invert(1) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
   }
   
   /* Отключаем mix-blend-mode: difference на мобилке (только для не-studio страниц) */
@@ -7498,6 +7541,19 @@ body.oor-artist-page .oor-artist-tracks-container {
 .oor-artist-player-volume-handle:active {
   cursor: grabbing;
   opacity: 1;
+}
+
+/* Принудительные стили для бургер-меню на странице студии - в конце файла для максимального приоритета */
+body.oor-studio-page .oor-header .oor-burger-menu,
+body.oor-studio-page .oor-header .oor-burger-menu *,
+body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon,
+body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  color: #fff !important;
+  fill: #fff !important;
+  stroke: #fff !important;
 }
 
 
