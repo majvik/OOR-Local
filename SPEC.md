@@ -505,6 +505,89 @@ span ≈ round( (w + 8) / (97.333... + 16) ) = round( (w + 8) / 113.333... )
 
 **Файл конфигурации:** `src/js/config.js` создан для будущей миграции и может быть адаптирован для WordPress.
 
+### ⚠️ Важно: Body-классы для стилей шапки при миграции на WordPress
+
+**Проблема:** Стили шапки (`.oor-header`) завязаны на body-классы и используют `mix-blend-mode` с `!important`. По умолчанию шапка имеет `mix-blend-mode: difference` (строка 134 в `components.css`), что может привести к проблемам с контрастом на некоторых фонах, если соответствующий body-класс не установлен.
+
+**Как это работает:**
+- **Базовые стили:** `.oor-header { mix-blend-mode: difference; }` - шапка инвертирует цвета относительно фона
+- **Специфичные страницы:** Каждая страница имеет свой body-класс, который переопределяет `mix-blend-mode: normal !important`
+- **Мобильные устройства:** Есть защита `body:not(.oor-studio-page) .oor-header { mix-blend-mode: normal !important; }` для всех страниц кроме studio
+
+**Список необходимых body-классов:**
+- `oor-studio-page` - страница студии (черный фон шапки)
+- `oor-dawgs-page` - страница DAWGS
+- `oor-events-page` - страница событий
+- `oor-talk-show-page` - страница ток-шоу
+- `oor-artists-page` - страница списка артистов
+- `oor-artist-page` - страница отдельного артиста
+- `oor-manifest-page` - страница манифеста (белый фон шапки)
+- `oor-services-page` - страница услуг
+- `oor-merch-page` - страница магазина
+- `oor-product-page` - страница продукта
+- `oor-cart-page` - страница корзины
+- `oor-checkout-page` - страница оформления заказа
+
+**Решение для миграции:**
+
+1. **В PHP шаблонах использовать `body_class()`:**
+   ```php
+   <body <?php body_class('preloader-active oor-studio-page'); ?>>
+   ```
+
+2. **Через фильтр `body_class` в `functions.php`:**
+   ```php
+   add_filter('body_class', function($classes) {
+       // Для обычных страниц
+       if (is_page('studio')) {
+           $classes[] = 'oor-studio-page';
+       } elseif (is_page('artists')) {
+           $classes[] = 'oor-artists-page';
+       } elseif (is_page('manifest')) {
+           $classes[] = 'oor-manifest-page';
+       } elseif (is_page('services')) {
+           $classes[] = 'oor-services-page';
+       } elseif (is_page('dawgs')) {
+           $classes[] = 'oor-dawgs-page';
+       } elseif (is_page('events')) {
+           $classes[] = 'oor-events-page';
+       } elseif (is_page('talk-show')) {
+           $classes[] = 'oor-talk-show-page';
+       } elseif (is_page('merch')) {
+           $classes[] = 'oor-merch-page';
+       } elseif (is_page('cart')) {
+           $classes[] = 'oor-cart-page';
+       } elseif (is_page('checkout')) {
+           $classes[] = 'oor-checkout-page';
+       }
+       
+       // Для кастомных типов постов
+       if (is_singular('artist')) {
+           $classes[] = 'oor-artist-page';
+       } elseif (is_singular('product')) {
+           $classes[] = 'oor-product-page';
+       }
+       
+       return $classes;
+   });
+   ```
+
+3. **Для главной страницы:**
+   - Главная страница (`index.html`) не имеет специфичного body-класса, использует `mix-blend-mode: difference` по умолчанию
+   - В WordPress можно добавить класс через `is_front_page()`:
+     ```php
+     if (is_front_page()) {
+         // Класс не нужен, используется базовый mix-blend-mode: difference
+     }
+     ```
+
+**Последствия отсутствия body-классов:**
+- На десктопе шапка будет использовать `mix-blend-mode: difference` по умолчанию
+- Это может привести к проблемам с контрастом на некоторых фонах
+- На мобильных устройствах есть защита через общее правило отключения mix-blend-mode
+
+**Рекомендация:** Обязательно настроить body-классы в WordPress через `body_class()` или фильтр `body_class` для всех страниц проекта.
+
 ### H) Итоговый чек-лист «Идентичность достигнута»
 
 - [ ] При ширине 1440-1920px overlay практически черный (difference)

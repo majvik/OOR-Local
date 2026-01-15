@@ -125,6 +125,63 @@ python3 -m http.server 8040
 
 **Файл конфигурации:** `src/js/config.js` создан для будущей миграции и может быть адаптирован для WordPress.
 
+### ⚠️ Важно: Body-классы для стилей шапки
+
+**Проблема:** Стили шапки (`.oor-header`) завязаны на body-классы и используют `mix-blend-mode` с `!important`. По умолчанию шапка имеет `mix-blend-mode: difference`, что может привести к проблемам с контрастом на некоторых фонах, если соответствующий body-класс не установлен.
+
+**Где используется:**
+- Базовые стили: `.oor-header { mix-blend-mode: difference; }` (строка 134 в `components.css`)
+- Специфичные страницы: `body.oor-studio-page .oor-header { mix-blend-mode: normal !important; }`
+- На мобильных: `body:not(.oor-studio-page) .oor-header { mix-blend-mode: normal !important; }` (защита для всех страниц кроме studio)
+
+**Список необходимых body-классов:**
+- `oor-studio-page` - страница студии (черный фон шапки)
+- `oor-dawgs-page` - страница DAWGS
+- `oor-events-page` - страница событий
+- `oor-talk-show-page` - страница ток-шоу
+- `oor-artists-page` - страница списка артистов
+- `oor-artist-page` - страница отдельного артиста
+- `oor-manifest-page` - страница манифеста (белый фон шапки)
+- `oor-services-page` - страница услуг
+- `oor-merch-page` - страница магазина
+- `oor-product-page` - страница продукта
+- `oor-cart-page` - страница корзины
+- `oor-checkout-page` - страница оформления заказа
+
+**Решение при миграции на WordPress:**
+
+1. **Использовать `body_class()` в шаблонах:**
+   ```php
+   <body <?php body_class('preloader-active oor-studio-page'); ?>>
+   ```
+
+2. **Или через фильтр `body_class`:**
+   ```php
+   add_filter('body_class', function($classes) {
+       if (is_page('studio')) {
+           $classes[] = 'oor-studio-page';
+       } elseif (is_page('artists')) {
+           $classes[] = 'oor-artists-page';
+       }
+       // ... и т.д. для всех страниц
+       return $classes;
+   });
+   ```
+
+3. **Для кастомных типов постов (артисты, события):**
+   ```php
+   add_filter('body_class', function($classes) {
+       if (is_singular('artist')) {
+           $classes[] = 'oor-artist-page';
+       } elseif (is_post_type_archive('event')) {
+           $classes[] = 'oor-events-page';
+       }
+       return $classes;
+   });
+   ```
+
+**Важно:** Если body-классы не установлены, шапка будет использовать `mix-blend-mode: difference` по умолчанию на десктопе, что может привести к проблемам с контрастом. На мобильных устройствах есть защита через общее правило отключения mix-blend-mode.
+
 ## Скрипты обработки
 
 Проект включает Node.js скрипты для автоматизации:

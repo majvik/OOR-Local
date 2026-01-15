@@ -148,8 +148,15 @@
   transition-delay: 0s, 0s !important;
 }
 
-/* Скрытие на мобильных устройствах */
+/* Скрытие на мобильных устройствах и touch-устройствах */
 @media screen and (max-width: 480px) {
+  .mf-cursor {
+    display: none !important;
+  }
+}
+
+/* Скрытие на touch-устройствах (планшеты, сенсорные экраны) */
+@media (hover: none) and (pointer: coarse) {
   .mf-cursor {
     display: none !important;
   }
