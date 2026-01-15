@@ -7675,8 +7675,9 @@ body.oor-artist-page .oor-footer {
 
 /* Artist page - white header on image background */
 body.oor-artist-page .oor-header {
-  background: transparent !important;
-  mix-blend-mode: difference !important;
+  background: #fff !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
   position: fixed;
   top: 0;
   left: 0;
@@ -7685,18 +7686,43 @@ body.oor-artist-page .oor-header {
 }
 
 body.oor-artist-page .oor-logo img {
-  mix-blend-mode: difference !important;
-  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  filter: brightness(0) !important;
 }
 
 body.oor-artist-page .oor-nav-link {
-  color: #fff !important;
-  mix-blend-mode: difference !important;
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artist-page .oor-nav-link--active {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
 }
 
 body.oor-artist-page .oor-nav-item > span {
-  color: #fff !important;
-  mix-blend-mode: difference !important;
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artist-page .oor-btn-small {
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artist-page .oor-btn-small-text {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-artist-page .oor-btn-small-icon {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-artist-page .oor-btn-small-icon img {
+  filter: brightness(0) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
 }
 
 body.oor-artist-page .oor-btn-small {
@@ -8254,6 +8280,247 @@ body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
   color: #fff !important;
   fill: #fff !important;
   stroke: #fff !important;
+}
+
+/* ===== ARTIST PAGE MOBILE STYLES ===== */
+
+/* Artist page - burger menu - принудительно черный */
+body.oor-artist-page .oor-header .oor-burger-menu,
+body.oor-artist-page .oor-header .oor-burger-menu * {
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+}
+
+body.oor-artist-page .oor-header .oor-burger-menu {
+  background: transparent !important;
+}
+
+body.oor-artist-page .oor-header .oor-burger-menu .oor-burger-icon {
+  color: #000 !important;
+  fill: #000 !important;
+  stroke: #000 !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+}
+
+body.oor-artist-page .oor-header .oor-burger-menu .oor-burger-icon,
+body.oor-artist-page .oor-header .oor-burger-menu .oor-burger-icon * {
+  filter: brightness(0) !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+}
+
+body.oor-artist-page .oor-header .oor-burger-menu .oor-burger-icon img {
+  filter: brightness(0) !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+/* Artist Page Mobile */
+@media (max-width: 768px) {
+  /* Header - не фиксированный на мобильном */
+  body.oor-artist-page .oor-header {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+  }
+
+  /* Breadcrumbs */
+  .oor-artist-breadcrumbs {
+    position: static;
+    top: auto;
+    left: auto;
+    padding: 12px 12px 0 12px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* Main Content */
+  .oor-artist-main {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin-top: 0;
+    padding: 0;
+  }
+
+  /* Artist Image Container - сверху, 9:16, позиционирование bottom */
+  .oor-artist-image-container {
+    width: 100%;
+    height: auto;
+    flex: none;
+    order: 1;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+  }
+
+  .oor-artist-image-container picture {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .oor-artist-image-main {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+  }
+
+  /* Description Container - без градиента, показывать полностью */
+  .oor-artist-description-container {
+    width: 100%;
+    flex: none;
+    order: 2;
+    height: auto;
+    padding: 40px 12px;
+    background: #fff;
+    gap: 24px;
+    overflow-y: visible;
+  }
+
+  .oor-artist-title {
+    font-size: 72px;
+    letter-spacing: -7.2px;
+    line-height: 100%;
+    margin: 0;
+  }
+
+  .oor-artist-description-wrapper {
+    display: block;
+  }
+
+  .oor-artist-description-content {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .oor-artist-description-toggle {
+    display: none;
+  }
+
+  /* Social Links - вертикально, только текст */
+  .oor-artist-social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .oor-artist-social-link {
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.28px;
+  }
+
+  /* Tracks Container - 2 колонки, без горизонтальной прокрутки */
+  .oor-artist-tracks-container {
+    width: 100%;
+    flex: none;
+    order: 3;
+    height: auto;
+    overflow-y: visible;
+    overflow-x: hidden;
+    padding: 0 12px 100px 12px;
+  }
+
+  .oor-artist-tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 12px;
+    padding: 0;
+  }
+
+  .oor-artist-track-cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .oor-artist-track-info {
+    font-size: 12px;
+    line-height: 130%;
+    letter-spacing: -0.24px;
+  }
+
+  /* Player - компактная версия */
+  .oor-artist-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8.05px);
+    -webkit-backdrop-filter: blur(8.05px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 200;
+  }
+
+  .oor-artist-player-left {
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .oor-artist-player-controls {
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .oor-artist-player-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .oor-artist-player-track-name {
+    font-size: 14px;
+    letter-spacing: 0.28px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .oor-artist-player-center {
+    display: none;
+  }
+
+  .oor-artist-player-right {
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .oor-artist-player-time {
+    font-size: 12px;
+    letter-spacing: 0.24px;
+  }
+
+  .oor-artist-player-volume {
+    gap: 4px;
+  }
+
+  .oor-artist-player-volume-btn {
+    width: 20px;
+    height: 20px;
+  }
+
+  .oor-artist-player-volume-bar-wrapper {
+    display: none;
+  }
 }
 
 /* ===== EVENTS PAGE MOBILE STYLES ===== */
