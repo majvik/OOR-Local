@@ -812,6 +812,9 @@ function initHeroVideo() {
   });
 }
 
+// Экспортируем в window для совместимости и независимости от порядка загрузки
+window.initHeroVideo = initHeroVideo;
+
 // Полноэкранное видео
 function initFullscreenVideo() {
   const heroVideoOverlay = document.getElementById('hero-video-overlay');
@@ -861,9 +864,9 @@ function initFullscreenVideo() {
     // Показываем полноэкранное видео
     fullscreenVideo.classList.add('active');
     
-    // Блокируем скролл страницы
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+    // Блокируем скролл страницы через класс (работает с CSS !important)
+    document.body.classList.add('scroll-locked');
+    document.documentElement.classList.add('scroll-locked');
     
     // Запускаем видео
     fullscreenVideoElement.play();
@@ -882,14 +885,17 @@ function initFullscreenVideo() {
     fullscreenVideo.classList.remove('active');
     
     // Разблокируем скролл страницы
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
+    document.body.classList.remove('scroll-locked');
+    document.documentElement.classList.remove('scroll-locked');
     
     // Возвращаем иконку в исходное состояние через CSS класс
     fullscreenClose.classList.remove('active');
     
   }
 }
+
+// Экспортируем в window для совместимости и независимости от порядка загрузки
+window.initFullscreenVideo = initFullscreenVideo;
 
 // Глобальная страховка от зависшей блокировки скролла (Netlify кейс)
 function installScrollUnlockWatchdog() {

@@ -52,15 +52,35 @@
 │   │   ├── base.css
 │   │   ├── grid.css
 │   │   ├── layout.css
-│   │   ├── components.css
 │   │   ├── fonts.css
-│   │   └── slider.css
+│   │   ├── utilities.css
+│   │   ├── slider.css
+│   │   ├── scrollbar.css
+│   │   ├── animations.css
+│   │   ├── components.css
+│   │   └── cursor.css
 │   └── /js
 │       ├── main.js
 │       ├── cursor.js
+│       ├── config.js
+│       ├── slider.js
+│       ├── mobile-menu.js
+│       ├── menu-sync.js
+│       ├── scrollbar.js
+│       ├── scale-container.js
 │       ├── merch-images.js
+│       ├── merch-filter.js
+│       ├── size-sync.js
 │       ├── rolling-text.js
-│       └── size-sync.js
+│       ├── artist-page.js
+│       ├── events-slider.js
+│       ├── studio-equipment-accordion.js
+│       ├── talk-show-parallax.js
+│       └── /modules/
+│           ├── error-handler.js
+│           ├── navigation.js
+│           ├── preloader.js
+│           └── video.js
 ├── index.html
 ├── README.md
 └── SPEC.md
@@ -76,22 +96,49 @@ CSS файлы подключаются строго в следующем по�
 <link rel="stylesheet" href="/src/css/grid.css">
 <link rel="stylesheet" href="/src/css/layout.css">
 <link rel="stylesheet" href="/src/css/fonts.css">
+<link rel="stylesheet" href="/src/css/utilities.css">
 <link rel="stylesheet" href="/src/css/slider.css">
+<link rel="stylesheet" href="/src/css/scrollbar.css">
+<link rel="stylesheet" href="/src/css/animations.css">
 <link rel="stylesheet" href="/src/css/components.css">
+<link rel="stylesheet" href="/src/css/cursor.css">
 ```
 
 ### Подключение JavaScript
 JavaScript файлы подключаются в следующем порядке:
 
 ```html
+<!-- External deps (load first) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<!-- UI Scaling для больших мониторов -->
+<script src="/src/js/scale-container.js"></script>
+
+<!-- OOR JavaScript модули -->
+<script src="/src/js/modules/error-handler.js"></script>
+<script src="/src/js/modules/preloader.js"></script>
+<script src="/src/js/modules/navigation.js"></script>
+<script src="/src/js/mobile-menu.js"></script>
+<script src="/src/js/menu-sync.js"></script>
 <script src="/src/js/main.js"></script>
+
+<!-- Deferred scripts -->
 <script defer src="/src/js/slider.js"></script>
 <script defer src="/src/js/merch-images.js"></script>
 <script defer src="/src/js/size-sync.js"></script>
 <script defer src="/src/js/rolling-text.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+
+<!-- MouseFollower + Custom cursor -->
 <script src="/src/js/cursor.js"></script>
+
+<!-- Custom scrollbar -->
+<script src="/src/js/scrollbar.js"></script>
 ```
+
+**Примечания:**
+- Lenis загружается динамически через `preloader.js` после скрытия прелоадера
+- `video.js` пустой (функции `initHeroVideo` и `initFullscreenVideo` определены в `main.js`)
+- Все скрипты подключаются с версионированием кэша (`?v=timestamp`)
 
 ---
 
@@ -405,9 +452,58 @@ span ≈ round( (w + 8) / (97.333... + 16) ) = round( (w + 8) / 113.333... )
   - `components.css` — карточки/хедер/футер/герой и т.п.
 - **Тексты/изображения** держи сгруппированными в HTML так, будто завтра они станут «полями» — заголовок, подпись, кнопка, картинка
 - **Используй уникальные обёртки-якоря секций:** `.oor-section-hero`, `.oor-section-benefits`, `.oor-section-gallery` — это помогут потом разбить на «части шаблона»
-- **Все пути к ассетам** относительные и без билд-магии
 
 > **Результат:** Когда придёт время, эта структура мапится 1:1 на шаблонные части (header, footer, template-parts, partials) — без переписывания стилей.
+
+### ⚠️ КРИТИЧНО: Абсолютные пути при миграции на WordPress
+
+**Проблема:** Проект использует абсолютные пути `/public/` и `/src/` (1628 использований в 30 файлах). В WordPress тема находится в `/wp-content/themes/theme-name/`, поэтому абсолютные пути будут указывать на корень сайта и вернут 404 для всех ресурсов.
+
+**Масштаб проблемы:**
+- HTML файлы (18 файлов): ссылки на CSS/JS и изображения
+- CSS файлы (`fonts.css`, `components.css`): пути к шрифтам через `url()`
+- JavaScript файлы (`preloader.js`, `cursor.js`, и др.): пути к ресурсам в коде
+
+**Решение для миграции:**
+
+1. **HTML → PHP шаблоны:**
+   ```php
+   // Заменить все:
+   href="/src/css/reset.css"
+   src="/public/assets/logo.svg"
+   
+   // На:
+   href="<?php echo get_template_directory_uri(); ?>/src/css/reset.css"
+   src="<?php echo get_template_directory_uri(); ?>/public/assets/logo.svg"
+   ```
+
+2. **CSS файлы:**
+   ```css
+   /* Заменить абсолютные пути на относительные: */
+   /* Было: */
+   url("/public/fonts/pragmatica-book.ttf")
+   
+   /* Стало: */
+   url("../public/fonts/pragmatica-book.ttf")
+   ```
+
+3. **JavaScript файлы:**
+   - Использовать `src/js/config.js` с `OOR_BASE_URL`
+   - Или передавать через `wp_localize_script()`:
+     ```php
+     wp_localize_script('oor-main', 'oorPaths', [
+         'base' => get_template_directory_uri(),
+         'assets' => get_template_directory_uri() . '/public/assets',
+         'fonts' => get_template_directory_uri() . '/public/fonts'
+     ]);
+     ```
+
+4. **Автоматизация замены:**
+   - Создать скрипт для массовой замены в HTML файлах
+   - Использовать регулярные выражения для поиска и замены
+   - Для CSS: заменить `/public/` на `../public/` (относительные пути)
+
+**Файл конфигурации:** `src/js/config.js` создан для будущей миграции и может быть адаптирован для WordPress.
 
 ### H) Итоговый чек-лист «Идентичность достигнута»
 

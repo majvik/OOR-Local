@@ -55,8 +55,9 @@ class MobileMenu {
     this.isOpen = true;
     this.mobileMenu.classList.add('active');
     
-    // Блокируем скролл страницы
-    document.body.style.overflow = 'hidden';
+    // Блокируем скролл страницы через класс (работает с CSS !important)
+    document.body.classList.add('scroll-locked');
+    document.documentElement.classList.add('scroll-locked');
     
     // Анимация появления
     requestAnimationFrame(() => {
@@ -74,7 +75,8 @@ class MobileMenu {
     this.mobileMenu.classList.remove('active');
     
     // Разблокируем скролл страницы
-    document.body.style.overflow = '';
+    document.body.classList.remove('scroll-locked');
+    document.documentElement.classList.remove('scroll-locked');
     
     // Анимация исчезновения
     this.mobileMenu.style.right = window.innerWidth <= 425 ? '-100%' : '-360px';

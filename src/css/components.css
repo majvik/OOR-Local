@@ -3989,12 +3989,19 @@ body:has(.oor-mobile-menu.active) {
 }
 
 /* Studio page - ensure scroll works after preloader */
-body:not(.preloader-active) {
-  overflow-y: auto !important;
+/* Убрали !important, чтобы JS мог блокировать скролл через inline-стили */
+body:not(.preloader-active):not(.scroll-locked) {
+  overflow-y: auto;
 }
 
-html:not(.preloader-active) {
-  overflow-y: auto !important;
+html:not(.preloader-active):not(.scroll-locked) {
+  overflow-y: auto;
+}
+
+/* Блокировка скролла через класс (для мобильного меню, полноэкранного видео и т.д.) */
+body.scroll-locked,
+html.scroll-locked {
+  overflow: hidden !important;
 }
 
 /* ===== DAWGS PAGE STYLES ===== */
