@@ -7356,6 +7356,310 @@ body.oor-talk-show-page .oor-btn-small-icon img {
   filter: brightness(0) invert(1);
 }
 
+/* ===== TALK SHOW PAGE MOBILE STYLES ===== */
+
+/* Мобильная версия для страницы talk-show (≤768px) */
+@media (max-width: 768px) {
+  /* Hero секция */
+  .oor-talk-show-hero {
+    padding-top: 0;
+    padding-bottom: 0;
+    min-height: auto;
+  }
+
+  .oor-talk-show-hero .oor-container {
+    padding: 0;
+  }
+
+  .oor-talk-show-hero-top {
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 24px;
+    padding: 76px 12px 0 12px;
+  }
+
+  .oor-talk-show-hero-left {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .oor-talk-show-hero-title {
+    font-size: 56px;
+    line-height: 100%;
+    letter-spacing: -5.6px;
+    margin: 0;
+  }
+
+  .oor-talk-show-hero-right {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .oor-talk-show-hero-video-small {
+    width: 100%;
+    height: 200px;
+  }
+
+  .oor-talk-show-hero-description {
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.28px;
+    max-width: 100%;
+  }
+
+  .oor-talk-show-hero-bottom {
+    padding: 0 12px 24px 12px;
+  }
+
+  .oor-talk-show-hero-video-large {
+    width: 100%;
+    height: 200px;
+  }
+
+  .oor-talk-show-hero-line {
+    display: none; /* Скрываем линию на мобильных */
+  }
+
+  /* Episodes Section */
+  .oor-talk-show-episodes {
+    padding: 32px 0 40px;
+  }
+
+  .oor-talk-show-episodes .oor-container {
+    padding: 0 12px;
+  }
+
+  .oor-talk-show-episodes-header {
+    margin-bottom: 24px;
+    padding: 0;
+  }
+
+  .oor-talk-show-episodes-index {
+    font-size: 12px;
+    line-height: 120%;
+    letter-spacing: -0.48px;
+  }
+
+  .oor-talk-show-episodes-plus-center,
+  .oor-talk-show-episodes-plus-right {
+    display: none; /* Скрываем plus на мобильных */
+  }
+
+  .oor-talk-show-episodes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .oor-talk-show-episode-image {
+    height: 200px;
+  }
+
+  .oor-talk-show-episode-title {
+    font-size: 12px;
+    line-height: 20px;
+    margin: 12px 0 0;
+    padding: 0;
+  }
+
+  .oor-talk-show-episodes-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .oor-talk-show-episodes-more {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .oor-talk-show-episodes-counter {
+    font-size: 12px;
+    line-height: 120%;
+    letter-spacing: -0.48px;
+  }
+
+  /* Rules Section */
+  .oor-talk-show-rules {
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .oor-talk-show-rules-wrapper {
+    height: auto;
+    padding-top: 32px;
+    padding-bottom: 40px;
+  }
+
+  .oor-talk-show-rules .oor-container {
+    padding: 0 12px;
+  }
+
+  .oor-talk-show-rules-header {
+    margin-bottom: 24px;
+  }
+
+  .oor-talk-show-rules-index {
+    font-size: 12px;
+    line-height: 120%;
+    letter-spacing: -0.48px;
+  }
+
+  .oor-talk-show-rules-content {
+    flex-direction: column;
+    gap: 32px;
+    height: auto;
+  }
+
+  .oor-talk-show-rules-left {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  .oor-talk-show-rules-title {
+    font-size: 30px;
+    line-height: 120%;
+    letter-spacing: -1.2px;
+    margin: 0 0 24px;
+  }
+
+  .oor-talk-show-rules-line,
+  .oor-talk-show-rules-line-2 {
+    width: 18px;
+    height: 1px;
+    margin-bottom: 24px;
+  }
+
+  .oor-talk-show-rules-description {
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.28px;
+    margin: 0 0 24px;
+  }
+
+  .oor-talk-show-rules-participants {
+    margin-top: 24px;
+  }
+
+  .oor-talk-show-rules-participants-title {
+    font-size: 12px;
+    line-height: 120%;
+    letter-spacing: -0.48px;
+    margin: 0 0 12px;
+  }
+
+  .oor-talk-show-rules-participants-list {
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.28px;
+    margin: 0;
+  }
+
+  .oor-talk-show-rules-right {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    overflow: visible;
+    height: auto;
+  }
+
+  .oor-talk-show-rules-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+  }
+
+  .oor-talk-show-rules-col-1,
+  .oor-talk-show-rules-col-2 {
+    padding-top: 0; /* Убираем отступ сверху на мобильных */
+  }
+
+  .oor-talk-show-participant-card {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .oor-talk-show-participant-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Бургер-меню на странице talk-show - белая иконка */
+  body.oor-talk-show-page .oor-header .oor-burger-menu {
+    mix-blend-mode: normal !important;
+    isolation: isolate !important;
+  }
+
+  body.oor-talk-show-page .oor-header .oor-burger-menu .oor-burger-icon {
+    color: #fff !important;
+    fill: #fff !important;
+    stroke: #fff !important;
+    mix-blend-mode: normal !important;
+  }
+
+  body.oor-talk-show-page .oor-header .oor-burger-menu .oor-burger-icon,
+  body.oor-talk-show-page .oor-header .oor-burger-menu .oor-burger-icon * {
+    filter: brightness(0) invert(1) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+
+  body.oor-talk-show-page .oor-header .oor-burger-menu .oor-burger-icon img {
+    filter: brightness(0) invert(1) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+
+  /* Мобильное меню на странице talk-show */
+  body.oor-talk-show-page .oor-mobile-menu *,
+  body.oor-talk-show-page .oor-mobile-menu a.rolling-button,
+  body.oor-talk-show-page .oor-mobile-menu a.rolling-button span,
+  body.oor-talk-show-page .oor-mobile-menu .oor-mobile-menu-link,
+  body.oor-talk-show-page .oor-mobile-menu .oor-mobile-menu-link.rolling-button {
+    color: #fff !important;
+  }
+
+  body.oor-talk-show-page .oor-mobile-menu-link,
+  body.oor-talk-show-page .oor-mobile-menu-link.rolling-button {
+    color: #fff !important;
+    opacity: 0.8;
+  }
+
+  body.oor-talk-show-page .oor-mobile-menu-link:hover,
+  body.oor-talk-show-page .oor-mobile-menu-link.rolling-button:hover {
+    color: #fff !important;
+    opacity: 1;
+  }
+
+  body.oor-talk-show-page .oor-mobile-menu-btn {
+    color: #fff !important;
+    border-color: #fff !important;
+  }
+
+  body.oor-talk-show-page .oor-mobile-menu-btn .oor-mobile-menu-btn-text {
+    color: #fff !important;
+  }
+
+  body.oor-talk-show-page .oor-mobile-menu-btn:hover {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  body.oor-talk-show-page .oor-mobile-menu-btn:hover .oor-mobile-menu-btn-text {
+    color: #000 !important;
+  }
+}
+
 /* ===== ARTIST PAGE STYLES ===== */
 
 /* Artist page - full height, no footer */
