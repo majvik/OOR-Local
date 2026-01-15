@@ -231,7 +231,7 @@ function initRetinaSupport() {
 // Параллакс для изображений
 function initParallaxImages() {
   if (window.innerWidth <= 425) return;
-  
+
   // Отключаем параллакс на страницах магазина
   if (document.body.classList.contains('oor-merch-page') || document.body.classList.contains('oor-product-page')) {
     return;

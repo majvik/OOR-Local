@@ -72,7 +72,10 @@ class MenuSync {
           if (menuItem) {
             this.setActiveItem(menuItem);
           }
-          this.closeMobileMenuIfOpen();
+          // Добавляем небольшую задержку перед закрытием меню, чтобы переход успел произойти
+          setTimeout(() => {
+            this.closeMobileMenuIfOpen();
+          }, 100);
           return;
         }
         
