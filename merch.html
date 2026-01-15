@@ -404,5 +404,108 @@
     <!-- Custom scrollbar script -->
     <script src="/src/js/scrollbar.js?v=20251121074959"></script>
     
+    <!-- Disable Lenis for Merch page -->
+    <script>
+      (function() {
+        function disableLenis() {
+          if (window.lenis) {
+            try {
+              if (window.lenis.stop) window.lenis.stop();
+              if (window.lenis.destroy) {
+                window.lenis.destroy();
+              } else if (window.lenis.off) {
+                window.lenis.off('scroll');
+              }
+              window.lenis = null;
+            } catch(e) {
+              console.warn('Error disabling Lenis:', e);
+            }
+          }
+          
+          // Enable native scrolling
+          document.documentElement.style.overflow = 'auto';
+          document.body.style.overflow = 'auto';
+          document.documentElement.style.overflowY = 'auto';
+          document.body.style.overflowY = 'auto';
+        }
+        
+        disableLenis();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', disableLenis);
+        }
+        setTimeout(disableLenis, 100);
+        setTimeout(disableLenis, 500);
+        setTimeout(disableLenis, 1000);
+      })();
+    </script>
+    
+    <!-- Force header styles for Merch page -->
+    <script>
+      (function() {
+        function forceHeaderStyles() {
+          const header = document.querySelector('.oor-header');
+          if (header && document.body.classList.contains('oor-merch-page')) {
+            header.style.setProperty('background', '#fff', 'important');
+            header.style.setProperty('mix-blend-mode', 'normal', 'important');
+            
+            // Принудительно устанавливаем стили для всех элементов навигации
+            const navElements = header.querySelectorAll('.oor-nav-link, .oor-nav-link .tn-atom, .oor-nav-item > span, .oor-nav-item .tn-atom, .oor-nav .rolling-button, .oor-nav .rolling-button .tn-atom');
+            navElements.forEach(el => {
+              el.style.setProperty('color', '#000', 'important');
+              el.style.setProperty('mix-blend-mode', 'normal', 'important');
+            });
+            
+            // Принудительно устанавливаем стили для всех элементов внутри .oor-header-right
+            const headerRight = header.querySelector('.oor-header-right');
+            if (headerRight) {
+              headerRight.style.setProperty('mix-blend-mode', 'normal', 'important');
+              const allChildren = headerRight.querySelectorAll('*');
+              allChildren.forEach(el => {
+                el.style.setProperty('mix-blend-mode', 'normal', 'important');
+                if (el.tagName === 'A' || el.tagName === 'SPAN' || el.classList.contains('tn-atom')) {
+                  el.style.setProperty('color', '#000', 'important');
+                }
+              });
+            }
+            
+            // Принудительно устанавливаем стили для корзины
+            const cartInfo = header.querySelector('.oor-merch-cart-info');
+            if (cartInfo) {
+              cartInfo.style.setProperty('mix-blend-mode', 'normal', 'important');
+              cartInfo.style.setProperty('color', '#000', 'important');
+            }
+            
+            const cartPrice = header.querySelector('.oor-merch-cart-price');
+            if (cartPrice) {
+              cartPrice.style.setProperty('color', '#000', 'important');
+            }
+            
+            const cartCount = header.querySelector('.oor-merch-cart-count');
+            if (cartCount) {
+              cartCount.style.setProperty('color', '#000', 'important');
+            }
+            
+            const cartIcon = header.querySelector('.oor-merch-cart-icon img');
+            if (cartIcon) {
+              cartIcon.style.setProperty('filter', 'brightness(0)', 'important');
+              cartIcon.style.setProperty('mix-blend-mode', 'normal', 'important');
+              cartIcon.style.setProperty('opacity', '1', 'important');
+            }
+          }
+        }
+        
+        forceHeaderStyles();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', forceHeaderStyles);
+        }
+        window.addEventListener('load', forceHeaderStyles);
+        setTimeout(forceHeaderStyles, 100);
+        setTimeout(forceHeaderStyles, 500);
+        setTimeout(forceHeaderStyles, 1000);
+        setTimeout(forceHeaderStyles, 2000);
+        setTimeout(forceHeaderStyles, 3000);
+      })();
+    </script>
+    
   </body>
 </html>

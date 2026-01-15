@@ -2694,6 +2694,11 @@ body:has(.oor-mobile-menu.active) {
     display: none;
   }
   
+  /* Уменьшаем gap для header-right на мобильной версии */
+  .oor-header-right {
+    gap: 0;
+  }
+  
   /* Показываем бургер-меню */
   .oor-header .oor-burger-menu {
     display: flex !important;
@@ -8954,8 +8959,68 @@ body.oor-merch-page {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
   filter: brightness(0) invert(1);
   mix-blend-mode: difference;
+}
+
+/* Merch Page - Header styles for white background */
+body.oor-merch-page .oor-header {
+  background: #fff !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+}
+
+body.oor-merch-page .oor-header .oor-logo img {
+  mix-blend-mode: normal !important;
+  filter: brightness(0) !important;
+  opacity: 1 !important;
+}
+
+body.oor-merch-page .oor-header .oor-merch-cart-info {
+  mix-blend-mode: normal !important;
+  color: #000 !important;
+}
+
+body.oor-merch-page .oor-header .oor-merch-cart-price {
+  color: #000 !important;
+}
+
+body.oor-merch-page .oor-header .oor-merch-cart-count {
+  color: #000 !important;
+  opacity: 0.6;
+}
+
+body.oor-merch-page .oor-header .oor-merch-cart-icon img {
+  filter: brightness(0) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-merch-page .oor-header .oor-header-right .oor-merch-cart,
+body.oor-merch-page .oor-header .oor-header-right .oor-merch-cart * {
+  mix-blend-mode: normal !important;
+}
+
+body.oor-merch-page .oor-header .oor-nav-link,
+body.oor-merch-page .oor-header .oor-nav-item > span {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-merch-page .oor-header > .oor-header-right > .oor-nav .rolling-button,
+body.oor-merch-page .oor-header > .oor-header-right > .oor-nav .rolling-button .tn-atom,
+body.oor-merch-page .oor-header > .oor-header-right > .oor-nav .tn-atom {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-merch-page .oor-header .oor-header-right,
+body.oor-merch-page .oor-header .oor-header-right .oor-nav,
+body.oor-merch-page .oor-header .oor-header-right .oor-nav *,
+body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu,
+body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
+  mix-blend-mode: normal !important;
 }
 
 /* Merch Hero Section */
@@ -9120,9 +9185,26 @@ body.oor-merch-page {
 
 /* Mobile Styles for Merch Page */
 @media (max-width: 768px) {
-  /* Merch Cart in Header */
-  .oor-merch-cart {
+  /* Merch Cart in Header - отступ от бургера */
+  body.oor-merch-page .oor-header .oor-header-right {
+    gap: 0;
+    justify-content: flex-end;
+  }
+  
+  body.oor-merch-page .oor-header .oor-merch-cart {
     margin-right: 8px;
+    margin-left: auto;
+  }
+
+  body.oor-merch-page .oor-header .oor-merch-cart-info {
+    mix-blend-mode: normal !important;
+    color: #000 !important;
+  }
+
+  body.oor-merch-page .oor-header .oor-merch-cart-icon img {
+    filter: brightness(0) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
   }
 
   .oor-merch-cart-info {
@@ -9654,6 +9736,17 @@ body.oor-product-page .oor-product-images {
     overflow: visible;
   }
 
+  /* Merch Cart in Header for Product Page */
+  body.oor-product-page .oor-header .oor-header-right {
+    gap: 0;
+    justify-content: flex-end;
+  }
+  
+  body.oor-product-page .oor-header .oor-merch-cart {
+    margin-right: 8px;
+    margin-left: auto;
+  }
+
   body.oor-product-page .oor-product-section {
     padding: 76px 0 100px 0;
     min-height: auto;
@@ -9663,30 +9756,35 @@ body.oor-product-page .oor-product-images {
   }
 
   body.oor-product-page .oor-product-section .oor-container {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
     height: auto;
   }
 
   .oor-product-wrapper {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 40px;
     height: auto;
+    padding: 0 var(--container-x);
   }
 
-  /* Left Column - Product Images (Horizontal Scroll) */
+  /* Product Images - Horizontal Scroll (First) */
   .oor-product-images {
     display: flex;
     flex-direction: row;
     gap: 12px;
     max-height: none;
+    height: auto;
     overflow-y: hidden;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
-    padding: 0 12px;
-    margin: 0 -12px;
+    padding: 0;
+    margin: 0 calc(-1 * var(--container-x));
+    padding-left: var(--container-x);
+    padding-right: var(--container-x);
+    order: 1;
   }
 
   .oor-product-images::-webkit-scrollbar {
@@ -9696,10 +9794,12 @@ body.oor-product-page .oor-product-images {
   }
 
   .oor-product-image-item {
-    width: 100%;
-    min-width: 100%;
+    width: calc(100vw - var(--container-x) * 2);
+    min-width: calc(100vw - var(--container-x) * 2);
+    max-width: calc(100vw - var(--container-x) * 2);
     flex-shrink: 0;
     margin-bottom: 0;
+    box-sizing: border-box;
   }
 
   .oor-product-image {
@@ -9707,18 +9807,21 @@ body.oor-product-page .oor-product-images {
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
+    display: block;
   }
 
-  /* Right Column - Product Info */
+  /* Product Info - Below Images (Second) */
   .oor-product-info {
     position: static;
     top: auto;
     max-width: 100%;
-    padding: 0 12px;
+    padding: 0;
     gap: 40px;
     height: auto;
     overflow-y: visible;
     overflow-x: visible;
+    order: 2;
+    width: 100%;
   }
 
   /* Breadcrumbs */

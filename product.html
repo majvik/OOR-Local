@@ -334,6 +334,14 @@
                 }
               });
             }
+            
+            // Принудительно устанавливаем стили для иконки корзины
+            const cartIcon = header.querySelector('.oor-merch-cart-icon img');
+            if (cartIcon) {
+              cartIcon.style.setProperty('filter', 'brightness(0)', 'important');
+              cartIcon.style.setProperty('mix-blend-mode', 'normal', 'important');
+              cartIcon.style.setProperty('opacity', '1', 'important');
+            }
           }
         }
         

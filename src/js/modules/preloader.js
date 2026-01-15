@@ -388,7 +388,8 @@ function initPreloader() {
             const IS_ARTIST_PAGE = (typeof window !== 'undefined') && window.location && 
                                  (window.location.pathname.includes('artist.html') || document.body.classList.contains('oor-artist-page'));
             const IS_PRODUCT_PAGE = (typeof window !== 'undefined') && document.body.classList.contains('oor-product-page');
-            if (DISABLE_LENIS || IS_ARTIST_PAGE || IS_PRODUCT_PAGE) {
+            const IS_MERCH_PAGE = (typeof window !== 'undefined') && document.body.classList.contains('oor-merch-page');
+            if (DISABLE_LENIS || IS_ARTIST_PAGE || IS_PRODUCT_PAGE || IS_MERCH_PAGE) {
               return;
             }
 
@@ -475,7 +476,8 @@ function initPreloader() {
             const IS_ARTIST_PAGE = (typeof window !== 'undefined') && window.location && 
                                  (window.location.pathname.includes('artist.html') || document.body.classList.contains('oor-artist-page'));
             const IS_PRODUCT_PAGE = (typeof window !== 'undefined') && document.body.classList.contains('oor-product-page');
-            if (DISABLE_LENIS || IS_ARTIST_PAGE || IS_PRODUCT_PAGE) {
+            const IS_MERCH_PAGE = (typeof window !== 'undefined') && document.body.classList.contains('oor-merch-page');
+            if (DISABLE_LENIS || IS_ARTIST_PAGE || IS_PRODUCT_PAGE || IS_MERCH_PAGE) {
               return;
             }
 
