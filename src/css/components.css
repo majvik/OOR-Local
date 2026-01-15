@@ -2862,6 +2862,27 @@ body:has(.oor-mobile-menu.active) {
   }
 }
 
+/* Адаптация для экранов 375px и меньше */
+@media (max-width: 375px) {
+  .oor-footer-content-left {
+    gap: 24px;
+  }
+  
+  .oor-footer-email {
+    font-size: 2.250rem;
+    letter-spacing: -0.090rem;
+  }
+
+  .oor-events-hero-title {
+    font-size: 48px;
+    letter-spacing: -4.8px;
+  }
+
+  .oor-events-hero-overlay {
+    top: calc(76px + 48px);
+  }
+}
+
 /* Адаптация для больших телефонов (≥425px) */
 @media (max-width: 425px) {
   .oor-hero-main {
@@ -5504,6 +5525,11 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
     padding: 0;
   }
 
+  .oor-manifest-section .oor-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .oor-manifest-section-inner {
     display: flex;
     flex-direction: column;
@@ -5650,6 +5676,11 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
 
   .oor-manifest-hero-video-wrapper {
     padding: 64px 16px;
+  }
+
+  .oor-manifest-section .oor-container {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .oor-manifest-section-inner {
@@ -8636,8 +8667,8 @@ body.oor-events-page .oor-header .oor-burger-menu .oor-burger-icon img {
   }
 
   .oor-events-hero-title {
-    font-size: 72px;
-    letter-spacing: -7.2px;
+    font-size: 56px;
+    letter-spacing: -5.6px;
     position: static;
     padding: 76px 0 0 12px;
     width: auto;
@@ -8668,7 +8699,7 @@ body.oor-events-page .oor-header .oor-burger-menu .oor-burger-icon img {
   }
 
   .oor-events-hero-overlay {
-    top: calc(76px + 72px);
+    top: calc(76px + 56px);
     bottom: 0;
     left: 0;
     right: 0;
@@ -8691,6 +8722,7 @@ body.oor-events-page .oor-header .oor-burger-menu .oor-burger-icon img {
 
   .oor-events-listing-section .oor-container {
     padding: 0;
+    overflow: visible;
   }
 
   .oor-events-listing-header {
@@ -8731,13 +8763,16 @@ body.oor-events-page .oor-header .oor-burger-menu .oor-burger-icon img {
     flex-direction: row;
     gap: 12px;
     padding: 0 12px 32px 12px;
-    overflow-x: auto;
+    overflow-x: auto !important;
     overflow-y: hidden;
-    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    cursor: grab;
+    cursor: default;
+    touch-action: pan-x !important;
+    overscroll-behavior-x: contain;
+    width: 100%;
+    min-width: 100%;
   }
 
   .oor-events-listing-grid::-webkit-scrollbar {

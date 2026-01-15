@@ -16,6 +16,14 @@
     const slider = document.querySelector('.oor-events-listing-grid');
     if (!slider) return;
 
+    // Отключаем слайдер на мобильных устройствах (только обычная прокрутка)
+    const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+    if (isMobile) {
+      // Убеждаемся, что на мобильных прокрутка работает нормально
+      slider.style.touchAction = 'pan-x';
+      return;
+    }
+
     let isDown = false;
     let startX = 0;
     let scrollLeft = 0;
