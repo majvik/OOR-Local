@@ -4041,6 +4041,35 @@ body.oor-dawgs-page .oor-btn-small-icon img {
   opacity: 1 !important;
 }
 
+/* Бургер-меню на странице DAWGS - белая иконка */
+body.oor-dawgs-page .oor-header .oor-burger-menu {
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+}
+
+body.oor-dawgs-page .oor-header .oor-burger-menu .oor-burger-icon {
+  color: #fff !important;
+  fill: #fff !important;
+  stroke: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-dawgs-page .oor-header .oor-burger-menu .oor-burger-icon,
+body.oor-dawgs-page .oor-header .oor-burger-menu .oor-burger-icon * {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-dawgs-page .oor-header .oor-burger-menu .oor-burger-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
 /* DAWGS Hero Section */
 .oor-dawgs-hero {
   background: #000;
