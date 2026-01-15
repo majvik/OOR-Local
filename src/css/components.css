@@ -5783,10 +5783,15 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
 
   .oor-studio-image-row {
     gap: 12px;
+    width: 100%;
+    overflow: visible;
   }
 
   .oor-studio-image-item {
     flex: 1 0 0;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
     height: 295px;
     opacity: 0.8;
     transform: none;
@@ -6644,7 +6649,7 @@ body.oor-services-page .oor-btn-small-icon img {
     display: block;
     width: 100%;
     height: 348px;
-    margin: 40px -12px; /* Убираем padding контейнера */
+    margin: 40px 0;
     position: relative;
     overflow: hidden;
   }
@@ -6774,6 +6779,33 @@ body.oor-services-page .oor-btn-small-icon img {
 
   .oor-services-recording-image-desktop {
     display: block; /* Показываем десктопное изображение */
+  }
+}
+
+/* ===== DAWGS PAGE MOBILE STYLES ===== */
+
+/* Мобильная версия для страницы DAWGS (≤768px) */
+@media (max-width: 768px) {
+  /* Hero секция */
+  .oor-dawgs-hero {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .oor-dawgs-hero .oor-container {
+    padding: 0;
+  }
+
+  .oor-dawgs-hero-grid {
+    padding: 0;
+  }
+
+  .oor-dawgs-hero-title {
+    font-size: 56px;
+    letter-spacing: -5.6px;
+    line-height: 100%;
+    padding: 76px 0 0 12px;
+    margin: 0;
   }
 }
 
