@@ -269,6 +269,41 @@ function initParallaxImages() {
     if (img.classList.contains('no-parallax')) return false;
     return true;
   });
+  
+  // Отдельно обрабатываем picture элементы - оборачиваем сам picture, а не img внутри
+  const pictureElements = Array.from(document.querySelectorAll('picture')).filter(picture => {
+    const img = picture.querySelector('img');
+    if (!img) return false;
+    const src = (img.getAttribute('src') || '').toLowerCase();
+    const isSvg = src.endsWith('.svg');
+    if (isSvg) return false;
+    // Применяем те же исключения, что и для обычных img
+    if (img.closest('#wsls')) return false;
+    if (img.closest('.oor-merch-images-grid')) return false;
+    if (img.closest('.oor-merch-products-grid')) return false;
+    if (img.closest('.oor-product-images')) return false;
+    if (img.closest('.oor-events-posters')) return false;
+    if (img.closest('.oor-events-hero-gallery')) return false;
+    if (img.closest('.oor-events-listing-card-image')) return false;
+    if (img.closest('.oor-events-hero')) return false;
+    if (img.closest('.oor-events-listing-section')) return false;
+    if (img.closest('.oor-without-fear-image-2')) return false;
+    if (img.closest('.oor-quality-img-container-2')) return false;
+    if (img.closest('.oor-challenge-2-good-works-image')) return false;
+    if (img.closest('.oor-out-of-talk-image-1')) return false;
+    if (img.closest('.oor-out-of-talk-image-2')) return false;
+    if (img.closest('.oor-out-of-talk-image-3')) return false;
+    if (img.closest('.oor-studio-hero')) return false;
+    if (img.closest('.oor-studio-content-section')) return false;
+    if (img.closest('.oor-studio-equipment-section')) return false;
+    if (img.closest('.oor-studio-recording-section')) return false;
+    if (img.closest('.oor-talk-show-hero')) return false;
+    if (img.closest('.oor-talk-show-episodes')) return false;
+    if (img.closest('.oor-talk-show-rules')) return false;
+    if (picture.closest('.oor-parallax-wrap')) return false;
+    if (img.classList.contains('no-parallax')) return false;
+    return true;
+  });
 
   // Поддержка параллакса для блоков с фоном
   const bgTargets = [];
@@ -288,7 +323,8 @@ function initParallaxImages() {
     layer.style.backgroundPosition = cs.backgroundPosition || 'center';
     layer.style.willChange = 'transform';
     const initScaleAttr = parseFloat(el.getAttribute('data-parallax-scale'));
-    const initScale = Number.isFinite(initScaleAttr) ? initScaleAttr : 'calc(100% + 30%)';
+    // scale() принимает числовое значение, не calc(). 1.3 = 130% (100% + 30%)
+    const initScale = Number.isFinite(initScaleAttr) ? initScaleAttr : 1.3;
     layer.setAttribute('data-parallax-scale', String(initScale));
     layer.setAttribute('data-parallax-speed', el.getAttribute('data-parallax-speed') || '');
     layer.setAttribute('data-parallax-max', el.getAttribute('data-parallax-max') || '');
@@ -298,10 +334,85 @@ function initParallaxImages() {
     bgTargets.push(layer);
   });
 
+  // Оборачиваем picture элементы в контейнеры для параллакса
+  pictureElements.forEach(picture => {
+    if (picture.closest('.oor-parallax-wrap')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'oor-parallax-wrap';
+    wrap.style.position = 'relative';
+    wrap.style.overflow = 'hidden';
+    wrap.style.display = 'block';
+    wrap.style.contain = 'paint';
+    picture.parentNode.insertBefore(wrap, picture);
+    wrap.appendChild(picture);
+    
+    const img = picture.querySelector('img');
+    if (!img) return;
+    
+    img.style.display = 'block';
+    img.style.willChange = 'transform';
+    img.style.transformOrigin = 'center center';
+    img.style.transformStyle = 'preserve-3d';
+    img.style.backfaceVisibility = 'hidden';
+    
+    if (img.closest('.oor-without-fear-image')) {
+      img.setAttribute('data-parallax-max', '32');
+    }
+    if (img.closest('.oor-quality-img-container-1')) {
+      img.setAttribute('data-parallax-max', '24');
+    }
+    
+    // Рассчитываем scale для заполнения контейнера
+    const calculateAndFreezeScale = () => {
+      const container = wrap;
+      const containerRect = container.getBoundingClientRect();
+      const parallaxMax = parseFloat(img.getAttribute('data-parallax-max')) || 64;
+      const customScale = parseFloat(img.getAttribute('data-parallax-scale'));
+      
+      if (Number.isFinite(customScale)) {
+        return Promise.resolve(customScale);
+      }
+      
+      const reserve = Math.max(parallaxMax + 32, 80);
+      
+      return new Promise((resolve) => {
+        if (img.complete && img.naturalWidth > 0) {
+          const naturalWidth = img.naturalWidth;
+          const naturalHeight = img.naturalHeight;
+          const neededWidth = containerRect.width + reserve;
+          const neededHeight = containerRect.height + reserve;
+          const scaleX = neededWidth / naturalWidth;
+          const scaleY = neededHeight / naturalHeight;
+          resolve(Math.max(scaleX, scaleY, 1.0));
+        } else {
+          img.onload = () => {
+            const naturalWidth = img.naturalWidth;
+            const naturalHeight = img.naturalHeight;
+            const neededWidth = containerRect.width + reserve;
+            const neededHeight = containerRect.height + reserve;
+            const scaleX = neededWidth / naturalWidth;
+            const scaleY = neededHeight / naturalHeight;
+            resolve(Math.max(scaleX, scaleY, 1.0));
+          };
+        }
+      });
+    };
+    
+    calculateAndFreezeScale().then(frozenScale => {
+      img.setAttribute('data-frozen-scale', frozenScale.toString());
+      img.style.transform = `translate3d(0,0,0) scale(${frozenScale})`;
+    });
+    
+    img._recalculateScale = calculateAndFreezeScale;
+    candidates.push(img); // Добавляем img из picture в candidates для наблюдения
+  });
+
   if (candidates.length === 0 && bgTargets.length === 0) return;
 
   // Оборачиваем изображения в контейнеры для параллакса
   candidates.forEach(img => {
+    // Пропускаем img, которые уже обработаны через picture
+    if (img.closest('picture') && img.closest('.oor-parallax-wrap')) return;
     if (img.closest('.oor-parallax-wrap')) return;
     const wrap = document.createElement('div');
     wrap.className = 'oor-parallax-wrap';
@@ -382,8 +493,19 @@ function initParallaxImages() {
     });
   }, { root: null, rootMargin: '100px 0px', threshold: [0, 0.1, 0.5, 1] });
 
-  candidates.forEach(img => { if (!observed.has(img)) { io.observe(img); observed.add(img); } });
-  bgTargets.forEach(layer => { if (!observed.has(layer)) { io.observe(layer); observed.add(layer); } });
+  // Наблюдаем за img элементами (включая те, что внутри picture)
+  candidates.forEach(img => { 
+    if (!observed.has(img)) { 
+      io.observe(img); 
+      observed.add(img); 
+    } 
+  });
+  bgTargets.forEach(layer => { 
+    if (!observed.has(layer)) { 
+      io.observe(layer); 
+      observed.add(layer); 
+    } 
+  });
 
   const getVH = () => window.innerHeight || document.documentElement.clientHeight;
   let rafId = null;

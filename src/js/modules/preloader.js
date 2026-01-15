@@ -41,18 +41,19 @@ function initPreloader() {
     '/public/assets/hero-bg.png',
     '/public/assets/OUTOFREC_reel_v4_nologo.mp4',
     '/public/assets/splash-last-frame.png',
-    '/public/fonts/pragmatica-book.ttf',
-    '/public/fonts/pragmatica-book-oblique.ttf',
-    '/public/fonts/pragmatica-extended-book.ttf',
-    '/public/fonts/pragmatica-extended-book-oblique.ttf',
-    '/public/fonts/pragmatica-extended-light.ttf',
-    '/public/fonts/pragmatica-extended-light-oblique.ttf',
-    '/public/fonts/pragmatica-extended-medium.ttf',
-    '/public/fonts/pragmatica-extended-medium-oblique.ttf',
-    '/public/fonts/pragmatica-extended-bold.ttf',
-    '/public/fonts/pragmatica-extended-bold-oblique.ttf',
-    '/public/fonts/pragmatica-extended-extralight.ttf',
-    '/public/fonts/pragmatica-extended-extralight-oblique.ttf'
+    // Загружаем WOFF2 шрифты (приоритет) с fallback на TTF
+    '/public/fonts/pragmatica-book.woff2',
+    '/public/fonts/pragmatica-book-oblique.woff2',
+    '/public/fonts/pragmatica-extended-book.woff2',
+    '/public/fonts/pragmatica-extended-book-oblique.woff2',
+    '/public/fonts/pragmatica-extended-light.woff2',
+    '/public/fonts/pragmatica-extended-light-oblique.woff2',
+    '/public/fonts/pragmatica-extended-medium.woff2',
+    '/public/fonts/pragmatica-extended-medium-oblique.woff2',
+    '/public/fonts/pragmatica-extended-bold.woff2',
+    '/public/fonts/pragmatica-extended-bold-oblique.woff2',
+    '/public/fonts/pragmatica-extended-extralight.woff2',
+    '/public/fonts/pragmatica-extended-extralight-oblique.woff2'
   ];
 
   const expectedCssJsFiles = [
