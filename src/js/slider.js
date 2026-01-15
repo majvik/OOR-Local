@@ -1519,23 +1519,27 @@ function setupMobileTouch(){
     // Axis lock: act only when horizontal movement dominates and exceeds threshold
     const absDx = Math.abs(dx);
     const absDy = Math.abs(dy);
-    const horizontalDominant = absDx > absDy && absDx > 8;
+    // Минимальные пороги для очень легкой прокрутки на мобильных
+    // Горизонтальное движение должно быть хотя бы немного больше вертикального
+    const horizontalDominant = absDx > absDy * 0.3 && absDx > 2;
 
 
     if (!horizontalDominant) {
       return; // let the browser handle vertical scrolling naturally
     }
 
-    if (!touchHoriz && absDx > 10) {
+    // Активируем горизонтальный свайп при минимальном движении
+    if (!touchHoriz && absDx > 2) {
       touchHoriz = true;
     }
     
-    if (!hasHorizontalSwipe && absDx > 10) {
+    if (!hasHorizontalSwipe && absDx > 2) {
       hasHorizontalSwipe = true;
     }
 
     // Обновляем позицию слайдера только при горизонтальном движении
-    target = clamp(tStartTarget - dx, 0, maxScroll);
+    // Увеличиваем чувствительность, умножая на коэффициент для более быстрой реакции
+    target = clamp(tStartTarget - dx * 1.5, 0, maxScroll);
   };
 
   const touchEndHandler = () => {
