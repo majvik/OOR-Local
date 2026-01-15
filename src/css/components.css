@@ -8780,4 +8780,857 @@ body.oor-events-page .oor-header .oor-burger-menu .oor-burger-icon img {
   }
 }
 
+/* ========================================
+   MERCH PAGE - Shop Page Styles
+   ======================================== */
+
+/* Merch Page Body */
+body.oor-merch-page {
+  background: #fff;
+}
+
+/* Merch Cart in Header */
+.oor-merch-cart {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 16px;
+}
+
+.oor-merch-cart-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-pragmatica);
+  font-size: 12px;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  text-transform: uppercase;
+  color: var(--color-text);
+  mix-blend-mode: difference;
+}
+
+.oor-merch-cart-price {
+  color: var(--color-text);
+}
+
+.oor-merch-cart-count {
+  opacity: 0.6;
+}
+
+.oor-merch-cart-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.oor-merch-cart-link:hover {
+  opacity: 0.7;
+}
+
+.oor-merch-cart-icon {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.oor-merch-cart-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  mix-blend-mode: difference;
+}
+
+/* Merch Hero Section */
+.oor-merch-hero {
+  padding-top: 120px;
+  padding-bottom: 0;
+  position: relative;
+}
+
+.oor-merch-hero-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--color-black);
+  position: relative;
+}
+
+.oor-merch-hero-title {
+  font-family: var(--font-ui);
+  font-size: 112px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -10.08px;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--color-text);
+  mix-blend-mode: luminosity;
+  position: relative;
+}
+
+.oor-merch-hero-copyright {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: normal;
+  letter-spacing: -0.32px;
+  text-align: center;
+  color: var(--color-text);
+  margin-top: 0;
+}
+
+/* Merch Filters Section */
+.oor-merch-filters-section {
+  padding: 40px 0;
+}
+
+.oor-merch-filters {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.oor-merch-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid var(--color-black);
+  color: var(--color-text);
+  font-family: var(--font-pragmatica);
+  font-size: 12px;
+  line-height: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.oor-merch-filter-btn:hover {
+  opacity: 0.7;
+}
+
+.oor-merch-filter-btn--active {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+/* Merch Products Grid Section */
+.oor-merch-products-section {
+  padding: 0 0 120px 0;
+}
+
+.oor-merch-products-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 0;
+}
+
+.oor-merch-product {
+  position: relative;
+  width: 100%;
+  height: 256px;
+  overflow: hidden;
+}
+
+.oor-merch-product-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.oor-merch-product-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f8f7f8;
+  z-index: 1;
+}
+
+.oor-merch-product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.oor-merch-product-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.oor-merch-product-price {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 300;
+  letter-spacing: 0;
+  color: var(--color-text);
+  text-align: right;
+  z-index: 3;
+}
+
+.oor-merch-product-price .woocommerce-Price-amount {
+  display: inline;
+}
+
+.oor-merch-product-price .woocommerce-Price-currencySymbol {
+  display: inline;
+}
+
+/* Mobile Styles for Merch Page */
+@media (max-width: 768px) {
+  /* Merch Cart in Header */
+  .oor-merch-cart {
+    margin-right: 8px;
+  }
+
+  .oor-merch-cart-info {
+    font-size: 10px;
+    gap: 4px;
+  }
+
+  .oor-merch-cart-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Merch Hero Section */
+  .oor-merch-hero {
+    padding-top: 76px;
+    padding-bottom: 0;
+  }
+
+  .oor-merch-hero-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0 12px 24px 12px;
+  }
+
+  .oor-merch-hero-title {
+    font-size: 72px;
+    letter-spacing: -7.2px;
+  }
+
+  .oor-merch-hero-copyright {
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  /* Merch Filters Section */
+  .oor-merch-filters-section {
+    padding: 24px 0;
+  }
+
+  .oor-merch-filters {
+    padding: 0 12px;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .oor-merch-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .oor-merch-filter-btn {
+    flex-shrink: 0;
+    padding: 10px 16px;
+    font-size: 11px;
+  }
+
+  /* Merch Products Grid Section */
+  .oor-merch-products-section {
+    padding: 0 0 100px 0;
+  }
+
+  .oor-merch-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 12px;
+  }
+
+  .oor-merch-product {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .oor-merch-product-price {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    font-size: 11px;
+  }
+}
+
+/* ========================================
+   PRODUCT PAGE - Single Product Page Styles
+   ======================================== */
+
+/* Product Page Body */
+body.oor-product-page {
+  background: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body.oor-product-page .oor-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #fff !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+}
+
+body.oor-product-page .oor-header .oor-logo img {
+  mix-blend-mode: normal !important;
+  filter: brightness(0) !important;
+  opacity: 1 !important;
+}
+
+body.oor-product-page .oor-header .oor-nav-link {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-product-page .oor-header .oor-nav-link--active {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-product-page .oor-header .oor-nav-item > span {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-product-page .oor-header .oor-nav-item .tn-atom {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-product-page .oor-header .oor-merch-cart-info {
+  mix-blend-mode: normal !important;
+  color: #000 !important;
+}
+
+body.oor-product-page .oor-header .oor-merch-cart-price {
+  color: #000 !important;
+}
+
+body.oor-product-page .oor-header .oor-merch-cart-count {
+  color: #000 !important;
+  opacity: 0.6;
+}
+
+body.oor-product-page .oor-header .oor-merch-cart-icon img {
+  filter: brightness(0) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-product-page .oor-header .oor-burger-menu {
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+}
+
+body.oor-product-page .oor-header .oor-burger-menu .oor-burger-icon {
+  color: #000 !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-product-page .oor-header .oor-burger-menu .oor-burger-icon img {
+  filter: brightness(0) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+/* Product Section */
+body.oor-product-page .oor-product-section {
+  padding: 0;
+  height: calc(100vh - 80px);
+  overflow: visible;
+  display: flex;
+  align-items: stretch;
+  margin-top: 80px;
+  position: relative;
+}
+
+body.oor-product-page .oor-product-section .oor-container {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: stretch;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  overflow: visible;
+}
+
+.oor-product-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 78px;
+  align-items: start;
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+
+/* Left Column - Product Images (Scrollable) */
+.oor-product-images {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  will-change: scroll-position;
+  padding-right: 8px;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  min-height: 0;
+  flex: 1 1 0;
+}
+
+body.oor-product-page .oor-product-images img,
+body.oor-product-page .oor-product-image-item,
+body.oor-merch-page .oor-merch-product img,
+body.oor-merch-page .oor-merch-product-image {
+  transform: none !important;
+  will-change: auto !important;
+}
+
+.oor-product-images::-webkit-scrollbar {
+  width: 4px;
+}
+
+.oor-product-images::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.oor-product-images::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.oor-product-image-item {
+  width: 100%;
+  flex-shrink: 0;
+  min-height: 0;
+  display: block;
+  position: relative;
+}
+
+.oor-product-image-item:last-child {
+  margin-bottom: 0;
+}
+
+.oor-product-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  min-height: 0;
+}
+
+body.oor-product-page .oor-product-images {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain;
+}
+
+/* Right Column - Product Info (Fixed) */
+.oor-product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  max-width: 608px;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  padding-right: 8px;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  min-height: 0;
+  flex: 1 1 0;
+}
+
+.oor-product-info::-webkit-scrollbar {
+  width: 4px;
+}
+
+.oor-product-info::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.oor-product-info::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+/* Breadcrumbs */
+.oor-product-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  font-family: var(--font-pragmatica);
+  font-size: 12px;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  text-transform: uppercase;
+  color: #000;
+  mix-blend-mode: normal;
+}
+
+.oor-product-breadcrumb-link {
+  color: #000;
+  text-decoration: underline;
+  mix-blend-mode: normal;
+}
+
+.oor-product-breadcrumb-link:hover {
+  opacity: 0.7;
+}
+
+.oor-product-breadcrumb-separator {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  position: relative;
+  margin: 0 2px;
+  transform: rotate(270deg);
+}
+
+.oor-product-breadcrumb-separator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: url('/public/assets/breadcrumb-separator.svg') no-repeat center;
+  background-size: contain;
+  opacity: 0.6;
+}
+
+.oor-product-breadcrumb-current {
+  color: #000;
+  mix-blend-mode: normal;
+}
+
+/* Product Title */
+.oor-product-title {
+  font-family: var(--font-ui);
+  font-size: 32px;
+  line-height: 116%;
+  font-weight: 300;
+  letter-spacing: -1.28px;
+  text-transform: uppercase;
+  margin: 0;
+  color: #000;
+}
+
+/* Size Selection */
+.oor-product-size {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.oor-product-size-label {
+  font-family: var(--font-ui);
+  font-size: 24px;
+  line-height: 116%;
+  font-weight: 300;
+  letter-spacing: -0.96px;
+  text-transform: uppercase;
+  margin: 0;
+  color: #000;
+}
+
+.oor-product-size-options {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.oor-product-size-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  background: transparent;
+  border: 1px solid #000;
+  border-radius: 100px;
+  color: #000;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 130%;
+  font-weight: 300;
+  letter-spacing: 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 50px;
+}
+
+.oor-product-size-btn:hover {
+  opacity: 0.7;
+}
+
+.oor-product-size-btn--active {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+/* Add to Cart Button */
+.oor-product-add-to-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  background: var(--color-black);
+  backdrop-filter: blur(85.15px);
+  border: none;
+  color: var(--color-white);
+  font-family: var(--font-ui);
+  font-size: 24px;
+  line-height: 116%;
+  font-weight: 300;
+  letter-spacing: -0.96px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  width: 100%;
+}
+
+.oor-product-add-to-cart:hover {
+  opacity: 0.8;
+}
+
+/* Product Characteristics */
+.oor-product-characteristics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-pragmatica);
+  font-size: 12px;
+  line-height: normal;
+  letter-spacing: -0.24px;
+  text-transform: uppercase;
+  color: #000;
+  mix-blend-mode: normal;
+}
+
+.oor-product-characteristics-title {
+  margin: 0;
+  font-weight: 400;
+}
+
+.oor-product-characteristics-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.oor-product-characteristics-list li {
+  position: relative;
+  margin-bottom: 0;
+  text-transform: none;
+  font-size: 12px;
+  line-height: normal;
+  color: #000;
+}
+
+.oor-product-characteristics-list li:before {
+  content: '•';
+  position: absolute;
+  left: -18px;
+}
+
+.oor-product-characteristics-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Mobile Styles for Product Page */
+@media (max-width: 768px) {
+  body.oor-product-page {
+    height: auto;
+    overflow: visible;
+  }
+
+  body.oor-product-page .oor-product-section {
+    padding: 76px 0 100px 0;
+    min-height: auto;
+    height: auto;
+    overflow: visible;
+    margin-top: 0;
+  }
+
+  body.oor-product-page .oor-product-section .oor-container {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
+  }
+
+  .oor-product-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    height: auto;
+  }
+
+  /* Left Column - Product Images (Horizontal Scroll) */
+  .oor-product-images {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    max-height: none;
+    overflow-y: hidden;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 12px;
+    margin: 0 -12px;
+  }
+
+  .oor-product-images::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .oor-product-image-item {
+    width: 100%;
+    min-width: 100%;
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+  .oor-product-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  /* Right Column - Product Info */
+  .oor-product-info {
+    position: static;
+    top: auto;
+    max-width: 100%;
+    padding: 0 12px;
+    gap: 40px;
+    height: auto;
+    overflow-y: visible;
+    overflow-x: visible;
+  }
+
+  /* Breadcrumbs */
+  .oor-product-breadcrumbs {
+    font-size: 11px;
+    gap: 3px;
+  }
+
+  /* Product Title */
+  .oor-product-title {
+    font-size: 24px;
+    letter-spacing: -0.96px;
+    line-height: 120%;
+  }
+
+  /* Size Selection */
+  .oor-product-size {
+    gap: 12px;
+  }
+
+  .oor-product-size-label {
+    font-size: 18px;
+    letter-spacing: -0.72px;
+  }
+
+  .oor-product-size-options {
+    gap: 6px;
+  }
+
+  .oor-product-size-btn {
+    padding: 12px 20px;
+    font-size: 12px;
+    min-width: 45px;
+  }
+
+  /* Add to Cart Button */
+  .oor-product-add-to-cart {
+    padding: 14px 20px;
+    font-size: 18px;
+    letter-spacing: -0.72px;
+  }
+
+  /* Product Characteristics */
+  .oor-product-characteristics {
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .oor-product-characteristics-list {
+    padding-left: 16px;
+  }
+
+  .oor-product-characteristics-list li:before {
+    left: -16px;
+  }
+}
+
 

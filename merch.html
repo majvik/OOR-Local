@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ru" class="preloader-active">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Мерч - Out of Records</title>
+    
+    <!-- OOR CSS файлы в правильном порядке -->
+    <link rel="stylesheet" href="/src/css/reset.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/tokens.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/base.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/grid.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/layout.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/fonts.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/utilities.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/slider.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/scrollbar.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/animations.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/components.css?v=20251121074959">
+    <link rel="stylesheet" href="/src/css/cursor.css?v=20251121074959">
+  </head>
+<body class="preloader-active oor-merch-page">
+    <!-- Preloader -->
+    <div id="preloader" class="oor-preloader">
+        <div class="oor-preloader-progress-bar" id="preloader-progress-bar"></div>
+        <div class="oor-preloader-content">
+            <button id="enter-button" class="oor-enter-button">Войти</button>
+        </div>
+    </div>
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="oor-splash-screen">
+        <img id="splash-gif" class="oor-splash-gif" src="/public/assets/splash.gif" alt="Splash" width="400" height="400">
+        <button id="enter-button-splash" class="oor-splash-enter-button rolling-button"><span class="tn-atom">[  ВОЙТИ В OOR  ]</span></button>
+    </div>
+    
+    <!-- Header -->
+    <header class="oor-header">
+        <a href="/" class="oor-logo">
+            <img src="/public/assets/logo.svg" alt="Out of Records" width="73" height="20" class="oor-media-cover">
+        </a>
+        
+        <div class="oor-header-right">
+            <nav class="oor-nav">
+                <div class="oor-nav-list" role="navigation" aria-label="Main">
+                    <div class="oor-nav-item"><a href="/" class="oor-nav-link rolling-button" data-menu-item="main"><span class="tn-atom">Main</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/manifest.html" class="oor-nav-link rolling-button" data-menu-item="manifest"><span class="tn-atom">Манифест</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/artists.html" class="oor-nav-link rolling-button" data-menu-item="artists"><span class="tn-atom">Артисты</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/studio.html" class="oor-nav-link rolling-button" data-menu-item="studio"><span class="tn-atom">Студия</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/services.html" class="oor-nav-link rolling-button" data-menu-item="services"><span class="tn-atom">Услуги</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/dawgs.html" class="oor-nav-link rolling-button" data-menu-item="dawgs"><span class="tn-atom">DAWGS</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/talk-show.html" class="oor-nav-link rolling-button" data-menu-item="talk-show"><span class="tn-atom">Talk-шоу</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/events.html" class="oor-nav-link rolling-button" data-menu-item="events"><span class="tn-atom">События</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="/merch.html" class="oor-nav-link rolling-button oor-nav-link--active" data-menu-item="merch"><span class="tn-atom">Мерч</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-menu-item="contacts"><span class="tn-atom">Контакты</span></a><span>/</span></div>
+                    <div class="oor-nav-item"><a href="#" class="oor-nav-link rolling-button" data-action="become-artist"><span class="tn-atom">Стать артистом</span></a></div>
+              </div>
+            </nav>
+            
+            <!-- Корзина -->
+            <div class="oor-merch-cart woocommerce">
+                <a href="#" class="oor-merch-cart-link">
+                    <div class="oor-merch-cart-info">
+                        <span class="oor-merch-cart-price woocommerce-Price-amount amount">00.00 <span class="woocommerce-Price-currencySymbol">₽</span></span>
+                        <span class="oor-merch-cart-count">0 товаров</span>
+                    </div>
+                    <span class="oor-merch-cart-icon" aria-label="Корзина">
+                        <img src="/public/assets/cart-icon.svg" alt="Корзина" width="16" height="16">
+                    </span>
+                </a>
+            </div>
+            
+            <!-- Бургер-меню для мобильных устройств -->
+            <button class="oor-burger-menu" id="burger-menu" aria-label="Открыть меню">
+                <img src="/public/assets/burger-icon.svg" alt="" class="oor-burger-icon">
+            </button>
+          </div>
+          
+          <!-- Мобильное меню (сайдбар) -->
+          <div class="oor-mobile-menu" id="mobile-menu">
+              <button id="close-menu" aria-label="Закрыть меню">
+                  <img src="/public/assets/close-icon.svg" alt="">
+              </button>
+              <div class="oor-mobile-menu-content">
+                  <!-- Основные пункты меню -->
+                  <div class="oor-mobile-menu-main">
+                      <a href="/" class="oor-mobile-menu-link rolling-button" data-menu-item="main">Main</a>
+                      <a href="/manifest.html" class="oor-mobile-menu-link rolling-button" data-menu-item="manifest">Манифест</a>
+                      <a href="/artists.html" class="oor-mobile-menu-link rolling-button" data-menu-item="artists">Артисты</a>
+                      <a href="/studio.html" class="oor-mobile-menu-link rolling-button" data-menu-item="studio">Студия</a>
+                      <a href="/services.html" class="oor-mobile-menu-link rolling-button" data-menu-item="services">Услуги</a>
+                      <a href="/dawgs.html" class="oor-mobile-menu-link rolling-button" data-menu-item="dawgs">DAWGS</a>
+                      <a href="/talk-show.html" class="oor-mobile-menu-link rolling-button" data-menu-item="talk-show">Talk-шоу</a>
+                      <a href="/events.html" class="oor-mobile-menu-link rolling-button" data-menu-item="events">События</a>
+                      <a href="/merch.html" class="oor-mobile-menu-link rolling-button" data-menu-item="merch">Мерч</a>
+                      <a href="#" class="oor-mobile-menu-link rolling-button" data-menu-item="contacts">Контакты</a>
+                  </div>
+                  
+                  <!-- Кнопка "Стать артистом" -->
+                  <div class="oor-mobile-menu-bottom">
+                      <button class="oor-mobile-menu-btn" data-action="become-artist">
+                          <span class="oor-mobile-menu-btn-text">Стать артистом</span>
+                          <span class="oor-mobile-menu-btn-icon">
+                              <img src="/public/assets/plus-small.svg" alt="">
+                          </span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+          </div>
+    </header>
+
+    <!-- Merch Hero Section -->
+    <section class="oor-section-hero oor-merch-hero">
+        <div class="oor-container">
+            <div class="oor-merch-hero-header">
+                <h1 class="oor-merch-hero-title">МЕРЧ OOR</h1>
+                <div class="oor-merch-hero-copyright">2025©</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Merch Filters Section -->
+    <section class="oor-merch-filters-section">
+        <div class="oor-container">
+            <div class="oor-merch-filters">
+                <button class="oor-merch-filter-btn oor-merch-filter-btn--active" data-filter="all">Всё</button>
+                <button class="oor-merch-filter-btn" data-filter="sweatshirts">Кофты</button>
+                <button class="oor-merch-filter-btn" data-filter="t-shirts">Футболки</button>
+                <button class="oor-merch-filter-btn" data-filter="caps">Кепки</button>
+                <button class="oor-merch-filter-btn" data-filter="socks">Носки</button>
+                <button class="oor-merch-filter-btn" data-filter="hoodies">худи</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Merch Products Grid Section -->
+    <section class="oor-merch-products-section">
+        <div class="oor-container">
+            <div class="oor-merch-products-grid products">
+                <!-- Product 1 -->
+                <div class="oor-merch-product product" data-category="hoodies">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-1.png" alt="Товар 1" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="oor-merch-product product" data-category="hoodies">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-2.png" alt="Товар 2" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="oor-merch-product product" data-category="t-shirts">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-3.png" alt="Товар 3" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="oor-merch-product product" data-category="t-shirts">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-4.png" alt="Товар 4" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="oor-merch-product product" data-category="t-shirts">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-1.png" alt="Товар 5" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="oor-merch-product product" data-category="t-shirts">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-2.png" alt="Товар 6" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 7 -->
+                <div class="oor-merch-product product" data-category="hoodies">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-3.png" alt="Товар 7" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 8 -->
+                <div class="oor-merch-product product" data-category="hoodies">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-4.png" alt="Товар 8" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 9 -->
+                <div class="oor-merch-product product" data-category="t-shirts">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-1.png" alt="Товар 9" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 10 -->
+                <div class="oor-merch-product product" data-category="t-shirts">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-2.png" alt="Товар 10" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 11 -->
+                <div class="oor-merch-product product" data-category="hoodies">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-3.png" alt="Товар 11" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Product 12 -->
+                <div class="oor-merch-product product" data-category="t-shirts">
+                    <a href="#" class="oor-merch-product-link">
+                        <div class="oor-merch-product-image-wrapper">
+                            <div class="oor-merch-product-bg"></div>
+                            <img src="/public/assets/merch-4.png" alt="Товар 12" class="oor-merch-product-image wp-post-image">
+                        </div>
+                        <div class="oor-merch-product-price price">
+                            <span class="woocommerce-Price-amount amount">00.00</span>
+                            <span class="woocommerce-Price-currencySymbol">₽</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="oor-footer">
+        <div class="oor-container">
+            <div class="oor-footer-content">
+                <!-- Footer Left -->
+                <div class="oor-footer-left">
+                    <div class="oor-footer-logo">
+                        <img src="/public/assets/logo-footer.svg" alt="Out of Records" class="oor-footer-logo-image">
+                    </div>
+                    <div class="oor-footer-contact">
+                        <p class="oor-footer-email">info@OOR.com</p>
+                    </div>
+                </div>
+
+                <!-- Footer Right -->
+                <div class="oor-footer-right">
+                    <!-- Links Top -->
+                    <div class="oor-footer-links-top">
+                        <h3 class="oor-footer-nav-title">навигация</h3>
+                        <div class="oor-footer-links-top-group">
+                            <a href="/" class="oor-footer-link rolling-button" data-menu-item="main"><span class="tn-atom">Лейбл</span></a>
+                            <a href="/artists.html" class="oor-footer-link rolling-button" data-menu-item="artists"><span class="tn-atom">Артисты</span></a>
+                            <a href="/dawgs.html" class="oor-footer-link rolling-button" data-menu-item="dawgs"><span class="tn-atom">Dawgs</span></a>
+                            <a href="/studio.html" class="oor-footer-link rolling-button" data-menu-item="studio"><span class="tn-atom">Студия</span></a>
+                            <a href="/events.html" class="oor-footer-link rolling-button" data-menu-item="events"><span class="tn-atom">События</span></a>
+                            <a href="/merch.html" class="oor-footer-link rolling-button" data-menu-item="merch"><span class="tn-atom">мерч</span></a>
+                            <a href="#" class="oor-footer-link rolling-button" data-menu-item="contacts"><span class="tn-atom">контакты</span></a>
+                  </div>
+
+</div>
+                
+                <!-- Links Bottom -->
+                <div class="oor-footer-links-bottom">
+                    <!-- Social Title -->
+                    <h3 class="oor-footer-social-title">соцсети</h3>
+                    
+                    <!-- Links Bottom Group -->
+                    <div class="oor-footer-links-bottom-group">
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">ВК</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Инста</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Ютуб</span></a>
+                        <a href="#" class="oor-footer-link rolling-button"><span class="tn-atom">Телеграм</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Privacy Block -->
+        <div class="oor-footer-privacy">
+            <!-- Privacy Left -->
+            <div class="oor-footer-privacy-left">
+                <a href="#" class="oor-footer-privacy-link rolling-button"><span class="tn-atom">политика конфиденциальности</span></a>
+                <a href="#" class="oor-footer-privacy-link rolling-button"><span class="tn-atom">все права защищены</span></a>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="oor-footer-copyright">© 2025</div>
+        </div>
+    </footer>
+
+    <!-- OOR JavaScript -->
+    <!-- External deps (load first) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
+    <!-- UI Scaling для больших мониторов (загружаем рано) -->
+    <script src="/src/js/scale-container.js?v=20251121074959"></script>
+    
+    <!-- OOR JavaScript модули -->
+    <script src="/src/js/modules/error-handler.js?v=20251121074959"></script>
+    <script src="/src/js/modules/preloader.js?v=20251121074959"></script>
+    <script src="/src/js/modules/navigation.js?v=20251121074959"></script>
+    <script src="/src/js/modules/video.js?v=20251121074959"></script>
+    <script src="/src/js/mobile-menu.js?v=20251121074959"></script>
+    <script src="/src/js/menu-sync.js?v=20251121074959"></script>
+    <script src="/src/js/main.js?v=20251121074959"></script>
+
+    <!-- Rolling text effect script -->
+    <script defer src="/src/js/rolling-text.js?v=20251121074959"></script>
+    
+    <!-- Merch filter script -->
+    <script defer src="/src/js/merch-filter.js?v=20251121074959"></script>
+    
+    <!-- MouseFollower + Custom cursor (объединенный) -->
+    <script src="/src/js/cursor.js?v=20251121074959"></script>
+    
+    <!-- Кастомный декоративный скроллбар -->
+    <div class="custom-scrollbar" id="customScrollbar">
+      <div class="custom-scrollbar-track">
+        <div class="custom-scrollbar-thumb" id="scrollbarThumb"></div>
+    </div>
+  </div>
+    
+    <!-- Custom scrollbar script -->
+    <script src="/src/js/scrollbar.js?v=20251121074959"></script>
+    
+  </body>
+</html>

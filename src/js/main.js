@@ -231,6 +231,11 @@ function initRetinaSupport() {
 // Параллакс для изображений
 function initParallaxImages() {
   if (window.innerWidth <= 425) return;
+  
+  // Отключаем параллакс на страницах магазина
+  if (document.body.classList.contains('oor-merch-page') || document.body.classList.contains('oor-product-page')) {
+    return;
+  }
 
   const allImages = Array.from(document.querySelectorAll('img'));
   const candidates = allImages.filter(img => {
@@ -241,6 +246,8 @@ function initParallaxImages() {
     if (img.id === 'splash-gif' || img.id === 'splash-gif-frozen' || img.closest('.oor-splash-screen')) return false;
     if (img.closest('#wsls')) return false;
     if (img.closest('.oor-merch-images-grid')) return false;
+    if (img.closest('.oor-merch-products-grid')) return false;
+    if (img.closest('.oor-product-images')) return false;
     if (img.closest('.oor-events-posters')) return false;
     if (img.closest('.oor-events-hero-gallery')) return false;
     if (img.closest('.oor-events-listing-card-image')) return false;
@@ -453,6 +460,11 @@ function initParallaxImages() {
 // Анимация появления блоков при скролле
 function initRevealOnScroll() {
   if (window.innerWidth <= 1024) return;
+  
+  // Отключаем анимацию появления на страницах магазина
+  if (document.body.classList.contains('oor-merch-page') || document.body.classList.contains('oor-product-page')) {
+    return;
+  }
 
   const selectors = [
     '.slider-section',
