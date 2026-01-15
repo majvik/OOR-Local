@@ -6739,6 +6739,157 @@ body.oor-services-page .oor-btn-small-icon img {
   }
 }
 
+/* ===== ARTISTS PAGE MOBILE STYLES ===== */
+
+/* Мобильная версия для страницы артистов (≤768px) */
+@media (max-width: 768px) {
+  /* Hero секция */
+  .oor-artists-hero {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom: 1px solid #000;
+  }
+
+  .oor-artists-hero .oor-container {
+    padding: 0;
+  }
+
+  .oor-artists-hero-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 76px 0 16px 12px;
+    gap: 0;
+  }
+
+  .oor-artists-hero-title {
+    font-size: 72px;
+    line-height: 100%;
+    letter-spacing: -7.2px;
+    margin: 0;
+  }
+
+  .oor-artists-hero-copyright {
+    font-size: 16px;
+    line-height: 140%;
+    letter-spacing: -0.32px;
+    margin: 0;
+    margin-top: 0;
+  }
+
+  /* Grid Section */
+  .oor-artists-grid-section {
+    padding: 32px 0 40px;
+  }
+
+  .oor-artists-grid-section .oor-container {
+    padding: 0 12px;
+  }
+
+  .oor-artists-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    width: 100%;
+  }
+
+  .oor-artist-card {
+    gap: 11px;
+    width: 100%;
+  }
+
+  .oor-artist-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .oor-artist-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .oor-artist-name {
+    font-family: var(--font-ui);
+    font-size: 22px;
+    line-height: 116%;
+    font-weight: 300;
+    letter-spacing: -0.88px;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0;
+  }
+
+  /* Бургер-меню на странице артистов - белая иконка */
+  body.oor-artists-page .oor-header .oor-burger-menu {
+    mix-blend-mode: normal !important;
+    isolation: isolate !important;
+  }
+
+  body.oor-artists-page .oor-header .oor-burger-menu .oor-burger-icon {
+    color: #fff !important;
+    fill: #fff !important;
+    stroke: #fff !important;
+    mix-blend-mode: normal !important;
+  }
+
+  body.oor-artists-page .oor-header .oor-burger-menu .oor-burger-icon,
+  body.oor-artists-page .oor-header .oor-burger-menu .oor-burger-icon * {
+    filter: brightness(0) invert(1) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+
+  body.oor-artists-page .oor-header .oor-burger-menu .oor-burger-icon img {
+    filter: brightness(0) invert(1) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+
+  /* Мобильное меню на странице артистов */
+  body.oor-artists-page .oor-mobile-menu *,
+  body.oor-artists-page .oor-mobile-menu a.rolling-button,
+  body.oor-artists-page .oor-mobile-menu a.rolling-button span,
+  body.oor-artists-page .oor-mobile-menu .oor-mobile-menu-link,
+  body.oor-artists-page .oor-mobile-menu .oor-mobile-menu-link.rolling-button {
+    color: #fff !important;
+  }
+
+  body.oor-artists-page .oor-mobile-menu-link,
+  body.oor-artists-page .oor-mobile-menu-link.rolling-button {
+    color: #fff !important;
+    opacity: 0.8;
+  }
+
+  body.oor-artists-page .oor-mobile-menu-link:hover,
+  body.oor-artists-page .oor-mobile-menu-link.rolling-button:hover {
+    color: #fff !important;
+    opacity: 1;
+  }
+
+  body.oor-artists-page .oor-mobile-menu-btn {
+    color: #fff !important;
+    border-color: #fff !important;
+  }
+
+  body.oor-artists-page .oor-mobile-menu-btn .oor-mobile-menu-btn-text {
+    color: #fff !important;
+  }
+
+  body.oor-artists-page .oor-mobile-menu-btn:hover {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  body.oor-artists-page .oor-mobile-menu-btn:hover .oor-mobile-menu-btn-text {
+    color: #000 !important;
+  }
+}
+
 /* ===== TALK SHOW PAGE STYLES ===== */
 
 /* Talk Show page - black header */
