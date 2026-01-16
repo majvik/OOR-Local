@@ -102,8 +102,10 @@ npm run migrate-paths
 
 **Скопировать в тему:**
 
-- [ ] `/src/` → `/wp-content/themes/oor-theme/assets/`
+- [ ] `/src/` → `/wp-content/themes/oor-theme/assets/` (или `wp-content/themes/oor-theme/assets/` для Docker)
 - [ ] `/public/` → `/wp-content/themes/oor-theme/public/`
+
+**Примечание:** При использовании Docker файлы должны быть в `wp-content/themes/oor-theme/` в корне проекта (volume mount настроен в docker-compose.yml)
 
 ---
 
@@ -216,6 +218,7 @@ npm run migrate-paths
 
 ### Уже создано:
 
+- ✅ Docker конфигурация: `docker-compose.yml`
 - ✅ Скрипт миграции путей: `scripts/migrate-paths-to-wp.js`
 - ✅ Примеры шаблонов: `WORDPRESS-TEMPLATES-EXAMPLES.md`
 - ✅ Чек-лист: `WORDPRESS-MIGRATION-CHECKLIST.md`
@@ -224,6 +227,7 @@ npm run migrate-paths
 
 ### Нужно создать:
 
+- [ ] Запустить Docker окружение (если используется)
 - [ ] Реальные PHP шаблоны (на основе примеров)
 - [ ] ACF Field Groups в WordPress
 - [ ] Страницы в WordPress
