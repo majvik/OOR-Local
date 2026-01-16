@@ -14,15 +14,15 @@
     
     // Физика инерции
     FRICTION: 0.92,
-    VELOCITY_MULTIPLIER: 0.8,
-    MIN_VELOCITY: 0.5,
+    VELOCITY_MULTIPLIER: 1.2,
+    MIN_VELOCITY: 0.3,
     
     // Snap настройки
-    SNAP_THRESHOLD: 0.3,
-    SNAP_DURATION: 450,
+    SNAP_THRESHOLD: 0.15, // 15% ширины слайда для переключения
+    SNAP_DURATION: 350,
     
     // Touch настройки
-    DIRECTION_LOCK_THRESHOLD: 10,
+    DIRECTION_LOCK_THRESHOLD: 8,
   };
 
   const isMobile = () => window.innerWidth <= 460;
@@ -252,6 +252,11 @@
       cancelAnimationFrame(dragAnimationId);
       dragAnimationId = null;
     }
+    
+    // Отключаем CSS transition во время драга
+    if (wrapper) {
+      wrapper.style.transition = 'none';
+    }
   }
 
   function onTouchMove(e) {
@@ -332,7 +337,7 @@
 
     let targetSlide = Math.round(currentX / slideWidth);
     
-    if (absVelocity > 2 || absDeltaX > slideWidth * CONFIG.SNAP_THRESHOLD) {
+    if (absVelocity > 0.8 || absDeltaX > slideWidth * CONFIG.SNAP_THRESHOLD) {
       if (velocity < 0 || deltaX < 0) {
         targetSlide = Math.ceil(currentX / slideWidth);
       } else {
@@ -352,34 +357,21 @@
   }
 
   function animateWithMomentum() {
-    isAnimating = true;
-
-    function step() {
-      if (!isAnimating) return;
-
-      velocity *= CONFIG.FRICTION;
-      currentX -= velocity * CONFIG.VELOCITY_MULTIPLIER;
-
-      // Резиновый эффект
-      if (currentX < 0) {
-        currentX *= 0.85;
-        velocity *= 0.5;
-      } else if (currentX > maxScroll) {
-        currentX = maxScroll + (currentX - maxScroll) * 0.85;
-        velocity *= 0.5;
-      }
-
-      setTransform(currentX);
-
-      if (Math.abs(velocity) < CONFIG.MIN_VELOCITY) {
-        snapToNearestSlide();
-        return;
-      }
-
-      animationId = requestAnimationFrame(step);
-    }
-
-    animationId = requestAnimationFrame(step);
+    // Рассчитываем конечную позицию на основе velocity
+    const momentumDistance = velocity * CONFIG.VELOCITY_MULTIPLIER * 8;
+    let predictedX = currentX - momentumDistance;
+    
+    // Ограничиваем границами
+    predictedX = Math.max(0, Math.min(maxScroll, predictedX));
+    
+    // Snap к ближайшему слайду
+    let targetSlide = Math.round(predictedX / slideWidth);
+    targetSlide = Math.max(0, Math.min(slides.length - 1, targetSlide));
+    targetX = targetSlide * slideWidth;
+    targetX = Math.max(0, Math.min(maxScroll, targetX));
+    
+    // Анимируем через CSS
+    animateToTarget();
   }
 
   function snapToNearestSlide() {
@@ -393,33 +385,21 @@
 
   function animateToTarget() {
     isAnimating = true;
-    const startX = currentX;
-    const distance = targetX - startX;
-    const startTime = Date.now();
-
-    function step() {
-      if (!isAnimating) return;
-
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / CONFIG.SNAP_DURATION, 1);
-      
-      // Easing (ease-out cubic)
-      const eased = 1 - Math.pow(1 - progress, 3);
-      
-      currentX = startX + distance * eased;
-      setTransform(currentX);
-
-      if (progress < 1) {
-        animationId = requestAnimationFrame(step);
-      } else {
-        currentX = targetX;
-        setTransform(currentX);
-        isAnimating = false;
-        animationId = null;
+    
+    // Используем CSS transition для плавной анимации без дрожания
+    wrapper.style.transition = `transform ${CONFIG.SNAP_DURATION}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+    
+    currentX = targetX;
+    const roundedX = Math.round(-currentX);
+    wrapper.style.transform = `translate3d(${roundedX}px, 0, 0)`;
+    
+    // Убираем transition после завершения анимации
+    setTimeout(() => {
+      if (wrapper) {
+        wrapper.style.transition = 'none';
       }
-    }
-
-    animationId = requestAnimationFrame(step);
+      isAnimating = false;
+    }, CONFIG.SNAP_DURATION);
   }
 
   function setTransform(x) {
