@@ -47,6 +47,8 @@
   let isDragging = false;
   let isHorizontalSwipe = null;
   let startScrollX = 0;
+  let dragAnimationId = null;
+  let pendingX = null;
 
   function init() {
     if (!isMobile()) {
@@ -74,6 +76,10 @@
     if (animationId) {
       cancelAnimationFrame(animationId);
       animationId = null;
+    }
+    if (dragAnimationId) {
+      cancelAnimationFrame(dragAnimationId);
+      dragAnimationId = null;
     }
     removeEventListeners();
     clearStyles();
@@ -234,6 +240,7 @@
     isDragging = true;
     isHorizontalSwipe = null;
     velocity = 0;
+    pendingX = null;
 
     if (animationId) {
       cancelAnimationFrame(animationId);
@@ -241,9 +248,9 @@
       isAnimating = false;
     }
     
-    // Отключаем FX loop во время драга для производительности
-    if (wrapper) {
-      wrapper.style.willChange = 'transform';
+    if (dragAnimationId) {
+      cancelAnimationFrame(dragAnimationId);
+      dragAnimationId = null;
     }
   }
 
@@ -267,11 +274,13 @@
       
       const now = Date.now();
       const dt = now - lastTouchTime;
-      if (dt > 0) {
-        velocity = (touchCurrentX - lastTouchX) / dt * 15;
+      if (dt > 10) { // Минимум 10ms между измерениями для стабильности
+        const newVelocity = (touchCurrentX - lastTouchX) / dt * 15;
+        // Сглаживаем velocity для уменьшения дрожания
+        velocity = velocity * 0.5 + newVelocity * 0.5;
+        lastTouchX = touchCurrentX;
+        lastTouchTime = now;
       }
-      lastTouchX = touchCurrentX;
-      lastTouchTime = now;
 
       let newX = startScrollX - deltaX;
       
@@ -282,7 +291,19 @@
         newX = maxScroll + (newX - maxScroll) * 0.3;
       }
 
-      currentX = newX;
+      pendingX = newX;
+      
+      // Используем requestAnimationFrame для плавного обновления
+      if (!dragAnimationId) {
+        dragAnimationId = requestAnimationFrame(updateDragPosition);
+      }
+    }
+  }
+  
+  function updateDragPosition() {
+    dragAnimationId = null;
+    if (pendingX !== null && isDragging) {
+      currentX = pendingX;
       setTransform(currentX);
     }
   }
@@ -290,6 +311,18 @@
   function onTouchEnd() {
     if (!isDragging) return;
     isDragging = false;
+    
+    if (dragAnimationId) {
+      cancelAnimationFrame(dragAnimationId);
+      dragAnimationId = null;
+    }
+    
+    // Применяем последнюю позицию если она была отложена
+    if (pendingX !== null) {
+      currentX = pendingX;
+      setTransform(currentX);
+      pendingX = null;
+    }
 
     if (!isHorizontalSwipe) return;
 
@@ -310,11 +343,6 @@
     targetSlide = Math.max(0, Math.min(slides.length - 1, targetSlide));
     targetX = targetSlide * slideWidth;
     targetX = Math.max(0, Math.min(maxScroll, targetX));
-
-    // Восстанавливаем will-change после драга
-    if (wrapper) {
-      wrapper.style.willChange = 'transform';
-    }
 
     if (absVelocity > CONFIG.MIN_VELOCITY) {
       animateWithMomentum();
@@ -396,8 +424,8 @@
 
   function setTransform(x) {
     if (wrapper) {
-      // Округляем для избежания subpixel рендеринга и дрожания
-      const roundedX = Math.round(-x * 100) / 100;
+      // Округляем до целых пикселей для избежания subpixel рендеринга и дрожания
+      const roundedX = Math.round(-x);
       // Используем translate3d для аппаратного ускорения
       wrapper.style.transform = `translate3d(${roundedX}px, 0, 0)`;
     }
