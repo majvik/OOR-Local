@@ -40,7 +40,8 @@
 - [ ] `page-dawgs.php` - DAWGS
 - [ ] `page-talk-show.php` - Talk-show
 - [ ] `page-contacts.php` - контакты
-- [ ] `single-artist.php` - страница артиста
+- [ ] `single-artist.php` - страница отдельного артиста
+- [ ] `page-artists.php` или `archive-artist.php` - страница со списком артистов (на основе `artists.html`)
 - [ ] `archive-event.php` - архив событий
 - [ ] `inc/enqueue.php` - подключение стилей/скриптов
 - [ ] `inc/body-classes.php` - body-классы

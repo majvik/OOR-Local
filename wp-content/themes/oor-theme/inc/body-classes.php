@@ -17,8 +17,6 @@ function oor_body_classes($classes) {
         $classes[] = 'oor-dawgs-page';
     } elseif (is_page('talk-show')) {
         $classes[] = 'oor-talk-show-page';
-    } elseif (is_page('merch')) {
-        $classes[] = 'oor-merch-page';
     } elseif (is_page('contacts')) {
         $classes[] = 'oor-contacts-page';
     }
@@ -30,6 +28,22 @@ function oor_body_classes($classes) {
         $classes[] = 'oor-event-page';
     } elseif (is_post_type_archive('event')) {
         $classes[] = 'oor-events-page';
+    }
+    
+    // WooCommerce страницы (мерч в подпапке /merch/)
+    if (function_exists('is_woocommerce')) {
+        if (is_woocommerce()) {
+            $classes[] = 'oor-merch-page';
+        }
+        if (is_product()) {
+            $classes[] = 'oor-product-page';
+        }
+        if (is_cart()) {
+            $classes[] = 'oor-cart-page';
+        }
+        if (is_checkout()) {
+            $classes[] = 'oor-checkout-page';
+        }
     }
     
     return $classes;

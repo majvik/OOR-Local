@@ -103,7 +103,7 @@
 
 Нужно добавить классы для:
 - page-studio → oor-studio-page
-- page-artists → oor-artists-page
+- page-artists или archive-artist → oor-artists-page (страница со списком артистов)
 - page-manifest → oor-manifest-page
 - page-services → oor-services-page
 - page-dawgs → oor-dawgs-page
