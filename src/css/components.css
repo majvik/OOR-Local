@@ -9267,7 +9267,7 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
-    padding: 0 12px 24px 12px;
+    padding: 0 16px 24px 16px;
   }
 
   .oor-merch-hero-title {
@@ -9286,7 +9286,7 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
   }
 
   .oor-merch-filters {
-    padding: 0 12px;
+    padding: 0 16px;
     gap: 12px;
     overflow-x: auto;
     scrollbar-width: none;
@@ -9312,7 +9312,7 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
   .oor-merch-products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding: 0 12px;
+    padding: 0 16px;
   }
 
   .oor-merch-product {
@@ -9552,6 +9552,15 @@ body.oor-product-page .oor-product-images {
   overflow-y: auto !important;
   overflow-x: hidden !important;
   overscroll-behavior: contain;
+}
+
+/* Переопределяем для мобильных */
+@media (max-width: 768px) {
+  body.oor-product-page .oor-product-images {
+    overflow-y: hidden !important;
+    overflow-x: scroll !important;
+    touch-action: pan-x !important;
+  }
 }
 
 /* Right Column - Product Info (Fixed) */
@@ -9794,13 +9803,14 @@ body.oor-product-page .oor-product-images {
     padding: 76px 0 100px 0;
     min-height: auto;
     height: auto;
-    overflow: visible;
+    overflow: visible !important;
     margin-top: 0;
   }
 
   body.oor-product-page .oor-product-section .oor-container {
     padding: 0;
     height: auto;
+    overflow: visible !important;
   }
 
   .oor-product-wrapper {
@@ -9808,26 +9818,28 @@ body.oor-product-page .oor-product-images {
     flex-direction: column;
     gap: 40px;
     height: auto;
-    padding: 0 var(--container-x);
+    padding: 0;
   }
 
   /* Product Images - Horizontal Scroll (First) */
   .oor-product-images {
-    display: flex;
-    flex-direction: row;
+    display: flex !important;
+    flex-direction: row !important;
     gap: 12px;
-    max-height: none;
-    height: auto;
-    overflow-y: hidden;
-    overflow-x: auto;
+    max-height: none !important;
+    height: auto !important;
+    overflow-y: hidden !important;
+    overflow-x: scroll !important;
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
-    padding: 0;
-    margin: 0 calc(-1 * var(--container-x));
-    padding-left: var(--container-x);
-    padding-right: var(--container-x);
+    padding: 0 var(--container-x);
+    margin: 0;
     order: 1;
+    width: 100%;
+    touch-action: pan-x !important;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
   }
 
   .oor-product-images::-webkit-scrollbar {
@@ -9843,6 +9855,7 @@ body.oor-product-page .oor-product-images {
     flex-shrink: 0;
     margin-bottom: 0;
     box-sizing: border-box;
+    scroll-snap-align: start;
   }
 
   .oor-product-image {
@@ -9858,7 +9871,7 @@ body.oor-product-page .oor-product-images {
     position: static;
     top: auto;
     max-width: 100%;
-    padding: 0;
+    padding: 0 var(--container-x);
     gap: 40px;
     height: auto;
     overflow-y: visible;
@@ -10235,7 +10248,12 @@ body.oor-cart-page .oor-header .oor-merch-cart-icon img {
 
   /* Cart Section */
   .oor-cart-section {
-    padding: 76px var(--container-x) 100px var(--container-x);
+    padding: 76px 0 100px 0;
+  }
+  
+  .oor-cart-section .oor-container {
+    padding-left: var(--container-x);
+    padding-right: var(--container-x);
   }
 
   .oor-cart-header {
@@ -10652,7 +10670,12 @@ body.oor-checkout-page .oor-header .oor-merch-cart-icon img {
 
   /* Checkout Section */
   .oor-checkout-section {
-    padding: 76px var(--container-x) 100px var(--container-x);
+    padding: 76px 0 100px 0;
+  }
+  
+  .oor-checkout-section .oor-container {
+    padding-left: var(--container-x);
+    padding-right: var(--container-x);
   }
 
   .oor-checkout-header {
