@@ -9,42 +9,93 @@ get_header();
 
 <!-- Breadcrumbs -->
     <div class="oor-artist-breadcrumbs">
-        <a href="/artists.html" class="oor-artist-breadcrumb-link rolling-button"><span class="tn-atom">артисты</span></a>
+        <a href="<?php echo esc_url(home_url('/artists')); ?>" class="oor-artist-breadcrumb-link rolling-button"><span class="tn-atom">артисты</span></a>
         <span class="oor-artist-breadcrumb-dot"></span>
-        <span class="oor-artist-breadcrumb-current">dsprit</span>
+        <span class="oor-artist-breadcrumb-current"><?php echo esc_html(get_post_field('post_name', get_the_ID())); ?></span>
     </div>
 
     <!-- Main Content -->
     <main class="oor-artist-main">
         <!-- Left - Description with gradient background -->
         <div class="oor-artist-description-container">
-            <h1 class="oor-artist-title">DSPRITE</h1>
+            <h1 class="oor-artist-title"><?php echo esc_html(get_the_title()); ?></h1>
             <div class="oor-artist-description-wrapper">
                 <div class="oor-artist-description-content" id="artist-description">
-                    <p>Васютинский Мирослав Вадимович (родился 4 января в Волгограде) — российский хип-хоп исполнитель и продюсер.</p>
-                    <p class="oor-artist-description-expanded">Он начал заниматься музыкой в подростковом возрасте, вдохновляясь как западным рэпом, так и отечественными исполнителями. Свой первый микстейп выпустил в 2017 году, который получил внимание в локальном андеграунд-сообществе.</p>
-                    <p class="oor-artist-description-expanded">В 2019 году DSPRITE подписал контракт с независимым лейблом Out of Records, что стало поворотным моментом в его карьере. Под крылом лейбла он выпустил несколько успешных синглов и дебютный альбом "Эхо улиц", который принес ему широкую известность.</p>
+                    <?php
+                    // Краткое описание
+                    $short_description = get_field('artist_short_description');
+                    if ($short_description) {
+                        echo '<p>' . wp_kses_post($short_description) . '</p>';
+                    }
+                    
+                    // Полное описание
+                    $full_description = get_field('artist_full_description');
+                    if ($full_description) {
+                        // Разбиваем на параграфы, если есть переносы строк
+                        $paragraphs = explode("\n", $full_description);
+                        foreach ($paragraphs as $paragraph) {
+                            $paragraph = trim($paragraph);
+                            if ($paragraph) {
+                                echo '<p class="oor-artist-description-expanded">' . wp_kses_post($paragraph) . '</p>';
+                            }
+                        }
+                    }
+                    ?>
                 </div>
                 <button class="oor-artist-description-toggle" id="description-toggle">подробнее</button>
             </div>
 
             <!-- Social Links -->
             <div class="oor-artist-social-links">
-                <a href="#" class="oor-artist-social-link rolling-button"><span class="tn-atom">Яндекс Музыка</span></a>
-                <a href="#" class="oor-artist-social-link rolling-button"><span class="tn-atom">ВК музыка</span></a>
-                <a href="#" class="oor-artist-social-link rolling-button"><span class="tn-atom">Apple</span></a>
-                <a href="#" class="oor-artist-social-link rolling-button"><span class="tn-atom">Spotify</span></a>
-                <a href="#" class="oor-artist-social-link rolling-button"><span class="tn-atom">МТС Музыка</span></a>
+                <?php
+                // Получаем социальные сети из ACF Repeater
+                $social_links = get_field('artist_social_links');
+                if ($social_links && is_array($social_links)) {
+                    foreach ($social_links as $social) {
+                        $platform = isset($social['platform']) ? $social['platform'] : '';
+                        $url = isset($social['url']) ? $social['url'] : '#';
+                        if ($platform && $url) {
+                            echo '<a href="' . esc_url($url) . '" class="oor-artist-social-link rolling-button" target="_blank" rel="noopener noreferrer"><span class="tn-atom">' . esc_html($platform) . '</span></a>';
+                        }
+                    }
+                }
+                ?>
             </div>
         </div>
 
         <!-- Center - Artist Image (full height, pinned to bottom) -->
         <div class="oor-artist-image-container">
-            <picture>
-                <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="DSPRITE" class="oor-artist-image-main no-parallax">
-            </picture>
+            <?php
+            // Получаем изображение артиста из ACF
+            $artist_image = get_field('artist_main_image');
+            
+            if ($artist_image) {
+                // Обрабатываем разные форматы возврата ACF Image field
+                $image_id = null;
+                
+                if (is_numeric($artist_image)) {
+                    // Если это ID вложения
+                    $image_id = $artist_image;
+                } elseif (is_array($artist_image) && isset($artist_image['ID'])) {
+                    // Если это массив от ACF
+                    $image_id = $artist_image['ID'];
+                }
+                
+                if ($image_id) {
+                    // Используем функцию для генерации picture элемента с вариантами 1x/2x
+                    echo oor_picture_element($image_id, get_the_title(), 'oor-artist-image-main no-parallax');
+                } else {
+                    // Fallback: если формат не поддерживается
+                    $image_url = is_array($artist_image) && isset($artist_image['url']) ? $artist_image['url'] : '';
+                    if ($image_url) {
+                        echo '<img src="' . esc_url($image_url) . '" alt="' . esc_attr(get_the_title()) . '" class="oor-artist-image-main no-parallax">';
+                    }
+                }
+            } else {
+                // Fallback: если изображение не загружено
+                echo '<img src="' . esc_url(get_template_directory_uri() . '/public/assets/placeholder-artist.png') . '" alt="' . esc_attr(get_the_title()) . '" class="oor-artist-image-main no-parallax">';
+            }
+            ?>
         </div>
 
         <!-- Right Side - Tracks Grid (3 columns) -->

@@ -170,50 +170,76 @@ get_header();
               
               if ($artists_slider && is_array($artists_slider)) {
                   foreach ($artists_slider as $item) {
-                      $artist = $item['artist']; // Post Object из ACF
+                      // Получаем изображение для слайдера (отдельное поле)
+                      $slider_image = isset($item['slider_image']) ? $item['slider_image'] : null;
                       
-                      if (!$artist || !is_object($artist)) {
+                      // Получаем артиста для ссылки
+                      $artist = isset($item['artist']) ? $item['artist'] : null;
+                      
+                      // Если нет изображения или артиста, пропускаем
+                      if (!$slider_image || !$artist) {
                           continue;
                       }
                       
-                      $artist_id = is_numeric($artist) ? $artist : $artist->ID;
-                      $artist_name = get_the_title($artist_id);
-                      $artist_slug = get_post_field('post_name', $artist_id);
+                      // Обрабатываем артиста (Post Object)
+                      $artist_id = is_numeric($artist) ? $artist : (is_object($artist) ? $artist->ID : null);
+                      if (!$artist_id) {
+                          continue;
+                      }
+                      
+                      // Получаем имя артиста: сначала из ACF поля (если есть), затем из заголовка поста
+                      $artist_name = isset($item['artist_name']) && !empty($item['artist_name']) 
+                          ? $item['artist_name'] 
+                          : get_the_title($artist_id);
+                      
                       $artist_url = get_permalink($artist_id);
                       
-                      // Получаем изображение артиста из ACF или featured image
-                      $artist_image = get_field('artist_image', $artist_id);
+                      // Обрабатываем изображение для слайдера
+                      // Поддержка разных форматов возврата ACF Image field
+                      $image_id = null;
+                      $image_url = null;
+                      $image_alt = esc_attr($artist_name);
                       
-                      if (!$artist_image && has_post_thumbnail($artist_id)) {
-                          $thumbnail_id = get_post_thumbnail_id($artist_id);
-                          $artist_image = [
-                              'url' => wp_get_attachment_image_url($thumbnail_id, 'full'),
-                              'sizes' => [
-                                  'medium' => wp_get_attachment_image_url($thumbnail_id, 'medium'),
-                                  'large' => wp_get_attachment_image_url($thumbnail_id, 'large'),
-                              ]
-                          ];
+                      if (is_numeric($slider_image)) {
+                          // Если это ID вложения
+                          $image_id = $slider_image;
+                          $image_url = wp_get_attachment_image_url($image_id, 'full');
+                          $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true) ?: $image_alt;
+                      } elseif (is_array($slider_image)) {
+                          // Если это массив от ACF
+                          if (isset($slider_image['ID'])) {
+                              $image_id = $slider_image['ID'];
+                              $image_url = isset($slider_image['url']) ? $slider_image['url'] : wp_get_attachment_image_url($image_id, 'full');
+                              $image_alt = isset($slider_image['alt']) ? $slider_image['alt'] : $image_alt;
+                          } elseif (isset($slider_image['url'])) {
+                              $image_url = $slider_image['url'];
+                              $image_alt = isset($slider_image['alt']) ? $slider_image['alt'] : $image_alt;
+                          }
+                      } elseif (is_string($slider_image)) {
+                          // Если это URL
+                          $image_url = $slider_image;
                       }
                       
-                      if (!$artist_image) {
-                          continue; // Пропускаем артиста без изображения
+                      if (!$image_url) {
+                          continue; // Пропускаем, если нет изображения
                       }
                       
-                      $image_url = $artist_image['url'];
-                      $image_medium = isset($artist_image['sizes']['medium']) ? $artist_image['sizes']['medium'] : $image_url;
-                      $image_large = isset($artist_image['sizes']['large']) ? $artist_image['sizes']['large'] : $image_url;
-                      $image_alt = isset($artist_image['alt']) ? $artist_image['alt'] : esc_attr($artist_name);
+                      // Используем функцию для генерации picture элемента с вариантами 1x/2x
+                      if ($image_id) {
+                          // Если есть ID, используем нашу функцию для генерации вариантов
+                          $picture_html = oor_picture_element($image_id, $image_alt, 'slide-image', ['draggable' => 'false']);
+                      } else {
+                          // Fallback: простое изображение без вариантов
+                          $picture_html = sprintf(
+                              '<img src="%s" alt="%s" draggable="false">',
+                              esc_url($image_url),
+                              esc_attr($image_alt)
+                          );
+                      }
                       ?>
                       <div class="slide">
                           <a href="<?php echo esc_url($artist_url); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты">
-                              <picture>
-                                  <source srcset="<?php echo esc_url($image_medium); ?> 1x, <?php echo esc_url($image_large); ?> 2x" type="image/avif">
-                                  <source srcset="<?php echo esc_url($image_medium); ?> 1x, <?php echo esc_url($image_large); ?> 2x" type="image/webp">
-                                  <img src="<?php echo esc_url($image_url); ?>" 
-                                       srcset="<?php echo esc_url($image_url); ?> 1x, <?php echo esc_url($image_large); ?> 2x" 
-                                       alt="<?php echo $image_alt; ?>" 
-                                       draggable="false"/>
-                              </picture>
+                              <?php echo $picture_html; ?>
                           </a>
                           <span class="artist-name"><?php echo esc_html($artist_name); ?></span>
                       </div>
