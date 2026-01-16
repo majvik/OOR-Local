@@ -5,6 +5,22 @@
  */
 
 get_header();
+
+// Проверка, что это действительно артист
+if (!have_posts()) {
+    // Если пост не найден, редирект на страницу артистов
+    wp_redirect(home_url('/artists'), 302);
+    exit;
+}
+
+the_post();
+
+// Проверка, что у артиста есть название
+if (empty(get_the_title())) {
+    // Если нет названия, редирект на страницу артистов
+    wp_redirect(home_url('/artists'), 302);
+    exit;
+}
 ?>
 
 <!-- Breadcrumbs -->
@@ -68,31 +84,50 @@ get_header();
             <?php
             // Получаем изображение артиста из ACF
             $artist_image = get_field('artist_main_image');
+            $artist_slug = get_post_field('post_name', get_the_ID());
+            
+            $image_id = null;
+            $image_url = null;
             
             if ($artist_image) {
                 // Обрабатываем разные форматы возврата ACF Image field
-                $image_id = null;
-                
                 if (is_numeric($artist_image)) {
                     // Если это ID вложения
                     $image_id = $artist_image;
                 } elseif (is_array($artist_image) && isset($artist_image['ID'])) {
                     // Если это массив от ACF
                     $image_id = $artist_image['ID'];
+                } elseif (is_array($artist_image) && isset($artist_image['url'])) {
+                    // Если это массив с URL
+                    $image_url = $artist_image['url'];
                 }
-                
-                if ($image_id) {
-                    // Используем функцию для генерации picture элемента с вариантами 1x/2x
-                    echo oor_picture_element($image_id, get_the_title(), 'oor-artist-image-main no-parallax');
-                } else {
-                    // Fallback: если формат не поддерживается
-                    $image_url = is_array($artist_image) && isset($artist_image['url']) ? $artist_image['url'] : '';
-                    if ($image_url) {
-                        echo '<img src="' . esc_url($image_url) . '" alt="' . esc_attr(get_the_title()) . '" class="oor-artist-image-main no-parallax">';
-                    }
-                }
+            }
+            
+            // Если нет изображения из ACF, используем fallback из статичной папки
+            if (!$image_id && !$image_url) {
+                $fallback_base = get_template_directory_uri() . '/public/assets/artists/' . $artist_slug . '/main';
+                // Проверяем существование файлов (используем PNG как основной fallback)
+                $image_url = $fallback_base . '.png';
+            }
+            
+            if ($image_id) {
+                // Используем функцию для генерации picture элемента с вариантами 1x/2x
+                echo oor_picture_element($image_id, get_the_title(), 'oor-artist-image-main no-parallax');
+            } elseif ($image_url) {
+                // Fallback: простое изображение из статичной папки
+                $fallback_base = get_template_directory_uri() . '/public/assets/artists/' . $artist_slug . '/main';
+                ?>
+                <picture>
+                    <source srcset="<?php echo esc_url($fallback_base . '.avif'); ?> 1x, <?php echo esc_url($fallback_base . '@2x.avif'); ?> 2x" type="image/avif">
+                    <source srcset="<?php echo esc_url($fallback_base . '.webp'); ?> 1x, <?php echo esc_url($fallback_base . '@2x.webp'); ?> 2x" type="image/webp">
+                    <img src="<?php echo esc_url($fallback_base . '.png'); ?>" 
+                         srcset="<?php echo esc_url($fallback_base . '.png'); ?> 1x, <?php echo esc_url($fallback_base . '@2x.png'); ?> 2x" 
+                         alt="<?php echo esc_attr(get_the_title()); ?>" 
+                         class="oor-artist-image-main no-parallax">
+                </picture>
+                <?php
             } else {
-                // Fallback: если изображение не загружено
+                // Последний fallback: placeholder
                 echo '<img src="' . esc_url(get_template_directory_uri() . '/public/assets/placeholder-artist.png') . '" alt="' . esc_attr(get_the_title()) . '" class="oor-artist-image-main no-parallax">';
             }
             ?>
@@ -101,269 +136,146 @@ get_header();
         <!-- Right Side - Tracks Grid (3 columns) -->
         <div class="oor-artist-tracks-container">
             <div class="oor-artist-tracks-grid">
-                <!-- Track 1 -->
-                <div class="oor-artist-track" data-track-id="1" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Бьется" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
+                <?php
+                // Получаем треки из ACF Repeater (поле называется 'tracks')
+                $tracks = get_field('tracks');
+                $artist_slug = get_post_field('post_name', get_the_ID());
+                $tracks_base_path = get_template_directory_uri() . '/public/assets/artists/' . $artist_slug . '/tracks';
+                
+                // Если треки из ACF не заполнены, используем статичные пути из папки
+                if (!$tracks || !is_array($tracks) || empty($tracks)) {
+                    // Fallback: используем статичные треки из папки (если они есть)
+                    // Это временное решение, пока треки не будут заполнены в ACF
+                    $tracks = [];
+                }
+                
+                // Выводим треки из ACF
+                if ($tracks && is_array($tracks)) {
+                    $track_index = 1;
+                    foreach ($tracks as $track) {
+                        // Получаем данные трека из ACF
+                        // Поля: track_name, track_mp3, track_cover, track_year (если есть)
+                        $track_name = isset($track['track_name']) ? $track['track_name'] : '';
+                        $track_year = isset($track['track_year']) ? $track['track_year'] : '';
+                        $track_audio = isset($track['track_mp3']) ? $track['track_mp3'] : (isset($track['track_audio']) ? $track['track_audio'] : ''); // Поддержка обоих вариантов
+                        $track_cover = isset($track['track_cover']) ? $track['track_cover'] : null;
+                        
+                        if (!$track_name) {
+                            continue; // Пропускаем треки без названия
+                        }
+                        
+                        // Обрабатываем аудио файл
+                        $audio_url = '';
+                        if (is_numeric($track_audio)) {
+                            $audio_url = wp_get_attachment_url($track_audio);
+                        } elseif (is_array($track_audio) && isset($track_audio['url'])) {
+                            $audio_url = $track_audio['url'];
+                        } elseif (is_string($track_audio)) {
+                            $audio_url = $track_audio;
+                        }
+                        
+                        // Обрабатываем обложку трека
+                        $cover_id = null;
+                        if (is_numeric($track_cover)) {
+                            $cover_id = $track_cover;
+                        } elseif (is_array($track_cover) && isset($track_cover['ID'])) {
+                            $cover_id = $track_cover['ID'];
+                        }
+                        ?>
+                        <div class="oor-artist-track" data-track-id="<?php echo $track_index; ?>" data-track-src="<?php echo esc_url($audio_url); ?>">
+                            <div class="oor-artist-track-cover">
+                                <?php
+                                if ($cover_id) {
+                                    // Используем функцию для генерации picture элемента
+                                    echo oor_picture_element($cover_id, $track_name, 'oor-artist-track-image no-parallax');
+                                } else {
+                                    // Fallback: простое изображение
+                                    $cover_url = is_array($track_cover) && isset($track_cover['url']) ? $track_cover['url'] : '';
+                                    if ($cover_url) {
+                                        echo '<img src="' . esc_url($cover_url) . '" alt="' . esc_attr($track_name) . '" class="oor-artist-track-image no-parallax">';
+                                    }
+                                }
+                                ?>
+                                <div class="oor-artist-track-overlay">
+                                    <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
+                                        <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
+                                        <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
+                                    </svg>
+                                    <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
+                                </div>
+                            </div>
+                            <div class="oor-artist-track-info">
+                                <span class="oor-artist-track-name"><?php echo esc_html($track_name); ?></span>
+                                <span class="oor-artist-track-year"><?php echo esc_html($track_year); ?></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Бьется</span>
-                        <span class="oor-artist-track-year">2015</span>
-                    </div>
-                </div>
-
-                <!-- Track 2 -->
-                <div class="oor-artist-track" data-track-id="2" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Пустота" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Пустота</span>
-                        <span class="oor-artist-track-year">2015</span>
-                    </div>
-                </div>
-
-                <!-- Track 3 -->
-                <div class="oor-artist-track" data-track-id="3" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Парфюм" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Парфюм</span>
-                        <span class="oor-artist-track-year">2015</span>
-                    </div>
-                </div>
-
-                <!-- Track 4 -->
-                <div class="oor-artist-track" data-track-id="4" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Химия" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Химия</span>
-                        <span class="oor-artist-track-year">2015</span>
-                    </div>
-                </div>
-
-                <!-- Track 5 -->
-                <div class="oor-artist-track" data-track-id="5" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Новый трек" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Новый трек</span>
-                        <span class="oor-artist-track-year">2024</span>
-                    </div>
-                </div>
-
-                <!-- Track 6 -->
-                <div class="oor-artist-track" data-track-id="6" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Еще один" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Еще один</span>
-                        <span class="oor-artist-track-year">2023</span>
-                    </div>
-                </div>
-
-                <!-- Track 7 -->
-                <div class="oor-artist-track" data-track-id="7" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Мечты" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Мечты</span>
-                        <span class="oor-artist-track-year">2022</span>
-                    </div>
-                </div>
-
-                <!-- Track 8 -->
-                <div class="oor-artist-track" data-track-id="8" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Ночь" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Ночь</span>
-                        <span class="oor-artist-track-year">2021</span>
-                    </div>
-                </div>
-
-                <!-- Track 9 -->
-                <div class="oor-artist-track" data-track-id="9" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Звезды" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Звезды</span>
-                        <span class="oor-artist-track-year">2020</span>
-                    </div>
-                </div>
-
-                <!-- Track 10 -->
-                <div class="oor-artist-track" data-track-id="10" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Рассвет" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Рассвет</span>
-                        <span class="oor-artist-track-year">2019</span>
-                    </div>
-                </div>
-
-                <!-- Track 11 -->
-                <div class="oor-artist-track" data-track-id="11" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Закат" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Закат</span>
-                        <span class="oor-artist-track-year">2018</span>
-                    </div>
-                </div>
-
-                <!-- Track 12 -->
-                <div class="oor-artist-track" data-track-id="12" data-track-src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/test.mp3">
-                    <div class="oor-artist-track-cover">
-                        <picture>
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.avif 2x" type="image/avif">
-                            <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.webp 2x" type="image/webp">
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/artist-dsprite@2x.png 2x" alt="Лето" class="oor-artist-track-image no-parallax">
-                        </picture>
-                        <div class="oor-artist-track-overlay">
-                            <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
-                                <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
-                                <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
-                            </svg>
-                            <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
-                        </div>
-                    </div>
-                    <div class="oor-artist-track-info">
-                        <span class="oor-artist-track-name">Лето</span>
-                        <span class="oor-artist-track-year">2017</span>
-                    </div>
-                </div>
+                        <?php
+                        $track_index++;
+                    }
+                }
+                
+                // Если треков из ACF нет, используем fallback на статичные файлы из папки
+                if (empty($tracks)) {
+                    // Получаем список треков из папки public/assets/artists/{slug}/tracks/
+                    $tracks_dir = get_template_directory() . '/public/assets/artists/' . $artist_slug . '/tracks';
+                    $static_tracks = [];
+                    
+                    if (is_dir($tracks_dir)) {
+                        $track_dirs = array_filter(glob($tracks_dir . '/*'), 'is_dir');
+                        foreach ($track_dirs as $track_dir) {
+                            $track_slug = basename($track_dir);
+                            $audio_file = $track_dir . '/audio.mp3';
+                            
+                            if (file_exists($audio_file)) {
+                                // Пытаемся получить название трека из имени папки или файла
+                                $track_name = ucfirst(str_replace(['-', '_'], ' ', $track_slug));
+                                $static_tracks[] = [
+                                    'track_name' => $track_name,
+                                    'track_year' => '', // Год неизвестен для статичных треков
+                                    'track_audio' => get_template_directory_uri() . '/public/assets/artists/' . $artist_slug . '/tracks/' . $track_slug . '/audio.mp3',
+                                    'track_cover' => null, // Обложка будет из статичной папки
+                                    'track_slug' => $track_slug
+                                ];
+                            }
+                        }
+                    }
+                    
+                    // Выводим статичные треки
+                    if (!empty($static_tracks)) {
+                        $track_index = 1;
+                        foreach ($static_tracks as $track) {
+                            $track_slug = $track['track_slug'];
+                            $cover_base = get_template_directory_uri() . '/public/assets/artists/' . $artist_slug . '/tracks/' . $track_slug . '/cover';
+                            ?>
+                            <div class="oor-artist-track" data-track-id="<?php echo $track_index; ?>" data-track-src="<?php echo esc_url($track['track_audio']); ?>">
+                                <div class="oor-artist-track-cover">
+                                    <picture>
+                                        <source srcset="<?php echo esc_url($cover_base . '.avif'); ?> 1x, <?php echo esc_url($cover_base . '@2x.avif'); ?> 2x" type="image/avif">
+                                        <source srcset="<?php echo esc_url($cover_base . '.webp'); ?> 1x, <?php echo esc_url($cover_base . '@2x.webp'); ?> 2x" type="image/webp">
+                                        <img src="<?php echo esc_url($cover_base . '.png'); ?>" 
+                                             srcset="<?php echo esc_url($cover_base . '.png'); ?> 1x, <?php echo esc_url($cover_base . '@2x.png'); ?> 2x" 
+                                             alt="<?php echo esc_attr($track['track_name']); ?>" 
+                                             class="oor-artist-track-image no-parallax">
+                                    </picture>
+                                    <div class="oor-artist-track-overlay">
+                                        <svg class="oor-artist-track-progress" width="180" height="180" viewBox="0 0 180 180">
+                                            <circle class="oor-artist-track-progress-bg" cx="90" cy="90" r="85" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
+                                            <circle class="oor-artist-track-progress-fill" cx="90" cy="90" r="85" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="534.07" stroke-dashoffset="534.07" transform="rotate(-90 90 90)"/>
+                                        </svg>
+                                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/artist-page/play-track.svg" alt="Play" class="oor-artist-track-play-icon">
+                                    </div>
+                                </div>
+                                <div class="oor-artist-track-info">
+                                    <span class="oor-artist-track-name"><?php echo esc_html($track['track_name']); ?></span>
+                                    <span class="oor-artist-track-year"><?php echo esc_html($track['track_year']); ?></span>
+                                </div>
+                            </div>
+                            <?php
+                            $track_index++;
+                        }
+                    }
+                }
+                ?>
             </div>
         </div>
     </main>
