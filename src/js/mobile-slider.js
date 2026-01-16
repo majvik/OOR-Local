@@ -1,6 +1,6 @@
 /**
  * Awwwards-style мобильный слайдер
- * Эффект горизонтального растяжения (scaleX) на крайних слайдах
+ * Плавная прокрутка с инерцией и snap эффектом
  */
 
 (function() {
@@ -23,11 +23,6 @@
     
     // Touch настройки
     DIRECTION_LOCK_THRESHOLD: 10,
-    
-    // Эффект растяжения (scaleX)
-    MAX_SCALE_X: 1.08,   // максимальное растяжение по X (8%)
-    MIN_SCALE_X: 0.94,   // минимальное сжатие по X (6%)
-    FX_EASE: 0.15,       // плавность анимации эффекта
   };
 
   const isMobile = () => window.innerWidth <= 460;
@@ -42,7 +37,6 @@
   let velocity = 0;
   let isAnimating = false;
   let animationId = null;
-  let fxAnimationId = null;
 
   // Touch state
   let touchStartX = 0;
@@ -53,9 +47,6 @@
   let isDragging = false;
   let isHorizontalSwipe = null;
   let startScrollX = 0;
-
-  // Текущие значения scaleX для каждого слайда (для плавной анимации)
-  let slideScales = [];
 
   function init() {
     if (!isMobile()) {
@@ -72,13 +63,9 @@
       return;
     }
 
-    // Инициализируем массив scale значений
-    slideScales = slides.map(() => 1);
-
     applyStyles();
     calculateDimensions();
     setupEventListeners();
-    startFXLoop();
     
     console.log('[MobileSlider] Initialized');
   }
@@ -87,10 +74,6 @@
     if (animationId) {
       cancelAnimationFrame(animationId);
       animationId = null;
-    }
-    if (fxAnimationId) {
-      cancelAnimationFrame(fxAnimationId);
-      fxAnimationId = null;
     }
     removeEventListeners();
     clearStyles();
@@ -142,7 +125,7 @@
         overflow: hidden !important;
       `;
       
-      // Контейнер медиа - на всю площадь слайда, с эффектом растяжения
+      // Контейнер медиа - на всю площадь слайда
       const media = slide.querySelector('.slide-media');
       if (media) {
         media.style.cssText = `
@@ -150,11 +133,6 @@
           height: 100% !important;
           display: block !important;
           overflow: hidden !important;
-          transform-origin: center center !important;
-          will-change: transform !important;
-          backface-visibility: hidden !important;
-          -webkit-backface-visibility: hidden !important;
-          transform: translate3d(0, 0, 0) !important;
         `;
       }
       
@@ -425,80 +403,6 @@
     }
   }
 
-  // Цикл для обновления визуальных эффектов
-  function startFXLoop() {
-    let lastUpdateTime = 0;
-    const FX_UPDATE_INTERVAL = 16; // ~60fps
-    
-    function updateFX() {
-      if (!isMobile() || !slides.length || !container) {
-        fxAnimationId = requestAnimationFrame(updateFX);
-        return;
-      }
-
-      // Пропускаем обновление FX во время драга для производительности
-      if (isDragging) {
-        fxAnimationId = requestAnimationFrame(updateFX);
-        return;
-      }
-
-      const now = performance.now();
-      if (now - lastUpdateTime < FX_UPDATE_INTERVAL) {
-        fxAnimationId = requestAnimationFrame(updateFX);
-        return;
-      }
-      lastUpdateTime = now;
-
-      const containerWidth = container.offsetWidth;
-      const center = containerWidth / 2;
-
-      // Кэшируем getBoundingClientRect для контейнера
-      const containerRect = container.getBoundingClientRect();
-
-      slides.forEach((slide, i) => {
-        const rect = slide.getBoundingClientRect();
-        
-        // Позиция центра слайда относительно контейнера
-        const slideCenter = (rect.left + rect.right) / 2 - containerRect.left;
-        
-        // Нормализованное расстояние от центра (-1 до 1)
-        const distFromCenter = (slideCenter - center) / center;
-        
-        // Вычисляем целевой scaleX
-        // Слайды справа (distFromCenter > 0) растягиваются
-        // Слайды слева (distFromCenter < 0) сжимаются
-        let targetScaleX = 1;
-        
-        if (distFromCenter > 0) {
-          // Справа от центра - растягиваем
-          targetScaleX = 1 + (CONFIG.MAX_SCALE_X - 1) * Math.min(1, distFromCenter);
-        } else if (distFromCenter < 0) {
-          // Слева от центра - сжимаем
-          targetScaleX = 1 - (1 - CONFIG.MIN_SCALE_X) * Math.min(1, Math.abs(distFromCenter));
-        }
-
-        // Плавная интерполяция
-        slideScales[i] = slideScales[i] + (targetScaleX - slideScales[i]) * CONFIG.FX_EASE;
-        
-        // Применяем трансформацию к содержимому (.slide-media), а не к слайду
-        // Это сохраняет margin между слайдами
-        // Округляем для избежания subpixel рендеринга
-        const roundedScale = Math.round(slideScales[i] * 1000) / 1000;
-        const media = slide.querySelector('.slide-media');
-        if (media) {
-          media.style.transform = `translate3d(0, 0, 0) scaleX(${roundedScale})`;
-        }
-      });
-
-      fxAnimationId = requestAnimationFrame(updateFX);
-    }
-
-    fxAnimationId = requestAnimationFrame(updateFX);
-  }
-
-  function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-  }
 
   function onResize() {
     if (!isMobile()) {
