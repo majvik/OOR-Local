@@ -516,7 +516,10 @@ function initCursor() {
   // Настройка data-атрибутов для курсора
   const paths = (window.OOR_PATHS ? window.OOR_PATHS.assets : '/public/assets');
   document.querySelectorAll('.video-cuberto-cursor-1').forEach(el => {
-    el.setAttribute('data-cursor-video', paths + '/OUTOFREC_reel_v4_nologo.mp4');
+    // Не перезаписываем, если атрибут уже установлен (из ACF)
+    if (!el.getAttribute('data-cursor-video')) {
+      el.setAttribute('data-cursor-video', paths + '/OUTOFREC_reel_v4_nologo.mp4');
+    }
   });
 
   document.querySelectorAll('.img-cuberto-cursor-1').forEach(el => {

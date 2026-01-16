@@ -22,16 +22,54 @@ get_header();
     </div>
         
         <div class="oor-hero-main">
+            <?php
+            // Получаем Hero видео из ACF
+            $hero_background_video = get_field('hero_background_video');
+            $hero_modal_video = get_field('hero_modal_video');
+            
+            // Функция для получения URL из ACF поля (поддержка массива и ID)
+            $get_video_url = function($field_value) {
+                if (!$field_value) return false;
+                if (is_array($field_value)) {
+                    // ACF File field возвращает массив с 'url' или 'ID'
+                    if (isset($field_value['url'])) {
+                        return $field_value['url'];
+                    }
+                    if (isset($field_value['ID'])) {
+                        return wp_get_attachment_url($field_value['ID']);
+                    }
+                    return false;
+                }
+                // Если это число (ID вложения)
+                if (is_numeric($field_value)) {
+                    return wp_get_attachment_url($field_value);
+                }
+                // Если это уже URL (строка)
+                if (is_string($field_value) && filter_var($field_value, FILTER_VALIDATE_URL)) {
+                    return $field_value;
+                }
+                return false;
+            };
+            
+            // Получаем URL видео
+            $bg_video_url = $get_video_url($hero_background_video);
+            $modal_video_url = $get_video_url($hero_modal_video);
+            
+            // Fallback на статичные файлы, если ACF поля не заполнены
+            $bg_video_webm = $bg_video_url ? $bg_video_url : get_template_directory_uri() . '/public/assets/OUTOFREC_reel_v4_nologo.webm';
+            $bg_video_mp4 = $bg_video_url ? $bg_video_url : get_template_directory_uri() . '/public/assets/OUTOFREC_reel_v4_nologo.mp4';
+            $modal_video = $modal_video_url ? $modal_video_url : get_template_directory_uri() . '/public/assets/OUTOFREC_reel_v4_nologo.mp4';
+            ?>
             <!-- Hero Video фон -->
             <video class="oor-hero-video" autoplay muted loop playsinline preload="metadata" poster="<?php echo get_template_directory_uri(); ?>/public/assets/video-cover.avif">
-                <source src="<?php echo get_template_directory_uri(); ?>/public/assets/OUTOFREC_reel_v4_nologo.webm" type="video/webm">
-                <source src="<?php echo get_template_directory_uri(); ?>/public/assets/OUTOFREC_reel_v4_nologo.mp4" type="video/mp4">
+                <source src="<?php echo esc_url($bg_video_webm); ?>" type="video/webm">
+                <source src="<?php echo esc_url($bg_video_mp4); ?>" type="video/mp4">
                 <!-- Fallback для браузеров без поддержки видео -->
                 <div class="oor-hero-video-fallback"></div>
             </video>
             
             <!-- Кликабельный оверлей для открытия полноэкранного видео -->
-            <div class="oor-hero-video-overlay video-cuberto-cursor-1" id="hero-video-overlay" data-cursor-video="<?php echo get_template_directory_uri(); ?>/public/assets/OUTOFREC_reel_v4_nologo.mp4"></div>
+            <div class="oor-hero-video-overlay video-cuberto-cursor-1" id="hero-video-overlay" data-cursor-video="<?php echo esc_url($modal_video); ?>"></div>
             
             <!-- Plus иконки позиционируются относительно секции -->
             <div class="oor-hero-plus-top-left">
@@ -126,11 +164,63 @@ get_header();
           <div class="slider">
             <div class="slider-track">
               <div class="slider-wrapper">
-              <div class="slide"><a href="<?php echo esc_url(home_url('/artists/crylove/artist')); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img1.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img1@2x.avif 2x" type="image/avif"><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img1.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img1@2x.webp 2x" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/public/assets/img1.jpg" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img1.jpg 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img1@2x.jpg 2x" alt="CRYLOVE" draggable="false"/></picture></a><span class="artist-name">CRYLOVE</span></div>
-              <div class="slide"><a href="<?php echo esc_url(home_url('/artists/dimma-urih/artist')); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img2.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img2@2x.avif 2x" type="image/avif"><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img2.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img2@2x.webp 2x" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/public/assets/img2.jpg" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img2.jpg 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img2@2x.jpg 2x" alt="Dimma Urih" draggable="false"/></picture></a><span class="artist-name">Dimma Urih</span></div>
-              <div class="slide"><a href="<?php echo esc_url(home_url('/artists/dsprite/artist')); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img3.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img3@2x.avif 2x" type="image/avif"><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img3.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img3@2x.webp 2x" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/public/assets/img3.jpg" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img3.jpg 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img3@2x.jpg 2x" alt="DSPRITE" draggable="false"/></picture></a><span class="artist-name">DSPRITE</span></div>
-              <div class="slide"><a href="<?php echo esc_url(home_url('/artists/nxn/artist')); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img4.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img4@2x.avif 2x" type="image/avif"><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img4.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img4@2x.webp 2x" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/public/assets/img4.jpg" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img4.jpg 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img4@2x.jpg 2x" alt="NXN" draggable="false"/></picture></a><span class="artist-name">NXN</span></div>
-              <div class="slide"><a href="<?php echo esc_url(home_url('/artists/net-vremeni-ob-yasnyat/artist')); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img5.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img5@2x.avif 2x" type="image/avif"><source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img5.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img5@2x.webp 2x" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/public/assets/img5.jpg" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/img5.jpg 1x, <?php echo get_template_directory_uri(); ?>/public/assets/img5@2x.jpg 2x" alt="Нет Времени Объяснять" draggable="false"/></picture></a><span class="artist-name">Нет Времени Объяснять</span></div>
+              <?php
+              // Получаем артистов из ACF Repeater
+              $artists_slider = get_field('artists_slider');
+              
+              if ($artists_slider && is_array($artists_slider)) {
+                  foreach ($artists_slider as $item) {
+                      $artist = $item['artist']; // Post Object из ACF
+                      
+                      if (!$artist || !is_object($artist)) {
+                          continue;
+                      }
+                      
+                      $artist_id = is_numeric($artist) ? $artist : $artist->ID;
+                      $artist_name = get_the_title($artist_id);
+                      $artist_slug = get_post_field('post_name', $artist_id);
+                      $artist_url = get_permalink($artist_id);
+                      
+                      // Получаем изображение артиста из ACF или featured image
+                      $artist_image = get_field('artist_image', $artist_id);
+                      
+                      if (!$artist_image && has_post_thumbnail($artist_id)) {
+                          $thumbnail_id = get_post_thumbnail_id($artist_id);
+                          $artist_image = [
+                              'url' => wp_get_attachment_image_url($thumbnail_id, 'full'),
+                              'sizes' => [
+                                  'medium' => wp_get_attachment_image_url($thumbnail_id, 'medium'),
+                                  'large' => wp_get_attachment_image_url($thumbnail_id, 'large'),
+                              ]
+                          ];
+                      }
+                      
+                      if (!$artist_image) {
+                          continue; // Пропускаем артиста без изображения
+                      }
+                      
+                      $image_url = $artist_image['url'];
+                      $image_medium = isset($artist_image['sizes']['medium']) ? $artist_image['sizes']['medium'] : $image_url;
+                      $image_large = isset($artist_image['sizes']['large']) ? $artist_image['sizes']['large'] : $image_url;
+                      $image_alt = isset($artist_image['alt']) ? $artist_image['alt'] : esc_attr($artist_name);
+                      ?>
+                      <div class="slide">
+                          <a href="<?php echo esc_url($artist_url); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты">
+                              <picture>
+                                  <source srcset="<?php echo esc_url($image_medium); ?> 1x, <?php echo esc_url($image_large); ?> 2x" type="image/avif">
+                                  <source srcset="<?php echo esc_url($image_medium); ?> 1x, <?php echo esc_url($image_large); ?> 2x" type="image/webp">
+                                  <img src="<?php echo esc_url($image_url); ?>" 
+                                       srcset="<?php echo esc_url($image_url); ?> 1x, <?php echo esc_url($image_large); ?> 2x" 
+                                       alt="<?php echo $image_alt; ?>" 
+                                       draggable="false"/>
+                              </picture>
+                          </a>
+                          <span class="artist-name"><?php echo esc_html($artist_name); ?></span>
+                      </div>
+                      <?php
+                  }
+              }
+              ?>
           </div>
         </div>
       </div>
@@ -388,7 +478,7 @@ get_header();
       </div>
                 
                 <!-- Link -->
-                <a href="#" class="oor-out-of-talk-link rolling-button"><span class="tn-atom">Все выпуски ток-шоу</span></a>
+                <a href="<?php echo esc_url(home_url('/talk-show')); ?>" class="oor-out-of-talk-link rolling-button"><span class="tn-atom">Все выпуски ток-шоу</span></a>
                 
                 <!-- Line Large -->
                 <div class="oor-out-of-talk-line-2">
@@ -398,32 +488,37 @@ get_header();
             
             <!-- OUT OF TALK Images -->
             <div class="oor-out-of-talk-images">
-                <!-- Image 1 -->
-                <a href="#" class="oor-out-of-talk-image-1 text-cuberto-cursor-1" data-text="Все выпуски<br>ток-шоу">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-1.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-1@2x.avif 2x" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-1.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-1@2x.webp 2x" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-1.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-1.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-1@2x.png 2x" alt="Out of Talk 1">
-                    </picture>
-        </a>
+                <?php
+                // Получаем изображения Talk-show из ACF Gallery
+                $talk_show_images = get_field('talk_show_images');
                 
-                <!-- Image 2 -->
-                <a href="#" class="oor-out-of-talk-image-2 text-cuberto-cursor-1" data-text="Все выпуски<br>ток-шоу">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-2.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-2@2x.avif 2x" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-2.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-2@2x.webp 2x" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-2.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-2.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-2@2x.png 2x" alt="Out of Talk 2">
-                    </picture>
-        </a>
-                
-                <!-- Image 3 -->
-                <a href="#" class="oor-out-of-talk-image-3 text-cuberto-cursor-1" data-text="Все выпуски<br>ток-шоу">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-3.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-3@2x.avif 2x" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-3.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-3@2x.webp 2x" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-3.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-3.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/out-of-talk-3@2x.png 2x" alt="Out of Talk 3">
-                    </picture>
-        </a>
+                if ($talk_show_images && is_array($talk_show_images)) {
+                    $image_classes = ['oor-out-of-talk-image-1', 'oor-out-of-talk-image-2', 'oor-out-of-talk-image-3'];
+                    $index = 0;
+                    
+                    foreach ($talk_show_images as $image) {
+                        if ($index >= 3) break; // Максимум 3 изображения
+                        
+                        $image_url = is_array($image) ? $image['url'] : wp_get_attachment_image_url($image, 'full');
+                        $image_medium = is_array($image) && isset($image['sizes']['medium']) ? $image['sizes']['medium'] : $image_url;
+                        $image_large = is_array($image) && isset($image['sizes']['large']) ? $image['sizes']['large'] : $image_url;
+                        $image_alt = is_array($image) && isset($image['alt']) ? $image['alt'] : 'Out of Talk ' . ($index + 1);
+                        $image_class = isset($image_classes[$index]) ? $image_classes[$index] : 'oor-out-of-talk-image-' . ($index + 1);
+                        ?>
+                        <a href="<?php echo esc_url(home_url('/talk-show')); ?>" class="<?php echo esc_attr($image_class); ?> text-cuberto-cursor-1" data-text="Все выпуски<br>ток-шоу">
+                            <picture>
+                                <source srcset="<?php echo esc_url($image_medium); ?> 1x, <?php echo esc_url($image_large); ?> 2x" type="image/avif">
+                                <source srcset="<?php echo esc_url($image_medium); ?> 1x, <?php echo esc_url($image_large); ?> 2x" type="image/webp">
+                                <img src="<?php echo esc_url($image_url); ?>" 
+                                     srcset="<?php echo esc_url($image_url); ?> 1x, <?php echo esc_url($image_large); ?> 2x" 
+                                     alt="<?php echo esc_attr($image_alt); ?>">
+                            </picture>
+                        </a>
+                        <?php
+                        $index++;
+                    }
+                }
+                ?>
         </div>
         </div>
     </section>
@@ -454,28 +549,51 @@ get_header();
         <div class="oor-events-media">
             <!-- Posters Block - 8 колонок -->
             <div class="oor-events-posters">
-                <!-- Event 1 -->
-                <div class="oor-events-poster-1">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/event-1.avif" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/event-1.webp" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/event-1.png" alt="Event 1">
-                    </picture>
-                    <button class="oor-events-sold-out">Sold out</button>
-          </div>
+                <?php
+                // Получаем события из ACF Repeater
+                $events_section = get_field('events_section');
                 
-                <!-- Event 2 -->
-                <div class="oor-events-poster-2">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/event-2.avif" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/event-2.webp" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/event-2.png" alt="Event 2">
-                    </picture>
-                    <button class="oor-events-buy-ticket">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/line-large.svg" alt="Line" width="18" height="1">
-                        <span>купить билет</span>
-                    </button>
-        </div>
+                if ($events_section && is_array($events_section)) {
+                    $poster_classes = ['oor-events-poster-1', 'oor-events-poster-2'];
+                    $index = 0;
+                    
+                    foreach ($events_section as $event) {
+                        if ($index >= 2) break; // Максимум 2 постера
+                        
+                        $event_poster = $event['event_poster'];
+                        $sold_out = $event['sold_out'];
+                        $buy_ticket_text = $event['buy_ticket_text'] ?: 'купить билет';
+                        $ticket_url = $event['ticket_url'];
+                        
+                        if (!$event_poster) {
+                            $index++;
+                            continue;
+                        }
+                        
+                        $poster_url = is_array($event_poster) ? $event_poster['url'] : wp_get_attachment_image_url($event_poster, 'full');
+                        $poster_alt = is_array($event_poster) && isset($event_poster['alt']) ? $event_poster['alt'] : 'Event ' . ($index + 1);
+                        $poster_class = isset($poster_classes[$index]) ? $poster_classes[$index] : 'oor-events-poster-' . ($index + 1);
+                        ?>
+                        <div class="<?php echo esc_attr($poster_class); ?>">
+                            <picture>
+                                <source srcset="<?php echo esc_url($poster_url); ?>" type="image/avif">
+                                <source srcset="<?php echo esc_url($poster_url); ?>" type="image/webp">
+                                <img src="<?php echo esc_url($poster_url); ?>" alt="<?php echo esc_attr($poster_alt); ?>">
+                            </picture>
+                            <?php if ($sold_out) : ?>
+                                <button class="oor-events-sold-out">Sold out</button>
+                            <?php else : ?>
+                                <a href="<?php echo esc_url($ticket_url ?: '#'); ?>" class="oor-events-buy-ticket" target="_blank" rel="noopener noreferrer">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/public/assets/line-large.svg" alt="Line" width="18" height="1">
+                                    <span><?php echo esc_html($buy_ticket_text); ?></span>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                        <?php
+                        $index++;
+                    }
+                }
+                ?>
       </div>
             
             <!-- Gap - 1 колонка -->
@@ -483,17 +601,36 @@ get_header();
             
             <!-- Photo Block - 3 колонки -->
             <div class="oor-events-photo">
-                <!-- Event 3 Image -->
-                <div class="oor-events-photo-image text-cuberto-cursor-1" data-text="Все события">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/event-3.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/event-3@2x.avif 2x" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/event-3.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/event-3@2x.webp 2x" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/event-3.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/event-3.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/event-3@2x.png 2x" alt="Event 3">
-                    </picture>
-      </div>
+                <?php
+                // Получаем третье изображение события (если есть)
+                $events_section = get_field('events_section');
+                $event_3_poster = null;
+                
+                if ($events_section && is_array($events_section) && isset($events_section[2])) {
+                    $event_3_poster = $events_section[2]['event_poster'];
+                }
+                
+                if ($event_3_poster) {
+                    $event_3_url = is_array($event_3_poster) ? $event_3_poster['url'] : wp_get_attachment_image_url($event_3_poster, 'full');
+                    $event_3_medium = is_array($event_3_poster) && isset($event_3_poster['sizes']['medium']) ? $event_3_poster['sizes']['medium'] : $event_3_url;
+                    $event_3_large = is_array($event_3_poster) && isset($event_3_poster['sizes']['large']) ? $event_3_poster['sizes']['large'] : $event_3_url;
+                    $event_3_alt = is_array($event_3_poster) && isset($event_3_poster['alt']) ? $event_3_poster['alt'] : 'Event 3';
+                    ?>
+                    <div class="oor-events-photo-image text-cuberto-cursor-1" data-text="Все события">
+                        <picture>
+                            <source srcset="<?php echo esc_url($event_3_medium); ?> 1x, <?php echo esc_url($event_3_large); ?> 2x" type="image/avif">
+                            <source srcset="<?php echo esc_url($event_3_medium); ?> 1x, <?php echo esc_url($event_3_large); ?> 2x" type="image/webp">
+                            <img src="<?php echo esc_url($event_3_url); ?>" 
+                                 srcset="<?php echo esc_url($event_3_url); ?> 1x, <?php echo esc_url($event_3_large); ?> 2x" 
+                                 alt="<?php echo esc_attr($event_3_alt); ?>">
+                        </picture>
+                    </div>
+                    <?php
+                }
+                ?>
                 
                 <!-- All Events Link -->
-                <a href="#" class="oor-events-photo-link rolling-button"><span class="tn-atom">Все события</span></a>
+                <a href="<?php echo esc_url(home_url('/events')); ?>" class="oor-events-photo-link rolling-button"><span class="tn-atom">Все события</span></a>
     </div>
               </div>
     </section>
@@ -540,34 +677,30 @@ get_header();
         <!-- Merch Images Grid -->
         <div class="oor-merch-images-grid">
             <div class="oor-merch-images-wrapper">
-                <a href="#" class="oor-merch-image-item text-cuberto-cursor-1" data-text="Мерч">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-1.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-1@2x.avif 2x" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-1.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-1@2x.webp 2x" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/merch-1.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-1.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-1@2x.png 2x" alt="Merch 1">
-                    </picture>
-        </a>
-                <a href="#" class="oor-merch-image-item text-cuberto-cursor-1" data-text="Мерч">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-2.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-2@2x.avif 2x" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-2.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-2@2x.webp 2x" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/merch-2.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-2.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-2@2x.png 2x" alt="Merch 2">
-                    </picture>
-      </a>
-                <a href="#" class="oor-merch-image-item text-cuberto-cursor-1" data-text="Мерч">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-3.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-3@2x.avif 2x" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-3.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-3@2x.webp 2x" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/merch-3.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-3.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-3@2x.png 2x" alt="Merch 3">
-                    </picture>
-    </a>
-                <a href="#" class="oor-merch-image-item text-cuberto-cursor-1" data-text="Мерч">
-                    <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-4.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-4@2x.avif 2x" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-4.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-4@2x.webp 2x" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/merch-4.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/merch-4.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/merch-4@2x.png 2x" alt="Merch 4">
-                    </picture>
-                </a>
+                <?php
+                // Получаем изображения мерч из ACF Gallery
+                $merch_images = get_field('merch_images');
+                
+                if ($merch_images && is_array($merch_images)) {
+                    foreach ($merch_images as $image) {
+                        $image_url = is_array($image) ? $image['url'] : wp_get_attachment_image_url($image, 'full');
+                        $image_medium = is_array($image) && isset($image['sizes']['medium']) ? $image['sizes']['medium'] : $image_url;
+                        $image_large = is_array($image) && isset($image['sizes']['large']) ? $image['sizes']['large'] : $image_url;
+                        $image_alt = is_array($image) && isset($image['alt']) ? $image['alt'] : 'Merch';
+                        ?>
+                        <a href="<?php echo esc_url(home_url('/merch')); ?>" class="oor-merch-image-item text-cuberto-cursor-1" data-text="Мерч">
+                            <picture>
+                                <source srcset="<?php echo esc_url($image_medium); ?> 1x, <?php echo esc_url($image_large); ?> 2x" type="image/avif">
+                                <source srcset="<?php echo esc_url($image_medium); ?> 1x, <?php echo esc_url($image_large); ?> 2x" type="image/webp">
+                                <img src="<?php echo esc_url($image_url); ?>" 
+                                     srcset="<?php echo esc_url($image_url); ?> 1x, <?php echo esc_url($image_large); ?> 2x" 
+                                     alt="<?php echo esc_attr($image_alt); ?>">
+                            </picture>
+                        </a>
+                        <?php
+                    }
+                }
+                ?>
           </div>
             </div>
     </section>

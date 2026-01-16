@@ -983,6 +983,29 @@ function initFullscreenVideo() {
   });
 
   function openFullscreenVideo() {
+    // Получаем URL видео из data-cursor-video атрибута оверлея
+    const videoUrl = heroVideoOverlay.getAttribute('data-cursor-video');
+    if (videoUrl) {
+      // Обновляем src видео элемента
+      const videoSources = fullscreenVideoElement.querySelectorAll('source');
+      if (videoSources.length > 0) {
+        // Обновляем последний source (обычно MP4)
+        const mp4Source = Array.from(videoSources).find(s => s.getAttribute('type') === 'video/mp4');
+        if (mp4Source) {
+          mp4Source.setAttribute('src', videoUrl);
+        } else if (videoSources.length > 0) {
+          // Если нет MP4, обновляем последний source
+          videoSources[videoSources.length - 1].setAttribute('src', videoUrl);
+        }
+        // Перезагружаем видео элемент
+        fullscreenVideoElement.load();
+      } else {
+        // Если нет source элементов, устанавливаем src напрямую
+        fullscreenVideoElement.setAttribute('src', videoUrl);
+        fullscreenVideoElement.load();
+      }
+    }
+    
     // Показываем полноэкранное видео
     fullscreenVideo.classList.add('active');
     

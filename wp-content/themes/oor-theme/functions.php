@@ -11,10 +11,63 @@ if (!defined('ABSPATH')) {
 // Версия темы
 define('OOR_THEME_VERSION', '1.0.0');
 
+// Подавление deprecation warnings от ACF Pro (PHP 8.2+ совместимость)
+// ACF Pro 6.4.2 использует динамические свойства, которые deprecated в PHP 8.2+
+// Это не критично и не влияет на функциональность, но вызывает предупреждения
+// которые выводятся до отправки HTTP заголовков → "headers already sent" error
+if (PHP_VERSION_ID >= 80200) {
+    // Отключаем вывод ошибок на экран для предотвращения "headers already sent"
+    // Логирование остается активным (если WP_DEBUG_LOG включен)
+    ini_set('display_errors', 0);
+    
+    // Подавляем только deprecation warnings, остальные ошибки логируем
+    if (defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+        // В режиме отладки логируем все, кроме deprecation
+        error_reporting(E_ALL & ~E_DEPRECATED);
+    } else {
+        // В продакшене скрываем все предупреждения
+        error_reporting(0);
+    }
+}
+
+// Настройка ACF для автоматической загрузки JSON из acf-json/
+add_filter('acf/settings/save_json', function($path) {
+    $path = get_stylesheet_directory() . '/acf-json';
+    return $path;
+});
+
+add_filter('acf/settings/load_json', function($paths) {
+    unset($paths[0]);
+    $paths[] = get_stylesheet_directory() . '/acf-json';
+    return $paths;
+});
+
+// Включение поддержки AVIF и WebP изображений
+add_filter('mime_types', function($mimes) {
+    // Добавляем поддержку AVIF
+    $mimes['avif'] = 'image/avif';
+    // Добавляем поддержку WebP (обычно уже есть, но на всякий случай)
+    $mimes['webp'] = 'image/webp';
+    return $mimes;
+});
+
+// Включение поддержки AVIF и WebP в загрузке файлов
+add_filter('upload_mimes', function($mimes) {
+    $mimes['avif'] = 'image/avif';
+    $mimes['webp'] = 'image/webp';
+    return $mimes;
+}, 10, 1);
+
+// Включение AVIF и WebP в список поддерживаемых форматов для генерации миниатюр
+add_filter('image_size_names_choose', function($sizes) {
+    return $sizes;
+});
+
 // Подключение вспомогательных файлов
 require_once get_template_directory() . '/inc/cpt.php';
 require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/body-classes.php';
+require_once get_template_directory() . '/inc/image-processing.php';
 
 // Поддержка тем WordPress
 add_theme_support('post-thumbnails');

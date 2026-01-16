@@ -77,13 +77,38 @@
     </div>
     
     <!-- Fullscreen Video Modal -->
+    <?php
+    // Получаем видео для модалки из ACF (только на главной странице)
+    $modal_video_url = '';
+    if (is_front_page() || is_page('home')) {
+        $hero_modal_video = get_field('hero_modal_video');
+        if ($hero_modal_video) {
+            if (is_array($hero_modal_video)) {
+                $modal_video_url = isset($hero_modal_video['url']) ? $hero_modal_video['url'] : (isset($hero_modal_video['ID']) ? wp_get_attachment_url($hero_modal_video['ID']) : '');
+            } elseif (is_numeric($hero_modal_video)) {
+                $modal_video_url = wp_get_attachment_url($hero_modal_video);
+            }
+        }
+    }
+    
+    // Fallback на статичное видео, если ACF поле не заполнено
+    if (!$modal_video_url) {
+        $modal_video_url = get_template_directory_uri() . '/public/assets/OUTOFREC_reel_v4_nologo.mp4';
+    }
+    
+    // Определяем WebM версию (если есть)
+    $modal_video_webm = str_replace('.mp4', '.webm', $modal_video_url);
+    $modal_video_webm = file_exists(str_replace(get_template_directory_uri(), get_template_directory(), $modal_video_webm)) 
+        ? $modal_video_webm 
+        : '';
+    ?>
     <div class="oor-fullscreen-video" id="fullscreen-video">
         <video class="oor-fullscreen-video-element" controls 
                poster="<?php echo get_template_directory_uri(); ?>/public/assets/video-cover.avif">
-            <source src="<?php echo get_template_directory_uri(); ?>/public/assets/OUTOFREC_reel_v4_nologo-large.webm" 
-                    type="video/webm">
-            <source src="<?php echo get_template_directory_uri(); ?>/public/assets/OUTOFREC_reel_v4_nologo-large.mp4" 
-                    type="video/mp4">
+            <?php if ($modal_video_webm) : ?>
+                <source src="<?php echo esc_url($modal_video_webm); ?>" type="video/webm">
+            <?php endif; ?>
+            <source src="<?php echo esc_url($modal_video_url); ?>" type="video/mp4">
         </video>
         <button class="oor-fullscreen-close" id="fullscreen-close">
             <img src="<?php echo get_template_directory_uri(); ?>/public/assets/plus-large.svg" 
