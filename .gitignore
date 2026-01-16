@@ -48,6 +48,11 @@ coverage/
 tmp/
 temp/
 
+# WordPress plugins (не коммитим, устанавливаются вручную)
+wp-content/plugins/
+# Но разрешаем тему
+!wp-content/themes/oor-theme/
+
 # Always Works Guide (internal documentation)
 ALWAYS_WORKS_GUIDE.md
 
