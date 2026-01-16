@@ -79,7 +79,7 @@ class MobileMenu {
     document.documentElement.classList.remove('scroll-locked');
     
     // Анимация исчезновения
-    this.mobileMenu.style.right = window.innerWidth <= 425 ? '-100%' : '-360px';
+    this.mobileMenu.style.right = window.innerWidth <= 460 ? '-100%' : '-360px';
     
     // Уведомляем другие компоненты о закрытии меню
     window.dispatchEvent(new CustomEvent('mobileMenuClose'));

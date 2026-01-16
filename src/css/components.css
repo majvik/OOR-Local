@@ -2895,8 +2895,8 @@ body:has(.oor-mobile-menu.active) {
   }
 }
 
-/* Адаптация для больших телефонов (≥425px) */
-@media (max-width: 425px) {
+/* Адаптация для больших телефонов (≥460px) */
+@media (max-width: 460px) {
   .oor-hero-main {
     padding: 380px 0 160px 0;
   }
@@ -2950,7 +2950,7 @@ body:has(.oor-mobile-menu.active) {
   }
 
   /* Доп. страховка для очень узких экранов */
-  @media (max-width: 445px) {
+  @media (max-width: 460px) {
     .oor-out-of-talk-section,
     .oor-out-of-talk-media,
     .oor-out-of-talk-images {
@@ -5725,8 +5725,8 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
   }
 }
 
-/* Дополнительные стили для очень маленьких экранов (≤425px) */
-@media (max-width: 425px) {
+/* Дополнительные стили для очень маленьких экранов (≤460px) */
+@media (max-width: 460px) {
   .oor-manifest-hero-title {
     font-size: 48px;
     letter-spacing: -4.8px;
@@ -6237,8 +6237,8 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
   }
 }
 
-/* Дополнительные стили для очень маленьких экранов (≤425px) */
-@media (max-width: 425px) {
+/* Дополнительные стили для очень маленьких экранов (≤460px) */
+@media (max-width: 460px) {
   .oor-studio-hero-title {
     font-size: 30px;
     letter-spacing: -3px;

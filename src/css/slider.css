@@ -398,8 +398,8 @@ a.slide-media:hover {
   }
 }
 
-/* Мобильные правки для очень маленьких экранов (425px и ниже) */
-@media (max-width: 425px){
+/* Мобильные правки для очень маленьких экранов (460px и ниже) */
+@media (max-width: 460px){
   #wsls .slider-section{
     height: auto !important;
     min-height: 0 !important;
