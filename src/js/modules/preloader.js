@@ -248,7 +248,12 @@ function initPreloader() {
     lastFrameImg.height = 400;
     lastFrameImg.style.zIndex = '1';
     lastFrameImg.style.cursor = 'pointer';
-    lastFrameImg.addEventListener('click', handleEnterClick, { once: true });
+    lastFrameImg.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      handleEnterClick(e);
+    }, { once: true, capture: true });
     
     splashGif.style.zIndex = '2';
     
@@ -319,7 +324,12 @@ function initPreloader() {
     
     enterButton.dataset.initialized = 'true';
     
-    enterButton.addEventListener('click', handleEnterClick, { once: true });
+    enterButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      handleEnterClick(e);
+    }, { once: true, capture: true });
     
     const isMobile = window.innerWidth <= 768;
     if (!isMobile) {
@@ -334,8 +344,13 @@ function initPreloader() {
   function handleEnterClick(e) {
     if (!enterButton) return;
     
-    e.preventDefault();
-    e.stopPropagation();
+    // Блокируем клики на overlay видео через глобальный флаг
+    if (typeof window !== 'undefined') {
+      window.overlayClickBlocked = true;
+      setTimeout(() => {
+        window.overlayClickBlocked = false;
+      }, 500);
+    }
     
     if (typeof window.unlockVideoAutoplay === 'function') {
       window.unlockVideoAutoplay().then(() => {
@@ -346,7 +361,10 @@ function initPreloader() {
       });
     }
     
-    hidePreloader();
+    // Небольшая задержка перед скрытием прелоадера
+    setTimeout(() => {
+      hidePreloader();
+    }, 50);
   }
 
   function unlockScroll() {

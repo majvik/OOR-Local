@@ -143,6 +143,11 @@ function isMobileDevice() {
   return window.innerWidth <= 768;
 }
 
+// Проверка для очень маленьких мобильных (≤460px) - используем новый слайдер
+function isSmallMobile() {
+  return window.innerWidth <= 460;
+}
+
 let isMobile = isMobileDevice(); // определение мобильного устройства
 
 // === ПЕРЕМЕННЫЕ ДЛЯ МЕТАДАННЫХ СЛАЙДОВ ===
@@ -316,6 +321,12 @@ if (document.readyState === 'loading') {
 function disableStaticSnapCSS() { /* noop in embed */ }
 
 function initSlider() {
+  // На очень маленьких мобильных (≤460px) отключаем старую логику
+  // Там работает новый mobile-slider.js
+  if (isSmallMobile()) {
+    return;
+  }
+  
   updateMaxScroll();           // обновляем максимальную прокрутку слайдера
   
   // Упрощенная логика: используем drag-vs-click для всех разрешений
@@ -1464,6 +1475,11 @@ function clearDragVsClick() {
 var mobileTouchHandlers = [];
 
 function setupMobileTouch(){
+  // На очень маленьких мобильных (≤460px) отключаем старую логику
+  if (isSmallMobile()) {
+    return;
+  }
+  
   if (!sliderWrapper) {
     return;
   }
