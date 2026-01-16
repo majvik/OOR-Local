@@ -113,7 +113,11 @@
       gap: 0 !important;
       padding: 0 ${CONFIG.PADDING}px !important;
       will-change: transform !important;
-      transform: translateX(0) !important;
+      transform: translate3d(0, 0, 0) !important;
+      backface-visibility: hidden !important;
+      -webkit-backface-visibility: hidden !important;
+      perspective: 1000px !important;
+      -webkit-perspective: 1000px !important;
     `;
 
     // Slide styles
@@ -148,6 +152,9 @@
           overflow: hidden !important;
           transform-origin: center center !important;
           will-change: transform !important;
+          backface-visibility: hidden !important;
+          -webkit-backface-visibility: hidden !important;
+          transform: translate3d(0, 0, 0) !important;
         `;
       }
       
@@ -255,6 +262,11 @@
       animationId = null;
       isAnimating = false;
     }
+    
+    // Отключаем FX loop во время драга для производительности
+    if (wrapper) {
+      wrapper.style.willChange = 'transform';
+    }
   }
 
   function onTouchMove(e) {
@@ -320,6 +332,11 @@
     targetSlide = Math.max(0, Math.min(slides.length - 1, targetSlide));
     targetX = targetSlide * slideWidth;
     targetX = Math.max(0, Math.min(maxScroll, targetX));
+
+    // Восстанавливаем will-change после драга
+    if (wrapper) {
+      wrapper.style.willChange = 'transform';
+    }
 
     if (absVelocity > CONFIG.MIN_VELOCITY) {
       animateWithMomentum();
@@ -401,24 +418,45 @@
 
   function setTransform(x) {
     if (wrapper) {
-      wrapper.style.transform = `translateX(${-x}px)`;
+      // Округляем для избежания subpixel рендеринга и дрожания
+      const roundedX = Math.round(-x * 100) / 100;
+      // Используем translate3d для аппаратного ускорения
+      wrapper.style.transform = `translate3d(${roundedX}px, 0, 0)`;
     }
   }
 
   // Цикл для обновления визуальных эффектов
   function startFXLoop() {
+    let lastUpdateTime = 0;
+    const FX_UPDATE_INTERVAL = 16; // ~60fps
+    
     function updateFX() {
       if (!isMobile() || !slides.length || !container) {
         fxAnimationId = requestAnimationFrame(updateFX);
         return;
       }
 
+      // Пропускаем обновление FX во время драга для производительности
+      if (isDragging) {
+        fxAnimationId = requestAnimationFrame(updateFX);
+        return;
+      }
+
+      const now = performance.now();
+      if (now - lastUpdateTime < FX_UPDATE_INTERVAL) {
+        fxAnimationId = requestAnimationFrame(updateFX);
+        return;
+      }
+      lastUpdateTime = now;
+
       const containerWidth = container.offsetWidth;
       const center = containerWidth / 2;
 
+      // Кэшируем getBoundingClientRect для контейнера
+      const containerRect = container.getBoundingClientRect();
+
       slides.forEach((slide, i) => {
         const rect = slide.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
         
         // Позиция центра слайда относительно контейнера
         const slideCenter = (rect.left + rect.right) / 2 - containerRect.left;
@@ -444,9 +482,11 @@
         
         // Применяем трансформацию к содержимому (.slide-media), а не к слайду
         // Это сохраняет margin между слайдами
+        // Округляем для избежания subpixel рендеринга
+        const roundedScale = Math.round(slideScales[i] * 1000) / 1000;
         const media = slide.querySelector('.slide-media');
         if (media) {
-          media.style.transform = `scaleX(${slideScales[i]})`;
+          media.style.transform = `translate3d(0, 0, 0) scaleX(${roundedScale})`;
         }
       });
 
