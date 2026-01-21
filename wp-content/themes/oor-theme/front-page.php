@@ -236,14 +236,7 @@ get_header();
                               esc_attr($image_alt)
                           );
                       }
-                      ?>
-                      <div class="slide">
-                          <a href="<?php echo esc_url($artist_url); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты">
-                              <?php echo $picture_html; ?>
-                          </a>
-                          <span class="artist-name"><?php echo esc_html($artist_name); ?></span>
-                      </div>
-                      <?php
+                      ?><div class="slide"><a href="<?php echo esc_url($artist_url); ?>" class="slide-media text-cuberto-cursor-2" data-text="Все артисты"><?php echo $picture_html; ?></a><span class="artist-name"><?php echo esc_html($artist_name); ?></span></div><?php
                   }
               }
               ?>
@@ -448,9 +441,9 @@ get_header();
                 <!-- Good Works Image -->
                 <div class="oor-challenge-2-good-works-image img-cuberto-cursor-2" data-cursor-img="<?php echo get_template_directory_uri(); ?>/public/assets/good-works.png">
                     <picture>
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/good-works.avif" type="image/avif">
-                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/good-works.webp" type="image/webp">
-                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/good-works.png" alt="Good Works">
+                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/good-works.avif 1x, <?php echo get_template_directory_uri(); ?>/public/assets/good-works@2x.avif 2x" type="image/avif">
+                        <source srcset="<?php echo get_template_directory_uri(); ?>/public/assets/good-works.webp 1x, <?php echo get_template_directory_uri(); ?>/public/assets/good-works@2x.webp 2x" type="image/webp">
+                        <img src="<?php echo get_template_directory_uri(); ?>/public/assets/good-works.png" srcset="<?php echo get_template_directory_uri(); ?>/public/assets/good-works.png 1x, <?php echo get_template_directory_uri(); ?>/public/assets/good-works@2x.png 2x" alt="Good Works">
                     </picture>
       </div>
                 

@@ -430,7 +430,7 @@ body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
   content:"";
   position:absolute;
   inset:0;
-  background:url("../../public/assets/hero-bg.png") center/cover no-repeat;
+  background:url("/wp-content/themes/oor-theme/public/assets/hero-bg.png") center/cover no-repeat;
   z-index:1;
 }
 
@@ -439,7 +439,7 @@ body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
 .oor-hero-video-fallback {
   position: absolute;
   inset: 0;
-  background: url('../../public/assets/video-cover.webp') center/cover no-repeat;
+  background: url('/wp-content/themes/oor-theme/public/assets/video-cover.webp') center/cover no-repeat;
 }
 
 .oor-hero-video{
@@ -453,7 +453,7 @@ body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
 
 /* Стили для заглушки видео */
 .oor-hero-video[poster] {
-  background-image: url('../../public/assets/video-cover.avif');
+  background-image: url('/wp-content/themes/oor-theme/public/assets/video-cover.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -524,7 +524,7 @@ body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
 
 /* Стили для заглушки полноэкранного видео */
 .oor-fullscreen-video-element[poster] {
-  background-image: url('../../public/assets/video-cover.avif');
+  background-image: url('/wp-content/themes/oor-theme/public/assets/video-cover.avif');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -1004,7 +1004,7 @@ body.preloader-active{
   margin: 0;
   align-items: center;
   gap: 10px;
-  background-image: url('../../public/assets/musical-association.png');
+  background-image: url('/wp-content/themes/oor-theme/public/assets/musical-association.png');
   background-size: cover;
   background-position: left center;
   background-repeat: no-repeat;
@@ -2895,8 +2895,8 @@ body:has(.oor-mobile-menu.active) {
   }
 }
 
-/* Адаптация для больших телефонов (≥425px) */
-@media (max-width: 425px) {
+/* Адаптация для больших телефонов (≥460px) */
+@media (max-width: 460px) {
   .oor-hero-main {
     padding: 380px 0 160px 0;
   }
@@ -2950,7 +2950,7 @@ body:has(.oor-mobile-menu.active) {
   }
 
   /* Доп. страховка для очень узких экранов */
-  @media (max-width: 445px) {
+  @media (max-width: 460px) {
     .oor-out-of-talk-section,
     .oor-out-of-talk-media,
     .oor-out-of-talk-images {
@@ -3052,7 +3052,7 @@ body:has(.oor-mobile-menu.active) {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    object-position: center !important;
+    object-position: top !important;
   }
 
   .oor-merch-section {
@@ -4611,7 +4611,7 @@ body.oor-events-page .oor-btn-small-icon img {
     right: 0;
     width: 18px;
     height: 18px;
-    background-image: url('../../public/assets/plus-large.svg');
+    background-image: url('/wp-content/themes/oor-theme/public/assets/plus-large.svg');
     background-size: 18px 18px;
     background-repeat: no-repeat;
     background-position: center;
@@ -5725,8 +5725,8 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
   }
 }
 
-/* Дополнительные стили для очень маленьких экранов (≤425px) */
-@media (max-width: 425px) {
+/* Дополнительные стили для очень маленьких экранов (≤460px) */
+@media (max-width: 460px) {
   .oor-manifest-hero-title {
     font-size: 48px;
     letter-spacing: -4.8px;
@@ -6237,8 +6237,8 @@ body.oor-manifest-page .oor-mobile-menu .oor-mobile-menu-main a.rolling-button {
   }
 }
 
-/* Дополнительные стили для очень маленьких экранов (≤425px) */
-@media (max-width: 425px) {
+/* Дополнительные стили для очень маленьких экранов (≤460px) */
+@media (max-width: 460px) {
   .oor-studio-hero-title {
     font-size: 30px;
     letter-spacing: -3px;
@@ -8779,19 +8779,42 @@ body.oor-events-page .oor-header .oor-burger-menu .oor-burger-icon img {
     position: static;
     transform: none;
     top: auto;
-    height: 213px;
+    height: auto;
     margin-top: 0;
     margin-bottom: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 0;
+    padding: 0;
   }
 
   .oor-events-hero-gallery-row {
-    height: 106.5px;
-    position: static;
+    display: contents;
   }
 
   .oor-events-hero-gallery-row:last-child {
     top: auto;
     margin-top: 0;
+  }
+
+  .oor-events-hero-gallery-item {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    height: auto;
+  }
+
+  .oor-events-hero-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  /* Скрываем лишние картинки (оставляем только 16 из 18) */
+  /* Скрываем последние 2 элемента из второго ряда (элементы 8 и 9 во втором ряду) */
+  .oor-events-hero-gallery-row:last-child .oor-events-hero-gallery-item:nth-child(n+8) {
+    display: none;
   }
 
   .oor-events-hero-overlay {
@@ -9138,7 +9161,8 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
 .oor-merch-product {
   position: relative;
   width: 100%;
-  height: 256px;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -9174,16 +9198,14 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
 .oor-merch-product-link {
   display: block;
   width: 100%;
-  height: 100%;
+  height: 256px;
   text-decoration: none;
   color: inherit;
+  flex-shrink: 0;
 }
 
 .oor-merch-product-price {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
+  padding: 12px 0 0 0;
   font-family: var(--font-ui);
   font-size: 12px;
   line-height: 20px;
@@ -9191,7 +9213,6 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
   letter-spacing: 0;
   color: var(--color-text);
   text-align: right;
-  z-index: 3;
 }
 
 .oor-merch-product-price .woocommerce-Price-amount {
@@ -9246,7 +9267,7 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
-    padding: 0 12px 24px 12px;
+    padding: 0 16px 24px 16px;
   }
 
   .oor-merch-hero-title {
@@ -9265,7 +9286,7 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
   }
 
   .oor-merch-filters {
-    padding: 0 12px;
+    padding: 0 16px;
     gap: 12px;
     overflow-x: auto;
     scrollbar-width: none;
@@ -9291,18 +9312,21 @@ body.oor-merch-page .oor-header .oor-header-right .oor-burger-menu * {
   .oor-merch-products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding: 0 12px;
+    padding: 0 16px;
   }
 
   .oor-merch-product {
+    height: auto;
+    aspect-ratio: auto;
+  }
+
+  .oor-merch-product-link {
     height: auto;
     aspect-ratio: 1 / 1;
   }
 
   .oor-merch-product-price {
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
+    padding: 8px 0 0 0;
     font-size: 11px;
   }
 }
@@ -9530,6 +9554,15 @@ body.oor-product-page .oor-product-images {
   overscroll-behavior: contain;
 }
 
+/* Переопределяем для мобильных */
+@media (max-width: 768px) {
+  body.oor-product-page .oor-product-images {
+    overflow-y: hidden !important;
+    overflow-x: scroll !important;
+    touch-action: pan-x !important;
+  }
+}
+
 /* Right Column - Product Info (Fixed) */
 .oor-product-info {
   display: flex;
@@ -9600,7 +9633,7 @@ body.oor-product-page .oor-product-images {
   transform: translate(-50%, -50%);
   width: 6px;
   height: 6px;
-  background: url('../../public/assets/breadcrumb-separator.svg') no-repeat center;
+  background: url('/wp-content/themes/oor-theme/public/assets/breadcrumb-separator.svg') no-repeat center;
   background-size: contain;
   opacity: 0.6;
 }
@@ -9770,13 +9803,14 @@ body.oor-product-page .oor-product-images {
     padding: 76px 0 100px 0;
     min-height: auto;
     height: auto;
-    overflow: visible;
+    overflow: visible !important;
     margin-top: 0;
   }
 
   body.oor-product-page .oor-product-section .oor-container {
     padding: 0;
     height: auto;
+    overflow: visible !important;
   }
 
   .oor-product-wrapper {
@@ -9784,26 +9818,28 @@ body.oor-product-page .oor-product-images {
     flex-direction: column;
     gap: 40px;
     height: auto;
-    padding: 0 var(--container-x);
+    padding: 0;
   }
 
   /* Product Images - Horizontal Scroll (First) */
   .oor-product-images {
-    display: flex;
-    flex-direction: row;
+    display: flex !important;
+    flex-direction: row !important;
     gap: 12px;
-    max-height: none;
-    height: auto;
-    overflow-y: hidden;
-    overflow-x: auto;
+    max-height: none !important;
+    height: auto !important;
+    overflow-y: hidden !important;
+    overflow-x: scroll !important;
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
-    padding: 0;
-    margin: 0 calc(-1 * var(--container-x));
-    padding-left: var(--container-x);
-    padding-right: var(--container-x);
+    padding: 0 var(--container-x);
+    margin: 0;
     order: 1;
+    width: 100%;
+    touch-action: pan-x !important;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
   }
 
   .oor-product-images::-webkit-scrollbar {
@@ -9819,6 +9855,7 @@ body.oor-product-page .oor-product-images {
     flex-shrink: 0;
     margin-bottom: 0;
     box-sizing: border-box;
+    scroll-snap-align: start;
   }
 
   .oor-product-image {
@@ -9834,7 +9871,7 @@ body.oor-product-page .oor-product-images {
     position: static;
     top: auto;
     max-width: 100%;
-    padding: 0;
+    padding: 0 var(--container-x);
     gap: 40px;
     height: auto;
     overflow-y: visible;
@@ -10211,7 +10248,12 @@ body.oor-cart-page .oor-header .oor-merch-cart-icon img {
 
   /* Cart Section */
   .oor-cart-section {
-    padding: 76px var(--container-x) 100px var(--container-x);
+    padding: 76px 0 100px 0;
+  }
+  
+  .oor-cart-section .oor-container {
+    padding-left: var(--container-x);
+    padding-right: var(--container-x);
   }
 
   .oor-cart-header {
@@ -10628,7 +10670,12 @@ body.oor-checkout-page .oor-header .oor-merch-cart-icon img {
 
   /* Checkout Section */
   .oor-checkout-section {
-    padding: 76px var(--container-x) 100px var(--container-x);
+    padding: 76px 0 100px 0;
+  }
+  
+  .oor-checkout-section .oor-container {
+    padding-left: var(--container-x);
+    padding-right: var(--container-x);
   }
 
   .oor-checkout-header {

@@ -34,54 +34,94 @@ function initPreloader() {
   let gifCompletionStarted = false;
   let gifStopped = false;
   
-  // Используем OOR_PATHS если доступен, иначе fallback на абсолютные пути
-  // Используем OOR_PATHS если доступен, иначе fallback на абсолютные пути (для статической версии)
-  const paths = (typeof window !== 'undefined' && window.OOR_PATHS) 
-    ? window.OOR_PATHS 
-    : { 
-        assets: (typeof window !== 'undefined' && window.oorPaths) ? window.oorPaths.assets : '/public/assets', 
-        fonts: (typeof window !== 'undefined' && window.oorPaths) ? window.oorPaths.fonts : '/public/fonts' 
-      };
+  // Получаем пути из конфигурации (для WordPress)
+  const getAssetPath = (path) => {
+    // Проверяем window.OOR_PATHS (из config.js) или window.oorPaths (из wp_localize_script)
+    const paths = (typeof window !== 'undefined' && window.OOR_PATHS) 
+      ? window.OOR_PATHS 
+      : (typeof window !== 'undefined' && window.oorPaths) 
+        ? window.oorPaths 
+        : null;
+    
+    if (paths && paths.assets) {
+      return paths.assets + path.replace('/public/assets', '');
+    }
+    return path; // Fallback для статической версии
+  };
+  
+  const getFontPath = (path) => {
+    // Проверяем window.OOR_PATHS (из config.js) или window.oorPaths (из wp_localize_script)
+    const paths = (typeof window !== 'undefined' && window.OOR_PATHS) 
+      ? window.OOR_PATHS 
+      : (typeof window !== 'undefined' && window.oorPaths) 
+        ? window.oorPaths 
+        : null;
+    
+    if (paths && paths.fonts) {
+      return paths.fonts + path.replace('/public/fonts', '');
+    }
+    return path; // Fallback для статической версии
+  };
   
   const resourcesToLoad = [
-    paths.assets + '/plus-large.svg',
-    paths.assets + '/plus-small.svg',
-    paths.assets + '/line-small.svg',
-    paths.assets + '/hero-bg.png',
-    paths.assets + '/OUTOFREC_reel_v4_nologo.mp4',
-    paths.assets + '/splash-last-frame.png',
+    getAssetPath('/plus-large.svg'),
+    getAssetPath('/plus-small.svg'),
+    getAssetPath('/line-small.svg'),
+    getAssetPath('/hero-bg.png'),
+    getAssetPath('/OUTOFREC_reel_v4_nologo.mp4'),
+    getAssetPath('/splash-last-frame.png'),
     // Загружаем WOFF2 шрифты (приоритет) с fallback на TTF
-    paths.fonts + '/pragmatica-book.woff2',
-    paths.fonts + '/pragmatica-book-oblique.woff2',
-    paths.fonts + '/pragmatica-extended-book.woff2',
-    paths.fonts + '/pragmatica-extended-book-oblique.woff2',
-    paths.fonts + '/pragmatica-extended-light.woff2',
-    paths.fonts + '/pragmatica-extended-light-oblique.woff2',
-    paths.fonts + '/pragmatica-extended-medium.woff2',
-    paths.fonts + '/pragmatica-extended-medium-oblique.woff2',
-    paths.fonts + '/pragmatica-extended-bold.woff2',
-    paths.fonts + '/pragmatica-extended-bold-oblique.woff2',
-    paths.fonts + '/pragmatica-extended-extralight.woff2',
-    paths.fonts + '/pragmatica-extended-extralight-oblique.woff2'
+    getFontPath('/pragmatica-book.woff2'),
+    getFontPath('/pragmatica-book-oblique.woff2'),
+    getFontPath('/pragmatica-extended-book.woff2'),
+    getFontPath('/pragmatica-extended-book-oblique.woff2'),
+    getFontPath('/pragmatica-extended-light.woff2'),
+    getFontPath('/pragmatica-extended-light-oblique.woff2'),
+    getFontPath('/pragmatica-extended-medium.woff2'),
+    getFontPath('/pragmatica-extended-medium-oblique.woff2'),
+    getFontPath('/pragmatica-extended-bold.woff2'),
+    getFontPath('/pragmatica-extended-bold-oblique.woff2'),
+    getFontPath('/pragmatica-extended-extralight.woff2'),
+    getFontPath('/pragmatica-extended-extralight-oblique.woff2')
   ];
 
-  // Используем динамические пути для CSS/JS файлов
-  const cssJsBase = (typeof window !== 'undefined' && window.OOR_PATHS) 
-    ? (window.OOR_PATHS.css || window.OOR_PATHS.js || '')
-    : (typeof window !== 'undefined' && window.oorPaths)
-      ? (window.oorPaths.css || window.oorPaths.js || '')
-      : '/src';
+  // Определяем пути к CSS/JS файлам в зависимости от окружения
+  const getCssJsFiles = () => {
+    // Проверяем, работаем ли мы в WordPress через OOR_PATHS
+    const paths = (typeof window !== 'undefined' && window.OOR_PATHS) 
+      ? window.OOR_PATHS 
+      : (typeof window !== 'undefined' && window.oorPaths) 
+        ? window.oorPaths 
+        : null;
+    
+    if (paths && paths.css && paths.js) {
+      // WordPress пути
+      return [
+        'reset.css',
+        'fonts.css',
+        'tokens.css',
+        'base.css',
+        'grid.css',
+        'layout.css',
+        'components.css',
+        'main.js'
+      ];
+    }
+    
+    // Статические пути (fallback)
+    return [
+      '/src/css/reset.css',
+      '/src/css/fonts.css',
+      '/src/css/tokens.css',
+      '/src/css/base.css',
+      '/src/css/grid.css',
+      '/src/css/layout.css',
+      '/src/css/components.css',
+      '/src/js/main.js'
+    ];
+  };
   
-  const expectedCssJsFiles = [
-    cssJsBase + '/css/reset.css',
-    cssJsBase + '/css/fonts.css',
-    cssJsBase + '/css/tokens.css',
-    cssJsBase + '/css/base.css',
-    cssJsBase + '/css/grid.css',
-    cssJsBase + '/css/layout.css',
-    cssJsBase + '/css/components.css',
-    cssJsBase + '/js/main.js'
-  ];
+  const expectedCssJsFiles = getCssJsFiles();
 
   totalResources = resourcesToLoad.length + expectedCssJsFiles.length + 1;
 
@@ -170,7 +210,6 @@ function initPreloader() {
           })
           .catch(error => {
             console.warn(`Failed to load resource: ${url}`, error);
-            // Все равно считаем как загруженное, чтобы не блокировать прелоадер
             loadedResources++;
             updateProgress();
             resolve();
@@ -182,37 +221,29 @@ function initPreloader() {
   resourcesToLoad.forEach(url => loadResource(url));
   
   let checkedResources = new Set();
-  let missingResources = [];
   
   function checkLoadedResources() {
     const performanceEntries = performance.getEntriesByType('resource');
     
     expectedCssJsFiles.forEach(expectedFile => {
-      if (checkedResources.has(expectedFile)) return;
+      // Проверяем, не был ли уже засчитан этот ресурс
+      if (checkedResources.has(expectedFile)) {
+        return;
+      }
       
-      // Извлекаем имя файла для более гибкого поиска
+      // Ищем ресурс по имени файла (более гибкая проверка)
       const fileName = expectedFile.split('/').pop();
-      const fileBaseName = fileName.split('.')[0]; // Без расширения
-      
-      // Проверяем разные варианты путей (с доменом, без, с версией и т.д.)
       const foundEntry = performanceEntries.find(entry => {
         const entryName = entry.name.toLowerCase();
-        const entryFileName = entryName.split('/').pop().split('?')[0]; // Убираем query параметры
-        
-        // Проверяем по полному имени файла или по базовому имени
-        return entryFileName === fileName.toLowerCase() || 
-               entryName.includes(fileName.toLowerCase()) ||
-               entryName.includes(fileBaseName.toLowerCase());
+        const lowerFileName = fileName.toLowerCase();
+        // Проверяем по имени файла (более надежно для WordPress)
+        return entryName.includes(lowerFileName) &&
+               (entryName.includes('.css') || entryName.includes('.js'));
       });
       
       if (foundEntry) {
         checkedResources.add(expectedFile);
         loadedResources++;
-      } else {
-        // Сохраняем информацию о не найденном ресурсе
-        if (!missingResources.includes(expectedFile)) {
-          missingResources.push(expectedFile);
-        }
       }
     });
     
@@ -244,26 +275,11 @@ function initPreloader() {
 
   setTimeout(() => {
     if (loadedResources < totalResources) {
-      // Проверяем еще раз перед таймаутом
-      checkLoadedResources();
-      
-      if (loadedResources < totalResources) {
-        console.warn('Preloader timeout, forcing completion', {
-          loaded: loadedResources,
-          total: totalResources,
-          remaining: totalResources - loadedResources,
-          missingResources: missingResources,
-          allResources: {
-            static: resourcesToLoad,
-            cssJs: expectedCssJsFiles,
-            domLoad: 'document.readyState'
-          }
-        });
-        loadedResources = totalResources;
-        updateProgress();
-      }
+      console.warn('Preloader timeout, forcing completion');
+      loadedResources = totalResources;
+      updateProgress();
     }
-  }, 10000); // Увеличено с 5 до 10 секунд
+  }, 5000);
   
   // Failsafe: unlock scroll after maximum timeout
   setTimeout(() => {
@@ -293,18 +309,18 @@ function initPreloader() {
     
     const lastFrameImg = document.createElement('img');
     lastFrameImg.id = 'splash-gif-frozen';
-    const paths = (typeof window !== 'undefined' && window.OOR_PATHS) 
-      ? window.OOR_PATHS 
-      : { 
-          assets: (typeof window !== 'undefined' && window.oorPaths) ? window.oorPaths.assets : '/public/assets' 
-        };
-    lastFrameImg.src = paths.assets + '/splash-last-frame.png';
+    lastFrameImg.src = getAssetPath('/splash-last-frame.png');
     lastFrameImg.alt = 'Splash';
     lastFrameImg.width = 400;
     lastFrameImg.height = 400;
     lastFrameImg.style.zIndex = '1';
     lastFrameImg.style.cursor = 'pointer';
-    lastFrameImg.addEventListener('click', handleEnterClick, { once: true });
+    lastFrameImg.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      handleEnterClick(e);
+    }, { once: true, capture: true });
     
     splashGif.style.zIndex = '2';
     
@@ -375,7 +391,12 @@ function initPreloader() {
     
     enterButton.dataset.initialized = 'true';
     
-    enterButton.addEventListener('click', handleEnterClick, { once: true });
+    enterButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      handleEnterClick(e);
+    }, { once: true, capture: true });
     
     const isMobile = window.innerWidth <= 768;
     if (!isMobile) {
@@ -390,8 +411,13 @@ function initPreloader() {
   function handleEnterClick(e) {
     if (!enterButton) return;
     
-    e.preventDefault();
-    e.stopPropagation();
+    // Блокируем клики на overlay видео через глобальный флаг
+    if (typeof window !== 'undefined') {
+      window.overlayClickBlocked = true;
+      setTimeout(() => {
+        window.overlayClickBlocked = false;
+      }, 500);
+    }
     
     if (typeof window.unlockVideoAutoplay === 'function') {
       window.unlockVideoAutoplay().then(() => {
@@ -402,7 +428,10 @@ function initPreloader() {
       });
     }
     
-    hidePreloader();
+    // Небольшая задержка перед скрытием прелоадера
+    setTimeout(() => {
+      hidePreloader();
+    }, 50);
   }
 
   function unlockScroll() {

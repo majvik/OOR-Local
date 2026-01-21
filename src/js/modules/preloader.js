@@ -34,38 +34,94 @@ function initPreloader() {
   let gifCompletionStarted = false;
   let gifStopped = false;
   
+  // Получаем пути из конфигурации (для WordPress)
+  const getAssetPath = (path) => {
+    // Проверяем window.OOR_PATHS (из config.js) или window.oorPaths (из wp_localize_script)
+    const paths = (typeof window !== 'undefined' && window.OOR_PATHS) 
+      ? window.OOR_PATHS 
+      : (typeof window !== 'undefined' && window.oorPaths) 
+        ? window.oorPaths 
+        : null;
+    
+    if (paths && paths.assets) {
+      return paths.assets + path.replace('/public/assets', '');
+    }
+    return path; // Fallback для статической версии
+  };
+  
+  const getFontPath = (path) => {
+    // Проверяем window.OOR_PATHS (из config.js) или window.oorPaths (из wp_localize_script)
+    const paths = (typeof window !== 'undefined' && window.OOR_PATHS) 
+      ? window.OOR_PATHS 
+      : (typeof window !== 'undefined' && window.oorPaths) 
+        ? window.oorPaths 
+        : null;
+    
+    if (paths && paths.fonts) {
+      return paths.fonts + path.replace('/public/fonts', '');
+    }
+    return path; // Fallback для статической версии
+  };
+  
   const resourcesToLoad = [
-    '/public/assets/plus-large.svg',
-    '/public/assets/plus-small.svg',
-    '/public/assets/line-small.svg',
-    '/public/assets/hero-bg.png',
-    '/public/assets/OUTOFREC_reel_v4_nologo.mp4',
-    '/public/assets/splash-last-frame.png',
+    getAssetPath('/plus-large.svg'),
+    getAssetPath('/plus-small.svg'),
+    getAssetPath('/line-small.svg'),
+    getAssetPath('/hero-bg.png'),
+    getAssetPath('/OUTOFREC_reel_v4_nologo.mp4'),
+    getAssetPath('/splash-last-frame.png'),
     // Загружаем WOFF2 шрифты (приоритет) с fallback на TTF
-    '/public/fonts/pragmatica-book.woff2',
-    '/public/fonts/pragmatica-book-oblique.woff2',
-    '/public/fonts/pragmatica-extended-book.woff2',
-    '/public/fonts/pragmatica-extended-book-oblique.woff2',
-    '/public/fonts/pragmatica-extended-light.woff2',
-    '/public/fonts/pragmatica-extended-light-oblique.woff2',
-    '/public/fonts/pragmatica-extended-medium.woff2',
-    '/public/fonts/pragmatica-extended-medium-oblique.woff2',
-    '/public/fonts/pragmatica-extended-bold.woff2',
-    '/public/fonts/pragmatica-extended-bold-oblique.woff2',
-    '/public/fonts/pragmatica-extended-extralight.woff2',
-    '/public/fonts/pragmatica-extended-extralight-oblique.woff2'
+    getFontPath('/pragmatica-book.woff2'),
+    getFontPath('/pragmatica-book-oblique.woff2'),
+    getFontPath('/pragmatica-extended-book.woff2'),
+    getFontPath('/pragmatica-extended-book-oblique.woff2'),
+    getFontPath('/pragmatica-extended-light.woff2'),
+    getFontPath('/pragmatica-extended-light-oblique.woff2'),
+    getFontPath('/pragmatica-extended-medium.woff2'),
+    getFontPath('/pragmatica-extended-medium-oblique.woff2'),
+    getFontPath('/pragmatica-extended-bold.woff2'),
+    getFontPath('/pragmatica-extended-bold-oblique.woff2'),
+    getFontPath('/pragmatica-extended-extralight.woff2'),
+    getFontPath('/pragmatica-extended-extralight-oblique.woff2')
   ];
 
-  const expectedCssJsFiles = [
-    '/src/css/reset.css',
-    '/src/css/fonts.css',
-    '/src/css/tokens.css',
-    '/src/css/base.css',
-    '/src/css/grid.css',
-    '/src/css/layout.css',
-    '/src/css/components.css',
-    '/src/js/main.js'
-  ];
+  // Определяем пути к CSS/JS файлам в зависимости от окружения
+  const getCssJsFiles = () => {
+    // Проверяем, работаем ли мы в WordPress через OOR_PATHS
+    const paths = (typeof window !== 'undefined' && window.OOR_PATHS) 
+      ? window.OOR_PATHS 
+      : (typeof window !== 'undefined' && window.oorPaths) 
+        ? window.oorPaths 
+        : null;
+    
+    if (paths && paths.css && paths.js) {
+      // WordPress пути
+      return [
+        'reset.css',
+        'fonts.css',
+        'tokens.css',
+        'base.css',
+        'grid.css',
+        'layout.css',
+        'components.css',
+        'main.js'
+      ];
+    }
+    
+    // Статические пути (fallback)
+    return [
+      '/src/css/reset.css',
+      '/src/css/fonts.css',
+      '/src/css/tokens.css',
+      '/src/css/base.css',
+      '/src/css/grid.css',
+      '/src/css/layout.css',
+      '/src/css/components.css',
+      '/src/js/main.js'
+    ];
+  };
+  
+  const expectedCssJsFiles = getCssJsFiles();
 
   totalResources = resourcesToLoad.length + expectedCssJsFiles.length + 1;
 
@@ -170,9 +226,20 @@ function initPreloader() {
     const performanceEntries = performance.getEntriesByType('resource');
     
     expectedCssJsFiles.forEach(expectedFile => {
-      const foundEntry = performanceEntries.find(entry => 
-        entry.name.includes(expectedFile) && !checkedResources.has(expectedFile)
-      );
+      // Проверяем, не был ли уже засчитан этот ресурс
+      if (checkedResources.has(expectedFile)) {
+        return;
+      }
+      
+      // Ищем ресурс по имени файла (более гибкая проверка)
+      const fileName = expectedFile.split('/').pop();
+      const foundEntry = performanceEntries.find(entry => {
+        const entryName = entry.name.toLowerCase();
+        const lowerFileName = fileName.toLowerCase();
+        // Проверяем по имени файла (более надежно для WordPress)
+        return entryName.includes(lowerFileName) &&
+               (entryName.includes('.css') || entryName.includes('.js'));
+      });
       
       if (foundEntry) {
         checkedResources.add(expectedFile);
@@ -242,7 +309,7 @@ function initPreloader() {
     
     const lastFrameImg = document.createElement('img');
     lastFrameImg.id = 'splash-gif-frozen';
-    lastFrameImg.src = '/public/assets/splash-last-frame.png';
+    lastFrameImg.src = getAssetPath('/splash-last-frame.png');
     lastFrameImg.alt = 'Splash';
     lastFrameImg.width = 400;
     lastFrameImg.height = 400;

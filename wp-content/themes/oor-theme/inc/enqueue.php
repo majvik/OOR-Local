@@ -85,6 +85,7 @@ function oor_enqueue_scripts() {
         'oor-cursor' => [],
         'oor-scrollbar' => [],
         'oor-slider' => [],
+        'oor-mobile-slider' => [],
         'oor-mobile-menu' => [],
         'oor-menu-sync' => [],
     ];
@@ -127,22 +128,22 @@ function oor_enqueue_scripts() {
     
     // Локализация для путей (передается в window.oorPaths)
     // Передаем в config.js, который загружается рано
-    wp_localize_script('oor-config', 'oorPaths', [
+    wp_localize_script('oor-config', 'oorPaths', array(
         'base' => $theme_uri,
         'assets' => $theme_uri . '/public/assets',
         'fonts' => $theme_uri . '/public/fonts',
         'css' => $theme_uri . '/assets/css',
         'js' => $theme_uri . '/assets/js'
-    ]);
+    ));
     
     // Также передаем в main.js для обратной совместимости
-    wp_localize_script('oor-main', 'oorPaths', [
+    wp_localize_script('oor-main', 'oorPaths', array(
         'base' => $theme_uri,
         'assets' => $theme_uri . '/public/assets',
         'fonts' => $theme_uri . '/public/fonts',
         'css' => $theme_uri . '/assets/css',
         'js' => $theme_uri . '/assets/js'
-    ]);
+    ));
     
     // Добавить defer атрибут
     add_filter('script_loader_tag', function($tag, $handle) use ($defer_scripts, $additional_scripts) {

@@ -44,7 +44,7 @@
     
     <!-- Header -->
     <header class="oor-header">
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="oor-logo">
+        <a href="#" class="oor-logo">
             <img src="<?php echo get_template_directory_uri(); ?>/public/assets/logo.svg" 
                  alt="<?php bloginfo('name'); ?>" 
                  width="73" height="20" 
@@ -62,11 +62,11 @@
                         ['url' => home_url('/artists'), 'text' => 'Артисты', 'slug' => 'artists'],
                         ['url' => home_url('/studio'), 'text' => 'Студия', 'slug' => 'studio'],
                         ['url' => home_url('/services'), 'text' => 'Услуги', 'slug' => 'services'],
-                        ['url' => home_url('/dawgs'), 'text' => 'DAWGS', 'slug' => 'dawgs'],
+                        ['url' => '#', 'text' => 'DAWGS', 'slug' => 'dawgs'],
                         ['url' => home_url('/talk-show'), 'text' => 'Talk-шоу', 'slug' => 'talk-show'],
                         ['url' => home_url('/events'), 'text' => 'События', 'slug' => 'events'],
                         ['url' => home_url('/merch'), 'text' => 'Мерч', 'slug' => 'merch'],
-                        ['url' => home_url('/contacts'), 'text' => 'Контакты', 'slug' => 'contacts'],
+                        ['url' => '#', 'text' => 'Контакты', 'slug' => 'contacts'],
                     ];
                     
                     foreach ($menu_items as $index => $item) {

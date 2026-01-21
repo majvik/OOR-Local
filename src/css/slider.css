@@ -416,12 +416,13 @@ a.slide-media:hover {
   
   /* Awwwards-style мобильный слайдер */
   #wsls .slider {
-    overflow: visible !important;
+    overflow: hidden !important;
     position: relative !important;
     width: 100% !important;
     height: auto !important;
     padding: 0 !important;
     margin: 32px 0 !important;
+    touch-action: pan-x !important;
   }
   
   /* slider-track - контейнер */
@@ -429,6 +430,7 @@ a.slide-media:hover {
     width: 100% !important;
     overflow: hidden !important;
     position: relative !important;
+    touch-action: pan-x !important;
   }
   
   /* slider-wrapper - flex контейнер, управляется через JS transform */
