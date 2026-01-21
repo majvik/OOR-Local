@@ -398,14 +398,135 @@ a.slide-media:hover {
   }
 }
 
-/* Мобильные правки для очень маленьких экранов (425px и ниже) */
-@media (max-width: 425px){
+/* Мобильные правки для очень маленьких экранов (460px и ниже) */
+@media (max-width: 460px){
   #wsls .slider-section{
     height: auto !important;
     min-height: 0 !important;
     padding: 88px 0 !important;
   }
-  #wsls .slider-heading { display: block; margin: 0 16px 0 16px; }
-  #wsls .slider-all-link { display: inline-block; margin: 0 16px 0 16px; }
-  #wsls .slider-wrapper { padding-left: 16px; }
+  #wsls .slider-heading { 
+    display: block; 
+    margin: 0 16px 24px 16px;
+  }
+  #wsls .slider-all-link { 
+    display: inline-block; 
+    margin: 24px 16px 0 16px; 
+  }
+  
+  /* Awwwards-style мобильный слайдер */
+  #wsls .slider {
+    overflow: visible !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 32px 0 !important;
+  }
+  
+  /* slider-track - контейнер */
+  #wsls .slider-track {
+    width: 100% !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  
+  /* slider-wrapper - flex контейнер, управляется через JS transform */
+  #wsls .slider-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    will-change: transform !important;
+    transform-origin: center center !important;
+  }
+  
+  /* Слайды */
+  #wsls .slide {
+    flex-shrink: 0 !important;
+    height: 420px !important;
+    overflow: hidden !important;
+    margin-right: 16px !important;
+  }
+  
+  #wsls .slide:last-child {
+    margin-right: 0 !important;
+  }
+  
+  /* Изображения в слайдах - cover на всю площадь */
+  #wsls .slide .slide-media {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    overflow: hidden !important;
+  }
+  
+  #wsls .slide .slide-media img,
+  #wsls .slide .slide-media picture img {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+  
+  #wsls .slide .slide-media picture {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+  
+  /* Имя артиста */
+  #wsls .slide .artist-name {
+    margin-top: 12px !important;
+    font-size: 14px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  /* Убираем margin-right из слайдов */
+  #wsls .slider-wrapper .slide:last-child {
+    margin-right: 0 !important;
+  }
+}
+  
+  /* Улучшенная визуальная обратная связь при свайпе */
+  #wsls .slider-track:active .slide {
+    transition: transform 0.05s ease-out;
+  }
+  
+  /* slide-media должен занимать всю ширину слайда */
+  #wsls .slide-media {
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  
+  /* Изображения внутри slide-media должны заполнять контейнер */
+  #wsls .slide-media img,
+  #wsls .slide-media picture,
+  #wsls .slide-media picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  /* Адаптивная ширина слайда - делаем меньше, чтобы был виден краешек следующего */
+  /* Примерно 85% ширины экрана, чтобы показать ~15% следующего слайда */
+  #wsls .slide {
+    --slide-width: calc(85vw - 16px);
+  }
+  
+  /* Для очень маленьких экранов делаем слайды чуть меньше для лучшего peek эффекта */
+  @media (max-width: 360px) {
+    #wsls .slide {
+      --slide-width: calc(82vw - 16px);
+    }
+  }
 }

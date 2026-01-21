@@ -1,6 +1,6 @@
 // Динамическое изменение размеров изображений мерча
 function resizeMerchImages() {
-    if (window.innerWidth <= 425) {
+    if (window.innerWidth <= 460) {
         const imageEls = document.querySelectorAll('.oor-merch-image-item img');
         imageEls.forEach(img => {
             img.style.width = '100%';

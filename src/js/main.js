@@ -104,6 +104,8 @@ function loadGSAPFallback() {
 }
 
 window.addEventListener('load', function() {
+  // Инициализация навигации для страниц магазина
+  initMerchNavigation();
   try {
     initNavigation();
     initDynamicYear();
@@ -230,7 +232,7 @@ function initRetinaSupport() {
 
 // Параллакс для изображений
 function initParallaxImages() {
-  if (window.innerWidth <= 425) return;
+  if (window.innerWidth <= 460) return;
 
   // Отключаем параллакс на страницах магазина
   if (document.body.classList.contains('oor-merch-page') || document.body.classList.contains('oor-product-page')) {
@@ -552,7 +554,7 @@ function initParallaxImages() {
   start();
 
   const onResize = () => {
-    if (window.innerWidth <= 425) {
+    if (window.innerWidth <= 460) {
       stop();
     } else {
       candidates.forEach(img => {
@@ -952,8 +954,51 @@ function initFullscreenVideo() {
   
   const plusIcon = plusTopRight.querySelector('img');
 
+  // Флаг для блокировки кликов сразу после скрытия прелоадера
+  let overlayClickBlocked = false;
+  
+  // Разблокируем клики через небольшую задержку после скрытия прелоадера
+  function unblockOverlayClicks() {
+    setTimeout(() => {
+      overlayClickBlocked = false;
+    }, 500); // 500ms задержка после скрытия прелоадера
+  }
+  
+  // Проверяем, не активен ли прелоадер
+  function isPreloaderActive() {
+    return document.getElementById('preloader') || 
+           document.getElementById('splash-screen') ||
+           document.body.classList.contains('preloader-active') ||
+           document.documentElement.classList.contains('preloader-active');
+  }
+  
+  // Слушаем событие скрытия прелоадера
+  const observer = new MutationObserver(() => {
+    if (!isPreloaderActive() && overlayClickBlocked) {
+      unblockOverlayClicks();
+    }
+  });
+  
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+    childList: true,
+    subtree: true
+  });
+  
+  // Блокируем клики на overlay пока прелоадер активен
+  if (isPreloaderActive()) {
+    overlayClickBlocked = true;
+  }
+
   // Клик по оверлею фонового видео открывает полноэкранное
-  heroVideoOverlay.addEventListener('click', function() {
+  heroVideoOverlay.addEventListener('click', function(e) {
+    // Блокируем клики если прелоадер активен, недавно был скрыт, или глобальный флаг установлен
+    if (overlayClickBlocked || isPreloaderActive() || (window.overlayClickBlocked === true)) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
     openFullscreenVideo();
   });
 
@@ -1246,5 +1291,52 @@ function preventOrphans(element) {
       const lastTwoJoined = lastTwoWords.join('\u00A0');
       element.textContent = textWithoutLastTwo + ' ' + lastTwoJoined;
     }
+  }
+}
+
+// Навигация для страниц магазина
+function initMerchNavigation() {
+  // merch.html -> product.html: клик на товар
+  const productLinks = document.querySelectorAll('.oor-merch-product-link');
+  productLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/product.html';
+    });
+  });
+
+  // product.html -> cart.html: кнопка "В корзину"
+  const addToCartBtn = document.querySelector('.oor-product-add-to-cart[data-action="add-to-cart"]');
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/cart.html';
+    });
+  }
+
+  // cart.html -> checkout.html: кнопка "ПЕРЕЙТИ К ОПЛАТЕ"
+  const checkoutBtn = document.querySelector('.oor-cart-checkout-btn[data-action="checkout"]');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/checkout.html';
+    });
+  }
+
+  // checkout.html -> index.html: кнопка "КУПИТЬ"
+  const buyBtn = document.querySelector('.oor-checkout-buy-btn[data-action="place-order"]');
+  if (buyBtn) {
+    buyBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      // Предотвращаем отправку формы
+      const form = document.getElementById('checkout-form');
+      if (form) {
+        form.addEventListener('submit', function(ev) {
+          ev.preventDefault();
+        }, { once: true });
+      }
+      window.location.href = '/index.html';
+    });
   }
 }
