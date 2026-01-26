@@ -32,7 +32,7 @@
                                 ['url' => home_url('/talk-show'), 'text' => 'Talk-шоу', 'slug' => 'talk-show'],
                                 ['url' => home_url('/events'), 'text' => 'События', 'slug' => 'events'],
                                 ['url' => home_url('/merch'), 'text' => 'Мерч', 'slug' => 'merch'],
-                                ['url' => '#', 'text' => 'Контакты', 'slug' => 'contacts'],
+                                ['url' => home_url('/contacts'), 'text' => 'Контакты', 'slug' => 'contacts'],
                             ];
                             
                             foreach ($footer_menu_items as $item) {
