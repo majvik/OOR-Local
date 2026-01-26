@@ -2,7 +2,6 @@
 function initPreloader() {
   const preloader = document.getElementById('preloader');
   const progressBar = document.getElementById('preloader-progress-bar');
-  const enterButton = document.getElementById('enter-button-splash') || document.getElementById('enter-button');
   const splashScreen = document.getElementById('splash-screen');
   const splashGif = document.getElementById('splash-gif');
   
@@ -314,13 +313,6 @@ function initPreloader() {
     lastFrameImg.width = 400;
     lastFrameImg.height = 400;
     lastFrameImg.style.zIndex = '1';
-    lastFrameImg.style.cursor = 'pointer';
-    lastFrameImg.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      handleEnterClick(e);
-    }, { once: true, capture: true });
     
     splashGif.style.zIndex = '2';
     
@@ -361,7 +353,7 @@ function initPreloader() {
     const currentGif = document.getElementById('splash-gif');
     if (!currentGif) {
       setTimeout(() => {
-        showEnterButton();
+        handleEnterClick();
       }, 300);
       return;
     }
@@ -372,44 +364,17 @@ function initPreloader() {
       }
       
       setTimeout(() => {
-        showEnterButton();
+        handleEnterClick();
       }, 100);
     } catch (error) {
       console.error('[Preloader] Error removing GIF:', error);
       setTimeout(() => {
-        showEnterButton();
+        handleEnterClick();
       }, 300);
     }
   }
 
-  function showEnterButton() {
-    if (!enterButton) return;
-    
-    if (enterButton.dataset.initialized === 'true') {
-      return;
-    }
-    
-    enterButton.dataset.initialized = 'true';
-    
-    enterButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      handleEnterClick(e);
-    }, { once: true, capture: true });
-    
-    const isMobile = window.innerWidth <= 768;
-    if (!isMobile) {
-      enterButton.style.transform = 'translateX(-50%)';
-    }
-    
-    requestAnimationFrame(() => {
-      enterButton.classList.add('visible');
-    });
-  }
-
-  function handleEnterClick(e) {
-    if (!enterButton) return;
+  function handleEnterClick() {
     
     // Блокируем клики на overlay видео через глобальный флаг
     if (typeof window !== 'undefined') {

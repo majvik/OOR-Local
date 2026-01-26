@@ -15,7 +15,6 @@
     <div id="preloader" class="oor-preloader">
         <div class="oor-preloader-progress-bar" id="preloader-progress-bar"></div>
         <div class="oor-preloader-content">
-            <button id="enter-button" class="oor-enter-button">Войти</button>
         </div>
     </div>
     
@@ -37,14 +36,11 @@
              loading="eager"
              fetchpriority="high"
              onerror="this.onerror=null; this.src='<?php echo esc_url(get_template_directory_uri() . '/public/assets/splash-last-frame.png'); ?>';">
-        <button id="enter-button-splash" class="oor-splash-enter-button rolling-button">
-            <span class="tn-atom">[  ВОЙТИ В OOR  ]</span>
-        </button>
     </div>
     
     <!-- Header -->
     <header class="oor-header">
-        <a href="#" class="oor-logo">
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="oor-logo">
             <img src="<?php echo get_template_directory_uri(); ?>/public/assets/logo.svg" 
                  alt="<?php bloginfo('name'); ?>" 
                  width="73" height="20" 
