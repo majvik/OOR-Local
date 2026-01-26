@@ -10747,6 +10747,354 @@ body.oor-checkout-page .oor-header .oor-merch-cart-icon img {
 
   .oor-checkout-order-item-price {
     font-size: 12px;
+  }
+}
+
+/* ===== CONTACTS PAGE STYLES ===== */
+
+/* Contacts page - white background like artists page */
+body.oor-contacts-page {
+  background: #fff;
+}
+
+body.oor-contacts-page .oor-header {
+  background: #000 !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate;
+}
+
+body.oor-contacts-page .oor-logo img {
+  mix-blend-mode: normal !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+body.oor-contacts-page .oor-nav-link {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-contacts-page .oor-nav-link--active {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-contacts-page .oor-nav-item > span {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-contacts-page .oor-btn-small {
+  mix-blend-mode: normal !important;
+}
+
+body.oor-contacts-page .oor-btn-small-text {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-contacts-page .oor-btn-small-icon {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-contacts-page .oor-btn-small-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+/* Contacts Hero Section */
+.oor-contacts-hero {
+  background: #fff;
+  padding-top: 80px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #000;
+}
+
+.oor-contacts-hero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.oor-contacts-hero-title {
+  font-family: var(--font-ui);
+  font-size: 96px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -8.64px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+  mix-blend-mode: luminosity;
+}
+
+.oor-contacts-hero-copyright {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.32px;
+  color: #000;
+  margin: 0;
+  text-align: center;
+}
+
+/* Contacts Content Section */
+.oor-contacts-content-section {
+  background: #fff;
+  padding: 80px 0 80px;
+}
+
+.oor-contacts-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  width: 100%;
+  max-width: 1364px;
+}
+
+/* Main Title Frame */
+.oor-contacts-main-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+}
+
+.oor-contacts-main-title {
+  font-family: var(--font-ui);
+  font-size: 48px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+  width: 100%;
+}
+
+/* Email Contacts Frame */
+.oor-contacts-emails-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 48px;
+  width: 100%;
+}
+
+.oor-contacts-email-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+
+.oor-contacts-email-label {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.56px;
+  color: #000;
+  opacity: 0.6;
+  margin: 0;
+}
+
+.oor-contacts-email-link {
+  font-family: var(--font-ui);
+  font-size: 31px;
+  line-height: 130%;
+  font-weight: 300;
+  letter-spacing: -1.24px;
+  text-transform: uppercase;
+  color: #000;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-underline-offset: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.oor-contacts-email-link:hover {
+  opacity: 0.7;
+}
+
+/* Social Links Frame */
+.oor-contacts-social-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+}
+
+.oor-contacts-social-title {
+  font-family: var(--font-ui);
+  font-size: 24px;
+  line-height: 130%;
+  font-weight: 300;
+  letter-spacing: -0.96px;
+  text-transform: uppercase;
+  color: #4f4f4f;
+  margin: 0;
+}
+
+.oor-contacts-social-links {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.oor-contacts-social-link {
+  font-family: var(--font-ui);
+  font-size: 31px;
+  line-height: 130%;
+  font-weight: 300;
+  letter-spacing: -1.24px;
+  text-transform: uppercase;
+  color: #000;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-underline-offset: 4px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.oor-contacts-social-link:hover {
+  opacity: 0.7;
+}
+
+/* Responsive adjustments for contacts page */
+@media (max-width: 1919px) {
+  .oor-contacts-hero-title {
+    font-size: clamp(48px, 6.67vw, 96px);
+    letter-spacing: clamp(-4.8px, -0.67vw, -8.64px);
+  }
+  
+  .oor-contacts-main-title {
+    font-size: clamp(32px, 3.33vw, 48px);
+    letter-spacing: clamp(-1.28px, -0.13vw, -1.92px);
+  }
+}
+
+/* Mobile styles for contacts page (≤768px) */
+@media (max-width: 768px) {
+  .oor-contacts-hero {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom: 1px solid #000;
+  }
+
+  .oor-contacts-hero .oor-container {
+    padding: 0;
+  }
+
+  .oor-contacts-hero-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 76px 0 16px 12px;
+    gap: 0;
+  }
+
+  .oor-contacts-hero-title {
+    font-size: 72px;
+    line-height: 100%;
+    letter-spacing: -7.2px;
+    margin: 0;
+  }
+
+  .oor-contacts-hero-copyright {
+    font-size: 16px;
+    letter-spacing: -0.32px;
+    margin-top: 0;
+  }
+
+  .oor-contacts-content-section {
+    padding: 32px 0 40px;
+  }
+
+  .oor-contacts-content-section .oor-container {
+    padding: 0 12px;
+  }
+
+  .oor-contacts-content-wrapper {
+    gap: 40px;
+  }
+
+  .oor-contacts-main-title {
+    font-size: 32px;
+    letter-spacing: -1.28px;
+  }
+
+  .oor-contacts-emails-frame {
+    gap: 32px;
+  }
+
+  .oor-contacts-email-label {
+    font-size: 14px;
+    letter-spacing: -0.56px;
+  }
+
+  .oor-contacts-email-link {
+    font-size: 24px;
+    letter-spacing: -0.96px;
+  }
+
+  .oor-contacts-social-title {
+    font-size: 20px;
+    letter-spacing: -0.8px;
+  }
+
+  .oor-contacts-social-links {
+    gap: 16px;
+  }
+
+  .oor-contacts-social-link {
+    font-size: 24px;
+    letter-spacing: -0.96px;
+  }
+}
+
+/* Дополнительные стили для очень маленьких экранов (≤460px) */
+@media (max-width: 460px) {
+  .oor-contacts-hero-title {
+    font-size: 48px;
+    letter-spacing: -4.8px;
+  }
+
+  .oor-contacts-content-section,
+  .oor-contacts-content-section .oor-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .oor-contacts-hero-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .oor-contacts-main-title {
+    font-size: 24px;
+    letter-spacing: -0.96px;
+  }
+
+  .oor-contacts-email-link {
+    font-size: 20px;
+    letter-spacing: -0.8px;
+  }
+
+  .oor-contacts-social-link {
+    font-size: 20px;
+    letter-spacing: -0.8px;
+  }
+}
+
     letter-spacing: -0.24px;
   }
 

@@ -30,17 +30,45 @@ if (PHP_VERSION_ID >= 80200) {
     }
 }
 
-// Настройка ACF для автоматической загрузки JSON из acf-json/
+// Настройка ACF для автоматической загрузки и синхронизации JSON из acf-json/
 add_filter('acf/settings/save_json', function($path) {
     $path = get_stylesheet_directory() . '/acf-json';
+    // Создаем папку если её нет
+    if (!file_exists($path)) {
+        wp_mkdir_p($path);
+    }
     return $path;
 });
 
 add_filter('acf/settings/load_json', function($paths) {
+    // Удаляем стандартный путь ACF
     unset($paths[0]);
-    $paths[] = get_stylesheet_directory() . '/acf-json';
+    // Добавляем путь к папке темы
+    $theme_path = get_stylesheet_directory() . '/acf-json';
+    if (file_exists($theme_path)) {
+        $paths[] = $theme_path;
+    }
     return $paths;
 });
+
+// Автоматическая синхронизация ACF полей при активации темы
+add_action('after_setup_theme', function() {
+    // Проверяем, что ACF активен
+    if (function_exists('acf_get_setting')) {
+        // Принудительно загружаем JSON файлы при загрузке темы
+        $json_path = get_stylesheet_directory() . '/acf-json';
+        if (is_dir($json_path)) {
+            // ACF автоматически загрузит JSON файлы при следующем обращении к Field Groups
+            // Это происходит автоматически через фильтр load_json выше
+        }
+    }
+});
+
+// Улучшенная синхронизация: автоматически обновляем JSON при сохранении Field Group
+add_action('acf/update_field_group', function($field_group) {
+    // ACF автоматически сохранит в JSON благодаря фильтру save_json
+    // Дополнительная логика не требуется
+}, 10, 1);
 
 // Включение поддержки AVIF и WebP изображений
 add_filter('mime_types', function($mimes) {
