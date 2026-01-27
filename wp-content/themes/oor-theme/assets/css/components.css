@@ -345,6 +345,7 @@ body.oor-studio-page .oor-header .oor-burger-menu .oor-burger-icon img {
   gap:4px;
   background:transparent;
   border:none;
+  text-decoration: none;
   cursor:pointer;
 }
 
@@ -2545,6 +2546,7 @@ body:has(.oor-mobile-menu.active) {
   transition: all 0.3s ease;
   width: 100%;
   justify-content: center;
+  text-decoration: none;
 }
 
 .oor-mobile-menu-btn:hover {
@@ -11092,6 +11094,593 @@ body.oor-contacts-page .oor-btn-small-icon img {
   .oor-contacts-social-link {
     font-size: 20px;
     letter-spacing: -0.8px;
+  }
+}
+
+/* ===== BECOME ARTIST PAGE STYLES ===== */
+
+/* Become Artist page - white background */
+body.oor-become-artist-page {
+  background: #fff;
+}
+
+body.oor-become-artist-page .oor-header {
+  background: #000 !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate;
+}
+
+body.oor-become-artist-page .oor-logo img {
+  mix-blend-mode: normal !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+body.oor-become-artist-page .oor-nav-link {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-become-artist-page .oor-nav-link--active {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-become-artist-page .oor-nav-item > span {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-become-artist-page .oor-btn-small {
+  mix-blend-mode: normal !important;
+  border-color: #fff !important;
+  color: #fff !important;
+}
+
+body.oor-become-artist-page .oor-btn-small-text {
+  color: #fff !important;
+  mix-blend-mode: normal !important;
+}
+
+body.oor-become-artist-page .oor-btn-small-icon {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+body.oor-become-artist-page .oor-btn-small-icon img {
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+/* Become Artist Hero Section */
+.oor-become-artist-hero {
+  background: #fff;
+  padding-top: 80px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #000;
+}
+
+.oor-become-artist-hero-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.oor-become-artist-hero-title {
+  font-family: var(--font-ui);
+  font-size: 96px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -8.64px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+  mix-blend-mode: luminosity;
+}
+
+/* Become Artist Content Section */
+.oor-become-artist-content-section {
+  background: #fff;
+  padding: 80px 0 80px;
+}
+
+/* Контейнер с особенностью ширины: до 1440px тянется, после фиксируется, контент слева */
+.oor-become-artist-container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-left: var(--container-x, 80px);
+  padding-right: var(--container-x, 80px);
+}
+
+/* На экранах больше 1440px фиксируем ширину и выравниваем контент слева */
+@media (min-width: 1441px) {
+  .oor-become-artist-container {
+    max-width: 1440px;
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
+.oor-become-artist-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Main Heading */
+.oor-become-artist-main-heading {
+  width: 100%;
+}
+
+.oor-become-artist-subtitle {
+  font-family: var(--font-ui);
+  font-size: 48px;
+  line-height: 100%;
+  font-weight: 300;
+  letter-spacing: -1.92px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+  text-align: left;
+}
+
+/* Instructions (Two Columns) */
+.oor-become-artist-instructions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  width: 100%;
+}
+
+.oor-become-artist-instructions-col {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 24px;
+}
+
+.oor-become-artist-instructions-col::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #000;
+}
+
+.oor-become-artist-instructions-text {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  color: #000;
+  margin: 0;
+}
+
+/* Form Wrapper */
+.oor-become-artist-form-wrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Contact Form 7 Styles */
+.oor-become-artist-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
+.oor-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.oor-form-label {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.28px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+.oor-form-required {
+  color: #000;
+}
+
+.oor-form-input,
+.oor-form-textarea {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.32px;
+  color: #000;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 8px 0 10px 0; /* Увеличиваем padding-bottom для textarea */
+  width: 100%;
+  outline: none;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.oor-form-input:focus,
+.oor-form-textarea:focus {
+  border-bottom-color: #000;
+}
+
+.oor-form-input::placeholder,
+.oor-form-textarea::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+}
+
+.oor-form-textarea {
+  min-height: 28px; /* немного выше одной строки, чтобы placeholder и текст точно помещались */
+  max-height: 300px;
+  resize: none;
+  overflow-y: hidden; /* Скрываем скролл до тех пор, пока не достигнем max-height */
+  line-height: 140%;
+  height: 28px; /* начальная высота */
+  padding-bottom: 4px; /* дополнительный запас снизу, чтобы ничего не обрезалось */
+  transition: height 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* Показываем скролл только когда достигли max-height */
+.oor-form-textarea[style*="height: 300px"] {
+  overflow-y: auto;
+}
+
+.oor-form-note {
+  margin-top: -20px;
+}
+
+.oor-form-note-text {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.24px;
+  color: rgba(0, 0, 0, 0.6) !important; /* 60% прозрачность */
+  font-style: italic;
+  margin: 0;
+}
+
+.oor-form-submit {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.64px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #000;
+  border: 1px solid #000;
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-top: 8px;
+}
+
+.oor-form-submit:hover {
+  background: #333;
+  border-color: #333;
+}
+
+.oor-form-submit:active {
+  background: #000;
+}
+
+/* Стили для стандартных полей Contact Form 7 */
+.wpcf7-form {
+  width: 100%;
+}
+
+.wpcf7-form .oor-form-field {
+  margin-bottom: 0;
+}
+
+.wpcf7-form p {
+  margin: 0 0 40px 0;
+  padding: 0;
+  position: relative;
+}
+
+/* Примечание про демо-материалы (класс навешивается JS) */
+.wpcf7-form p.oor-demo-note {
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: -0.24px;
+}
+
+@media (min-width: 1025px) {
+  .wpcf7-form p.oor-demo-note {
+    max-width: 25%;
+  }
+}
+
+.wpcf7-form br {
+  display: none;
+}
+
+/* Скрываем текст перед полями - используем только placeholder */
+.wpcf7-form p:has(.wpcf7-form-control-wrap) {
+  position: relative;
+}
+
+/* Скрываем текстовые узлы перед полями */
+.wpcf7-form p:has(.wpcf7-form-control-wrap) > text:first-child,
+.wpcf7-form p:has(.wpcf7-form-control-wrap) > *:not(.wpcf7-form-control-wrap):not(.oor-form-label) {
+  display: none;
+}
+
+.wpcf7-form input[type="text"],
+.wpcf7-form input[type="email"],
+.wpcf7-form input[type="url"],
+.wpcf7-form textarea {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.32px;
+  color: #000;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 8px 0 10px 0; /* Увеличиваем padding-bottom для textarea */
+  width: 100%;
+  outline: none;
+  transition: border-color 0.3s ease;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.wpcf7-form input[type="text"]:focus,
+.wpcf7-form input[type="email"]:focus,
+.wpcf7-form input[type="url"]:focus,
+.wpcf7-form textarea:focus {
+  border-bottom-color: #000;
+}
+
+/* Placeholder как лейбл внутри поля */
+.wpcf7-form input[type="text"]::placeholder,
+.wpcf7-form input[type="email"]::placeholder,
+.wpcf7-form input[type="url"]::placeholder,
+.wpcf7-form textarea::placeholder {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 300;
+  letter-spacing: -0.32px;
+  text-transform: uppercase;
+  color: #000;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Placeholder исчезает при фокусе или когда поле заполнено */
+.wpcf7-form input[type="text"]:focus::placeholder,
+.wpcf7-form input[type="email"]:focus::placeholder,
+.wpcf7-form input[type="url"]:focus::placeholder,
+.wpcf7-form textarea:focus::placeholder,
+.wpcf7-form input[type="text"]:not(:placeholder-shown)::placeholder,
+.wpcf7-form input[type="email"]:not(:placeholder-shown)::placeholder,
+.wpcf7-form input[type="url"]:not(:placeholder-shown)::placeholder,
+.wpcf7-form textarea:not(:placeholder-shown)::placeholder {
+  opacity: 0;
+}
+
+.wpcf7-form textarea {
+  min-height: 40px !important;
+  max-height: 300px !important;
+  resize: none !important;
+  overflow-y: hidden !important;
+  line-height: 140% !important;
+  height: 40px !important;
+  padding: 8px 0 16px 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Показываем скролл только когда достигли max-height */
+.wpcf7-form textarea[style*="height: 300px"] {
+  overflow-y: auto;
+}
+
+.wpcf7-form input[type="submit"] {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 120%;
+  font-weight: 300;
+  letter-spacing: -0.64px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #000;
+  border: 1px solid #000;
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-top: 8px;
+}
+
+.wpcf7-form input[type="submit"]:hover {
+  background: #333;
+  border-color: #333;
+}
+
+.wpcf7-form .wpcf7-not-valid-tip {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: #d32f2f;
+  margin-top: 4px;
+}
+
+.wpcf7-form .wpcf7-validation-errors,
+.wpcf7-form .wpcf7-mail-sent-ok {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  padding: 12px;
+  margin-top: 16px;
+}
+
+.wpcf7-form .wpcf7-mail-sent-ok {
+  background: #4caf50;
+  color: #fff;
+}
+
+.wpcf7-form .wpcf7-validation-errors {
+  background: #f44336;
+  color: #fff;
+}
+
+/* Responsive adjustments for become artist page */
+@media (max-width: 1919px) {
+  .oor-become-artist-hero-title {
+    font-size: clamp(48px, 6.67vw, 96px);
+    letter-spacing: clamp(-4.8px, -0.67vw, -8.64px);
+  }
+  
+  .oor-become-artist-subtitle {
+    font-size: clamp(32px, 3.33vw, 48px);
+    letter-spacing: clamp(-1.28px, -0.13vw, -1.92px);
+  }
+}
+
+/* Особенность ширины: до 1440px тянется, после фиксируется, контент слева */
+@media (min-width: 1441px) {
+  .oor-become-artist-container {
+    max-width: 1440px;
+    margin-left: 0;
+    margin-right: auto;
+  }
+  
+  .oor-become-artist-content-wrapper {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* Mobile styles for become artist page (≤768px) */
+@media (max-width: 768px) {
+  .oor-become-artist-hero {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom: 1px solid #000;
+  }
+
+  .oor-become-artist-hero .oor-container {
+    padding: 0;
+  }
+
+  .oor-become-artist-hero-header {
+    padding: 76px 0 16px 12px;
+  }
+
+  .oor-become-artist-hero-title {
+    font-size: 72px;
+    line-height: 100%;
+    letter-spacing: -7.2px;
+    margin: 0;
+  }
+
+  .oor-become-artist-content-section {
+    padding: 32px 0 40px;
+  }
+
+  .oor-become-artist-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .oor-become-artist-content-wrapper {
+    gap: 40px;
+  }
+
+  .oor-become-artist-subtitle {
+    font-size: 32px;
+    letter-spacing: -1.28px;
+  }
+
+  .oor-become-artist-instructions {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .oor-become-artist-instructions-col {
+    padding-left: 16px;
+  }
+
+  .oor-become-artist-instructions-col::before {
+    width: 1px;
+  }
+
+  .oor-become-artist-instructions-text {
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .oor-become-artist-form-fields {
+    gap: 32px;
+  }
+
+  .oor-form-label {
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .oor-form-input,
+  .oor-form-textarea {
+    font-size: 16px;
+    letter-spacing: -0.32px;
+  }
+
+  .oor-form-submit {
+    width: 100%;
+    font-size: 16px;
+    letter-spacing: -0.64px;
+  }
+}
+
+/* Дополнительные стили для очень маленьких экранов (≤460px) */
+@media (max-width: 460px) {
+  .oor-become-artist-hero-title {
+    font-size: 48px;
+    letter-spacing: -4.8px;
+  }
+
+  .oor-become-artist-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .oor-become-artist-hero-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .oor-become-artist-subtitle {
+    font-size: 24px;
+    letter-spacing: -0.96px;
+  }
+
+  .oor-become-artist-instructions {
+    gap: 20px;
   }
 }
 
